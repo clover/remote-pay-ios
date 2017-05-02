@@ -15,7 +15,7 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
   use frameworks!
 
   target 'Register_App' do
-    pod 'CloverConnector', :git => "git@github.com:clover/remote-pay-ios.git", :branch => "1.2.0.b"
+    pod 'CloverConnector', '1.2.0.b'
   end
 
   post_install do |installer|
@@ -25,3 +25,44 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
         end
     end
   end
+  ```
+  Some sample code to get started
+  ```swift
+  import CloverConnector
+
+  class ConnectionManager : DefaultCloverConnectorListener, PairingDeviceConfiguration {
+    var cc:ICloverConnector?
+
+    func connect() {
+          let config = WebSocketDeviceConfiguration(endpoint: "wss://192.168.1.115:12345/remote_pay", remoteApplicationID: "com.yourcompany.pos.app:4.3.5", posName: "Aisle-13b", posSerial: "ABC-123", pairingAuthToken: nil, pairingDeviceConfiguration: self)
+        config.pingFrequency = 5
+        cc = CloverConnector(config: config)
+
+        cc?.addCloverConnectorListener(self)
+
+        cc?.initializeConnection()
+    }
+
+    // PairingDeviceConfiguration
+    func onPairingCode(pairingCode: String) {
+        // display pairingCode to user
+    }
+    func onPairingSuccess(authToken: String) {
+        // pairing is successful
+    }
+
+    // DefaultCloverConnectorListener
+    override func onVerifySignatureRequest(signatureVerifyRequest: VerifySignatureRequest) {
+        //present signature to user, then
+        // acceptSignature(...) or rejectSignature(...)
+    }
+    override func onConfirmPaymentRequest(request: ConfirmPaymentRequest) {
+        //present challenges to user, then
+        // cc?.confirmPayment(...)
+        // or
+        // cc?.rejectPayment(...)
+    }
+    // override other callback method
+    override onSaleResponse(response:SaleResponse) {}
+    // etc.
+```
