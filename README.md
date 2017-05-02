@@ -15,7 +15,7 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
   use frameworks!
 
   target 'Register_App' do
-    pod 'CloverConnector', '1.2.0.b'
+    pod 'CloverConnector', :git => "git@github.com:clover/remote-pay-ios.git", :branch => "1.2.0.b"
   end
 
   post_install do |installer|
