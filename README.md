@@ -34,13 +34,19 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
     var cc:ICloverConnector?
 
     func connect() {
-          let config = WebSocketDeviceConfiguration(endpoint: "wss://192.168.1.115:12345/remote_pay", remoteApplicationID: "com.yourcompany.pos.app:4.3.5", posName: "Aisle-13b", posSerial: "ABC-123", pairingAuthToken: nil, pairingDeviceConfiguration: self)
+          let config = WebSocketDeviceConfiguration(endpoint: "wss://192.168.1.115:12345/remote_pay", remoteApplicationID: "com.yourcompany.pos.app:4.3.5", posName: "RegisterApp", posSerial: "ABC-123", pairingAuthToken: nil, pairingDeviceConfiguration: self)
         config.pingFrequency = 5
         cc = CloverConnector(config: config)
 
         cc?.addCloverConnectorListener(self)
 
         cc?.initializeConnection()
+    }
+
+    func doSale() {
+        // if onDeviceReady has been called
+        let saleRequest = SaleRequest(amount: 1743, externalId: "bc54de43f3")
+        cc?.sale(saleRequest)
     }
 
     // PairingDeviceConfiguration
@@ -51,7 +57,13 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
         // pairing is successful
     }
 
-    // DefaultCloverConnectorListener
+    /// DefaultCloverConnectorListener
+    // called when device is disconnected
+    override func onDeviceDisconnected() {}
+    // called when device is connected, but not ready for requests
+    override func onDeviceConnected() {}
+    // called when device is ready to take requests
+    override func onDeviceRead(info:MerchantInfo){}
     override func onVerifySignatureRequest(signatureVerifyRequest: VerifySignatureRequest) {
         //present signature to user, then
         // acceptSignature(...) or rejectSignature(...)
@@ -64,5 +76,6 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
     }
     // override other callback method
     override onSaleResponse(response:SaleResponse) {}
+    override onAuthResponse(response:AuthResponse) {}
     // etc.
 ```
