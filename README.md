@@ -11,7 +11,7 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
   - pod 'CloverConnector', '1.2.0.b'
   - Example cocoapod (http://cocoapods.org/) `Podfile` snippet
 ---
-  platform :ios, '8.0'
+  ```platform :ios, '8.0'
   use frameworks!
 
   target 'Register_App' do
@@ -25,4 +25,3 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
         end
     end
   end
----
