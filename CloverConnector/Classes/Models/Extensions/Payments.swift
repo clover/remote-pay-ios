@@ -658,7 +658,7 @@ extension CLVModels {
     
     public enum DataEntryLocation: String {
         case ON_SCREEN
-        case ON_PAPAER
+        case ON_PAPER
         case NONE
     }
     
@@ -1846,6 +1846,8 @@ extension CLVModels {
         
         public var autoAcceptSignature: Bool?
         
+        public var forceOfflinePayment: Bool?
+        
         public func encodeWithCoder(aCoder: NSCoder) {
             aCoder.encodeObject(cardEntryMethods, forKey: "cardEntryMethods")
             aCoder.encodeObject(disableCashBack, forKey: "disableCashBack")
@@ -1862,6 +1864,7 @@ extension CLVModels {
             aCoder.encodeObject(disableDuplicateCheck, forKey: "disableDuplicateCheck")
             aCoder.encodeObject(autoAcceptPaymentConfirmations, forKey: "autoAcceptPaymentConfirmations")
             aCoder.encodeObject(autoAcceptSignature, forKey: "autoAcceptSignature")
+            aCoder.encodeObject(forceOfflinePayment, forKey: "forceOfflinePayment")
         }
         
         required public init(coder aDecoder: NSCoder) {
@@ -1882,6 +1885,7 @@ extension CLVModels {
             disableDuplicateCheck = aDecoder.decodeObjectForKey("disableDuplicateCheck") as? Bool
             autoAcceptPaymentConfirmations = aDecoder.decodeObjectForKey("autoAcceptPaymentConfirmations") as? Bool
             autoAcceptSignature = aDecoder.decodeObjectForKey("autoAcceptSignature") as? Bool
+            forceOfflinePayment = aDecoder.decodeIntForKey("forceOfflinePayment") as? Bool
         }
         
         override public init() {}
@@ -1905,6 +1909,7 @@ extension CLVModels {
             disableDuplicateCheck <- map["disableDuplicateCheck"]
             autoAcceptPaymentConfirmations <- map["autoAcceptPaymentConfirmations"]
             autoAcceptSignature <- map["autoAcceptSignature"]
+            forceOfflinePayment <- map["forceOfflinePayment"]
         }
     }
     

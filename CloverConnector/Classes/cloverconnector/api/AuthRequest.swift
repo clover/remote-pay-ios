@@ -15,6 +15,7 @@ public class AuthRequest:TransactionRequest {
     public var disableCashback:Bool?
     public var taxAmount:Int?
     public var tippableAmount:Int?
+    public var forceOfflinePayment:Bool?
     
     public override var type:TransactionType {
         get {
@@ -39,6 +40,7 @@ public class AuthRequest:TransactionRequest {
         taxAmount <- map["taxAmount"]
         allowOfflinePayment <- map["allowOfflinePayment"]
         approveOfflinePaymentWithoutPrompt <- map["approveOfflinePaymentWithoutPrompt"]
+        forceOfflinePayment <- map["forceOfflinePayment"]
     }
 
 }

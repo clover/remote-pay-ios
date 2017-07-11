@@ -13,7 +13,8 @@ import ObjectMapper
 public class TxStartResponseMessage : Message {
     public var order:CLVModels.Order.Order?
     public var result:TxStartResponseResult?
-    public var externalId:String?
+    public var externalPaymentId:String?
+    public var requestInfo:String?
     
     public required init?(_ map:Map) {
         super.init(method: Method.TX_START_RESPONSE)
@@ -23,7 +24,8 @@ public class TxStartResponseMessage : Message {
         super.mapping(map)
         order <- (map["order"], Message.orderTransform)
         result <- map["result"]
-        externalId <- map["externalId"]
+        externalPaymentId <- map["externalPaymentId"]
+        requestInfo <- map["requestInfo"]
     }
 }
 

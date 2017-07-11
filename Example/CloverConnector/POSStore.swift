@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CloverConnector
 
 public class POSStore {
     public var orders:NSMutableArray = NSMutableArray()
@@ -18,6 +19,8 @@ public class POSStore {
     
     private var storeListeners:NSMutableArray = NSMutableArray()
     private var orderListeners:NSMutableArray = NSMutableArray()
+    
+    public var transactionSettings = CLVModels.Payments.TransactionSettings()
 
     public func newOrder() {
         if let co = currentOrder {
@@ -44,6 +47,7 @@ public class POSStore {
     init() {
 
         newOrder()
+        self.transactionSettings.cardEntryMethods = CloverConnector.CARD_ENTRY_METHODS_DEFAULT
     }
     
     public func addStoreListener(_ listener:POSStoreListener) {

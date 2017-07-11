@@ -602,6 +602,9 @@ class Case {
                         
                         var sr = SaleRequest(amount: amount, externalId: externalId)
                         sr.tipAmount = payload["tipAmount"].int
+                        if let _ = sr.tipAmount {
+                            sr.tipMode = SaleRequest.TipMode.TIP_PROVIDED
+                        }
                         sr.disablePrinting = payload["disablePrinting"].bool
                         sr.tippableAmount = payload["tippableAmount"].int
                         sr.disableCashback = payload["disableCashback"].bool

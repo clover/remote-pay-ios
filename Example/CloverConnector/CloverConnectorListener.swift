@@ -11,10 +11,10 @@ import UIKit
 import CloverConnector
 
 public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAlertViewDelegate {
-    var cloverConnector:ICloverConnector?
+    weak var cloverConnector:ICloverConnector?
     
     public var parentViewController:UIViewController?
-    private var uiView:UIAlertView?
+    private var uiAlertController:UIAlertController?
     private var lastDeviceEvent:CloverDeviceEvent?
     private var paymentConfirmDel:UIAlertViewDelegate?
     
@@ -33,16 +33,30 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
         return nil
     }
     
-    @objc private func dismissMessage(_ view:UIAlertView) {
-        view.dismissWithClickedButtonIndex( -1, animated: true);
+    class Arg:NSObject {
+        var view:UIAlertView
+        var completion:(()->Void)?
+        init(view v:UIAlertView, completion c:(()->Void)?) {
+            view = v
+            completion = c
+        }
     }
     
-    private func showMessage(_ message:String, duration:Int = 3) {
+    @objc private func dismissMessage(_ arg:Arg) {
+        dispatch_async(dispatch_get_main_queue(), {
+            arg.view.dismissWithClickedButtonIndex( -1, animated: true)
+            if let comp = arg.completion {
+                comp()
+            }
+        })
+    }
+    
+    private func showMessage(_ message:String, duration:Int = 3, completion: (()->Void)? = {}) {
 
         dispatch_async(dispatch_get_main_queue()){
             let alertView:UIAlertView = UIAlertView(title: nil, message: message, delegate: nil, cancelButtonTitle: nil)
             alertView.show()
-            self.performSelector(#selector(self.dismissMessage), withObject: alertView, afterDelay: NSTimeInterval(duration))
+            self.performSelector(#selector(self.dismissMessage), withObject: Arg(view: alertView, completion: completion), afterDelay: NSTimeInterval(duration))
         }
 
     }
@@ -54,33 +68,46 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
         if response.success {
             if let store = getStore() {
                 if let payment = response.payment,
-                    let order = store.currentOrder {
+                    let order = store.currentOrder { // assuming current order, but should verify by checking the payment's external id
                     let tipAmount = payment.tipAmount ?? 0
                     let cashback = payment.cashbackAmount ?? 0
                     let posPayment:POSPayment = POSPayment(paymentId: payment.id!, externalPaymentId: payment.externalPaymentId, orderId: payment.order!.id!, employeeId: "DFLTEMPLYEE", amount: payment.amount!, tipAmount: tipAmount, cashbackAmount: cashback)
                     
                     posPayment.status = response.isSale ? PaymentStatus.PAID : (response.isAuth ? PaymentStatus.AUTHORIZED : (response.isPreAuth ? PaymentStatus.PREAUTHORIZED : PaymentStatus.UNKNOWN))
                     
+                    var expectedResponseId = true
+                    if order.pendingPaymentId != payment.externalPaymentId {
+                        expectedResponseId = false
+                    }
+                    
                     if response.isSale || response.isAuth {
                         store.addPaymentToOrder(posPayment, order: order)
                         if response.isSale {
-                            showMessage("Sale successfully processed")
+                            if expectedResponseId {
+                                showMessage("Sale successfully processed")
+                            } else {
+                                showMessage("Sale successful, but unexpected payment id")
+                            }
                         } else if response.isAuth {
-                            showMessage("Auth successfully processed")
+                            if expectedResponseId {
+                                showMessage("Sale processed as Auth successfully processed")
+                            } else {
+                                showMessage("Sale processed as Auth, but unexpected payment id")
+                            }
                         }
                         store.newOrder()
                         cloverConnector?.showWelcomeScreen()
                     } else if response.isPreAuth {
                         store.addPreAuth(posPayment)
-                        showMessage("Pre-Auth successful")
+                        showMessage("Sale processed as Pre-Auth successful")
                     }
                 }
             }
         } else {
             if response.result == .CANCEL {
-                showMessage("User canceled the transaction")
+                showMessage("Sale canceled")
             } else if response.result == .FAIL {
-                showMessage("Tx Failed")
+                showMessage("Sale Tx Failed")
             } else {
                 showMessage(response.result.rawValue);
             }
@@ -118,9 +145,9 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
             }
         } else {
             if authResponse.result == .CANCEL {
-                showMessage("User canceled the transaction")
+                showMessage("Auth canceled")
             } else if authResponse.result == .FAIL {
-                showMessage("Tx Failed")
+                showMessage("Auth Tx Failed")
             } else {
                 showMessage(authResponse.result.rawValue);
             }
@@ -132,6 +159,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
      */
     public func onPreAuthResponse(_ preAuthResponse: PreAuthResponse) {
         if preAuthResponse.success {
+            showMessage("PreAuth successful")
             if let store = getStore() {
                 if let payment = preAuthResponse.payment {
                     let posPayment:POSPayment = POSPayment(paymentId: payment.id!, externalPaymentId: payment.externalPaymentId, orderId: payment.order!.id!, employeeId: "DFLTEMPLYEE", amount: payment.amount!, tipAmount: payment.tipAmount ?? 0, cashbackAmount: payment.cashbackAmount ?? 0)
@@ -139,7 +167,13 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                 }
             }
         } else {
-            
+            if preAuthResponse.result == .CANCEL {
+                showMessage("Pre Auth Canceled")
+            } else if preAuthResponse.result == .FAIL {
+                showMessage("PreAuth failed")
+            } else {
+                showMessage(preAuthResponse.result.rawValue)
+            }
         }
     }
     
@@ -286,7 +320,13 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                 }
             }
         } else {
-            
+            if manualRefundResponse.result == .CANCEL {
+                showMessage("Manual Refund Canceled")
+            } else if manualRefundResponse.result == .FAIL {
+                showMessage("Manual Refund failed")
+            } else {
+                showMessage(manualRefundResponse.result.rawValue)
+            }
         }
     }
     
@@ -308,11 +348,35 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
      */
     public func  onVerifySignatureRequest ( _ signatureVerifyRequest:VerifySignatureRequest ) -> Void {
         dispatch_async(dispatch_get_main_queue()){
-            if let view = self.uiView {
-                view.dismissWithClickedButtonIndex(0, animated: false)
-            }
-            if let ivc = self.parentViewController {
-                (ivc as? RegisterViewController)!.verifySignature(signatureVerifyRequest);
+            if let view = self.uiAlertController {
+                view.dismissViewControllerAnimated(false, completion: {
+                    self.onVerifySignatureRequest(signatureVerifyRequest)
+                })
+            } else {
+                if var topViewController = UIApplication.sharedApplication().keyWindow?.rootViewController {
+                    while let presentedViewController = topViewController.presentedViewController {
+                        topViewController = presentedViewController
+                    }
+                    
+                    if let tvc = topViewController as? TabBarController {
+                        if let rvc = tvc.selectedViewController as? RegisterViewController {
+                            rvc.verifySignature(signatureVerifyRequest)
+                        } else {
+                            
+                            let acceptVC = UIAlertController(title: "Accept Signature?", message: nil, preferredStyle: .Alert)
+                            acceptVC.addAction(UIAlertAction(title: "Accept", style: .Cancel, handler: { (aa) in
+                                self.cloverConnector?.acceptSignature(signatureVerifyRequest)
+                            }))
+                            acceptVC.addAction(UIAlertAction(title: "Reject", style: .Default, handler: { (aa) in
+                                self.cloverConnector?.rejectSignature(signatureVerifyRequest)
+                            }))
+                            topViewController.presentViewController(acceptVC, animated: true, completion: nil)
+                            
+                        }
+
+                    }
+                }
+                
             }
         }
     }
@@ -359,68 +423,112 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     public func  onDisconnected () -> Void {}
     
     public func onDeviceActivityEnd(_ deviceEvent: CloverDeviceEvent) {
-        if let uiView = uiView {
-            if self.lastDeviceEvent?.eventState == deviceEvent.eventState { // this check is because the events aren't guaranteed to be in order. could be START(A), START(B), END(A), END(B)
-                dispatch_async(dispatch_get_main_queue()){
-                    uiView.dismissWithClickedButtonIndex( 0, animated: true)
+        debugPrint("END -> \(deviceEvent.eventState ?? "UNK"):\(deviceEvent.message ?? "")")
+        dispatch_async(dispatch_get_main_queue()){
+            if let uiView = self.uiAlertController {
+//                self.uiAlertController = nil
+                if self.lastDeviceEvent?.eventState == deviceEvent.eventState { // this check is because the events aren't guaranteed to be in order. could be START(A), START(B), END(A), END(B)
+                    uiView.dismissViewControllerAnimated(false, completion: {
+                        self.uiAlertController = nil
+                    })
+                    self.lastDeviceEvent = nil;
                 }
-                self.lastDeviceEvent = nil;
-            }
-            else {
-                // it should already have been dismissed
+                else {
+                    // it should already have been dismissed
+                }
+            } else {
+                self.lastDeviceEvent = nil
             }
         }
     }
     
+    var longPressAlert:UILongPressGestureRecognizer?
+    
     public func onDeviceActivityStart(_ deviceEvent: CloverDeviceEvent) {
-        if let previousUIView = self.uiView {
-            dispatch_async(dispatch_get_main_queue()){
-                previousUIView.dismissWithClickedButtonIndex( 0, animated:false)
+        debugPrint("START -> \(deviceEvent.eventState ?? "UNK"):\(deviceEvent.message ?? "")")
+        dispatch_async(dispatch_get_main_queue()){
+            if let previousUIView = self.uiAlertController,
+                let _ = self.viewController?.presentedViewController as? UIAlertController {
+                
+                debugPrint("Need to dismiss old controller")
+                previousUIView.dismissViewControllerAnimated(false, completion: {
+                    self.uiAlertController = nil
+                    debugPrint("calling async on dismiss")
+                    self.onDeviceActivityStart(deviceEvent)
+                })
+                
+            } else {
+                debugPrint("show new options")
+                self.lastDeviceEvent = deviceEvent
+                
+                if self.longPressAlert == nil {
+                    self.longPressAlert = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressAlert(_:)))
+                }
+                
+                
+                let uiac = UIAlertController(title: "", message: deviceEvent.message ?? "", preferredStyle: .Alert)
+                self.uiAlertController = uiac
+                
+                var addedOptions = false
+                if let inputOptions = deviceEvent.inputOptions {
+                    for var inputOpt in inputOptions {
+                        addedOptions = true
+                        self.uiAlertController?.addAction(UIAlertAction(title: inputOpt.description, style: .Default, handler: { (aa:UIAlertAction) in
+                            self.uiAlertController = nil
+                            self.cloverConnector?.invokeInputOption(inputOpt)
+                            // waiting for device activity ended event to dismiss the input option...
+                        }))
+                    }
+                }
+                
+                // if there aren't any options, then long pressing the message should make it go away...
+                if !addedOptions {
+                    let touchView = UIView(frame:uiac.view.frame)
+                    touchView.userInteractionEnabled = true
+                    uiac.view.addSubview(touchView)
+                    touchView.addGestureRecognizer(self.longPressAlert!)
+                }
+                
+                self.viewController?.presentViewController(uiac, animated: false, completion: {
+                    debugPrint("done showing...")
+                })
+                
             }
         }
-        self.lastDeviceEvent = deviceEvent
 
-        var uInfo = [String:String]()
-        
-        if let inputOptions = deviceEvent.inputOptions {
-            for var io in inputOptions {
-                if let kp = io.keyPress {
-                    uInfo[io.description] = kp.rawValue
+    }
+    
+    @objc
+    private func longPressAlert(sender:UILongPressGestureRecognizer) {
+        if sender.state == .Began {
+            
+            if let uiac = self.uiAlertController {
+                dispatch_async(dispatch_get_main_queue()){
+                    uiac.dismissViewControllerAnimated(false, completion: {
+                        if let lpa = self.longPressAlert {
+                            uiac.view.removeGestureRecognizer(lpa)
+                        }
+                    })
                 }
             }
         }
-        
-        dispatch_async(dispatch_get_main_queue()){
-            self.uiView = UIAlertView(title:nil, message: deviceEvent.message!, delegate: self, cancelButtonTitle: nil)
-            for var key in (uInfo.keys) {
-                self.uiView!.addButtonWithTitle( key)
-            }
-            self.uiView!.show()
-        }
     }
+    
     
     public func onDeviceError(_ deviceErrorEvent: CloverDeviceErrorEvent) {
         dispatch_async(dispatch_get_main_queue()){
-            UIAlertView(title:deviceErrorEvent.errorType.rawValue, message: deviceErrorEvent.message, delegate: self, cancelButtonTitle: "Cancel")
-            self.uiView!.show()
-        }
-    }
-
-    public func alertView(_ alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-
-        if let lastDeviceEvent = lastDeviceEvent,
-            let inputOptions = lastDeviceEvent.inputOptions {
-            for var io in inputOptions {
-                if io.description == alertView.buttonTitleAtIndex(buttonIndex)! {
-                    cloverConnector!.invokeInputOption(io)
-                    break
-                }
-            }
+            let uiac = UIAlertController(title: deviceErrorEvent.errorType.rawValue, message: deviceErrorEvent.message, preferredStyle: .Alert)
+            self.uiAlertController = uiac
+            self.viewController?.presentViewController(uiac, animated: false, completion: {})
+            self.uiAlertController?.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+                (aa:UIAlertAction) in
+                self.uiAlertController?.dismissViewControllerAnimated(false, completion: {})
+            }))
         }
     }
 
     public func onDeviceConnected() {
-        ready = false
+        ready = false // the device is connected, but not ready to communicate
     }
     
     public func onDeviceDisconnected() {
@@ -431,11 +539,11 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     }
     
     public func onTipAdded(_ message: TipAddedMessage) {
-        
+        showMessage("Tip Added: \(CurrencyUtils.IntToFormat(message.tipAmount ?? 0) ?? CurrencyUtils.IntToFormat(0)!)", duration: 1)
     }
     
     public func onDeviceReady(_ merchantInfo: MerchantInfo) {
-        if !ready {
+        if !ready { // only catch changes to ready, not other calls to onDeviceReady
             showMessage("Ready", duration: 1)
             dispatch_async(dispatch_get_main_queue()){
                 if let _ = self.viewController as? ViewController {
@@ -459,8 +567,10 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                 alert.addButtonWithTitle("Reject")
                 
                 dispatch_async(dispatch_get_main_queue()){
-                    if let view = self.uiView {
-                        view.dismissWithClickedButtonIndex(0, animated: false)
+                    if let alertController = self.uiAlertController {
+                        alertController.dismissViewControllerAnimated(false, completion: {
+                            self.uiAlertController = nil
+                        })
                     }
                     alert.show()
                 }
@@ -474,31 +584,49 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     }
     
     public func onRefundPaymentResponse(_ refundPaymentResponse: RefundPaymentResponse) {
-        
+        if refundPaymentResponse.success {
+            showMessage("Refund successful")
+            for var o in getStore()?.orders ?? [] {
+                for var p in (o as! POSOrder).payments {
+                    if p.paymentId == refundPaymentResponse.paymentId {
+                        (p as! POSPayment).status = .REFUNDED
+                        let refund = POSRefund(refundId: (refundPaymentResponse.refund?.id)!, paymentId: refundPaymentResponse.paymentId!, orderID: refundPaymentResponse.orderId!, employeeId: "DFLTEMPLE", amount: (refundPaymentResponse.refund?.amount)!)
+                        getStore()?.addRefundToOrder(refund, order: o as! POSOrder)
+                        return
+                    }
+                }
+            }
+        } else {
+            showMessage("Refund failed.")
+        }
     }
     
     public func onPrintPaymentReceipt(_ printPaymentReceiptMessage: PrintPaymentReceiptMessage) {
-        
+        showMessage("Print Payment Receipt: \(formatCurrency(printPaymentReceiptMessage.payment?.amount))")
     }
     
     public func onPrintRefundPaymentReceipt(_ printRefundPaymentReceiptMessage: PrintRefundPaymentReceiptMessage) {
-        
+        showMessage("Print Refund Payment Receipt: \(formatCurrency(printRefundPaymentReceiptMessage.refund?.amount)) of \(formatCurrency(printRefundPaymentReceiptMessage.payment?.amount))")
     }
     
     public func onPrintPaymentDeclineReceipt(_ printPaymentDeclineReceiptMessage: PrintPaymentDeclineReceiptMessage) {
-        
+        showMessage("Print Payment Declined Receipt: \(formatCurrency(printPaymentDeclineReceiptMessage.payment?.amount))")
     }
     
     public func onPrintPaymentMerchantCopyReceipt(_ printPaymentMerchantCopyReceiptMessage: PrintPaymentMerchantCopyReceiptMessage) {
-        
+        showMessage("Print Payment Merchant Copy Receipt: \(formatCurrency(printPaymentMerchantCopyReceiptMessage.payment?.amount))")
     }
     
     public func onPrintManualRefundReceipt(_ printManualRefundReceiptMessage: PrintManualRefundReceiptMessage) {
-        
+        showMessage("Print Manual Refund Receipt: \(formatCurrency(printManualRefundReceiptMessage.credit?.amount))")
     }
     
     public func onPrintManualRefundDeclineReceipt(_ printManualRefundDeclineReceiptMessage: PrintManualRefundDeclineReceiptMessage) {
-        
+        showMessage("Print Manual Refund Decline Receipt: \(formatCurrency(printManualRefundDeclineReceiptMessage.credit?.amount))")
+    }
+    
+    private func formatCurrency(_ amount:Int?) -> String {
+        return CurrencyUtils.IntToFormat(amount ?? 0) ?? CurrencyUtils.IntToFormat(0)!
     }
 
     public func onRetrievePendingPaymentsResponse(_ retrievePendingPaymentResponse: RetrievePendingPaymentsResponse) {
@@ -518,20 +646,65 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
         cloverConnector?.showWelcomeScreen()
     }
     
+    public func onCustomActivityResponse(customActivityResponse: CustomActivityResponse) {
+        if customActivityResponse.success {
+            showMessage("\(customActivityResponse.payload ?? "Done")")
+        } else {
+            showMessage("Custom activity canceled")
+        }
+    }
+    
+    public func onResetDeviceResponse(response: ResetDeviceResponse) {
+        if response.success {
+            showMessage("Device reset: \(response.state)")
+        } else {
+            showMessage("Device reset failed!")
+        }
+    }
+    
+    public func onMessageFromActivity(response: MessageFromActivity) {
+        showMessage("from \(response.action ?? "<nil action>"), got: \(response.payload ?? "<nil payload>")")
+    }
+    
+    public func onRetrievePaymentResponse(response: RetrievePaymentResponse) {
+        switch response.queryStatus {
+        case .FOUND:
+            if let st = response.payment?.cardTransaction?.state {
+                showMessage("payment found for: \(response.externalPaymentId ?? "unk"). status: \(st)")
+            } else {
+                showMessage("payment found for: \(response.externalPaymentId ?? "unk"). status: UNKNOWN")
+            }
+        case .NOT_FOUND:
+            showMessage("payment not found for: \(response.externalPaymentId ?? "unk")")
+        case .IN_PROGRESS:
+            showMessage("payment in process: \(response.externalPaymentId ?? "unk")")
+        }
+    }
+    
+    public func onRetrieveDeviceStatusResponse(_ response: RetrieveDeviceStatusResponse) {
+        if response.state != .WAITING_FOR_POS {
+            showMessage("Device is currently: \(response.state.rawValue)")
+        } else {
+            debugPrint("Device is currently: \(response.state.rawValue)")
+        }
+    }
+    
     public func onPairingCode(_ pairingCode:String) {
         dispatch_async(dispatch_get_main_queue()){
-            if let previousUIView = self.uiView {
-                previousUIView.dismissWithClickedButtonIndex(0, animated:false)
+            if let previousUIView = self.uiAlertController {
+                previousUIView.dismissViewControllerAnimated(false, completion: {})
             }
-            self.uiView = UIAlertView(title: nil, message: "Enter code: \(pairingCode)", delegate: self, cancelButtonTitle: nil)
-            self.uiView?.show()
+            let uiac = UIAlertController(title: nil, message: "Enter code: \(pairingCode)", preferredStyle: .Alert)
+            
+            self.uiAlertController = uiac
+            self.viewController?.presentViewController(uiac, animated: true, completion: {})
         }
     }
     
     public func onPairingSuccess(_ pairingAuthToken:String) {
-        if let previousUIView = self.uiView {
+        if let previousUIView = self.uiAlertController {
             dispatch_async(dispatch_get_main_queue()){
-                previousUIView.dismissWithClickedButtonIndex(-1, animated:false)
+                previousUIView.dismissViewControllerAnimated(false, completion: {})
             }
         }
     }

@@ -26,7 +26,7 @@ public class CloverConnectorBroadcaster {
     public func notifyOnTipAdded(_ tip:Int) {
         for listener in listeners {
             if let listener = listener as? ICloverConnectorListener {
-                //listener.onTipAdded(TipAddedMessage(tip))
+                listener.onTipAdded(TipAddedMessage(tip))
             }
         }
     }
@@ -257,4 +257,44 @@ public class CloverConnectorBroadcaster {
             }
         }
     }
+    
+    public func notifyOnCustomActivityResponse(_ response: CustomActivityResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onCustomActivityResponse(response)
+            }
+        }
+    }
+    
+    public func notifyOnMessageFromActivity(_ message:MessageFromActivity) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onMessageFromActivity(message)
+            }
+        }
+    }
+    public func notifyOnResetDeviceResponse(_ response:ResetDeviceResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onResetDeviceResponse(response)
+            }
+        }
+    }
+
+    public func notifyOnRetrievePayment(_ response:RetrievePaymentResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onRetrievePaymentResponse(response)
+            }
+        }
+    }
+    
+    public func notifyOnDeviceStatusResponse(_ response:RetrieveDeviceStatusResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onRetrieveDeviceStatusResponse(response)
+            }
+        }
+    }
+    
 }

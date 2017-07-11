@@ -180,12 +180,12 @@ class TestCloverConnectorListener : DefaultCloverConnectorListener {
         
         let alert = UIAlertController(title: nil, message: "Would you like to refund the payment?", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Full", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction) in
-            let rpr = RefundPaymentRequest(orderId: orderId, paymentId: paymentId, amount: 0, fullRefund: true)
+            let rpr = RefundPaymentRequest(orderId: orderId, paymentId: paymentId, fullRefund: true)
             self.cloverConnector?.refundPayment(rpr)
             return
         }))
         alert.addAction(UIAlertAction(title: "Partial", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction) in
-            let rpr = RefundPaymentRequest(orderId: orderId, paymentId: paymentId, amount: 500, fullRefund: false)
+            let rpr = RefundPaymentRequest(orderId: orderId, paymentId: paymentId, amount: 500)
             self.cloverConnector?.refundPayment(rpr)
             return
         }))

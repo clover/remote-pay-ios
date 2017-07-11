@@ -8,8 +8,6 @@
 
 import Foundation
 
-protocol ICloverDevice {
-}
 
 class CloverDevice {
     var deviceObservers:NSMutableArray = NSMutableArray()
@@ -30,9 +28,15 @@ class CloverDevice {
         deviceObservers.removeObject(observer)
     }
     
+    deinit {
+        debugPrint("deinit CloverDevice")
+    }
+    
+    func initialize() {}
+    
     func doDiscoveryRequest() {}
     
-    func doTxStart(_ payIntent:PayIntent, order:CLVModels.Order.Order?, suppressTipScreen:Bool) {}
+    func doTxStart(_ payIntent:PayIntent, order:CLVModels.Order.Order?, suppressTipScreen:Bool, requestInfo:String?) {}
     
     func doKeyPress(_ keyPress:KeyPress) {}
     
@@ -62,10 +66,14 @@ class CloverDevice {
     
     func doOpenCashDrawer(_ reason:String) {}
     
-    //func doPrintImage(_ bitmap:UIImage) {}
+    func doPrintImage(_ img:UIImage) {}
+    
     func doPrintImage(_ url:String) {}
     
-    func dispose() {}
+    func dispose() {
+        deviceObservers.removeAllObjects()
+//        transport
+    }
     
     func doCloseout(_ allowOpenTabs:Bool, batchId:String?) {}
     
@@ -78,5 +86,13 @@ class CloverDevice {
     func doRetrievePendingPayments() {}
     
     func doReadCardData(_ payIntent:PayIntent) {}
+    
+    func doStartActivity( action a:String, payload p:String?, nonBlocking:Bool) {}
+    
+    func doSendMessageToActivity( action a:String, payload p:String?) {}
+    
+    func doRetrievePayment(_ externalPaymentId:String) {}
+    
+    func doRetrieveDeviceStatus(_ sendLast:Bool) {}
     
 }

@@ -28,6 +28,7 @@ class SimpleTestViewController : UITableViewController {
     @IBOutlet weak var chipSwitch: UISwitch!
     @IBOutlet weak var nfcSwitch: UISwitch!
     @IBOutlet weak var manualSwitch: UISwitch!
+    @IBOutlet weak var forceOfflineSwitch: UISegmentedControl!
     
     @IBOutlet weak var txAmount: UITextField!
     @IBOutlet weak var saleTipAmount: UITextField!
@@ -39,6 +40,12 @@ class SimpleTestViewController : UITableViewController {
         }
     }
     
+    private var store:POSStore? {
+        get {
+            return (UIApplication.sharedApplication().delegate as? AppDelegate)?.store
+        }
+    }
+    
     private var _id = 0
     private var id : Int {
         get {
@@ -47,38 +54,105 @@ class SimpleTestViewController : UITableViewController {
         }
     }
     
+    @IBAction func processTXLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == .Began {
+            // vault the card...
+            let vce = VaultCardExecutor(cloverConnector: cloverConnector!, payment: nil)
+            vce.after = {
+                card in
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.processTx(card)
+                }
+            }
+            vce.run()
+        }
+        
+    }
+    
+    @IBAction func onTipModeChanged(sender: UISegmentedControl) {
+        
+    }
+    
     @IBAction func processTxClicked(sender: UIButton) {
-        let txSettings = CLVModels.Payments.TransactionSettings()
-        txSettings.allowOfflinePayment = allowOffline.selectedSegmentIndex == 0 ? nil : (allowOffline.selectedSegmentIndex == 1 ? true : false)
-        txSettings.approveOfflinePaymentWithoutPrompt = acceptOfflineWOPrompt.selectedSegmentIndex == 0 ? nil : (acceptOfflineWOPrompt.selectedSegmentIndex == 1 ? true : false)
-        txSettings.autoAcceptPaymentConfirmations = autoAcceptPayments.selectedSegmentIndex == 0 ? nil : (autoAcceptPayments.selectedSegmentIndex == 1 ? true : false)
-        txSettings.autoAcceptSignature = autoAcceptSigs.selectedSegmentIndex == 0 ? nil : (autoAcceptSigs.selectedSegmentIndex == 1 ? true : false)
-        txSettings.cloverShouldHandleReceipts = self.disablePrinting.selectedSegmentIndex == 0 ? nil : (self.disablePrinting.selectedSegmentIndex == 1 ? false : true)
-        txSettings.disableCashBack = disableCashback.selectedSegmentIndex == 0 ? nil : (disableCashback.selectedSegmentIndex == 1 ? true : false)
-        txSettings.disableDuplicateCheck = disableDuplicateChecking.selectedSegmentIndex == 0 ? nil : (disableDuplicateChecking.selectedSegmentIndex == 1 ? true : false)
-        txSettings.disableReceiptSelection = disableReceiptScreen.selectedSegmentIndex == 0 ? nil : (disableReceiptScreen.selectedSegmentIndex == 1 ? true : false)
-        txSettings.disableRestartTransactionOnFailure = disableRestartOnFail.selectedSegmentIndex == 0 ? nil : (disableRestartOnFail.selectedSegmentIndex == 1 ? true : false)
-        var cem = 0;
-        cem |= (swipeSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE : 0)
-        cem |= (chipSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT : 0)
-        cem |= (nfcSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS : 0)
-        cem |= (manualSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_MANUAL : 0)
-        txSettings.cardEntryMethods = cem
-        
-        
-        switch sigLocation.selectedSegmentIndex {
+        processTx(nil)
+    }
+    
+    func updateUIFromSettings() {
+        if let tx = store?.transactionSettings {
+            allowOffline.selectedSegmentIndex = tx.allowOfflinePayment == nil ? 0 : (tx.allowOfflinePayment! ? 1 : 2)
+            acceptOfflineWOPrompt.selectedSegmentIndex = (tx.approveOfflinePaymentWithoutPrompt == nil ? 0 : (tx.approveOfflinePaymentWithoutPrompt! ? 1 : 2))
+            autoAcceptPayments.selectedSegmentIndex = tx.autoAcceptPaymentConfirmations == nil ? 0 : (tx.autoAcceptPaymentConfirmations! ? 1 : 2)
+            autoAcceptSigs.selectedSegmentIndex = tx.autoAcceptSignature == nil ? 0 : (tx.autoAcceptSignature! ? 1 : 2)
+            disablePrinting.selectedSegmentIndex = tx.cloverShouldHandleReceipts == nil ? 0 : (tx.cloverShouldHandleReceipts! ? 1 : 2)
+            disableCashback.selectedSegmentIndex = tx.disableCashBack == nil ? 0 : (tx.disableCashBack! ? 1 : 2)
+            disableDuplicateChecking.selectedSegmentIndex = tx.disableDuplicateCheck == nil ? 0 : (tx.disableDuplicateCheck! ? 1 : 2)
+            disableReceiptScreen.selectedSegmentIndex = tx.disableReceiptSelection == nil ? 0 : (tx.disableReceiptSelection! ? 1 : 2)
+            disableRestartOnFail.selectedSegmentIndex = tx.disableRestartTransactionOnFailure == nil ? 0 : (tx.disableRestartTransactionOnFailure! ? 1 : 2)
+            forceOfflineSwitch.selectedSegmentIndex = tx.forceOfflinePayment == nil ? 0 : (tx.forceOfflinePayment! ? 1 : 2)
+            manualSwitch.on = tx.cardEntryMethods ?? 0 & CloverConnector.CARD_ENTRY_METHOD_MANUAL != 0
+            swipeSwitch.on = tx.cardEntryMethods ?? 0 & CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE != 0
+            chipSwitch.on = tx.cardEntryMethods ?? 0 & CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT != 0
+            nfcSwitch.on = tx.cardEntryMethods ?? 0 & CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS != 0
+            if tx.signatureEntryLocation == CLVModels.Payments.DataEntryLocation.ON_SCREEN {
+                sigLocation.selectedSegmentIndex = 1
+            } else if tx.signatureEntryLocation == CLVModels.Payments.DataEntryLocation.ON_PAPER {
+                sigLocation.selectedSegmentIndex = 2
+            } else if tx.signatureEntryLocation == CLVModels.Payments.DataEntryLocation.NONE {
+                sigLocation.selectedSegmentIndex = 3
+            } else {
+                sigLocation.selectedSegmentIndex = 0
+            }
+            
+            if tx.tipMode == CLVModels.Payments.TipMode.ON_SCREEN_BEFORE_PAYMENT {
+                tipModeButtons.selectedSegmentIndex = 1
+            } else if tx.tipMode == CLVModels.Payments.TipMode.TIP_PROVIDED {
+                tipModeButtons.selectedSegmentIndex = 2
+            } else if tx.tipMode == CLVModels.Payments.TipMode.NO_TIP {
+                tipModeButtons.selectedSegmentIndex = 3
+            } else {
+                tipModeButtons.selectedSegmentIndex = 0
+            }
+            
+            
+        }
+    }
+    
+    @IBAction func loadSettingsFromUI(_ sender:AnyObject) {
+//        let txSettings = CLVModels.Payments.TransactionSettings()
+        if let txSettings = store?.transactionSettings {
+            txSettings.allowOfflinePayment = allowOffline.selectedSegmentIndex == 0 ? nil : (allowOffline.selectedSegmentIndex == 1 ? true : false)
+            txSettings.approveOfflinePaymentWithoutPrompt = acceptOfflineWOPrompt.selectedSegmentIndex == 0 ? nil : (acceptOfflineWOPrompt.selectedSegmentIndex == 1 ? true : false)
+            txSettings.autoAcceptPaymentConfirmations = autoAcceptPayments.selectedSegmentIndex == 0 ? nil : (autoAcceptPayments.selectedSegmentIndex == 1 ? true : false)
+            txSettings.autoAcceptSignature = autoAcceptSigs.selectedSegmentIndex == 0 ? nil : (autoAcceptSigs.selectedSegmentIndex == 1 ? true : false)
+            txSettings.cloverShouldHandleReceipts = self.disablePrinting.selectedSegmentIndex == 0 ? nil : (self.disablePrinting.selectedSegmentIndex == 1 ? false : true)
+            txSettings.disableCashBack = disableCashback.selectedSegmentIndex == 0 ? nil : (disableCashback.selectedSegmentIndex == 1 ? true : false)
+            txSettings.disableDuplicateCheck = disableDuplicateChecking.selectedSegmentIndex == 0 ? nil : (disableDuplicateChecking.selectedSegmentIndex == 1 ? true : false)
+            txSettings.disableReceiptSelection = disableReceiptScreen.selectedSegmentIndex == 0 ? nil : (disableReceiptScreen.selectedSegmentIndex == 1 ? true : false)
+            txSettings.disableRestartTransactionOnFailure = disableRestartOnFail.selectedSegmentIndex == 0 ? nil : (disableRestartOnFail.selectedSegmentIndex == 1 ? true : false)
+            txSettings.forceOfflinePayment = forceOfflineSwitch.selectedSegmentIndex == 0 ? nil : (forceOfflineSwitch.selectedSegmentIndex == 1 ? true : false)
+            var cem = 0;
+            cem |= (swipeSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE : 0)
+            cem |= (chipSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT : 0)
+            cem |= (nfcSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS : 0)
+            cem |= (manualSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_MANUAL : 0)
+            txSettings.cardEntryMethods = cem
+            
+            
+            switch sigLocation.selectedSegmentIndex {
             case 0: txSettings.signatureEntryLocation = nil
             case 1: txSettings.signatureEntryLocation = CLVModels.Payments.DataEntryLocation.ON_SCREEN
-            case 2: txSettings.signatureEntryLocation = CLVModels.Payments.DataEntryLocation.ON_PAPAER
+            case 2: txSettings.signatureEntryLocation = CLVModels.Payments.DataEntryLocation.ON_PAPER
             case 3: txSettings.signatureEntryLocation = CLVModels.Payments.DataEntryLocation.NONE
             default: txSettings.signatureEntryLocation = nil
-        }
-        switch tipModeButtons.selectedSegmentIndex {
+            }
+            switch tipModeButtons.selectedSegmentIndex {
             case 0: txSettings.tipMode = nil
             case 1: txSettings.tipMode = CLVModels.Payments.TipMode.ON_SCREEN_BEFORE_PAYMENT
             case 2: txSettings.tipMode = CLVModels.Payments.TipMode.TIP_PROVIDED
             case 3: txSettings.tipMode = CLVModels.Payments.TipMode.NO_TIP
             default: txSettings.tipMode = nil
+            }
+
         }
         
         self.currentExecutor = PaymentExecutor(cloverConnector: cloverConnector!, payment: nil)
@@ -92,8 +166,13 @@ class SimpleTestViewController : UITableViewController {
                 (self.currentExecutor as! PaymentExecutor).tipAmount = tipAmount
             }
         }
-        (self.currentExecutor as! PaymentExecutor).transactionSettings = txSettings
-        
+    }
+    
+    @objc func processTx(_ card:CLVModels.Payments.VaultedCard?)
+    {
+
+        (self.currentExecutor as! PaymentExecutor).transactionSettings = store?.transactionSettings
+        (self.currentExecutor as! PaymentExecutor).vaultedCard = card
         currentExecutor?.run()
     }
     
@@ -116,6 +195,11 @@ class SimpleTestViewController : UITableViewController {
     override func viewDidAppear(animated: Bool) {
         cloverConnector?.removeCloverConnectorListener(((UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnectorListener)!)
         cloverConnector?.removeCloverConnectorListener(((UIApplication.sharedApplication().delegate as? AppDelegate)?.testCloverConnectorListener)!)
+        updateUIFromSettings()
+    }
+    
+    
+    override func viewDidLoad() {
     }
 }
 
@@ -240,12 +324,35 @@ protocol Executor {
     func run()
 }
 
+class VaultCardExecutor:BaseExecutor, Executor {
+    var after:((CLVModels.Payments.VaultedCard) -> Void)?
+    
+    func run() {
+        let vcr = VaultCardRequest()
+        vcr.cardEntryMethods = CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE | CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT | CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS
+        cloverConnector?.addCloverConnectorListener(self)
+        cloverConnector?.vaultCard(vcr)
+    }
+    
+    override func onVaultCardResponse(vaultCardResponse: VaultCardResponse) {
+        cloverConnector?.removeCloverConnectorListener(self)
+        if vaultCardResponse.success {
+            if let card = vaultCardResponse.card,
+                let afterMethod = after {
+                afterMethod(card)
+            }
+        } else {
+            showErrorMessage("Vault Card Failed")
+        }
+    }
+}
 
 class PaymentExecutor:BaseExecutor, UIAlertViewDelegate, Executor {
     var view:UIAlertView?
     var transactionSettings:CLVModels.Payments.TransactionSettings?
     var amount:Int?
     var tipAmount:Int?
+    var vaultedCard:CLVModels.Payments.VaultedCard?
     
     deinit {
         debugPrint("deinit PaymentExecutor")
@@ -334,6 +441,8 @@ extension PaymentExecutor {
         sr.disableRestartTransactionOnFail = transactionSettings?.disableRestartTransactionOnFailure
         sr.signatureEntryLocation = transactionSettings?.signatureEntryLocation
         sr.cardEntryMethods = (transactionSettings?.cardEntryMethods)!
+        sr.vaultedCard = self.vaultedCard
+        sr.forceOfflinePayment = transactionSettings?.forceOfflinePayment
         
         if (transactionSettings?.tipMode) != nil {
             sr.disableTipOnScreen = (transactionSettings?.tipMode)!.rawValue == SaleRequest.TipMode.NO_TIP.rawValue || (transactionSettings?.tipMode)!.rawValue == SaleRequest.TipMode.TIP_PROVIDED.rawValue
@@ -359,6 +468,8 @@ extension PaymentExecutor {
         ar.disableRestartTransactionOnFail = transactionSettings?.disableRestartTransactionOnFailure
         ar.signatureEntryLocation = transactionSettings?.signatureEntryLocation
         ar.cardEntryMethods = (transactionSettings?.cardEntryMethods)!
+        ar.vaultedCard = self.vaultedCard
+        ar.forceOfflinePayment = transactionSettings?.forceOfflinePayment
         cloverConnector?.auth(ar)
     }
     
@@ -376,6 +487,8 @@ extension PaymentExecutor {
         par.disableRestartTransactionOnFail = transactionSettings?.disableRestartTransactionOnFailure
         par.signatureEntryLocation = transactionSettings?.signatureEntryLocation
         par.cardEntryMethods = (transactionSettings?.cardEntryMethods)!
+        par.vaultedCard = self.vaultedCard
+        
         cloverConnector?.preAuth(par)
     }
     
@@ -497,13 +610,13 @@ class RefundPaymentExecutor:BaseExecutor, UIAlertViewDelegate  {
         case 0:
             self.cloverConnector!.addCloverConnectorListener(self)
             full = true
-            rpr = RefundPaymentRequest(orderId: self.payment!.order!.id!, paymentId: self.payment!.id!, amount: nil, fullRefund: true)
+            rpr = RefundPaymentRequest(orderId: self.payment!.order!.id!, paymentId: self.payment!.id!, fullRefund: true)
             break
         case 1:
             self.cloverConnector!.addCloverConnectorListener(self)
             full = false
             let half = Int(payment!.amount! / 2)
-            rpr = RefundPaymentRequest(orderId: self.payment!.order!.id!, paymentId: self.payment!.id!, amount: Int(half), fullRefund: false)
+            rpr = RefundPaymentRequest(orderId: self.payment!.order!.id!, paymentId: self.payment!.id!, amount: Int(half))
             break
         default:
             full = false

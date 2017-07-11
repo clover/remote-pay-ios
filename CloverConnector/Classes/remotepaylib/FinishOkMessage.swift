@@ -14,6 +14,7 @@ public class FinishOkMessage : Message {
     public var credit:CLVModels.Payments.Credit?
     public var refund:CLVModels.Payments.Refund?
     public var signature:Signature?
+    public var requestInfo:String?
     
     required public init?(_ map: Map) {
         super.init(method: .FINISH_OK)
@@ -26,6 +27,7 @@ public class FinishOkMessage : Message {
         credit <- (map["credit"], Message.creditTransform)
         refund <- (map["refund"], Message.refundTransform)
         signature <- map["signature"]
+        requestInfo <- map["requestInfo"]
     }
 }
 

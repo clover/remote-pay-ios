@@ -13,9 +13,13 @@ import ObjectMapper
 class WebSocketCloverTransport: CloverTransport {
     var socket:WebSocket?
     private var disposed = false
-    private var missedPongs:Int = 0
-    private var disconnectTimer:NSTimer?
+    private var reportDisconnectTimer:NSTimer? // if the client wants to be notified sooner than an actual timeout, this timer will do it
+    private var disconnectTimer:NSTimer? // if a pong hadn't been received in this amount of time after a ping is sent, disconnect the websocket
+    private var pingTimer:NSTimer? // how long after a pong will the next ping be sent
     private var endpoint:NSURL?
+    
+    private var reportedDisconnect = false // keeps track if a deviceDisconnected message has been sent to the client, before it is actually disconnected so
+                                        // if the pong is received before disconnect timeout, a deviceReady needs to be sent
     
     private var name:String = ""
     private var serialNumber = ""
@@ -24,30 +28,49 @@ class WebSocketCloverTransport: CloverTransport {
     
 //    private var disableSSLValidation:Bool = false
     
-    private var reconnectDelay = 2 // period between attempting reconnect
-    private var missedPongsBeforeDisconnect = 4 // how many pingFrequency missed before forcing a disconnect
-    private var pingFrequency = 5 // period between pings in seconds
+    private var reconnectDelay = 2 // delay before attempting reconnect
+    private var pingFrequency = 3 // period between pings in seconds
+    private var pongTimeout = 20 // how long to wait for a pong before closing connection
+    private var reportConnectionProblemAfter = 20 // if pong hasn't come back in this time, report as disconnected but still wait
     
-    init?(endpointURL: String, posName:String, serialNumber:String, pairingAuthToken: String?, pairingDeviceConfiguration:PairingDeviceConfiguration, pingFrequency pf:Int? = 5, missedPongsBeforeDisconnect mp:Int? = 6, reconnectDelay rd:Int? = 2) {
+    let df = NSDateFormatter()
 
+    deinit {
+        debugPrint("deinit WebSocketCloverTransport")
+    }
+
+    
+    init?(endpointURL: String, posName:String, serialNumber:String, pairingAuthToken: String?, pairingDeviceConfiguration:PairingDeviceConfiguration, pongTimeout pt:Int? = 15, pingFrequency pf:Int? = 3, reconnectDelay rd:Int? = 2, reportConnectionProblemAfter rt:Int? = 20) {
+
+        df.dateFormat = "y-MM-dd H:m:ss.SSSS"
+        
         self.pairingAuthToken = pairingAuthToken
         self.name = posName
         self.serialNumber = serialNumber
         self.pairingConfig = pairingDeviceConfiguration
 //        self.disableSSLValidation = disableSSLCertificateValidation
         self.pingFrequency = pf ?? 5
-        self.missedPongsBeforeDisconnect = mp ?? 4
+        self.pongTimeout = pt ?? 15
+        self.reportConnectionProblemAfter = rt ?? 15
         self.reconnectDelay = rd ?? 2
         
         super.init()
         
         if let endpoint = NSURL(string: endpointURL) {
             self.endpoint = endpoint
-            initialize(endpoint)
         } else {
             return nil
         }
 
+    }
+    
+    override func initialize() {
+        if let ep = self.endpoint {
+            
+            initialize(ep)
+        } else {
+            print("endpoint is nil", __stderrp)
+        }
     }
     
     func initialize(_ endpoint:NSURL) {
@@ -71,12 +94,12 @@ class WebSocketCloverTransport: CloverTransport {
             }
             socket.onDisconnect = { (error: NSError?) in
                 print("websocket is disconnected: \(error?.localizedDescription)")
-                print(error?.userInfo[NSUnderlyingErrorKey])
+                //print(error?.userInfo[NSUnderlyingErrorKey])
                 for obs in self.observers {
                     (obs as! CloverTransportObserver).onDeviceDisconnected(self)
                 }
                 self.disconnectTimer?.invalidate()
-                self.missedPongs = 0
+                self.reportDisconnectTimer?.invalidate()
                 
                 self.socket = nil
                 
@@ -92,8 +115,8 @@ class WebSocketCloverTransport: CloverTransport {
             }
             
             socket.onText = { (text: String) in
-                debugPrint("got some text: \(text)")
-                
+                debugPrint("websocket onText: \(text)")
+                self.resetPong()
                 if (pairing) {
                     //
                     let parser:Mapper<PairingResponseMessage> = Mapper<PairingResponseMessage>()
@@ -121,7 +144,7 @@ class WebSocketCloverTransport: CloverTransport {
                                 pairing = true
                                 debugPrint("pairing failed")
                                 self.pairingAuthToken = nil
-                                //self.sendPairingRequest()
+                                //self.sendPairingRequest() // fail causes a disconnect, so this is taken care of in reconnect
                             }
                         }
                     } else {
@@ -133,8 +156,10 @@ class WebSocketCloverTransport: CloverTransport {
                     }
 
                 } else {
-                    for obs in self.observers {
-                        (obs as! CloverTransportObserver).onMessage(text)
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)){
+                        for obs in self.observers {
+                            (obs as! CloverTransportObserver).onMessage(text)
+                        }
                     }
                 }
             }
@@ -143,10 +168,8 @@ class WebSocketCloverTransport: CloverTransport {
                 debugPrint("got some data: \(data)") // don't expect this
             }
             socket.onPong = { (Void) in
-                debugPrint("got pong...")
-                self.missedPongs = 0
-                self.disconnectTimer?.invalidate()
-                self.schedulePing()
+//                print(". \(self.df.stringFromDate(NSDate()))")
+                self.resetPong()
             }
             // This only works in newer versions of Starscream
 //            socket.disableSSLCertValidation = disableSSLValidation
@@ -154,12 +177,11 @@ class WebSocketCloverTransport: CloverTransport {
 //                debugPrint("SSL Validation is turned off!")
 //                // TODO: add ALog call through API to log this!
 //            }
-//            socket.timeout = 1 // seconds
             debugPrint("trying to connect")
-            socket.connect(5)
-//            schedulePing()// because the socket doesn't always timeout quickly if there is no server, we use the missed pings to force it...ugly
+            socket.connect(pongTimeout)
         }
     }
+
     
     func sendPairingRequest() {
         let pairingRequest = PairingRequest(name: name, serialNumber: serialNumber, token: pairingAuthToken)
@@ -174,48 +196,94 @@ class WebSocketCloverTransport: CloverTransport {
         
     }
     
-    private func schedulePing() {
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(pingFrequency) * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            if let socket = self.socket {
-                socket.writePing(NSData())
-                self.scheduleDisconnect()
+    private func resetPong() {
+        if let dt = self.disconnectTimer {
+            if dt.valid {
+                dt.invalidate()
+//                print("invalidated")
+            } else {
+//                print("not invalidated!")
             }
-        })
+//            print("timer is valid? \(self.disconnectTimer?.valid)")
+        }
+        self.reportDisconnectTimer?.invalidate()
+        if reportedDisconnect {
+            dispatch_async(dispatch_get_main_queue()) {
+                for obs in self.observers {
+                    (obs as! CloverTransportObserver).onDeviceReady(self)
+                }
+            }
+        }
+        reportedDisconnect = false
+        self.schedulePing()
     }
+    
+    private func schedulePing() {
+        reportedDisconnect = false
+        dispatch_async(dispatch_get_main_queue()) {
+            if let pt = self.pingTimer {
+                pt.invalidate()
+            }
+            self.pingTimer = NSTimer.scheduledTimerWithTimeInterval(Double(self.pingFrequency), target: self, selector: #selector(self.sendPing), userInfo: nil, repeats: false)
+        }
+    }
+    @objc private func sendPing() {
+        if let socket = self.socket {
+//            print("sending PING \(df.stringFromDate(NSDate()))")
+            socket.writePing(NSData())
+            self.scheduleDisconnect()
+        }
+    }
+    
     private func scheduleDisconnect() {
+        // if requested to be told of disconnect before we force a disconnect
+        if reportConnectionProblemAfter < pongTimeout {
+            dispatch_async(dispatch_get_main_queue()) {
+                if let rdt = self.reportDisconnectTimer {
+                    rdt.invalidate()
+                }
+                self.reportDisconnectTimer = NSTimer.scheduledTimerWithTimeInterval(Double(self.reportConnectionProblemAfter), target: self, selector: #selector(self.reportDisconnect), userInfo: nil, repeats: false)
+            }
+        }
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        dispatch_async(dispatch_get_main_queue()) {
             if let dt = self.disconnectTimer {
                 dt.invalidate()
             }
-            self.disconnectTimer = NSTimer.scheduledTimerWithTimeInterval(Double(self.pingFrequency), target: self, selector: #selector(self.disconnectMissedPong), userInfo: nil, repeats: false)
-        })
+            self.disconnectTimer = NSTimer.scheduledTimerWithTimeInterval(Double(self.pongTimeout), target: self, selector: #selector(self.disconnectMissedPong), userInfo: nil, repeats: false)
+        }
     }
-    
-    @objc private func disconnectMissedPong() {
-        debugPrint("Missed pong \(missedPongs + 1)")
-        // TODO: should we send an onDeviceConnected, so the calls fail until we get a pong back?
-        missedPongs += 1
-        if missedPongs >= missedPongsBeforeDisconnect || !(self.socket?.isConnected ?? false) {
-            if let ws = socket,
-                let endpoint = endpoint {
-                ws.disconnect(forceTimeout: 0)
-            } else {
-                dispose()
-                // should we initialize here? how do we get in this state without messing up the state of the Transport?
+    @objc private func reportDisconnect() {
+        reportedDisconnect = true
+        dispatch_async(dispatch_get_main_queue()) {
+            for obs in self.observers {
+                (obs as! CloverTransportObserver).onDeviceConnected(self)
             }
+        }
+    }
+    @objc private func disconnectMissedPong() {
+
+        if let ws = socket,
+            let endpoint = endpoint {
+            print("forcing disconnect \(df.stringFromDate(NSDate()))")
+            ws.disconnect(forceTimeout: 0)
         } else {
-            scheduleDisconnect()
+            dispose()
+            // should we initialize here? how do we get in this state without messing up the state of the Transport?
         }
     }
     
     public override func dispose() {
-        disconnectTimer?.invalidate()
-        if let ws = socket {
-            ws.disconnect()
-        }
+        super.dispose()
         disposed = true
+        socket?.disconnect()
+        socket = nil
+        disconnectTimer?.invalidate()
+        disconnectTimer = nil
+        reportDisconnectTimer?.invalidate()
+        reportDisconnectTimer = nil
+        pingTimer?.invalidate()
+        pingTimer = nil
     }
     
     override func sendMessage(_ message: String) -> Int {
@@ -235,7 +303,7 @@ class WebSocketCloverTransport: CloverTransport {
 extension WebSocket {
     public func connect(timeoutInSec: Int) {
         connect()
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(timeout) * Double(NSEC_PER_SEC)))
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(timeoutInSec) * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             if !self.isConnected {
                 self.disconnect(forceTimeout: 0)

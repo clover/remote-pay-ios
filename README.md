@@ -2,13 +2,25 @@
 
 A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to communicate with a tethered Clover Mini
 
+
+## Version 1.3.1
+- What's new since 1.2
+  - Device status queries to determine that state of the device and payments processed by the device
+    - retrievePayment/onRetrievePaymentResponse - query and receive the status of a payment on the device by its external id
+    - retrieveDeviceStatus/onRetrieveDeviceStatusResponse - query and receive the status of the device
+    - resetDevice now calls back to onResetDeviceResponse with the current status
+  - Custom activity support for the Mini
+    - startCustomActivity/onCustomActivityResponse - start a custom activity on the Clover device and receive a callback when it is done
+    - sendMessageToActivity/onMessageFromActivity - send and receive messages to a custom activity running on the Clover device
+
+
 - Dependencies
   - ObjectMapper - provides JSON serialization/deserialization
   - SwiftyJSON - provides simple JSON parsing
   - Starscream - provides websocket client capabilities
 
 - Building the example app
-  - download and insatll xcode 8.2.1 or 7.3.1 (swift 2.3 support)
+  - download and install xcode 8.2.1 or 7.3.1 (swift 2.3 support)
   - install cocoapods
     - run `sudo gem install cocoapods`
   - clone/download the CloverConnector repo
@@ -21,14 +33,14 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
     - change the signing Team for the CloverConnector > CloverConnector_Example target
 
 - Using CloverConnector in your project
-  - pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :branch => '1.2.0.b'
+  - pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '1.3.1-RC1'
   - Example cocoapod (http://cocoapods.org/) `Podfile` snippet
 ---
   ```platform :ios, '8.0'
   use frameworks!
 
   target 'Register_App' do
-    pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :branch => '1.2.0.b'
+    pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '1.3.1-RC1'
   end
 
   post_install do |installer|
@@ -46,47 +58,48 @@ import CloverConnector
 
 class ConnectionManager : DefaultCloverConnectorListener, PairingDeviceConfiguration {
     var cc:ICloverConnector?
-    
+
     func connect() {
         // load from previous pairing, or nil will force/require
         // a new pairing with the device
         let savedAuthToken = loadAuthToken()
-        
+
         let config = WebSocketDeviceConfiguration(endpoint: "wss://192.168.1.115:12345/remote_pay", remoteApplicationID: "com.yourcompany.pos.app:4.3.5", posName: "RegisterApp", posSerial: "ABC-123", pairingAuthToken: savedAuthToken, pairingDeviceConfiguration: self)
-        
+
         cc = CloverConnector(config: config)
-        
+
         cc?.addCloverConnectorListener(self)
-        
+
         cc?.initializeConnection()
     }
-    
+
     func doSale() {
         // if onDeviceReady has been called
         let saleRequest = SaleRequest(amount: 1743, externalId: "bc54de43f3")
         // configure other properties of SaleRequest
         cc?.sale(saleRequest)
     }
-    
+
+    // store the token to be loaded later by loadAuthToken
     func saveAuthToken(token:String) {}
     func loadAuthToken() -> String? { return nil }
-    
-    
+
+
     // PairingDeviceConfiguration
     func onPairingCode(pairingCode: String) {
-        // display pairingCode to user, and enter on the mini
+        // display pairingCode to user, to be entered on the Clover Mini
     }
     func onPairingSuccess(authToken: String) {
         // pairing is successful
-        // save this authToken to pass in to the config, so pairing
-        // will happen automatically
+        // save this authToken to pass in to the config for future connections
+        // so pairing will happen automatically
         saveAuthToken(authToken)
     }
     // PairingDeviceConfiguration
-    
-    
+
+
     // DefaultCloverConnectorListener
-    
+
     // called when device is disconnected
     override func onDeviceDisconnected() {}
     // called when device is connected, but not ready for requests

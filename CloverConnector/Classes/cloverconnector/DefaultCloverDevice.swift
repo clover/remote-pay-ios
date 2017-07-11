@@ -24,18 +24,23 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     private var config:CloverDeviceConfiguration
     
+    deinit {
+        debugPrint("deinit DefaultCloverDevice")
+    }
+    
     init?(config:CloverDeviceConfiguration) {
         self.config = config
+        
         if let transport = config.getTransport() {
             super.init(packageName: config.getMessagePackageName(), transport: transport)
             transport.subscribe(self)
+            transport.initialize()
         } else {
             return nil      
         }
         
     }
     
-
     func onDeviceConnected(_ transport:CloverTransport) {
         notifyListenersConnected()
     }
@@ -53,6 +58,11 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     func onDeviceDisconnected(_ transport:CloverTransport) {
         notifyListenersDisconnected()
+    }
+    
+    override func dispose() {
+        self.transport.dispose()
+        super.dispose()
     }
     
     func sendPong(_ messge:RemoteMessage) {
@@ -75,142 +85,168 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                 if let rmMethod = remotemessage.method {
                     if let payload = remotemessage.payload {
                         switch rmMethod {
-                        case .ACK:
-                            if let ackMessage = Mapper<AcknowledgementMessage>().map(payload) {
-                                notifyObserverAck(ackMessage);
-                            }
-                        case Method.LAST_MSG_RESPONSE: break;
-                        case Method.DISCOVERY_RESPONSE:
-                            if let drm = Mapper<DiscoveryResponseMessage>().map(payload) {
-                                notifyListenersDiscoveryResponse(drm);
-                            }
-                        case Method.CLOSEOUT_RESPONSE:
-                            if let crm = Mapper<CloseoutResponseMessage>().map(payload) {
-                                notifyListenerCloseoutResponse(crm)
-                            }
-                        case Method.CAPTURE_PREAUTH:
-                            if let cparm = Mapper<CapturePreAuthResponseMessage>().map(payload) {
-                                notifyListenersPreAuthCaptured(cparm)
-                            }
-                        case Method.TIP_ADJUST_RESPONSE:
-                            if let tarm = Mapper<TipAdjustResponseMessage>().map(payload) {
-                                notifyListenersTipAdjustResponse(tarm)
-                            }
-                        case Method.REFUND_RESPONSE:
-                            if let refRespMsg = Mapper<RefundResponseMessage>().map(payload) {
-                                self.refRespMsg = refRespMsg
-                                notifyObserversPaymentRefundResponse(refRespMsg);
-                            }
-                        case Method.TX_START_RESPONSE:
-                            if let txsrm = Mapper<TxStartResponseMessage>().map(payload) {
-                                notifyListenersTxStartResponse(txsrm)
-                            }
-                        case Method.UI_STATE:
-                            if let uiMsg = Mapper<UiStateMessage>().map(payload) {
-                                notifyListenersUIEvent(uiMsg);
-                            }
-                        case Method.TX_STATE:
-                            if let txsm = Mapper<TxStateMessage>().map(payload) {
-                                notifyListenersTxState(txsm)
-                            }
-                        case Method.FINISH_OK:
-                            if let finishOk = Mapper<FinishOkMessage>().map(payload) {
-                                notifyListenersFinishOk(finishOk)
-                            }
-                        case Method.FINISH_CANCEL:
-                            if let finishCx = Mapper<FinishCancelMessage>().map(payload) {
-                                notifyListenersFinishCancel(finishCx)
-                            }
-                        case Method.TIP_ADDED:
-                            if let tam = Mapper<TipAddedMessage>().map(payload) {
-                                notifyListenersTipAdded(tam)
-                            }
-                        case Method.VERIFY_SIGNATURE:
-                            if let svr = Mapper<VerifySignatureRequest>().map(payload) {
-                                notifyListenersVerifySignatureRequest(svr)
-                            }
-                        case Method.PAYMENT_VOIDED:
-                            if let pvm = Mapper<PaymentVoidedMessage>().map(payload) {
-                                notifyListenersPaymentVoided(pvm)
-                            }
-                        case Method.CASHBACK_SELECTED:
-                            if let cbsm = Mapper<CashbackSelectedMessage>().map(payload) {
-                                notifyListenersCashbackSelected(cbsm)
-                            }
-                        case Method.VAULT_CARD_RESPONSE:
-                            if let vcr = Mapper<VaultCardResponseMessage>().map(payload) {
-                                notifyListenersVaultCardResponse(vcr)
-                            }
-                        case Method.CAPTURE_PREAUTH_RESPONSE:
-                            if let cpr = Mapper<CapturePreAuthResponseMessage>().map(payload) {
-                                notifyListenersCapturePreAuthResponse(cpr)
-                            }
-                        case Method.RETRIEVE_PENDING_PAYMENTS_RESPONSE:
-                            if let rpprm = Mapper<RetrievePendingPaymentsResponseMessage>().map(payload) {
-                                notifyObserversPendingPaymentsResponse(rpprm);
-                            }
-                        case Method.CARD_DATA_RESPONSE :
-                            if let rcdrm = Mapper<CardDataResponseMessage>().map(payload) {
-                                notifyObserversReadCardData(rcdrm);
-                            }
-                        case Method.CONFIRM_PAYMENT_MESSAGE :
-                            if let cpm = Mapper<ConfirmPaymentMessage>().map(payload) {
-                                notifyObserverConfirmPayment(cpm)
-                            }
-                        // requests
-                        case Method.PRINT_TEXT: break;
-                        case Method.PRINT_IMAGE: break;
-                        case Method.TERMINAL_MESSAGE: break;
-                        case Method.BREAK: break;
-                        case Method.VOID_PAYMENT: break;
-                        case Method.CLOSEOUT_REQUEST: break;
-                        case Method.DISCOVERY_REQUEST: break;
-                        case Method.KEY_PRESS: break;
-                        case Method.LAST_MSG_REQUEST: break;
-                        case Method.OPEN_CASH_DRAWER: break;
-                        case Method.ORDER_ACTION_ADD_DISCOUNT: break;
-                        case Method.ORDER_ACTION_REMOVE_DISCOUNT: break;
-                        case Method.ORDER_ACTION_ADD_LINE_ITEM: break;
-                        case Method.ORDER_ACTION_REMOVE_LINE_ITEM: break;
-                        case Method.ORDER_ACTION_RESPONSE: break;
-                        case Method.PARTIAL_AUTH: break;
-                        case Method.PRINT_PAYMENT:
-                            if let printPayment = Mapper<PaymentPrintMessage>().map(payload) {
-                                notifyPrintPaymentReceipt(printPayment)
-                            }
-                        case Method.PRINT_CREDIT:
-                            if let printCredit = Mapper<CreditPrintMessage>().map(payload) {
-                                notifyPrintCreditReceipt(printCredit)
-                            }
-                        case Method.PRINT_CREDIT_DECLINE:
-                            if let printCreditDecline = Mapper<DeclineCreditPrintMessage>().map(payload) {
-                                notifyPrintCreditDeclineReceipt(printCreditDecline)
-                            }
-                        case Method.PRINT_PAYMENT_DECLINE:
-                            if let printPaymentDecline = Mapper<DeclinePaymentPrintMessage>().map(payload) {
-                                notifyPrintPaymentDecline(printPaymentDecline)
-                            }
-                        case Method.PRINT_PAYMENT_MERCHANT_COPY:
-                            if let printMerchantPayment = Mapper<PaymentPrintMerchantCopyMessage>().map(payload) {
-                                notifyPrintPaymentMerchantCopy(printMerchantPayment)
-                            }
-                        case Method.REFUND_PRINT_PAYMENT:
-                            if let printPaymentRefund = Mapper<RefundPaymentPrintMessage>().map(payload) {
-                                notifyPrintRefundPayment(printPaymentRefund)
-                            }
-                        case Method.REFUND_REQUEST: break;
-                        case Method.SHOW_WELCOME_SCREEN: break;
-                        case Method.SHOW_ORDER_SCREEN: break;
-                        case Method.SHOW_THANK_YOU_SCREEN: break;
-                        case Method.SHOW_PAYMENT_RECEIPT_OPTIONS: break;
-                        case Method.SIGNATURE_VERIFIED: break;
-                        case Method.TIP_ADJUST: break;
-                        case Method.TX_START: break;
-                        case Method.VAULT_CARD: break;
-                        case Method.RETRIEVE_PENDING_PAYMENTS: break; // outbound request
-                        case Method.CARD_DATA: break;
-                        case Method.PAYMENT_REJECTED: break;
-                        case Method.PAYMENT_CONFIRMED: break;
+                            case .ACK:
+                                if let ackMessage = Mapper<AcknowledgementMessage>().map(payload) {
+                                    notifyObserverAck(ackMessage);
+                                }
+                            case Method.LAST_MSG_RESPONSE: break;
+                            case Method.DISCOVERY_RESPONSE:
+                                if let drm = Mapper<DiscoveryResponseMessage>().map(payload) {
+                                    notifyListenersDiscoveryResponse(drm);
+                                }
+                            case Method.CLOSEOUT_RESPONSE:
+                                if let crm = Mapper<CloseoutResponseMessage>().map(payload) {
+                                    notifyListenerCloseoutResponse(crm)
+                                }
+                            case Method.CAPTURE_PREAUTH:
+                                if let cparm = Mapper<CapturePreAuthResponseMessage>().map(payload) {
+                                    notifyListenersPreAuthCaptured(cparm)
+                                }
+                            case Method.TIP_ADJUST_RESPONSE:
+                                if let tarm = Mapper<TipAdjustResponseMessage>().map(payload) {
+                                    notifyListenersTipAdjustResponse(tarm)
+                                }
+                            case Method.REFUND_RESPONSE:
+                                if let refRespMsg = Mapper<RefundResponseMessage>().map(payload) {
+                                    self.refRespMsg = refRespMsg
+                                    notifyObserversPaymentRefundResponse(refRespMsg);
+                                }
+                            case Method.TX_START_RESPONSE:
+                                if let txsrm = Mapper<TxStartResponseMessage>().map(payload) {
+                                    notifyListenersTxStartResponse(txsrm)
+                                }
+                            case Method.UI_STATE:
+                                if let uiMsg = Mapper<UiStateMessage>().map(payload) {
+                                    notifyListenersUIEvent(uiMsg);
+                                }
+                            case Method.TX_STATE:
+                                if let txsm = Mapper<TxStateMessage>().map(payload) {
+                                    notifyListenersTxState(txsm)
+                                }
+                            case Method.FINISH_OK:
+                                if let finishOk = Mapper<FinishOkMessage>().map(payload) {
+                                    notifyListenersFinishOk(finishOk)
+                                }
+                            case Method.FINISH_CANCEL:
+                                if let finishCx = Mapper<FinishCancelMessage>().map(payload) {
+                                    notifyListenersFinishCancel(finishCx)
+                                }
+                            case Method.TIP_ADDED:
+                                if let tam = Mapper<TipAddedMessage>().map(payload) {
+                                    notifyListenersTipAdded(tam)
+                                }
+                            case Method.VERIFY_SIGNATURE:
+                                if let svr = Mapper<VerifySignatureRequest>().map(payload) {
+                                    notifyListenersVerifySignatureRequest(svr)
+                                }
+                            case Method.PAYMENT_VOIDED:
+                                if let pvm = Mapper<PaymentVoidedMessage>().map(payload) {
+                                    notifyListenersPaymentVoided(pvm)
+                                }
+                            case Method.CASHBACK_SELECTED:
+                                if let cbsm = Mapper<CashbackSelectedMessage>().map(payload) {
+                                    notifyListenersCashbackSelected(cbsm)
+                                }
+                            case Method.VAULT_CARD_RESPONSE:
+                                if let vcr = Mapper<VaultCardResponseMessage>().map(payload) {
+                                    notifyListenersVaultCardResponse(vcr)
+                                }
+                            case Method.CAPTURE_PREAUTH_RESPONSE:
+                                if let cpr = Mapper<CapturePreAuthResponseMessage>().map(payload) {
+                                    notifyListenersCapturePreAuthResponse(cpr)
+                                }
+                            case Method.RETRIEVE_PENDING_PAYMENTS_RESPONSE:
+                                if let rpprm = Mapper<RetrievePendingPaymentsResponseMessage>().map(payload) {
+                                    notifyObserversPendingPaymentsResponse(rpprm);
+                                }
+                            case Method.CARD_DATA_RESPONSE :
+                                if let rcdrm = Mapper<CardDataResponseMessage>().map(payload) {
+                                    notifyObserversReadCardData(rcdrm);
+                                }
+                            case Method.CONFIRM_PAYMENT_MESSAGE :
+                                if let cpm = Mapper<ConfirmPaymentMessage>().map(payload) {
+                                    notifyObserverConfirmPayment(cpm)
+                                }
+                            case Method.ACTIVITY_RESPONSE :
+                                if let arm = Mapper<ActivityResponseMessage>().map(payload) {
+                                    notifyObserverActivityResponse(arm)
+                                }
+                            // requests
+                            case Method.PRINT_TEXT: break;
+                            case Method.PRINT_IMAGE: break;
+                            case Method.TERMINAL_MESSAGE: break;
+                            case Method.BREAK: break;
+                            case Method.VOID_PAYMENT: break;
+                            case Method.CLOSEOUT_REQUEST: break;
+                            case Method.DISCOVERY_REQUEST: break;
+                            case Method.KEY_PRESS: break;
+                            case Method.LAST_MSG_REQUEST: break;
+                            case Method.OPEN_CASH_DRAWER: break;
+                            case Method.ORDER_ACTION_ADD_DISCOUNT: break;
+                            case Method.ORDER_ACTION_REMOVE_DISCOUNT: break;
+                            case Method.ORDER_ACTION_ADD_LINE_ITEM: break;
+                            case Method.ORDER_ACTION_REMOVE_LINE_ITEM: break;
+                            case Method.ORDER_ACTION_RESPONSE: break;
+                            case Method.ACTIVITY_REQUEST: break;
+                            case Method.PARTIAL_AUTH: break;
+                            case Method.PRINT_PAYMENT:
+                                if let printPayment = Mapper<PaymentPrintMessage>().map(payload) {
+                                    notifyPrintPaymentReceipt(printPayment)
+                                }
+                            case Method.PRINT_CREDIT:
+                                if let printCredit = Mapper<CreditPrintMessage>().map(payload) {
+                                    notifyPrintCreditReceipt(printCredit)
+                                }
+                            case Method.PRINT_CREDIT_DECLINE:
+                                if let printCreditDecline = Mapper<DeclineCreditPrintMessage>().map(payload) {
+                                    notifyPrintCreditDeclineReceipt(printCreditDecline)
+                                }
+                            case Method.PRINT_PAYMENT_DECLINE:
+                                if let printPaymentDecline = Mapper<DeclinePaymentPrintMessage>().map(payload) {
+                                    notifyPrintPaymentDecline(printPaymentDecline)
+                                }
+                            case Method.PRINT_PAYMENT_MERCHANT_COPY:
+                                if let printMerchantPayment = Mapper<PaymentPrintMerchantCopyMessage>().map(payload) {
+                                    notifyPrintPaymentMerchantCopy(printMerchantPayment)
+                                }
+                            case Method.REFUND_PRINT_PAYMENT:
+                                if let printPaymentRefund = Mapper<RefundPaymentPrintMessage>().map(payload) {
+                                    notifyPrintRefundPayment(printPaymentRefund)
+                                }
+                            case Method.REFUND_REQUEST: break;
+                            case Method.SHOW_WELCOME_SCREEN: break;
+                            case Method.SHOW_ORDER_SCREEN: break;
+                            case Method.SHOW_THANK_YOU_SCREEN: break;
+                            case Method.SHOW_PAYMENT_RECEIPT_OPTIONS: break;
+                            case Method.SIGNATURE_VERIFIED: break;
+                            case Method.TIP_ADJUST: break;
+                            case Method.TX_START: break;
+                            case Method.VAULT_CARD: break;
+                            case Method.RETRIEVE_PENDING_PAYMENTS: break; // outbound request
+                            case Method.CARD_DATA: break;
+                            case Method.PAYMENT_REJECTED: break;
+                            case Method.PAYMENT_CONFIRMED: break;
+                            case Method.LOG_MESSAGE: break;
+                            case Method.ACTIVITY_MESSAGE_TO_ACTIVITY: break;
+                            case Method.ACTIVITY_MESSAGE_FROM_ACTIVITY:
+                                if let activityMessageFromActivity = Mapper<ActivityMessageFromActivity>().map(payload) {
+                                    notifyMessageFromActivity(activityMessageFromActivity)
+                                }
+                            case Method.RETRIEVE_PAYMENT_REQUEST: break;
+                            case Method.RETRIEVE_PAYMENT_RESPONSE:
+                                if let rprm = Mapper<RetrievePaymentResponseMessage>().map(payload) {
+                                    notifyRetrievePaymentResponse(rprm)
+                                }
+                            case Method.REMOTE_ERROR: break;
+                            case Method.RETRIEVE_DEVICE_STATUS_REQUEST: break;
+                            case Method.RETRIEVE_DEVICE_STATUS_RESPONSE:
+                                if let rdrrm = Mapper<RetrieveDeviceStatusResponseMessage>().map(payload) {
+                                    notifyDeviceStatusResponse(rdrrm)
+                                }
+                            case Method.RESET_DEVICE_RESPONSE:
+                                if let rdrm = Mapper<ResetDeviceResponseMessage>().map(payload) {
+                                    notifyDeviceResetResponse(rdrm)
+                                }
                         }
                         
                     }
@@ -426,14 +462,15 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    override func doTxStart(_ payIntent: PayIntent, order: CLVModels.Order.Order?, suppressTipScreen: Bool) {
+    override func doTxStart(_ payIntent: PayIntent, order: CLVModels.Order.Order?, suppressTipScreen: Bool, requestInfo:String?) {
         let msg:TxStartRequestMessage = TxStartRequestMessage()
         msg.payIntent = payIntent
         msg.order = order
         msg.suppressOnScreenTips = suppressTipScreen
+        msg.requestInfo = requestInfo
         
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint:false) {
-            sendCommandMessage(payload: msgJSON, method:msg.method, version: 2) // since v2 is supported in deployed version, just default to v 2
+            sendCommandMessage(payload: msgJSON, method:msg.method, version: 1) // since v2 is supported in deployed version, just default to v 2
         }
     }
     
@@ -464,19 +501,20 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         
     }
     
-    /*override func doPrintImage(_ bitmap: UIImage) {
+    override func doPrintImage(_ img: UIImage) {
         
-        if let imageData = UIImagePNGRepresentation(bitmap) {
-            let base64:String = imageData.base64EncodedString(options: .lineLength64Characters)
+        if let imageData = UIImagePNGRepresentation(img) {
+            let base64:String = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
             let ipm = ImagePrintMessage()
             
             ipm.png = [UInt8](base64.utf8)
             
             if let msgJSON = Mapper().toJSONString(ipm, prettyPrint:false) {
-                sendCommandMessage(msgJSON, method:ipm.method);
+                sendCommandMessage(payload: msgJSON, method:ipm.method);
             }
         }
-    }*/
+    }
+    
     override func doPrintImage(_ url: String) {
         let printImageMessage = ImagePrintMessage()
         printImageMessage.urlString = url
@@ -500,6 +538,35 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         let rpp:RetrievePendingPaymentsRequestMessage = RetrievePendingPaymentsRequestMessage()
         if let msgJSON = Mapper().toJSONString(rpp, prettyPrint: false) {
             sendCommandMessage(payload: msgJSON, method: rpp.method)
+        }
+    }
+    
+    override func doStartActivity(action a: String, payload p: String?, nonBlocking: Bool) {
+        let ar:ActivityRequest = ActivityRequest(action: a, payload: p, nonBlocking: nonBlocking, forceLaunch: false)
+        
+        if let msgJSON = Mapper().toJSONString(ar, prettyPrint:false) {
+            sendCommandMessage(payload: msgJSON, method: ar.method)
+        }
+    }
+    
+    override func doRetrieveDeviceStatus(sendLast: Bool) {
+        let rdsrm = RetrieveDeviceStatusRequestMessage(sendLast)
+        if let msgJSON = Mapper().toJSONString(rdsrm) {
+            sendCommandMessage(payload: msgJSON, method: rdsrm.method)
+        }
+    }
+    
+    override func doRetrievePayment(externalPaymentId: String) {
+        let rprm = RetrievePaymentRequestMessage(externalPaymentId)
+        if let msgJSON = Mapper().toJSONString(rprm) {
+            sendCommandMessage(payload: msgJSON, method: rprm.method)
+        }
+    }
+    
+    override func doSendMessageToActivity(action a: String, payload p: String?) {
+        let amta = ActivityMessageToActivity(action: a, payload: p)
+        if let msgJSON = Mapper().toJSONString(amta) {
+            sendCommandMessage(payload: msgJSON, method: amta.method)
         }
     }
     
@@ -568,9 +635,9 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     func notifyListenersTxStartResponse(_ response:TxStartResponseMessage) {
         for listener in deviceObservers {
             if let result = response.result,
-                let externalID = response.externalId {
+                let externalID = response.externalPaymentId {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    (listener as? CloverDeviceObserver)?.onTxStartResponse(result, externalId: externalID)
+                    (listener as? CloverDeviceObserver)?.onTxStartResponse(result, externalId: externalID, requestInfo: response.requestInfo)
                 })
             }
         }
@@ -636,7 +703,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     func notifyListenersFinishCancel(_ finishCx:FinishCancelMessage) {
         for listener in deviceObservers {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                (listener as? CloverDeviceObserver)?.onFinishCancel()
+                (listener as? CloverDeviceObserver)?.onFinishCancel(finishCx.requestInfo)
             })
         }
     }
@@ -651,13 +718,13 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         } else if let refund = finishOk.refund {
             for listener in deviceObservers {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    (listener as? CloverDeviceObserver)?.onFinishOk(refund);
+                    (listener as? CloverDeviceObserver)?.onFinishOk(refund, requestInfo: TxStartRequestMessage.REFUND_REQUEST);
                 })
             }
         } else if let payment = finishOk.payment {
             for listener in deviceObservers {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    (listener as? CloverDeviceObserver)?.onFinishOk(payment, signature: finishOk.signature);
+                    (listener as? CloverDeviceObserver)?.onFinishOk(payment, signature: finishOk.signature, requestInfo: finishOk.requestInfo);
                 })
             }
         }
@@ -732,6 +799,15 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
+    func notifyObserverActivityResponse(_ request:ActivityResponseMessage) {
+        for listener in deviceObservers {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                let status = request.resultCode == -1 ? ResultCode.SUCCESS : ResultCode.CANCEL
+                (listener as? CloverDeviceObserver)?.onActivityResponse(status, action: request.action, payload:request.payload, failReason:  request.failReason)
+            })
+        }
+    }
+    
     func notifyPrintPaymentReceipt(_ response:PaymentPrintMessage) {
         for listener in deviceObservers {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -787,6 +863,38 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                     (listener as? CloverDeviceObserver)?.onMessageAck(smi)
                 })
             }
+        }
+    }
+    
+    func notifyDeviceStatusResponse(_ response:RetrieveDeviceStatusResponseMessage) {
+        for listener in deviceObservers {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                (listener as? CloverDeviceObserver)?.onDeviceStatusResponse(response.result, reason: response.reason, state: response.state, subState: response.subState, data: response.data)
+            })
+        }
+    }
+    
+    func notifyDeviceResetResponse(_ response:ResetDeviceResponseMessage) {
+        for listener in deviceObservers {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                (listener as? CloverDeviceObserver)?.onResetDeviceResponse(response.result, reason: response.reason, state: response.state)
+            })
+        }
+    }
+    
+    func notifyRetrievePaymentResponse(_ response:RetrievePaymentResponseMessage) {
+        for listener in deviceObservers {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                (listener as? CloverDeviceObserver)?.onRetrievePaymentResponse(response.result, reason: response.reason, queryStatus: response.queryStatus, payment: response.payment, externalPaymentId: response.externalPaymentId)
+            })
+        }
+    }
+    
+    func notifyMessageFromActivity(_ response:ActivityMessageFromActivity) {
+        for listener in deviceObservers {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                (listener as? CloverDeviceObserver)?.onMessageFromActivity(response.action, payload: response.payload)
+            })
         }
     }
 }

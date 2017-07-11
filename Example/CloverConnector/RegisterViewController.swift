@@ -376,10 +376,30 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
     @IBAction func saleButtonClicked(_ sender: UIButton) {
         
         if let currentOrder = store?.currentOrder {
-            let sr = SaleRequest(amount:currentOrder.getTotal(), externalId: "\(arc4random())")
+            currentOrder.pendingPaymentId = "\(arc4random())"
+            let sr = SaleRequest(amount:currentOrder.getTotal(), externalId: currentOrder.pendingPaymentId!)
+            // below are all optional
+            sr.allowOfflinePayment = store?.transactionSettings.allowOfflinePayment
+            sr.approveOfflinePaymentWithoutPrompt = store?.transactionSettings.approveOfflinePaymentWithoutPrompt
+            sr.autoAcceptSignature = store?.transactionSettings.autoAcceptSignature
+            sr.autoAcceptPaymentConfirmations = store?.transactionSettings.autoAcceptPaymentConfirmations
+            sr.cardEntryMethods = store?.transactionSettings.cardEntryMethods ?? CloverConnector.CARD_ENTRY_METHODS_DEFAULT
+            sr.disableCashback = store?.transactionSettings.disableCashBack
+            sr.disableDuplicateChecking = store?.transactionSettings.disableDuplicateCheck
+            if let enablePrinting = store?.transactionSettings.cloverShouldHandleReceipts {
+                sr.disablePrinting = !enablePrinting
+            }
+            sr.disableReceiptSelection = store?.transactionSettings.disableReceiptSelection
+            sr.disableRestartTransactionOnFail = store?.transactionSettings.disableRestartTransactionOnFailure
+            if let tm = store?.transactionSettings.tipMode {
+                sr.disableTipOnScreen = tm != .ON_SCREEN_BEFORE_PAYMENT
+            }
+
+            sr.forceOfflinePayment = store?.transactionSettings.forceOfflinePayment
+
             sr.tipAmount = nil
             sr.tippableAmount = currentOrder.getTippableAmount()
-            sr.disablePrinting = true
+            sr.tipMode = SaleRequest.TipMode.ON_SCREEN_BEFORE_PAYMENT
             
             (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.sale(sr)
         }
@@ -387,7 +407,24 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
     @IBAction func authButtonClicked(_ sender: UIButton) {
         
         if let currentOrder = store?.currentOrder {
-            let ar = AuthRequest(amount: currentOrder.getTotal(), externalId: "\(arc4random())")
+            currentOrder.pendingPaymentId = "\(arc4random())"
+            let ar = AuthRequest(amount: currentOrder.getTotal(), externalId: currentOrder.pendingPaymentId!)
+            // below are all optional
+            ar.allowOfflinePayment = store?.transactionSettings.allowOfflinePayment
+            ar.approveOfflinePaymentWithoutPrompt = store?.transactionSettings.approveOfflinePaymentWithoutPrompt
+            ar.autoAcceptSignature = store?.transactionSettings.autoAcceptSignature
+            ar.autoAcceptPaymentConfirmations = store?.transactionSettings.autoAcceptPaymentConfirmations
+            ar.cardEntryMethods = store?.transactionSettings.cardEntryMethods ?? CloverConnector.CARD_ENTRY_METHODS_DEFAULT
+            ar.disableCashback = store?.transactionSettings.disableCashBack
+            ar.disableDuplicateChecking = store?.transactionSettings.disableDuplicateCheck
+            if let enablePrinting = store?.transactionSettings.cloverShouldHandleReceipts {
+                ar.disablePrinting = !enablePrinting
+            }
+            ar.disableReceiptSelection = store?.transactionSettings.disableReceiptSelection
+            ar.disableRestartTransactionOnFail = store?.transactionSettings.disableRestartTransactionOnFailure
+            
+            ar.forceOfflinePayment = store?.transactionSettings.forceOfflinePayment
+            
             ar.tippableAmount = currentOrder.getTippableAmount()
             
             (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.auth(ar)
@@ -396,6 +433,7 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
     @IBAction func newOrderButtonClicked(_ sender: UIButton) {
         if let store = store {
             store.newOrder()
+            updateTotals()
         }
     }
 }

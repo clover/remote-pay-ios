@@ -12,6 +12,13 @@ import UIKit
 class AvailableItemCollectionViewCell:UICollectionViewCell {
     @IBOutlet weak var itemName: UILabel!
     @IBOutlet weak var itemPrice: UILabel!
+    @IBOutlet weak var quantityLabel: UILabel!
+    @IBOutlet weak var quantityView: UIView!
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        quantityView.layer.cornerRadius = 15
+    }
     
     var item:POSItem? {
         didSet(value) {

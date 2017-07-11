@@ -28,7 +28,21 @@ public class RefundPaymentRequest: NSObject, Mappable {
         self.orderId = orderId
         self.paymentId = paymentId
         self.amount = amount
-        self.fullRefund = fullRefund ?? true
+        self.fullRefund = fullRefund ?? false
+    }
+    
+    public init(orderId:String, paymentId:String, amount:Int) {
+        self.orderId = orderId
+        self.paymentId = paymentId
+        self.amount = amount
+        self.fullRefund = false
+    }
+    
+    public init(orderId: String, paymentId:String, fullRefund:Bool) {
+        self.orderId = orderId
+        self.paymentId = paymentId
+        self.amount = nil
+        self.fullRefund = true
     }
     
     public required init?(_ map: Map) {

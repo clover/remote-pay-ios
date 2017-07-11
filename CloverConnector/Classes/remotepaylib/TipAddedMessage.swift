@@ -17,6 +17,11 @@ public class TipAddedMessage : Message {
         super.init(method: Method.TIP_ADDED)
     }
     
+    public init(_ tip:Int) {
+        super.init(method: Method.TIP_ADDED)
+        tipAmount = tip
+    }
+    
     public override func mapping(map:Map) {
         super.mapping(map)
         tipAmount <- map["tipAmount"]

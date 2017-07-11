@@ -15,7 +15,10 @@ public class CloverTransport : NSObject {
     var ready:Bool = false
     var lastDiscoveryResponseMessage:DiscoveryResponseMessage? = nil
     
-
+    public func initialize() {
+        // needs to override in subclass
+        fatalError("Must override")
+    }
     
     func onDeviceConnected() {
         for obs in observers {

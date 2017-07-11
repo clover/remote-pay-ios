@@ -15,8 +15,8 @@ import Foundation
  */
 @objc
 public class PrintPaymentReceiptMessage : NSObject {
-    private var order:CLVModels.Order.Order?
-    private var payment:CLVModels.Payments.Payment?
+    public var order:CLVModels.Order.Order?
+    public var payment:CLVModels.Payments.Payment?
     
     public init (payment:CLVModels.Payments.Payment, order:CLVModels.Order.Order) {
         self.payment = payment;

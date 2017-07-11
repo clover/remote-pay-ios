@@ -24,13 +24,13 @@ protocol CloverDeviceObserver:AnyObject {
     
     func onPartialAuthResponse(_ partialAuthAmount:Int)
     
-    func onFinishOk(_ payment:CLVModels.Payments.Payment, signature:Signature?)
+    func onFinishOk(_ payment:CLVModels.Payments.Payment, signature:Signature?, requestInfo:String?)
     
     func onFinishOk(_ credit:CLVModels.Payments.Credit)
     
-    func onFinishOk(_ redund:CLVModels.Payments.Refund)
+    func onFinishOk(_ redund:CLVModels.Payments.Refund, requestInfo:String?)
     
-    func onFinishCancel()
+    func onFinishCancel(_ requestInfo:String?)
     
     func onVerifySignature(_ payment:CLVModels.Payments.Payment, signature:Signature?)
     
@@ -58,7 +58,7 @@ protocol CloverDeviceObserver:AnyObject {
     func onPrintCredit(_ credit:CLVModels.Payments.Credit)
     func onPrintCreditDecline(_ reason:String, credit:CLVModels.Payments.Credit?)
     
-    func onTxStartResponse(_ result:TxStartResponseResult, externalId:String)
+    func onTxStartResponse(_ result:TxStartResponseResult, externalId:String, requestInfo: String?)
     
     func onDeviceDisconnected( _ device:CloverDevice)
     func onDeviceConnected(_ device:CloverDevice)
@@ -70,6 +70,11 @@ protocol CloverDeviceObserver:AnyObject {
     
     func onReadCardResponse( _ status:ResultStatus, reason:String, cardData:CardData?)
     func onConfirmPayment(_ payment:CLVModels.Payments.Payment?, challenges: [Challenge]?)
+    func onActivityResponse(_ status:ResultCode, action:String?, payload:String?, failReason: String?)
+    func onDeviceStatusResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState, subState: ExternalDeviceSubState?, data: ExternalDeviceStateData?)
+    func onMessageFromActivity(action: String, payload: String?)
+    func onRetrievePaymentResponse(_ result: ResultStatus, reason:String?, queryStatus: QueryStatus, payment:CLVModels.Payments.Payment?, externalPaymentId:String?)
+    func onResetDeviceResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState)
 }
 
 public class DefaultCloverDeviceObserver : CloverDeviceObserver {
@@ -83,13 +88,13 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     
     func onPartialAuthResponse(_ partialAuthAmount:Int){}
     
-    func onFinishOk(_ payment:CLVModels.Payments.Payment, signature:Signature?){}
+    func onFinishOk(_ payment:CLVModels.Payments.Payment, signature:Signature?, requestInfo:String?){}
     
     func onFinishOk(_ credit:CLVModels.Payments.Credit){}
     
-    func onFinishOk(_ redund:CLVModels.Payments.Refund){}
+    func onFinishOk(_ redund:CLVModels.Payments.Refund, requestInfo:String?){}
     
-    func onFinishCancel(){}
+    func onFinishCancel(_ requestInfo:String?){}
     
     func onVerifySignature(_ payment:CLVModels.Payments.Payment, signature:Signature?){}
     
@@ -117,7 +122,7 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     func onPrintCredit(_ credit:CLVModels.Payments.Credit){}
     func onPrintCreditDecline(_ reason:String, credit:CLVModels.Payments.Credit?){}
     
-    func onTxStartResponse(_ result:TxStartResponseResult, externalId:String){}
+    func onTxStartResponse(_ result:TxStartResponseResult, externalId:String, requestInfo: String?){}
     
     func onDeviceDisconnected( _ device:CloverDevice){}
     func onDeviceConnected(_ device:CloverDevice){}
@@ -130,4 +135,10 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     func onReadCardResponse( _ status:ResultStatus, reason:String, cardData:CardData?){}
     func onConfirmPayment(_ payment:CLVModels.Payments.Payment?, challenges: [Challenge]?){}
     
+    func onActivityResponse(_ status:ResultCode, action:String?, payload:String?, failReason: String?) {}
+    
+    func onDeviceStatusResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState, subState: ExternalDeviceSubState?, data: ExternalDeviceStateData?) {}
+    func onMessageFromActivity(action: String, payload: String?){}
+    func onRetrievePaymentResponse(_ result: ResultStatus, reason:String?, queryStatus: QueryStatus, payment:CLVModels.Payments.Payment?, externalPaymentId:String?){}
+    func onResetDeviceResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState){}
 }

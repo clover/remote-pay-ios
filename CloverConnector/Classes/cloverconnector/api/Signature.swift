@@ -15,6 +15,8 @@ public class Signature:Mappable {
    */
 //  public var strokes:ListWrapper<Points>? = nil
     public var strokes:Array<Stroke>?
+    public var width:Int?
+    public var height:Int?
 
   public required init() {
 
@@ -26,6 +28,8 @@ public class Signature:Mappable {
 
   public func mapping(map:Map) {
     strokes <- map["strokes"]
+    width <- map["width"]
+    height <- map["height"]
   }
 
 /*

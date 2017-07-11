@@ -66,10 +66,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
         cloverConnector?.dispose()
         
         let config:WebSocketDeviceConfiguration = WebSocketDeviceConfiguration(endpoint:url, remoteApplicationID: "com.clover.ios.example.app", posName: "iOS Example POS", posSerial: "POS-15", pairingAuthToken: self.token, pairingDeviceConfiguration: self)
-        config.disableSSLValidation = true
-        if let cc = cloverConnector {
-            cc.dispose() // if connect is clicked again...
-        }
+//        config.pingFrequency = 1
+//        config.pongTimeout = 6
+//        config.reportConnectionProblemTimeout = 3
+        
         cloverConnector = CloverConnector(config: config);
         cloverConnectorListener = CloverConnectorListener(cloverConnector: cloverConnector!)
         cloverConnectorListener?.viewController = self.window?.rootViewController

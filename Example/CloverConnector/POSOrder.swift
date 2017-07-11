@@ -11,8 +11,9 @@ import Foundation
 public class POSOrder {
     public var orderNumber:Int = 0
     var orderListeners = NSMutableArray()
+    public var date = NSDate()
     
-    private var status:OrderStatus {
+    public var status:OrderStatus {
         get {
             if(items.count == 0) {
                 return .READY
@@ -30,6 +31,10 @@ public class POSOrder {
     public private(set) var discounts:NSMutableArray = NSMutableArray()
     public private(set) var payments:NSMutableArray = NSMutableArray()
     public private(set) var refunds:NSMutableArray = NSMutableArray()
+    
+    // transient reference to the payment id being requested
+    public var pendingPaymentId:String?
+
     
     public func addListener(_ listener:POSOrderListener) {
         orderListeners.addObject(listener)
@@ -199,6 +204,7 @@ public enum OrderStatus : String {
     case PAID = "PAID"
     case PARTIALLY_PAID = "PARTIALLY PAID"
     case READY = "READY" // new order with nothing in it so it can be discarded if needed
+    case UNKNOWN = "UNKNOWN"
 }
 
 public protocol POSOrderListener : AnyObject {

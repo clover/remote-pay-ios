@@ -69,7 +69,11 @@ public protocol ICloverConnector : AnyObject {
     
     /*
      * Request a cancel be sent to the device.
+     *
+     * Use resetDevice() or invokeInputOption() with the screen appropriate options instead.
+     *
      */
+    @available(*, deprecated)
     func  cancel () -> Void
     
     
@@ -113,15 +117,19 @@ public protocol ICloverConnector : AnyObject {
      * Request to print an image on the default printer.
      *
      * The size of the image should be limited, and the optimal
-     * width of the image is 384 pixals.
+     * width of the image is 384 pixels.
      *
      * The img parameter type is implementation specific to the
      * adapter.
      *
      */
     // remove so there isn't a dependency on UIKit and it will work on MacOS
-    //func  printImage ( _ image:UIImage ) -> Void
+    @available(*, deprecated)
+    func  printImage ( _ image:UIImage ) -> Void
     
+    /*
+     * Request to print an image based on a url
+     */
     func printImageFromURL(_ url:String) -> Void
     
     
@@ -170,13 +178,46 @@ public protocol ICloverConnector : AnyObject {
      */
     func invokeInputOption( _ inputOption:InputOption ) -> Void
     
+    /*
+     * Used to request card information. Specifically track1 and track2 information
+     */
     func readCardData( _ request:ReadCardDataRequest ) -> Void
     
+    /*
+     * If payment confirmation is required during a Sale, this method accepts the payment
+     */
     func acceptPayment( _ payment:CLVModels.Payments.Payment ) -> Void
     
+    /*
+     * If payment confirmation is required during a Sale, this method rejects the payment
+     */
     func rejectPayment( _ payment:CLVModels.Payments.Payment, challenge:Challenge ) -> Void
     
+    /*
+     * Used to request a list of pending payments that have been taken offline, but
+     * haven't processed yet. will trigger an onRetrievePendingPaymentsResponse callback
+     */
     func retrievePendingPayments() -> Void
     
     func dispose() -> Void
+    
+    /*
+     * start an custom activity on the device
+     */
+    func startCustomActivity(_ request:CustomActivityRequest) -> Void
+    
+    /*
+     * send a message to a currently running custom activity
+     */
+    func sendMessageToActivity(_ request:MessageToActivity) -> Void
+    
+    /*
+     * request the current status of the device
+     */
+    func retrieveDeviceStatus(_request: RetrieveDeviceStatusRequest) -> Void
+    
+    /*
+     * request the payment for an external id
+     */
+    func retrievePayment(_request: RetrievePaymentRequest) -> Void
 }

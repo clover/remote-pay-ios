@@ -119,7 +119,7 @@ public protocol ICloverConnectorListener : AnyObject {
      * Called when a customer selects a tip amount on the Clover device screen
      * @param message
      */
-    func onTipAdded(_ message:TipAddedMessage) -> Void;
+    func onTipAdded(_ message:TipAddedMessage) -> Void
     
     
     /**
@@ -169,5 +169,33 @@ public protocol ICloverConnectorListener : AnyObject {
      */
     func onRetrievePendingPaymentsResponse(_ retrievePendingPaymentResponse:RetrievePendingPaymentsResponse) -> Void
     
+    /*
+     * called in response to a readCardData request
+     */
     func onReadCardDataResponse(_ readCardDataResponse:ReadCardDataResponse) -> Void
+    
+    /*
+     * called in response to a custom activity finishing
+     */
+    func onCustomActivityResponse(_ customActivityResponse:CustomActivityResponse) -> Void
+    
+    /*
+     * called in response to a device reset request
+     */
+    func onResetDeviceResponse(_ response:ResetDeviceResponse) -> Void
+    
+    /*
+     * called when a custom activity sends a message to the POS
+     */
+    func onMessageFromActivity(_ response:MessageFromActivity) -> Void
+    
+    /*
+     * called in response to a retrieve payment request
+     */
+    func onRetrievePaymentResponse(_ response:RetrievePaymentResponse) -> Void
+    
+    /*
+     * called in response to a retrieveDeviceStatus request
+     */
+    func onRetrieveDeviceStatusResponse(_response: RetrieveDeviceStatusResponse) -> Void
 }

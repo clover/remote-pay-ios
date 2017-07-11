@@ -10,6 +10,7 @@ import Foundation
 import ObjectMapper
 
 public class FinishCancelMessage : Message {
+    public var requestInfo:String?
     
     public required init?(_ map:Map) {
         super.init(method: Method.FINISH_CANCEL)

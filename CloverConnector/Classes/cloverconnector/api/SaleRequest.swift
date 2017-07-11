@@ -17,6 +17,7 @@ public class SaleRequest:TransactionRequest {
     public var tipAmount:Int?
     public var tipMode:TipMode?
     public var tippableAmount:Int?
+    public var forceOfflinePayment:Bool?
     
     public override var type:TransactionType {
         get {
@@ -44,6 +45,7 @@ public class SaleRequest:TransactionRequest {
         allowOfflinePayment <- map["allowOfflinePayment"]
         approveOfflinePaymentWithoutPrompt <- map["approveOfflinePaymentWithoutPrompt"]
         tipMode <- map["tipMode"]
+        forceOfflinePayment <- map["forceOfflinePayment"]
     }
 
     public enum TipMode:String {

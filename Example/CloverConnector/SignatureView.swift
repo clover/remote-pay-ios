@@ -15,45 +15,42 @@ public class SignatureView : UIView {
     public override func drawRect(rect: CGRect) {
         //
         super.drawRect(rect)
-        /*
+        
         if let sig = sig {
 
-            let context = UIGraphicsGetCurrentContext()
-            context?.setLineWidth(2.0)
             
-            let colorSpace = CGColorSpaceCreateDeviceRGB()
-            let components:[CGFloat] = [0.0,0.5,1.0,1.0]
-            let color = CGColor(colorSpace: colorSpace, components: components)
-            context?.setStrokeColor(color!)
+            let width = frame.width
+            //let height = frame.height
             
-            let width = bounds.width
-            let height = bounds.height
+            var scale = 1.0
+            if let sw = sig.width {
+                scale = Double(width) / Double(sw)
+            }
             
 //            let widthMultiplier = sig.
 
             if let strokes = sig.strokes {
                 for var stroke in strokes {
+                    
+                    let strokePath = UIBezierPath()
+                    
                     if let points = stroke.points {
-                        for i in 1 .< points.count {
-                            let point = points[i-1];
-                            let point2 = points[i];
-                            
-                            
-                            //move(to: context, CGFloat(point.x!) * 0.5, CGFloat(point.y!) * 0.5)
-                            //CGContextMoveToPoint(context, CGFloat(point.x!) * 0.5, CGFloat(point.y!) * 0.5)
-                            //CGContextAddLineToPoint(context, CGFloat(point2.x!) * 0.5, CGFloat(point2.y!) * 0.5)
-                            
-                            
+                        strokePath.moveToPoint(CGPoint(x: scale * Double(points[0].x!), y: scale * Double(points[0].y!)))
+                        for (index, element) in points.enumerate() {
+                            if(index > 0) {
+                                strokePath.addLineToPoint(CGPoint(x: scale * Double(element.x!), y: scale * Double(element.y!)))
+                            }
                         }
                     }
+                    UIColor.blueColor().set()
+                    strokePath.stroke()
                 }
                 
             }
             
-            
-            context?.strokePath()
+//            context?.strokePath()
 
-        }*/
+        }
         
     }
 }

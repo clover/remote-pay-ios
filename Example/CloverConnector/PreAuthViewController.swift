@@ -18,6 +18,12 @@ public class PreAuthViewController:UIViewController, UITableViewDelegate, UITabl
     
     @IBOutlet weak var tableView: UITableView!
     
+    private var store:POSStore? {
+        get {
+            return (UIApplication.sharedApplication().delegate as? AppDelegate)?.store
+        }
+    }
+    
     private func getStore() -> POSStore? {
         if let appDelegate = (UIApplication.sharedApplication().delegate as? AppDelegate) {
             return appDelegate.store
@@ -68,8 +74,15 @@ public class PreAuthViewController:UIViewController, UITableViewDelegate, UITabl
         
         tableView.becomeFirstResponder()
         if let amtText = preAuthAmount.text, let amt:Int = Int(amtText) {
-            let request = PreAuthRequest(amount: amt, externalId: "\(arc4random())")
-            (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.preAuth(request)
+            let par = PreAuthRequest(amount: amt, externalId: "\(arc4random())")
+            // below are all optional
+            if let enablePrinting = store?.transactionSettings.cloverShouldHandleReceipts {
+                par.disablePrinting = !enablePrinting
+            }
+            par.disableReceiptSelection = store?.transactionSettings.disableReceiptSelection
+            par.disableRestartTransactionOnFail = store?.transactionSettings.disableRestartTransactionOnFailure
+            
+            (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.preAuth(par)
         }
     }
     

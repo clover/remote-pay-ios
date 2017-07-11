@@ -196,6 +196,7 @@
 		607FACD21AFB9204008FA782 /* Example Source */ = {
 			isa = PBXGroup;
 			children = (
+				7E2E68AE1EFBE45F002BD030 /* ui */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				7EC6DEF61D90472D00D852EF /* Assets.xcassets */,
 				7EC6DEF71D90472D00D852EF /* AvailableItemCollectionViewCell.swift */,
@@ -205,8 +206,6 @@
 				7EC6DEFF1D90472D00D852EF /* CloverConnectorListener.swift */,
 				7EC6DF001D90472D00D852EF /* CurrencyUtils.swift */,
 				7EC6DF011D90472D00D852EF /* CurrentOrderListItemTableCell.swift */,
-				607FACD91AFB9204008FA782 /* Main.storyboard */,
-				7EC6DF041D90472D00D852EF /* MiscViewController.swift */,
 				7E41B1F91E5369340065AF21 /* model */,
 				7E41B2001E5392750065AF21 /* ScrollingFormViewController.swift */,
 				7EC6DF121D90472D00D852EF /* SignatureView.swift */,
@@ -215,7 +214,6 @@
 				7ED6963E1EB7CA430010032A /* tabs */,
 				7EC74A4F1D91BCA000D0CBBF /* TestCloverConnectorListener.swift */,
 				7E12A3491E6E011F00EF7458 /* TestDetailsViewController.swift */,
-				7EC74A4D1D91BB8800D0CBBF /* TestViewController.swift */,
 				7E84F8FE1E60AD35003A70B2 /* UITestTableCell.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 			);
@@ -258,6 +256,14 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		7E2E68AE1EFBE45F002BD030 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				607FACD91AFB9204008FA782 /* Main.storyboard */,
+			);
+			name = ui;
+			sourceTree = "<group>";
+		};
 		7E41B1F91E5369340065AF21 /* model */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,12 +296,14 @@
 			children = (
 				7EC74A511D91C32E00D0CBBF /* TabController.swift */,
 				7E41B1FA1E5386A60065AF21 /* ManualRefundViewController.swift */,
+				7EC6DF041D90472D00D852EF /* MiscViewController.swift */,
 				7EEB27291D9C0E640017879B /* OrderDetailsViewController.swift */,
 				7EC6DF051D90472D00D852EF /* OrdersTableViewController.swift */,
 				7E41B1FC1E5386E40065AF21 /* PreAuthViewController.swift */,
 				7EC6DF111D90472D00D852EF /* RegisterViewController.swift */,
 				7EEB720C1EAFFA81008E641D /* SimpleTestViewController.swift */,
 				7E41B1FE1E5387200065AF21 /* VaultCardViewController.swift */,
+				7EC74A4D1D91BB8800D0CBBF /* TestViewController.swift */,
 			);
 			name = tabs;
 			sourceTree = "<group>";

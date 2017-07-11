@@ -18,6 +18,8 @@ public class CloverConnector : NSObject, ICloverConnector {
     public static let CARD_ENTRY_METHOD_NFC_CONTACTLESS:Int = 0b0100 | 0b0100_00000000 | KIOSK_CARD_ENTRY_METHODS;
     public static let CARD_ENTRY_METHOD_MANUAL:Int = 0b1000 | 0b1000_00000000 | KIOSK_CARD_ENTRY_METHODS;
     
+    public static let CARD_ENTRY_METHODS_DEFAULT = CARD_ENTRY_METHOD_MAG_STRIPE | CARD_ENTRY_METHOD_ICC_CONTACT | CARD_ENTRY_METHOD_NFC_CONTACTLESS
+    
     let broadcaster:CloverConnectorBroadcaster = CloverConnectorBroadcaster()
     var device:CloverDevice?
     
@@ -31,7 +33,14 @@ public class CloverConnector : NSObject, ICloverConnector {
     var merchantInfo = MerchantInfo()
 
     public func dispose() {
+        broadcaster.listeners.removeAllObjects()
         device?.dispose()
+        device = nil
+        deviceObserver = nil
+    }
+    
+    deinit {
+        debugPrint("deinit CloverConnector")
     }
     
     @objc
@@ -55,7 +64,7 @@ public class CloverConnector : NSObject, ICloverConnector {
     @objc
     public func initializeConnection() {
         
-        class ConnectionListener:DefaultCloverConnectorListener {
+        /*class ConnectionListener:DefaultCloverConnectorListener {
             private var resetAlready:Bool = false
             override func onDeviceReady(_ merchantInfo: MerchantInfo) {
                 if(!resetAlready) {
@@ -64,13 +73,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                 resetAlready = true
                 self.cloverConnector?.removeCloverConnectorListener(self);
             }
-        }
+        }*/
         
-        addCloverConnectorListener(ConnectionListener(cloverConnector: self)) // the first connection, reset the device
+        //addCloverConnectorListener(ConnectionListener(cloverConnector: self)) // the first connection, reset the device
         if let device = CloverDeviceFactory.get(config) {
             device.subscribe(deviceObserver!)
             self.device = device
-            
+            device.initialize()
         } else {
             notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "initializeConnection: The Clover Device is null, maybe the configuration is invalid"));
         }
@@ -83,21 +92,21 @@ public class CloverConnector : NSObject, ICloverConnector {
                 return;
             } else if(deviceObserver?.lastRequest != nil) {
                 // not using FinishCancel because that will clear the last request
-                var response = SaleResponse(success: true, result: .CANCEL)
+                var response = SaleResponse(success: false, result: .CANCEL)
                 response.reason = "Device busy"
                 response.message = "The Mini appears to be busy. If not, call resetDevice()"
                 broadcaster.notifyOnSaleResponse(response)
                 return
             } else if(saleRequest.amount <= 0) {
-                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In Sale : SaleRequest - the request amount cannot be zero. ");
+                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In Sale : SaleRequest - the request amount cannot be zero. ", requestInfo: TxStartRequestMessage.SALE_REQUEST);
                 return;
             } else if (saleRequest.externalId.characters.count == 0 || saleRequest.externalId.characters.count > 32){
-                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In Sale : SaleRequest - The externalId is invalid. The min length is 1 and the max length is 32. ");
+                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In Sale : SaleRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.SALE_REQUEST);
                 return;
             } else {
                 if let card = saleRequest.vaultedCard {
                     if(!merchantInfo.supportsVaultCards) {
-                        deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In Sale : SaleRequest - Vault Card support is not enabled for the payment gateway. ");
+                        deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In Sale : SaleRequest - Vault Card support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.SALE_REQUEST);
                         return;
                     }
                 }
@@ -105,9 +114,9 @@ public class CloverConnector : NSObject, ICloverConnector {
 
             let tos = saleRequest.disableTipOnScreen ?? false
             saleRequest.tipAmount = saleRequest.tipAmount ?? 0 // force to zero if it isn't passed in
-            saleAuth(saleRequest, suppressTipScreen: tos)
+            saleAuth(saleRequest, suppressTipScreen: tos, requestInfo: TxStartRequestMessage.SALE_REQUEST)
         } else {
-            deviceObserver!.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In sale : The device is not connected.");
+            deviceObserver!.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In sale : The device is not connected.", requestInfo: TxStartRequestMessage.SALE_REQUEST);
             //notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "initializeConnection: The Clover Device is null"));
         }
     }
@@ -120,33 +129,33 @@ public class CloverConnector : NSObject, ICloverConnector {
                 return;
             } else if(deviceObserver?.lastRequest != nil) {
                 // not using FinishCancel because that will clear the last request
-                var response = AuthResponse(success: true, result: .CANCEL)
+                var response = AuthResponse(success: false, result: .CANCEL)
                 response.reason = "Device busy"
                 response.message = "The Mini appears to be busy. If not, resetDevice() must be called"
                 broadcaster.notifyOnAuthResponse(response)
             } else if(authRequest.amount <= 0) {
-                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In Auth : AuthRequest - the request amount cannot be zero. ");
+                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In Auth : AuthRequest - the request amount cannot be zero. ", requestInfo: TxStartRequestMessage.AUTH_REQUEST);
                 return;
             } else if (authRequest.externalId.characters.count == 0 || authRequest.externalId.characters.count > 32){
-                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In Auth : AuthRequest - The externalId is invalid. The min length is 1 and the max length is 32. ");
+                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In Auth : AuthRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.AUTH_REQUEST);
                 return;
             } else {
                 if let card = authRequest.vaultedCard {
                     if(!merchantInfo.supportsVaultCards) {
-                        deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In Auth : AuthRequest - Vault Card support is not enabled for the payment gateway. ");
+                        deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In Auth : AuthRequest - Vault Card support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.AUTH_REQUEST);
                         return;
                     }
                 }
                 
                 if (!merchantInfo.supportsAuths) {
-                    deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"In Auth : AuthRequest - Auth support is not enabled for the payment gateway.")
+                    deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"In Auth : AuthRequest - Auth support is not enabled for the payment gateway.", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
                     return;
                 }
             }
             
-            saleAuth(authRequest, suppressTipScreen: true)
+            saleAuth(authRequest, suppressTipScreen: true,requestInfo:TxStartRequestMessage.AUTH_REQUEST)
         } else {
-            deviceObserver!.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In auth : The device is not connected.");
+            deviceObserver!.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In auth : The device is not connected.", requestInfo: TxStartRequestMessage.AUTH_REQUEST);
             //notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "initializeConnection: The Clover Device is null"));
         }
     }
@@ -181,28 +190,28 @@ public class CloverConnector : NSObject, ICloverConnector {
                 notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "preAuth: The Clover Device is not ready"));
                 return;
             } else if(preAuthRequest.amount <= 0) {
-                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In PreAuth : PreAuthRequest - the request amount cannot be zero. ");
+                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In PreAuth : PreAuthRequest - the request amount cannot be zero. ", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST);
                 return;
             } else if (preAuthRequest.externalId.characters.count == 0 || preAuthRequest.externalId.characters.count > 32){
-                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In PreAuth : PreAuthRequest - The externalId is invalid. The min length is 1 and the max length is 32. ");
+                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In PreAuth : PreAuthRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST);
                 return;
             } else {
                 if let card = preAuthRequest.vaultedCard {
                     if(!merchantInfo.supportsVaultCards) {
-                        deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In PreAuth : PreAuthRequest - Vault Card support is not enabled for the payment gateway. ");
+                        deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In PreAuth : PreAuthRequest - Vault Card support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST);
                         return;
                     }
                 }
                 
                 if (!merchantInfo.supportsPreAuths) {
-                    deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"PreAuth : PreAuthRequest - PreAuth support is not enabled for the payment gateway.")
+                    deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"PreAuth : PreAuthRequest - PreAuth support is not enabled for the payment gateway.", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
                     return;
                 }
             }
             
-            saleAuth(preAuthRequest, suppressTipScreen: true)
+            saleAuth(preAuthRequest, suppressTipScreen: true, requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
         } else {
-            deviceObserver!.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.");
+            deviceObserver!.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST);
             //notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "initializeConnection: The Clover Device is null"));
         }
         
@@ -237,7 +246,7 @@ public class CloverConnector : NSObject, ICloverConnector {
      *
      * @param request
      */
-    private func saleAuth(_ request:TransactionRequest, suppressTipScreen:Bool) {
+    private func saleAuth(_ request:TransactionRequest, suppressTipScreen:Bool, requestInfo:String?) {
         if let device = self.device {
             var tos = suppressTipScreen
 
@@ -296,9 +305,11 @@ public class CloverConnector : NSObject, ICloverConnector {
                     tx.tipMode = CLVModels.Payments.TipMode(rawValue: tm.rawValue)
                 }
                 tx.disableCashBack = sr.disableCashback
+                tx.forceOfflinePayment = sr.forceOfflinePayment
             } else if let ar = request as? AuthRequest {
                 builder.taxAmount = ar.taxAmount
                 builder.tippableAmount = ar.tippableAmount
+                builder.tipAmount = nil
                 if let disableCashback = ar.disableCashback {
                     builder.isDisableCashBack = disableCashback
                 }
@@ -309,12 +320,14 @@ public class CloverConnector : NSObject, ICloverConnector {
                     builder.approveOfflinePaymentWithoutPrompt = ar.approveOfflinePaymentWithoutPrompt
                 }
                 tx.disableCashBack = ar.disableCashback
+                tx.tipMode = CLVModels.Payments.TipMode.ON_PAPER
+                tx.forceOfflinePayment = ar.forceOfflinePayment
             } else if let par = request as? PreAuthRequest {
                 // do nothing extra for now...
             }
             
             if let payIntent:PayIntent = builder.build() {
-                device.doTxStart(payIntent, order: nil, suppressTipScreen: tos); //
+                device.doTxStart(payIntent, order: nil, suppressTipScreen: tos, requestInfo:requestInfo) //
             }
             
             
@@ -370,7 +383,7 @@ public class CloverConnector : NSObject, ICloverConnector {
                 prr.reason = "Request Validation Error"
                 prr.message = "In RefundPayment : RefundPaymentRequest Amount must be greater than zero when FullRefund is set to false. "
                 deviceObserver!.lastPRR = prr;
-                deviceObserver!.onFinishCancel();
+                deviceObserver!.onFinishCancel(TxStartRequestMessage.REFUND_REQUEST);
                 return;
             } else {
                 //TODO: check for null orderId, paymentId, (amount or fullRefund)
@@ -383,7 +396,7 @@ public class CloverConnector : NSObject, ICloverConnector {
             prr.reason = "Device connection error"
             prr.message = "In RefundPayment : RefundPaymentRequest device is not connected."
             deviceObserver!.lastPRR = prr;
-            deviceObserver!.onFinishCancel();
+            deviceObserver!.onFinishCancel(TxStartRequestMessage.REFUND_REQUEST);
             return;
         }
 
@@ -397,18 +410,18 @@ public class CloverConnector : NSObject, ICloverConnector {
                 notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "manualRefund: The Clover Device is not ready"));
                 return;
             } else if manualRefundRequest.amount <= 0 {
-                deviceObserver!.onFinishCancel(false, result: ResultCode.FAIL, reason: "Invalid argument", message: "The amount must be greater than 0")
+                deviceObserver!.onFinishCancel(false, result: ResultCode.FAIL, reason: "Invalid argument", message: "The amount must be greater than 0", requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
                 return;
             } else if (manualRefundRequest.externalId.characters.count == 0 || manualRefundRequest.externalId.characters.count > 32){
-                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In PreAuth : ManualRefundRequest - The externalId is invalid. The min length is 1 and the max length is 32. ");
+                deviceObserver!.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In PreAuth : ManualRefundRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.CREDIT_REQUEST);
                 return;
             }
             if !merchantInfo.supportsManualRefunds {
-                deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Invalid argument.", message: "In ManualRefund : ManualRefundRequest - Manual Refunds support is not enabled for the payment gateway. ");
+                deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Invalid argument.", message: "In ManualRefund : ManualRefundRequest - Manual Refunds support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.CREDIT_REQUEST);
             } else {
                 if (manualRefundRequest.vaultedCard ?? nil != nil) {
                     if !merchantInfo.supportsVaultCards {
-                        deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Invalid argument.", message: "In ManualRefund : ManualRefundRequest - VaultedCard support is not enabled for the payment gateway. ");
+                        deviceObserver!.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Invalid argument.", message: "In ManualRefund : ManualRefundRequest - VaultedCard support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.CREDIT_REQUEST);
                     }
                 } else {
                     let builder = PayIntent.Builder(amount:-1*Swift.abs(manualRefundRequest.amount), externalId: manualRefundRequest.externalId)
@@ -430,11 +443,11 @@ public class CloverConnector : NSObject, ICloverConnector {
                         tx.cloverShouldHandleReceipts = !dp
                     }
                     
-                    device.doTxStart(builder.build(), order: nil, suppressTipScreen: true)
+                    device.doTxStart(builder.build(), order: nil, suppressTipScreen: true, requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
                 }
             }
         } else {
-            deviceObserver!.onFinishCancel(false, result: ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.");
+            deviceObserver!.onFinishCancel(false, result: ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.", requestInfo: TxStartRequestMessage.CREDIT_REQUEST);
         }
 
     }
@@ -547,7 +560,7 @@ public class CloverConnector : NSObject, ICloverConnector {
         }
     }
     
-    /*public func printImage(_ image: UIImage) {
+    public func printImage(_ image: UIImage) {
         if let device = device {
             if !isReady {
                 notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "printImage: The Clover Device is not ready"));
@@ -558,7 +571,7 @@ public class CloverConnector : NSObject, ICloverConnector {
             notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "printImage: The Clover Device is null"));
         }
 
-    }*/
+    }
     
     @objc
     public func cancel() {
@@ -735,6 +748,57 @@ public class CloverConnector : NSObject, ICloverConnector {
             notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "retrievePendingPayments: The Clover Device is null"));
         }
     }
+    
+    public func startCustomActivity(request: CustomActivityRequest) {
+        if let device = device {
+            if !isReady {
+                notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "startCustomActivity: The Clover Device is not ready"));
+                return;
+            }
+            device.doStartActivity(action: request.action, payload: request.payload, nonBlocking: request.nonBlocking ?? false)
+        } else {
+            notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "startCustomActivity: The Clover Device is null"));
+        }
+    }
+    
+    public func sendMessageToActivity(request: MessageToActivity) {
+        if let device = device {
+            if !isReady {
+                notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "sendMessageToActivity: The Clover Device is not ready"));
+                return
+            }
+            device.doSendMessageToActivity(action: request.action, payload: request.payload)
+        } else {
+            notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "sendMessageToActivity: The Clover Device is null"));
+        }
+    }
+    
+    public func retrievePayment(_ request: RetrievePaymentRequest) {
+        if let device = device {
+            if !isReady {
+                notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "retrievePayment: The Clover Device is not ready"));
+                return;
+            }
+            device.doRetrievePayment(request.externalPayentId)
+        } else {
+            notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "retrievePayment: The Clover Device is null"));
+        }
+    }
+    
+    public func retrieveDeviceStatus(_ request: RetrieveDeviceStatusRequest) {
+        if let device = device {
+            if !isReady {
+                notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "retrieveDeviceStatus: The Clover Device is not ready"));
+                return;
+            }
+            device.doRetrieveDeviceStatus(request.sendLastMessage)
+        } else {
+            notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "retrieveDeviceStatus: The Clover Device is null"));
+        }
+    }
+    
+    
+    
 
     class CloverConnectorDeviceObserver : CloverDeviceObserver {
         let cloverConnector:CloverConnector
@@ -834,55 +898,105 @@ public class CloverConnector : NSObject, ICloverConnector {
             // listener will be notified in onFinishOk
         }
         
-        private func onFinishCancel(_ success: Bool, result:ResultCode, reason:String?, message:String?) {
+        private func onFinishCancel(_ success: Bool, result:ResultCode, reason:String?, message:String?, requestInfo:String?) {
+            if let ri = requestInfo {
+                
+                switch ri {
+                case TxStartRequestMessage.SALE_REQUEST:
+                    lastRequest = nil
+                    let saleResponse = SaleResponse(success: success, result: result)
+                    saleResponse.reason = "Request Canceled"
+                    saleResponse.reason = reason ?? saleResponse.reason
+                    saleResponse.message = "SaleRequest canceled by user"
+                    saleResponse.message = message ?? saleResponse.message
+                    saleResponse.payment = nil
+                    cloverConnector.broadcaster.notifyOnSaleResponse(saleResponse);
+                    break
+                case TxStartRequestMessage.AUTH_REQUEST:
+                    lastRequest = nil
+                    let authResponse = AuthResponse(success: success, result: result)
+                    authResponse.reason = "Request canceled"
+                    authResponse.reason = reason ?? authResponse.reason
+                    authResponse.message = "AuthRequest canceled by user"
+                    authResponse.message = message ?? authResponse.message
+                    authResponse.payment = nil
+                    cloverConnector.broadcaster.notifyOnAuthResponse(authResponse);
+                    break
+                case TxStartRequestMessage.PREAUTH_REQUEST:
+                    lastRequest = nil
+                    let preAuthResponse = PreAuthResponse(success: success, result: result)
+                    preAuthResponse.reason = "Request Canceled";
+                    preAuthResponse.reason = reason ?? preAuthResponse.reason
+                    preAuthResponse.message = "PreAuth Request canceled by user"
+                    preAuthResponse.message = message ?? preAuthResponse.message
+                    preAuthResponse.payment = nil
+                    cloverConnector.broadcaster.notifyOnPreAuthResponse(preAuthResponse);
+                    break
+                case TxStartRequestMessage.CREDIT_REQUEST:
+                    lastRequest = nil
+                    let refundResponse = ManualRefundResponse(success: success, result: result)
+                    refundResponse.reason = "Request canceled"
+                    refundResponse.reason = reason ?? refundResponse.reason
+                    refundResponse.message = "ManualRefundRequest canceled by user"
+                    refundResponse.message = message ?? refundResponse.message
+                    cloverConnector.broadcaster.notifyOnManualRefundResponse(refundResponse);
+                    break
+                default:
+                    processOldFinishCancel(success, result: result, reason: reason, message: message)
+                }
+            } else {
+                processOldFinishCancel(success, result: result, reason: reason, message: message)
+            }
             
-            
+
+            if let device = cloverConnector.device {
+                device.doShowWelcomeScreen();
+            }
+        }
+        private func processOldFinishCancel(_ success: Bool, result:ResultCode, reason:String?, message:String?) {
             if let lastReq = lastRequest {
                 lastRequest = nil
                 if let lastReq = lastReq as? PreAuthRequest {
                     let preAuthResponse = PreAuthResponse(success: success, result: result)
                     preAuthResponse.reason = "Request Canceled";
-                    preAuthResponse.reason = reason ?? reason
+                    preAuthResponse.reason = reason ?? preAuthResponse.reason
                     preAuthResponse.message = "PreAuth Request canceled by user"
-                    preAuthResponse.message = message ?? message
+                    preAuthResponse.message = message ?? preAuthResponse.message
                     preAuthResponse.payment = nil
                     cloverConnector.broadcaster.notifyOnPreAuthResponse(preAuthResponse);
                 } else if let lastReq = lastReq as? SaleRequest {
                     let saleResponse = SaleResponse(success: success, result: result)
                     saleResponse.reason = "Request Canceled"
-                    saleResponse.reason = reason ?? reason
+                    saleResponse.reason = reason ?? saleResponse.reason
                     saleResponse.message = "SaleRequest canceled by user"
-                    saleResponse.message = message ?? message
+                    saleResponse.message = message ?? saleResponse.message
                     saleResponse.payment = nil
                     cloverConnector.broadcaster.notifyOnSaleResponse(saleResponse);
                 } else if let lastReq = lastReq as? AuthRequest {
                     let authResponse = AuthResponse(success: success, result: result)
                     authResponse.reason = "Request canceled"
-                    authResponse.reason = reason ?? reason
+                    authResponse.reason = reason ?? authResponse.reason
                     authResponse.message = "AuthRequest canceled by user"
-                    authResponse.message = message ?? message
+                    authResponse.message = message ?? authResponse.message
                     authResponse.payment = nil
                     cloverConnector.broadcaster.notifyOnAuthResponse(authResponse);
                 } else if let lastReq = lastReq as? ManualRefundRequest {
                     let refundResponse = ManualRefundResponse(success: success, result: result)
                     refundResponse.reason = "Request canceled"
-                    refundResponse.reason = reason ?? reason
+                    refundResponse.reason = reason ?? refundResponse.reason
                     refundResponse.message = "ManualRefundRequest canceled by user"
-                    refundResponse.message = message ?? message
+                    refundResponse.message = message ?? refundResponse.message
                     cloverConnector.broadcaster.notifyOnManualRefundResponse(refundResponse);
                 }
-
+                
             } else if let lastPRRequest = lastPRR {
                 cloverConnector.broadcaster.notifyOnPaymentRefundResponse(lastPRRequest);
                 self.lastPRR = nil;
             }
-            if let device = cloverConnector.device {
-                device.doShowWelcomeScreen();
-            }
         }
 
-        func onFinishCancel() {
-            onFinishCancel(false, result: ResultCode.CANCEL, reason: nil, message: nil)
+        func onFinishCancel(requestInfo:String?) {
+            onFinishCancel(false, result: ResultCode.CANCEL, reason: nil, message: nil, requestInfo: requestInfo)
         }
         
         func onFinishOk(_ credit: CLVModels.Payments.Credit) {
@@ -891,10 +1005,43 @@ public class CloverConnector : NSObject, ICloverConnector {
             cloverConnector.broadcaster.notifyOnManualRefundResponse(response)
         }
         
-        func onFinishOk(_ payment: CLVModels.Payments.Payment, signature: Signature?) {
+        func onFinishOk(_ payment: CLVModels.Payments.Payment, signature: Signature?, requestInfo: String?) {
             
             cloverConnector.device?.doShowWelcomeScreen() // doing this first allows the handlers to change the UI behavior
 
+            if let ri = requestInfo {
+                switch ri {
+                case TxStartRequestMessage.SALE_REQUEST:
+                    lastRequest = nil
+                    let response = SaleResponse(success:true, result:.SUCCESS)
+                    response.payment = payment
+                    response.signature = signature
+                    cloverConnector.broadcaster.notifyOnSaleResponse(response)
+                    break
+                case TxStartRequestMessage.AUTH_REQUEST:
+                    lastRequest = nil
+                    let response = AuthResponse(success:true, result:.SUCCESS)
+                    response.payment = payment
+                    response.signature = signature
+                    cloverConnector.broadcaster.notifyOnAuthResponse(response)
+                    break
+                case TxStartRequestMessage.PREAUTH_REQUEST:
+                    lastRequest = nil
+                    let response = PreAuthResponse(success:true, result:.SUCCESS);
+                    response.payment = payment
+                    response.signature = signature
+                    cloverConnector.broadcaster.notifyOnPreAuthResponse(response);
+                    break
+                default:
+                    print("finish ok with invalid requestInfo: \(ri)", __stderrp)
+                    processOldFinishOk(payment, signature: signature)
+                    break
+                }
+            } else {
+                processOldFinishOk(payment, signature: signature)
+            }
+        }
+        private func processOldFinishOk(_ payment: CLVModels.Payments.Payment, signature: Signature?) {
             if let lr = lastRequest {
                 lastRequest = nil
                 if let _lr = lr as? PreAuthRequest {
@@ -916,13 +1063,11 @@ public class CloverConnector : NSObject, ICloverConnector {
                     // this could be a problem, or this is from a re-issue receipt screen
                 }
             } else {
-                print("We have a finishOK without a last request")
+                print("We have a finishOK without a last request", __stderrp)
             }
-
- 
         }
         
-        func onFinishOk(_ refund: CLVModels.Payments.Refund) {
+        func onFinishOk(_ refund: CLVModels.Payments.Refund, requestInfo:String?) {
             lastRequest = nil
             cloverConnector.device?.doShowWelcomeScreen();
                 // Since finishOk is the more appropriate/consistent location in the "flow" to
@@ -942,6 +1087,8 @@ public class CloverConnector : NSObject, ICloverConnector {
                     }
                 } else {
                     // TODO: have a refund response in finishOk, but not one from onRefundResponse?
+                    let rpr = RefundPaymentResponse(success:true, result: ResultCode.SUCCESS, orderId: refund.orderRef?.id ?? nil, paymentId:refund.payment?.id ?? nil, refund:refund)
+                    cloverConnector.broadcaster.notifyOnPaymentRefundResponse(rpr)
                 }
         }
         
@@ -957,8 +1104,17 @@ public class CloverConnector : NSObject, ICloverConnector {
             cloverConnector.broadcaster.notifyOnTipAdded(tipAmount);
         }
         
-        func onTxStartResponse(_ result:TxStartResponseResult?, externalId:String) {
-            if let result = result {
+        func onActivityResponse(_ status:ResultCode, action a:String?, payload p:String?, failReason fr: String?) {
+            let success = status == .SUCCESS
+            let car = CustomActivityResponse(success: success, result: status, action: a ?? "<unknown>", payload: p)
+            car.reason = fr
+            
+            cloverConnector.broadcaster.notifyOnCustomActivityResponse(car)
+        }
+        
+        
+        func onTxStartResponse(_ result:TxStartResponseResult, externalId:String, requestInfo: String?) {
+//            if let result = result {
                 let success:Bool = result == TxStartResponseResult.SUCCESS ? true : false;
                 if (success)
                 {
@@ -966,44 +1122,11 @@ public class CloverConnector : NSObject, ICloverConnector {
                 }
                 let duplicate:Bool = result == TxStartResponseResult.DUPLICATE
                 
-                if duplicate {
-                    
-                    if let lastR = self.lastRequest as? PreAuthRequest
-                    {
-                        let response:PreAuthResponse = PreAuthResponse(success:false, result:ResultCode.FAIL)
-                        if (duplicate)
-                        {
-                            response.result = .CANCEL
-                            response.reason = "\(result)"
-                            response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
-                        }
-                        else
-                        {
-                            response.result = .FAIL
-                            response.reason = "\(result)"
-                        }
-                        cloverConnector.broadcaster.notifyOnPreAuthResponse(response);
-                        self.lastRequest = nil
-                    }
-                    else if let lastR = self.lastRequest as? AuthRequest
-                    {
-                        let response:AuthResponse = AuthResponse(success:false, result:ResultCode.FAIL)
-                        if (duplicate)
-                        {
-                            response.result = ResultCode.CANCEL
-                            response.reason = "\(result)"
-                            response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
-                        }
-                        else
-                        {
-                            response.result = .FAIL
-                            response.reason = "\(result)"
-                        }
-                        cloverConnector.broadcaster.notifyOnAuthResponse(response);
-                        self.lastRequest = nil
-                    }
-                    else if let lastR = self.lastRequest as? SaleRequest
-                    {
+                if requestInfo == nil {
+                    oldHandleDuplicateCx(result, externalId: externalId, duplicate: duplicate)
+                } else {
+                    self.lastRequest = nil
+                    if TxStartRequestMessage.SALE_REQUEST == requestInfo {
                         let response:SaleResponse = SaleResponse(success:false, result:ResultCode.FAIL);
                         if (duplicate)
                         {
@@ -1017,9 +1140,35 @@ public class CloverConnector : NSObject, ICloverConnector {
                             response.reason = "\(result)"
                         }
                         cloverConnector.broadcaster.notifyOnSaleResponse(response);
-                    }
-                    else if let lastR = self.lastRequest as? ManualRefundRequest
-                    {
+                    } else if TxStartRequestMessage.AUTH_REQUEST == requestInfo {
+                        let response:AuthResponse = AuthResponse(success:false, result:ResultCode.FAIL)
+                        if (duplicate)
+                        {
+                            response.result = ResultCode.CANCEL
+                            response.reason = "\(result)"
+                            response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                        }
+                        else
+                        {
+                            response.result = .FAIL
+                            response.reason = "\(result)"
+                        }
+                        cloverConnector.broadcaster.notifyOnAuthResponse(response);
+                    } else if TxStartRequestMessage.PREAUTH_REQUEST == requestInfo {
+                        let response:PreAuthResponse = PreAuthResponse(success:false, result:ResultCode.FAIL)
+                        if (duplicate)
+                        {
+                            response.result = .CANCEL
+                            response.reason = "\(result)"
+                            response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                        }
+                        else
+                        {
+                            response.result = .FAIL
+                            response.reason = "\(result)"
+                        }
+                        cloverConnector.broadcaster.notifyOnPreAuthResponse(response);
+                    } else if TxStartRequestMessage.CREDIT_REQUEST == requestInfo {
                         let response:ManualRefundResponse = ManualRefundResponse(success:false, result:ResultCode.FAIL)
                         if (duplicate)
                         {
@@ -1036,8 +1185,82 @@ public class CloverConnector : NSObject, ICloverConnector {
                     }
                 }
 
-            } else {
-                return;
+//            } else {
+//                self.lastRequest = nil
+//                return;
+//            }
+
+        }
+        
+        private func oldHandleDuplicateCx(_ result:TxStartResponseResult?, externalId:String, duplicate:Bool) {
+            
+            if let lastR = self.lastRequest as? PreAuthRequest
+            {
+                self.lastRequest = nil
+                let response:PreAuthResponse = PreAuthResponse(success:false, result:ResultCode.FAIL)
+                if (duplicate)
+                {
+                    response.result = .CANCEL
+                    response.reason = "\(result)"
+                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                }
+                else
+                {
+                    response.result = .FAIL
+                    response.reason = "\(result)"
+                }
+                cloverConnector.broadcaster.notifyOnPreAuthResponse(response);
+            }
+            else if let lastR = self.lastRequest as? AuthRequest
+            {
+                self.lastRequest = nil
+                let response:AuthResponse = AuthResponse(success:false, result:ResultCode.FAIL)
+                if (duplicate)
+                {
+                    response.result = ResultCode.CANCEL
+                    response.reason = "\(result)"
+                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                }
+                else
+                {
+                    response.result = .FAIL
+                    response.reason = "\(result)"
+                }
+                cloverConnector.broadcaster.notifyOnAuthResponse(response);
+            }
+            else if let lastR = self.lastRequest as? SaleRequest
+            {
+                self.lastRequest = nil
+                let response:SaleResponse = SaleResponse(success:false, result:ResultCode.FAIL);
+                if (duplicate)
+                {
+                    response.result = .CANCEL
+                    response.reason = "\(result)"
+                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                }
+                else
+                {
+                    response.result = .FAIL
+                    response.reason = "\(result)"
+                }
+                cloverConnector.broadcaster.notifyOnSaleResponse(response);
+            }
+            else if let lastR = self.lastRequest as? ManualRefundRequest
+            {
+                self.lastRequest = nil
+                let response:ManualRefundResponse = ManualRefundResponse(success:false, result:ResultCode.FAIL)
+                if (duplicate)
+                {
+                    response.result = .CANCEL
+                    response.reason = "\(result)"
+                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                }
+                else
+                {
+                    response.result = .FAIL
+                    response.reason = "\(result)"
+                }
+                cloverConnector.broadcaster.notifyOnManualRefundResponse(response);
             }
 
         }
@@ -1114,6 +1337,39 @@ public class CloverConnector : NSObject, ICloverConnector {
             
             cloverConnector.broadcaster.notifyOnReadCardResponse(rcdr);
         }
+        
+        func onMessageFromActivity(_ action:String, payload p:String?) {
+            let messageFromActivity = MessageFromActivity(action:action, payload:p)
+            cloverConnector.broadcaster.notifyOnMessageFromActivity(messageFromActivity)
+        }
+        
+        func onResetDeviceResponse(_ result:ResultCode, reason: String?, state:ExternalDeviceState) {
+            let deviceResponse = ResetDeviceResponse(result: result, state: state)
+            cloverConnector.broadcaster.notifyOnResetDeviceResponse(deviceResponse)
+        }
+        
+        func onRetrievePaymentResponse(result: ResultStatus, reason: String?, queryStatus qs: QueryStatus, payment: CLVModels.Payments.Payment?, externalPaymentId epi:String?) {
+            let success = result == .SUCCESS
+            let retrievePaymentResponse = RetrievePaymentResponse(success: success, result: success ? ResultCode.SUCCESS : ResultCode.CANCEL, queryStatus: qs, payment: payment, externalPaymentId: epi)
+            cloverConnector.broadcaster.notifyOnRetrievePayment(retrievePaymentResponse)
+        }
+        
+        func onDeviceStatusResponse(_ result: ResultStatus, reason: String?, state: ExternalDeviceState, subState: ExternalDeviceSubState?, data: ExternalDeviceStateData?) {
+            let success = result == .SUCCESS
+            let result = success ? ResultCode.SUCCESS : ResultCode.CANCEL
+            let response = RetrieveDeviceStatusResponse(success: success, result: result, state: state, data: data)
+            //response.subState = subState // this is for internal use only right now, and not exposed in the api
+            cloverConnector.broadcaster.notifyOnDeviceStatusResponse(response)
+        }
+        
+        func onResetDeviceResponse(result: ResultStatus, reason: String?, state: ExternalDeviceState) {
+            let result = result == .SUCCESS ? ResultCode.SUCCESS : ResultCode.CANCEL
+            let response = ResetDeviceResponse(result: result, state: state)
+            response.reason = reason
+            cloverConnector.broadcaster.notifyOnResetDeviceResponse(response)
+        }
+        
+
         
         func onTxStartResponse(_ result: TxStartResponseResult, externalId: String) {
             let success = result == TxStartResponseResult.SUCCESS ? true : false

@@ -16,13 +16,26 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
     public var posSerialNumber:String
     public var pairingAuthToken:String?
     private var pairingConfig:PairingDeviceConfiguration
-    public var disableSSLValidation:Bool = false
+//    public var disableSSLValidation:Bool = false
+    /// How ofter a ping is sent to the device server
     public var pingFrequency:Int?
+    /// How long to wait for a pong, before disconnecting
+    public var pongTimeout:Int?
+    /// How long to wait after a failed connection to retry
+    public var reconnectTimer:Int?
+    /// How long to wait for a pong, before reporting a disconnect.
+    /// set this value less than pongTimeout, and it will report a disconnect before closing the connection
+    /// set this value greater than pongTimeout, and the disconnect will be reported after pongTimeout
+    public var reportConnectionProblemTimeout:Int?
     
     public var remoteSourceSDK:String {
         get {
-            return "com.cloverconnector.ios.ws:1.2.0.a"
+            return "com.cloverconnector.ios.ws:1.3.1-RC1.0"
         }
+    }
+    
+    deinit {
+        debugPrint("deinit WebSocketDeviceConfiguration")
     }
     
     public init(endpoint:String, remoteApplicationID:String, posName:String, posSerial:String, pairingAuthToken:String?, pairingDeviceConfiguration:PairingDeviceConfiguration) {
@@ -35,7 +48,7 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
     }
     
     public func getTransport() -> CloverTransport? {
-        let transport = WebSocketCloverTransport(endpointURL: endpoint, posName: posName, serialNumber: posSerialNumber, pairingAuthToken: pairingAuthToken, pairingDeviceConfiguration: pairingConfig, pingFrequency: self.pingFrequency);
+        let transport = WebSocketCloverTransport(endpointURL: endpoint, posName: posName, serialNumber: posSerialNumber, pairingAuthToken: pairingAuthToken, pairingDeviceConfiguration: pairingConfig, pingFrequency: self.pingFrequency, pongTimeout: pongTimeout, reconnectDelay: reconnectTimer, reportConnectionProblemAfter: reportConnectionProblemTimeout);
         return transport
     }
     

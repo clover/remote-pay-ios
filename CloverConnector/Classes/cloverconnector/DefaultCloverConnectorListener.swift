@@ -12,7 +12,7 @@ import Foundation
 @objc
 public class DefaultCloverConnectorListener : NSObject, ICloverConnectorListener {
    
-    public var cloverConnector:ICloverConnector?
+    public weak var cloverConnector:ICloverConnector?
     
     public init(cloverConnector:ICloverConnector?) {
         self.cloverConnector = cloverConnector
@@ -146,8 +146,15 @@ public class DefaultCloverConnectorListener : NSObject, ICloverConnectorListener
     
     public func onReadCardDataResponse(_ readCardDataResponse: ReadCardDataResponse) {}
     
-    public func onConfirmPaymentRequest(_ request: ConfirmPaymentRequest) {
-        fatalError("Must be implemented!")
-    }
+    public func onConfirmPaymentRequest(_ request: ConfirmPaymentRequest) {}
     
+    public func onCustomActivityResponse(customActivityResponse: CustomActivityResponse) {}
+    
+    public func onMessageFromActivity(response: MessageFromActivity) {}
+    
+    public func onResetDeviceResponse(response: ResetDeviceResponse) {}
+
+    public func onRetrievePaymentResponse(response: RetrievePaymentResponse) {}
+
+    public func onRetrieveDeviceStatusResponse(_response: RetrieveDeviceStatusResponse) {}
 }
