@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CloverConnector Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/CloverConnector" class="dashAnchor"></a>
+    <a title="CloverConnector Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">CloverConnector Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">CloverConnector Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        CloverConnector Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../API.html">API</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ICloverConnector.html">ICloverConnector</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloverConnector.html">CloverConnector</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ICloverConnectorListener.html">ICloverConnectorListener</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WebSocketDeviceConfiguration.html">WebSocketDeviceConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../API.html#/s:C15CloverConnector26NetworkDeviceConfiguration">NetworkDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Payment.html">Payment</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/SaleRequest.html">SaleRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SaleRequest/TipMode.html">– TipMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Payment.html#/s:C15CloverConnector12SaleResponse">SaleResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AuthRequest.html">AuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Payment.html#/s:C15CloverConnector12AuthResponse">AuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PreAuthRequest.html">PreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Payment.html#/s:C15CloverConnector15PreAuthResponse">PreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ManualRefundRequest.html">ManualRefundRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ManualRefundResponse.html">ManualRefundResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TipAdjustAuthRequest.html">TipAdjustAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TipAdjustAuthResponse.html">TipAdjustAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CapturePreAuthRequest.html">CapturePreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CapturePreAuthResponse.html">CapturePreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VoidPaymentRequest.html">VoidPaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VoidPaymentResponse.html">VoidPaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePaymentRequest.html">RetrievePaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePaymentResponse.html">RetrievePaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloseoutRequest.html">CloseoutRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloseoutResponse.html">CloseoutResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ReadCardDataRequest.html">ReadCardDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ReadCardDataResponse.html">ReadCardDataResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VaultCardRequest.html">VaultCardRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VaultCardResponse.html">VaultCardResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Signature.html">Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Signature/Stroke.html">– Stroke</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Device.html">Device</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/MerchantInfo.html">MerchantInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeviceInfo.html">DeviceInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayOrder.html">DisplayOrder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayLineItem.html">DisplayLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayDiscount.html">DisplayDiscount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayPayment.html">DisplayPayment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentReceiptMessage.html">PrintPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentMerchantCopyReceiptMessage.html">PrintPaymentMerchantCopyReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintRefundPaymentReceiptMessage.html">PrintRefundPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentDeclineReceiptMessage.html">PrintPaymentDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintManualRefundReceiptMessage.html">PrintManualRefundReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintManualRefundDeclineReceiptMessage.html">PrintManualRefundDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrieveDeviceStatusRequest.html">RetrieveDeviceStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrieveDeviceStatusResponse.html">RetrieveDeviceStatusResponse</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Custom Activities.html">Custom Activities</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/CustomActivityRequest.html">CustomActivityRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CustomActivityResponse.html">CustomActivityResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Custom Activities.html#/s:C15CloverConnector17MessageToActivity">MessageToActivity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Custom Activities.html#/s:C15CloverConnector19MessageFromActivity">MessageFromActivity</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Pairing.html">Pairing</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/PairingDeviceConfiguration.html">PairingDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BaseActivityMessage.html">BaseActivityMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BaseResponse.html">BaseResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels.html">CLVModels</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Customers.html">– Customers</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Order.html">– Order</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Payments.html">– Payments</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PaymentResponse.html">PaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ResetDeviceResponse.html">ResetDeviceResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePendingPaymentsResponse.html">RetrievePendingPaymentsResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ShowPaymentReceiptOptionsRequest.html">ShowPaymentReceiptOptionsRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TransactionRequest.html">TransactionRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Enums.html">Other Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ErrorCode.html">ErrorCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/QueryStatus.html">QueryStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ResultCode.html">ResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/VoidReason.html">VoidReason</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>CloverConnector</h1>
+            
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC15CloverConnector15CloverConnector28CARD_ENTRY_METHOD_MAG_STRIPESi"></a>
+                    <a name="//apple_ref/swift/Variable/CARD_ENTRY_METHOD_MAG_STRIPE" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC15CloverConnector15CloverConnector28CARD_ENTRY_METHOD_MAG_STRIPESi">CARD_ENTRY_METHOD_MAG_STRIPE</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC15CloverConnector15CloverConnector29CARD_ENTRY_METHOD_ICC_CONTACTSi"></a>
+                    <a name="//apple_ref/swift/Variable/CARD_ENTRY_METHOD_ICC_CONTACT" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC15CloverConnector15CloverConnector29CARD_ENTRY_METHOD_ICC_CONTACTSi">CARD_ENTRY_METHOD_ICC_CONTACT</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC15CloverConnector15CloverConnector33CARD_ENTRY_METHOD_NFC_CONTACTLESSSi"></a>
+                    <a name="//apple_ref/swift/Variable/CARD_ENTRY_METHOD_NFC_CONTACTLESS" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC15CloverConnector15CloverConnector33CARD_ENTRY_METHOD_NFC_CONTACTLESSSi">CARD_ENTRY_METHOD_NFC_CONTACTLESS</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC15CloverConnector15CloverConnector24CARD_ENTRY_METHOD_MANUALSi"></a>
+                    <a name="//apple_ref/swift/Variable/CARD_ENTRY_METHOD_MANUAL" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC15CloverConnector15CloverConnector24CARD_ENTRY_METHOD_MANUALSi">CARD_ENTRY_METHOD_MANUAL</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC15CloverConnector15CloverConnector26CARD_ENTRY_METHODS_DEFAULTSi"></a>
+                    <a name="//apple_ref/swift/Variable/CARD_ENTRY_METHODS_DEFAULT" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC15CloverConnector15CloverConnector26CARD_ENTRY_METHODS_DEFAULTSi">CARD_ENTRY_METHODS_DEFAULT</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector7disposeFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/dispose()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector7disposeFT_T_">dispose()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">dispose</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnectorcFT6configPS_25CloverDeviceConfiguration__S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(config:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnectorcFT6configPS_25CloverDeviceConfiguration__S0_">init(config:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector26addCloverConnectorListenerFPS_24ICloverConnectorListener_T_"></a>
+                    <a name="//apple_ref/swift/Method/addCloverConnectorListener(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector26addCloverConnectorListenerFPS_24ICloverConnectorListener_T_">addCloverConnectorListener(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector29removeCloverConnectorListenerFPS_24ICloverConnectorListener_T_"></a>
+                    <a name="//apple_ref/swift/Method/removeCloverConnectorListener(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector29removeCloverConnectorListenerFPS_24ICloverConnectorListener_T_">removeCloverConnectorListener(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector20initializeConnectionFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/initializeConnection()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector20initializeConnectionFT_T_">initializeConnection()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">initializeConnection</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector4saleFCS_11SaleRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/sale(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector4saleFCS_11SaleRequestT_">sale(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">sale</span><span class="p">(</span><span class="n">_</span> <span class="nv">saleRequest</span><span class="p">:</span> <span class="kt"><a href="../Classes/SaleRequest.html">SaleRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector4authFCS_11AuthRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/auth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector4authFCS_11AuthRequestT_">auth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">auth</span><span class="p">(</span><span class="n">_</span> <span class="nv">authRequest</span><span class="p">:</span> <span class="kt"><a href="../Classes/AuthRequest.html">AuthRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector13tipAdjustAuthFCS_20TipAdjustAuthRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/tipAdjustAuth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector13tipAdjustAuthFCS_20TipAdjustAuthRequestT_">tipAdjustAuth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tipAdjustAuth</span><span class="p">(</span><span class="n">_</span> <span class="nv">tipAdjustAuthRequest</span><span class="p">:</span> <span class="kt"><a href="../Classes/TipAdjustAuthRequest.html">TipAdjustAuthRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector7preAuthFCS_14PreAuthRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/preAuth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector7preAuthFCS_14PreAuthRequestT_">preAuth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">preAuth</span><span class="p">(</span><span class="n">_</span> <span class="nv">preAuthRequest</span><span class="p">:</span> <span class="kt"><a href="../Classes/PreAuthRequest.html">PreAuthRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector14capturePreAuthFCS_21CapturePreAuthRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/capturePreAuth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector14capturePreAuthFCS_21CapturePreAuthRequestT_">capturePreAuth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">capturePreAuth</span><span class="p">(</span><span class="n">_</span> <span class="nv">capturePreAuthRequest</span><span class="p">:</span> <span class="kt"><a href="../Classes/CapturePreAuthRequest.html">CapturePreAuthRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector15acceptSignatureFCS_22VerifySignatureRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/acceptSignature(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector15acceptSignatureFCS_22VerifySignatureRequestT_">acceptSignature(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">acceptSignature</span><span class="p">(</span><span class="n">_</span> <span class="nv">signatureVerifyRequest</span><span class="p">:</span> <span class="kt"><a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector15rejectSignatureFCS_22VerifySignatureRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/rejectSignature(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector15rejectSignatureFCS_22VerifySignatureRequestT_">rejectSignature(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">rejectSignature</span><span class="p">(</span><span class="n">_</span> <span class="nv">signatureVerifyRequest</span><span class="p">:</span> <span class="kt"><a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector13refundPaymentFCS_20RefundPaymentRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/refundPayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector13refundPaymentFCS_20RefundPaymentRequestT_">refundPayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">refundPayment</span><span class="p">(</span><span class="n">_</span> <span class="nv">refundPaymentRequest</span><span class="p">:</span> <span class="kt">RefundPaymentRequest</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector12manualRefundFCS_19ManualRefundRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/manualRefund(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector12manualRefundFCS_19ManualRefundRequestT_">manualRefund(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">manualRefund</span><span class="p">(</span><span class="n">_</span> <span class="nv">manualRefundRequest</span><span class="p">:</span> <span class="kt"><a href="../Classes/ManualRefundRequest.html">ManualRefundRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector11voidPaymentFCS_18VoidPaymentRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/voidPayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector11voidPaymentFCS_18VoidPaymentRequestT_">voidPayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">voidPayment</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span> <span class="kt"><a href="../Classes/VoidPaymentRequest.html">VoidPaymentRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector9vaultCardFCS_16VaultCardRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/vaultCard(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector9vaultCardFCS_16VaultCardRequestT_">vaultCard(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">vaultCard</span><span class="p">(</span><span class="n">_</span> <span class="nv">vaultCardRequest</span><span class="p">:</span> <span class="kt"><a href="../Classes/VaultCardRequest.html">VaultCardRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector8closeoutFCS_15CloseoutRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/closeout(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector8closeoutFCS_15CloseoutRequestT_">closeout(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">closeout</span><span class="p">(</span><span class="n">_</span> <span class="nv">closeoutRequest</span><span class="p">:</span> <span class="kt"><a href="../Classes/CloseoutRequest.html">CloseoutRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector28displayPaymentReceiptOptionsFTSS9paymentIdSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/displayPaymentReceiptOptions(_:paymentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector28displayPaymentReceiptOptionsFTSS9paymentIdSS_T_">displayPaymentReceiptOptions(_:paymentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">displayPaymentReceiptOptions</span><span class="p">(</span><span class="n">_</span> <span class="nv">orderId</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">paymentId</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector11showMessageFSST_"></a>
+                    <a name="//apple_ref/swift/Method/showMessage(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector11showMessageFSST_">showMessage(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">showMessage</span><span class="p">(</span><span class="n">_</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector9printTextFGSaSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/printText(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector9printTextFGSaSS_T_">printText(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">printText</span><span class="p">(</span><span class="n">_</span> <span class="nv">lines</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector17printImageFromURLFSST_"></a>
+                    <a name="//apple_ref/swift/Method/printImageFromURL(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector17printImageFromURLFSST_">printImageFromURL(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">printImageFromURL</span><span class="p">(</span><span class="n">_</span> <span class="nv">url</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector10printImageFCSo7UIImageT_"></a>
+                    <a name="//apple_ref/swift/Method/printImage(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector10printImageFCSo7UIImageT_">printImage(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector6cancelFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/cancel()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector6cancelFT_T_">cancel()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">cancel</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector14openCashDrawerFSST_"></a>
+                    <a name="//apple_ref/swift/Method/openCashDrawer(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector14openCashDrawerFSST_">openCashDrawer(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">openCashDrawer</span><span class="p">(</span><span class="n">_</span> <span class="nv">reason</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector11resetDeviceFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/resetDevice()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector11resetDeviceFT_T_">resetDevice()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetDevice</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector17showWelcomeScreenFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/showWelcomeScreen()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector17showWelcomeScreenFT_T_">showWelcomeScreen()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">showWelcomeScreen</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector18showThankYouScreenFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/showThankYouScreen()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector18showThankYouScreenFT_T_">showThankYouScreen()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">showThankYouScreen</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector16showDisplayOrderFCS_12DisplayOrderT_"></a>
+                    <a name="//apple_ref/swift/Method/showDisplayOrder(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector16showDisplayOrderFCS_12DisplayOrderT_">showDisplayOrder(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">showDisplayOrder</span><span class="p">(</span><span class="n">_</span> <span class="nv">order</span><span class="p">:</span> <span class="kt"><a href="../Classes/DisplayOrder.html">DisplayOrder</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector18removeDisplayOrderFCS_12DisplayOrderT_"></a>
+                    <a name="//apple_ref/swift/Method/removeDisplayOrder(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector18removeDisplayOrderFCS_12DisplayOrderT_">removeDisplayOrder(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">removeDisplayOrder</span><span class="p">(</span><span class="n">_</span> <span class="nv">order</span><span class="p">:</span> <span class="kt"><a href="../Classes/DisplayOrder.html">DisplayOrder</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector17invokeInputOptionFCS_11InputOptionT_"></a>
+                    <a name="//apple_ref/swift/Method/invokeInputOption(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector17invokeInputOptionFCS_11InputOptionT_">invokeInputOption(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">invokeInputOption</span><span class="p">(</span><span class="n">_</span> <span class="nv">inputOption</span><span class="p">:</span><span class="kt">InputOption</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector26notifyListenersDeviceErrorFCS_22CloverDeviceErrorEventT_"></a>
+                    <a name="//apple_ref/swift/Method/notifyListenersDeviceError(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector26notifyListenersDeviceErrorFCS_22CloverDeviceErrorEventT_">notifyListenersDeviceError(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector12readCardDataFCS_19ReadCardDataRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/readCardData(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector12readCardDataFCS_19ReadCardDataRequestT_">readCardData(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">readCardData</span><span class="p">(</span> <span class="n">_</span> <span class="nv">request</span><span class="p">:</span><span class="kt"><a href="../Classes/ReadCardDataRequest.html">ReadCardDataRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector13acceptPaymentFCCCS_9CLVModels8Payments7PaymentT_"></a>
+                    <a name="//apple_ref/swift/Method/acceptPayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector13acceptPaymentFCCCS_9CLVModels8Payments7PaymentT_">acceptPayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">acceptPayment</span><span class="p">(</span> <span class="n">_</span> <span class="nv">payment</span><span class="p">:</span><span class="kt"><a href="../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Payments</span><span class="o">.</span><span class="kt">Payment</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector13rejectPaymentFTCCCS_9CLVModels8Payments7Payment9challengeCS_9Challenge_T_"></a>
+                    <a name="//apple_ref/swift/Method/rejectPayment(_:challenge:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector13rejectPaymentFTCCCS_9CLVModels8Payments7Payment9challengeCS_9Challenge_T_">rejectPayment(_:challenge:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">rejectPayment</span><span class="p">(</span> <span class="n">_</span> <span class="nv">payment</span><span class="p">:</span><span class="kt"><a href="../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Payments</span><span class="o">.</span><span class="kt">Payment</span><span class="p">,</span> <span class="nv">challenge</span><span class="p">:</span><span class="kt">Challenge</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector23retrievePendingPaymentsFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/retrievePendingPayments()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector23retrievePendingPaymentsFT_T_">retrievePendingPayments()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">retrievePendingPayments</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector19startCustomActivityFCS_21CustomActivityRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/startCustomActivity(request:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector19startCustomActivityFCS_21CustomActivityRequestT_">startCustomActivity(request:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">startCustomActivity</span><span class="p">(</span><span class="nv">request</span><span class="p">:</span> <span class="kt"><a href="../Classes/CustomActivityRequest.html">CustomActivityRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector21sendMessageToActivityFCS_17MessageToActivityT_"></a>
+                    <a name="//apple_ref/swift/Method/sendMessageToActivity(request:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector21sendMessageToActivityFCS_17MessageToActivityT_">sendMessageToActivity(request:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">sendMessageToActivity</span><span class="p">(</span><span class="nv">request</span><span class="p">:</span> <span class="kt"><a href="../Custom Activities.html#/s:C15CloverConnector17MessageToActivity">MessageToActivity</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector15retrievePaymentFT8_requestCS_22RetrievePaymentRequest_T_"></a>
+                    <a name="//apple_ref/swift/Method/retrievePayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector15retrievePaymentFT8_requestCS_22RetrievePaymentRequest_T_">retrievePayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">retrievePayment</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span> <span class="kt"><a href="../Classes/RetrievePaymentRequest.html">RetrievePaymentRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FP15CloverConnector16ICloverConnector20retrieveDeviceStatusFT8_requestCS_27RetrieveDeviceStatusRequest_T_"></a>
+                    <a name="//apple_ref/swift/Method/retrieveDeviceStatus(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP15CloverConnector16ICloverConnector20retrieveDeviceStatusFT8_requestCS_27RetrieveDeviceStatusRequest_T_">retrieveDeviceStatus(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">retrieveDeviceStatus</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span> <span class="kt"><a href="../Classes/RetrieveDeviceStatusRequest.html">RetrieveDeviceStatusRequest</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector7disposeFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/dispose()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector7disposeFT_T_">dispose()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector20initializeConnectionFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/initializeConnection()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector20initializeConnectionFT_T_">initializeConnection()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector4saleFCS_11SaleRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/sale(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector4saleFCS_11SaleRequestT_">sale(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector4authFCS_11AuthRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/auth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector4authFCS_11AuthRequestT_">auth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector13tipAdjustAuthFCS_20TipAdjustAuthRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/tipAdjustAuth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector13tipAdjustAuthFCS_20TipAdjustAuthRequestT_">tipAdjustAuth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector7preAuthFCS_14PreAuthRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/preAuth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector7preAuthFCS_14PreAuthRequestT_">preAuth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector14capturePreAuthFCS_21CapturePreAuthRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/capturePreAuth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector14capturePreAuthFCS_21CapturePreAuthRequestT_">capturePreAuth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector15acceptSignatureFCS_22VerifySignatureRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/acceptSignature(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector15acceptSignatureFCS_22VerifySignatureRequestT_">acceptSignature(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector15rejectSignatureFCS_22VerifySignatureRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/rejectSignature(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector15rejectSignatureFCS_22VerifySignatureRequestT_">rejectSignature(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector13refundPaymentFCS_20RefundPaymentRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/refundPayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector13refundPaymentFCS_20RefundPaymentRequestT_">refundPayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector12manualRefundFCS_19ManualRefundRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/manualRefund(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector12manualRefundFCS_19ManualRefundRequestT_">manualRefund(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector11voidPaymentFCS_18VoidPaymentRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/voidPayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector11voidPaymentFCS_18VoidPaymentRequestT_">voidPayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector9vaultCardFCS_16VaultCardRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/vaultCard(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector9vaultCardFCS_16VaultCardRequestT_">vaultCard(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector8closeoutFCS_15CloseoutRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/closeout(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector8closeoutFCS_15CloseoutRequestT_">closeout(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector28displayPaymentReceiptOptionsFTSS9paymentIdSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/displayPaymentReceiptOptions(_:paymentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector28displayPaymentReceiptOptionsFTSS9paymentIdSS_T_">displayPaymentReceiptOptions(_:paymentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector11showMessageFSST_"></a>
+                    <a name="//apple_ref/swift/Method/showMessage(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector11showMessageFSST_">showMessage(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector9printTextFGSaSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/printText(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector9printTextFGSaSS_T_">printText(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector17printImageFromURLFSST_"></a>
+                    <a name="//apple_ref/swift/Method/printImageFromURL(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector17printImageFromURLFSST_">printImageFromURL(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector10printImageERR"></a>
+                    <a name="//apple_ref/swift/Method/printImage(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector10printImageERR">printImage(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector6cancelFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/cancel()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector6cancelFT_T_">cancel()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector14openCashDrawerFSST_"></a>
+                    <a name="//apple_ref/swift/Method/openCashDrawer(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector14openCashDrawerFSST_">openCashDrawer(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector11resetDeviceFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/resetDevice()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector11resetDeviceFT_T_">resetDevice()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector17showWelcomeScreenFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/showWelcomeScreen()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector17showWelcomeScreenFT_T_">showWelcomeScreen()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector18showThankYouScreenFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/showThankYouScreen()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector18showThankYouScreenFT_T_">showThankYouScreen()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector16showDisplayOrderFCS_12DisplayOrderT_"></a>
+                    <a name="//apple_ref/swift/Method/showDisplayOrder(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector16showDisplayOrderFCS_12DisplayOrderT_">showDisplayOrder(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector18removeDisplayOrderFCS_12DisplayOrderT_"></a>
+                    <a name="//apple_ref/swift/Method/removeDisplayOrder(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector18removeDisplayOrderFCS_12DisplayOrderT_">removeDisplayOrder(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector17invokeInputOptionFCS_11InputOptionT_"></a>
+                    <a name="//apple_ref/swift/Method/invokeInputOption(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector17invokeInputOptionFCS_11InputOptionT_">invokeInputOption(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector12readCardDataFCS_19ReadCardDataRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/readCardData(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector12readCardDataFCS_19ReadCardDataRequestT_">readCardData(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector13acceptPaymentFCCCS_9CLVModels8Payments7PaymentT_"></a>
+                    <a name="//apple_ref/swift/Method/acceptPayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector13acceptPaymentFCCCS_9CLVModels8Payments7PaymentT_">acceptPayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector13rejectPaymentFTCCCS_9CLVModels8Payments7Payment9challengeCS_9Challenge_T_"></a>
+                    <a name="//apple_ref/swift/Method/rejectPayment(_:challenge:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector13rejectPaymentFTCCCS_9CLVModels8Payments7Payment9challengeCS_9Challenge_T_">rejectPayment(_:challenge:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector23retrievePendingPaymentsFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/retrievePendingPayments()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector23retrievePendingPaymentsFT_T_">retrievePendingPayments()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector19startCustomActivityFT7requestCS_21CustomActivityRequest_T_"></a>
+                    <a name="//apple_ref/swift/Method/startCustomActivity(request:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector19startCustomActivityFT7requestCS_21CustomActivityRequest_T_">startCustomActivity(request:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector21sendMessageToActivityFT7requestCS_17MessageToActivity_T_"></a>
+                    <a name="//apple_ref/swift/Method/sendMessageToActivity(request:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector21sendMessageToActivityFT7requestCS_17MessageToActivity_T_">sendMessageToActivity(request:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector15retrievePaymentFCS_22RetrievePaymentRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/retrievePayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector15retrievePaymentFCS_22RetrievePaymentRequestT_">retrievePayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC15CloverConnector15CloverConnector20retrieveDeviceStatusFCS_27RetrieveDeviceStatusRequestT_"></a>
+                    <a name="//apple_ref/swift/Method/retrieveDeviceStatus(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC15CloverConnector15CloverConnector20retrieveDeviceStatusFCS_27RetrieveDeviceStatusRequestT_">retrieveDeviceStatus(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2017 Clover Network, Inc. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
