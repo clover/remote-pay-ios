@@ -63,25 +63,17 @@ public class CloverConnector : NSObject, ICloverConnector {
     
     @objc
     public func initializeConnection() {
+        objc_sync_enter(self)
+        defer {objc_sync_exit(self)}
         
-        /*class ConnectionListener:DefaultCloverConnectorListener {
-            private var resetAlready:Bool = false
-            override func onDeviceReady(_ merchantInfo: MerchantInfo) {
-                if(!resetAlready) {
-                    self.cloverConnector?.resetDevice()
-                }
-                resetAlready = true
-                self.cloverConnector?.removeCloverConnectorListener(self);
+        if device == nil {
+            if let device = CloverDeviceFactory.get(config) {
+                device.subscribe(deviceObserver!)
+                self.device = device
+                device.initialize()
+            } else {
+                notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "initializeConnection: The Clover Device is null, maybe the configuration is invalid"));
             }
-        }*/
-        
-        //addCloverConnectorListener(ConnectionListener(cloverConnector: self)) // the first connection, reset the device
-        if let device = CloverDeviceFactory.get(config) {
-            device.subscribe(deviceObserver!)
-            self.device = device
-            device.initialize()
-        } else {
-            notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "initializeConnection: The Clover Device is null, maybe the configuration is invalid"));
         }
     }
     
@@ -287,7 +279,9 @@ public class CloverConnector : NSObject, ICloverConnector {
             if let sr = request as? SaleRequest {
                 builder.tipAmount = sr.tipAmount
                 builder.taxAmount = sr.taxAmount
-                builder.tippableAmount = sr.tippableAmount
+                if let ta = sr.tippableAmount {
+                    tx.tippableAmount = ta
+                }
                 if let disableCashback = sr.disableCashback {
                     builder.isDisableCashBack = disableCashback
                 }
@@ -699,7 +693,7 @@ public class CloverConnector : NSObject, ICloverConnector {
                 notifyListenersDeviceError(CloverDeviceErrorEvent(errorType: CloverDeviceErrorType.COMMUNICATION_ERROR, code: 0, message: "readCardData: The Clover Device is not ready"));
                 return;
             }
-            let builder:PayIntent.Builder = PayIntent.Builder(amount: 0, externalId: "\(arc4random())")
+            let builder:PayIntent.Builder = PayIntent.Builder(amount: 0, externalId: String(arc4random()))
             if let cem:Int = request.cardEntryMethods {
                 builder.cardEntryMethods = cem
             }
@@ -859,6 +853,11 @@ public class CloverConnector : NSObject, ICloverConnector {
             }
         }
         
+        func onDeviceError(errorType: CloverDeviceErrorType, int: Int, message: String) {
+            let errorEvent = CloverDeviceErrorEvent(errorType: errorType, code: int, message: message)
+            self.cloverConnector.broadcaster.notifyOnDeviceError(errorEvent)
+        }
+        
         func onPaymentVoided(_ success: Bool, result:ResultCode, reason:String?, message:String?, payment: CLVModels.Payments.Payment?=nil, voidReason: VoidReason?=nil) {
             cloverConnector.device?.doShowWelcomeScreen()
             let response = VoidPaymentResponse(success:success, result: result, paymentId: payment?.id, transactionNumber: payment?.cardTransaction?.transactionNo)
@@ -890,7 +889,7 @@ public class CloverConnector : NSObject, ICloverConnector {
             cloverConnector.broadcaster.notifyOnCloseoutResponse(response)
         }
         
-        func onPaymentRefundResponse(_ orderId: String?, String paymentId: String?, refund: CLVModels.Payments.Refund?, code: TxState) {
+        func onPaymentRefundResponse(_ orderId: String?, paymentId: String?, refund: CLVModels.Payments.Refund?, code: TxState) {
             
             let success:Bool = code == TxState.SUCCESS
             let resultCode = success ? ResultCode.SUCCESS : ResultCode.FAIL
@@ -1033,7 +1032,7 @@ public class CloverConnector : NSObject, ICloverConnector {
                     cloverConnector.broadcaster.notifyOnPreAuthResponse(response);
                     break
                 default:
-                    print("finish ok with invalid requestInfo: \(ri)", __stderrp)
+                    debugPrint("finish ok with invalid requestInfo: " + ri, __stderrp)
                     processOldFinishOk(payment, signature: signature)
                     break
                 }
@@ -1063,7 +1062,7 @@ public class CloverConnector : NSObject, ICloverConnector {
                     // this could be a problem, or this is from a re-issue receipt screen
                 }
             } else {
-                print("We have a finishOK without a last request", __stderrp)
+                debugPrint("We have a finishOK without a last request", __stderrp)
             }
         }
         
@@ -1083,7 +1082,7 @@ public class CloverConnector : NSObject, ICloverConnector {
                         // this refund doesn't match what we had!
                         // the last PaymentRefundResponse has a different refund that this refund in finishOk
                         // TODO:
-                        print("no match: \(_lastPRR.refund?.id) vs \(refund.id)")
+                        debugPrint("no match: " + (_lastPRR.refund?.id ?? "") + " vs " + String(refund.id))
                     }
                 } else {
                     // TODO: have a refund response in finishOk, but not one from onRefundResponse?
@@ -1131,13 +1130,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                         if (duplicate)
                         {
                             response.result = .CANCEL
-                            response.reason = "\(result)"
-                            response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                            response.reason = result.rawValue
+                            response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                         }
                         else
                         {
                             response.result = .FAIL
-                            response.reason = "\(result)"
+                            response.reason = result.rawValue
                         }
                         cloverConnector.broadcaster.notifyOnSaleResponse(response);
                     } else if TxStartRequestMessage.AUTH_REQUEST == requestInfo {
@@ -1145,13 +1144,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                         if (duplicate)
                         {
                             response.result = ResultCode.CANCEL
-                            response.reason = "\(result)"
-                            response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                            response.reason = result.rawValue
+                            response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                         }
                         else
                         {
                             response.result = .FAIL
-                            response.reason = "\(result)"
+                            response.reason = result.rawValue
                         }
                         cloverConnector.broadcaster.notifyOnAuthResponse(response);
                     } else if TxStartRequestMessage.PREAUTH_REQUEST == requestInfo {
@@ -1159,13 +1158,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                         if (duplicate)
                         {
                             response.result = .CANCEL
-                            response.reason = "\(result)"
-                            response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                            response.reason = result.rawValue
+                            response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                         }
                         else
                         {
                             response.result = .FAIL
-                            response.reason = "\(result)"
+                            response.reason = result.rawValue
                         }
                         cloverConnector.broadcaster.notifyOnPreAuthResponse(response);
                     } else if TxStartRequestMessage.CREDIT_REQUEST == requestInfo {
@@ -1173,13 +1172,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                         if (duplicate)
                         {
                             response.result = .CANCEL
-                            response.reason = "\(result)"
-                            response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                            response.reason = result.rawValue
+                            response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                         }
                         else
                         {
                             response.result = .FAIL
-                            response.reason = "\(result)"
+                            response.reason = result.rawValue
                         }
                         cloverConnector.broadcaster.notifyOnManualRefundResponse(response);
                     }
@@ -1193,6 +1192,8 @@ public class CloverConnector : NSObject, ICloverConnector {
         }
         
         private func oldHandleDuplicateCx(_ result:TxStartResponseResult?, externalId:String, duplicate:Bool) {
+            let reasonString = result?.rawValue ?? ""
+            
             
             if let lastR = self.lastRequest as? PreAuthRequest
             {
@@ -1201,13 +1202,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                 if (duplicate)
                 {
                     response.result = .CANCEL
-                    response.reason = "\(result)"
-                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                    response.reason = reasonString
+                    response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                 }
                 else
                 {
                     response.result = .FAIL
-                    response.reason = "\(result)"
+                    response.reason = reasonString
                 }
                 cloverConnector.broadcaster.notifyOnPreAuthResponse(response);
             }
@@ -1218,13 +1219,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                 if (duplicate)
                 {
                     response.result = ResultCode.CANCEL
-                    response.reason = "\(result)"
-                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                    response.reason = reasonString
+                    response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                 }
                 else
                 {
                     response.result = .FAIL
-                    response.reason = "\(result)"
+                    response.reason = reasonString
                 }
                 cloverConnector.broadcaster.notifyOnAuthResponse(response);
             }
@@ -1235,13 +1236,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                 if (duplicate)
                 {
                     response.result = .CANCEL
-                    response.reason = "\(result)"
-                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                    response.reason = reasonString
+                    response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                 }
                 else
                 {
                     response.result = .FAIL
-                    response.reason = "\(result)"
+                    response.reason = reasonString
                 }
                 cloverConnector.broadcaster.notifyOnSaleResponse(response);
             }
@@ -1252,13 +1253,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                 if (duplicate)
                 {
                     response.result = .CANCEL
-                    response.reason = "\(result)"
-                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                    response.reason = reasonString
+                    response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                 }
                 else
                 {
                     response.result = .FAIL
-                    response.reason = "\(result)"
+                    response.reason = reasonString
                 }
                 cloverConnector.broadcaster.notifyOnManualRefundResponse(response);
             }
@@ -1267,9 +1268,9 @@ public class CloverConnector : NSObject, ICloverConnector {
     
         func onUiState(_ uiState: UiState, uiText: String, uiDirection: UiState.UiDirection, inputOptions: [InputOption]?) {
             if(uiDirection == UiState.UiDirection.ENTER) {
-                cloverConnector.broadcaster.notifyOnDeviceActivityStart(CloverDeviceEvent(eventState: "\(uiState)", message: uiText, inputOptions: inputOptions))
+                cloverConnector.broadcaster.notifyOnDeviceActivityStart(CloverDeviceEvent(eventState: uiState.rawValue, message: uiText, inputOptions: inputOptions))
             } else if (uiDirection == UiState.UiDirection.EXIT) {
-                cloverConnector.broadcaster.notifyOnDeviceActivityEnd(CloverDeviceEvent(eventState: "\(uiState)", message: uiText))
+                cloverConnector.broadcaster.notifyOnDeviceActivityEnd(CloverDeviceEvent(eventState: uiState.rawValue, message: uiText))
             }
         }
         
@@ -1385,13 +1386,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                 if (duplicate)
                 {
                     response.result = ResultCode.CANCEL
-                    response.reason = "\(result)"
-                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                    response.reason = result.rawValue
+                    response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                 }
                 else
                 {
                     response.result = ResultCode.FAIL
-                    response.reason = "\(result)"
+                    response.reason = result.rawValue
                 }
                 cloverConnector.broadcaster.notifyOnPreAuthResponse(response);
             }
@@ -1401,13 +1402,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                 if (duplicate)
                 {
                     response.result = ResultCode.CANCEL
-                    response.reason = "\(result)"
-                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                    response.reason = result.rawValue
+                    response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                 }
                 else
                 {
                     response.result = ResultCode.FAIL
-                    response.reason = "\(result)"
+                    response.reason = result.rawValue
                 }
                 cloverConnector.broadcaster.notifyOnAuthResponse(response);
             }
@@ -1417,13 +1418,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                 if (duplicate)
                 {
                     response.result = ResultCode.CANCEL
-                    response.reason  = "\(result)"
-                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                    response.reason  = result.rawValue
+                    response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                 }
                 else
                 {
                     response.result = ResultCode.FAIL
-                    response.reason = "\(result)"
+                    response.reason = result.rawValue
                 }
                 cloverConnector.broadcaster.notifyOnSaleResponse(response);
             }
@@ -1433,13 +1434,13 @@ public class CloverConnector : NSObject, ICloverConnector {
                 if (duplicate)
                 {
                     response.result = ResultCode.CANCEL
-                    response.reason = "\(result)"
-                    response.message = "The provided transaction id of \(externalId) has already been processed and cannot be resubmitted."
+                    response.reason = result.rawValue
+                    response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                 }
                 else
                 {
                     response.result = ResultCode.FAIL
-                    response.reason = "\(result)"
+                    response.reason = result.rawValue
                 }
                 cloverConnector.broadcaster.notifyOnManualRefundResponse(response);
             }

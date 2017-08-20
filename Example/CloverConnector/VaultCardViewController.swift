@@ -49,10 +49,17 @@ public class VaultCardViewController:UIViewController, UITableViewDataSource
             cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "VCCell")
         }
         
-        var card = getStore()?.vaultedCards.objectAtIndex(indexPath.row) as? POSCard
-        
-        cell?.textLabel?.text = "\(card?.first6 ?? "------")-XXXXXX-\(card?.last4 ?? "------")"
-        cell?.detailTextLabel?.text = "\(card?.token ?? "---")"
+        if let vals = getStore()?.vaultedCards where
+            indexPath.row < vals.count {
+            
+            var card = vals[indexPath.row]
+            
+            cell?.textLabel?.text = (card.first6 ?? "------") + "-XXXXXX-" + (card.last4 ?? "------")
+            cell?.detailTextLabel?.text = card.token ?? "---"
+        } else {
+            cell?.textLabel?.text = "UNKNOWN"
+            cell?.detailTextLabel?.text = ""
+        }
         
         return cell!
     }

@@ -30,6 +30,11 @@ class OrdersTableViewController : UITableViewController, POSStoreListener {
                                     _items.append((type: .PAYMENT, data: p))
                                 }
                             }
+                            if let refunds = selOrder?.refunds {
+                                for var r in refunds {
+                                    _items.append((type: .REFUND, data: r))
+                                }
+                            }
                             /*if let items = selOrder?.items {
                              for var i in items {
                              _items.append((type: .ITEM, data: i))
@@ -47,6 +52,7 @@ class OrdersTableViewController : UITableViewController, POSStoreListener {
         case ORDER
 //        case ITEM
         case PAYMENT
+        case REFUND
     }
     
 
@@ -54,7 +60,7 @@ class OrdersTableViewController : UITableViewController, POSStoreListener {
     override func viewDidLoad() {
         if let store = self.store {
             store.addStoreListener(self)
-            selOrder = store.orders.lastObject as? POSOrder
+            selOrder = store.orders.last
         }
         
     }
@@ -78,22 +84,32 @@ class OrdersTableViewController : UITableViewController, POSStoreListener {
         switch item.type {
             case .ORDER:
                 let order = item.data as! POSOrder
-                let cell = tableView.dequeueReusableCellWithIdentifier( "OrderTableCell") as! OrdersTableViewCell
+                let cell = tableView.dequeueReusableCellWithIdentifier("OrderTableCell") as! OrdersTableViewCell
                 
-                cell.orderPriceLabel.text = "\(CurrencyUtils.IntToFormat(order.getTotal() ?? 0) ?? CurrencyUtils.IntToFormat(0)!)"
-                cell.orderNumberLabel.text = "\(order.orderNumber)"
-                cell.orderStatusLabel.text = "\(order.status ?? .UNKNOWN)"
-                cell.orderDateLabel.text = "\(order.date)"
+                cell.orderPriceLabel.text = (CurrencyUtils.IntToFormat(order.getTotal() ?? 0) ?? CurrencyUtils.IntToFormat(0)!)
+                cell.orderNumberLabel.text = String(order.orderNumber)
+                cell.orderStatusLabel.text = order.status.rawValue
+                cell.orderDateLabel.text = String(order.date)
                 return cell
             case .PAYMENT:
                 let payment = item.data as! POSPayment
-                let cell = tableView.dequeueReusableCellWithIdentifier( "OrderTablePaymentCell") as! OrdersTablePaymentViewCell
+                let cell = tableView.dequeueReusableCellWithIdentifier("OrderTablePaymentCell") as! OrdersTablePaymentViewCell
                 
-                cell.paymentPriceLabel.text = "\(CurrencyUtils.IntToFormat(payment.amount ?? 0) ?? CurrencyUtils.IntToFormat(0)!)"
-                cell.paymentExternalIdLabel.text = "\(payment.externalPaymentId ?? "")"
-                cell.paymentStatusLabel.text = "\(payment.status)"
-                cell.paymentTipLabel.text = "\(CurrencyUtils.IntToFormat(payment.tipAmount ?? 0) ?? CurrencyUtils.IntToFormat(0)!)"
+                cell.paymentPriceLabel.text = CurrencyUtils.IntToFormat(payment.amount ?? 0) ?? CurrencyUtils.IntToFormat(0)!
+                cell.paymentExternalIdLabel.text = payment.externalPaymentId ?? ""
+                cell.paymentStatusLabel.text = payment.status.rawValue
+                cell.paymentTipLabel.text = CurrencyUtils.IntToFormat(payment.tipAmount ?? 0) ?? CurrencyUtils.IntToFormat(0)!
                 return cell
+        case .REFUND:
+            let refund = item.data as! POSRefund
+            let cell = tableView.dequeueReusableCellWithIdentifier("OrderTablePaymentCell") as! OrdersTablePaymentViewCell
+            
+            cell.paymentPriceLabel.text = CurrencyUtils.IntToFormat(refund.amount ?? 0) ?? CurrencyUtils.IntToFormat(0)!
+            cell.paymentExternalIdLabel.text = "REFUND"
+            cell.paymentStatusLabel.text = ""
+            cell.paymentTipLabel.text = ""
+            return cell
+            
 //            case .ITEM:
 //                let cell = tableView.dequeueReusableCellWithIdentifier( "OrderTableItemCell") as! OrdersTableItemViewCell
             
@@ -168,7 +184,8 @@ class OrdersTableViewController : UITableViewController, POSStoreListener {
             } else {
                 // do nothing...it is voided
             }
-            
+        } else if selItem.type == .REFUND {
+            // do nothing extra
         } else {
             debugPrint("unknown type selected")
         }
@@ -205,6 +222,9 @@ class OrdersTableViewController : UITableViewController, POSStoreListener {
     }
     func vaultCardAdded(_ card:POSCard) {
         
+    }
+    func refundAdded(_ refund:POSRefund) {
+        ordersTable.reloadData()
     }
     func manualRefundAdded(credit: POSNakedRefund) {
         

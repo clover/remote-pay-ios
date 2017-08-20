@@ -16,11 +16,14 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     public var parentViewController:UIViewController?
     private var uiAlertController:UIAlertController?
     private var lastDeviceEvent:CloverDeviceEvent?
-    private var paymentConfirmDel:UIAlertViewDelegate?
+    private var paymentConfirmDel:PaymentConfirmation?
+    
+    public var preAuthExpectedResponseId:String?
     
     var viewController:UIViewController?
     
     private var ready:Bool = false
+    private var suppressConnectionErrors = false //since connection errors could conceivably occur every few seconds, use this to suppress them after the first has been shown
     
     public init(cloverConnector:ICloverConnector){
         self.cloverConnector = cloverConnector;
@@ -75,37 +78,44 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                     
                     posPayment.status = response.isSale ? PaymentStatus.PAID : (response.isAuth ? PaymentStatus.AUTHORIZED : (response.isPreAuth ? PaymentStatus.PREAUTHORIZED : PaymentStatus.UNKNOWN))
                     
-                    var expectedResponseId = true
-                    if order.pendingPaymentId != payment.externalPaymentId {
-                        expectedResponseId = false
-                    }
                     
                     if response.isSale || response.isAuth {
                         store.addPaymentToOrder(posPayment, order: order)
+
+                        var expectedResponseId = true
+                        if order.pendingPaymentId != payment.externalPaymentId {
+                            expectedResponseId = false
+                        }
+                        
                         if response.isSale {
                             if expectedResponseId {
-                                showMessage("Sale successfully processed")
+                                showMessage("Sale successfully processed")  // Happy Path
                             } else {
                                 showMessage("Sale successful, but unexpected payment id")
                             }
                         } else if response.isAuth {
                             if expectedResponseId {
-                                showMessage("Sale processed as Auth successfully processed")
+                                showMessage("Sale successfully processed as Auth")
                             } else {
-                                showMessage("Sale processed as Auth, but unexpected payment id")
+                                showMessage("Sale processed as Auth, with unexpected payment id")
                             }
                         }
-                        store.newOrder()
                         cloverConnector?.showWelcomeScreen()
                     } else if response.isPreAuth {
                         store.addPreAuth(posPayment)
-                        showMessage("Sale processed as Pre-Auth successful")
+                        if payment.externalPaymentId != nil && payment.externalPaymentId! == preAuthExpectedResponseId {
+                            showMessage("Sale proccessed as Pre-Auth successful")
+                        } else {
+                            showMessage("Sale proccessed as Pre-Auth, with unexpected payment id")
+                        }
+                        preAuthExpectedResponseId = nil
                     }
+                    store.newOrder()
                 }
             }
         } else {
             if response.result == .CANCEL {
-                showMessage("Sale canceled")
+                showMessage("Sale Canceled")
             } else if response.result == .FAIL {
                 showMessage("Sale Tx Failed")
             } else {
@@ -130,22 +140,41 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                     
                     if authResponse.isSale || authResponse.isAuth {
                         store.addPaymentToOrder(posPayment, order: order)
-                        if authResponse.isSale {
-                            showMessage("Sale successfully processed")
-                        } else if authResponse.isAuth {
-                            showMessage("Auth successfully processed")
+
+                        var expectedResponseId = true
+                        if order.pendingPaymentId != payment.externalPaymentId {
+                            expectedResponseId = false
                         }
-                        store.newOrder()
+                        
+                        if authResponse.isSale {
+                            if expectedResponseId {
+                                showMessage("Auth successfully processed as Sale")
+                            } else {
+                                showMessage("Auth proccessed as Sale, with unexpected payment id")
+                            }
+                        } else if authResponse.isAuth {
+                            if expectedResponseId {
+                                showMessage("Auth successfully processed")  // Happy Path
+                            } else {
+                                showMessage("Auth successful, but unexpected payment id")
+                            }
+                        }
                         cloverConnector?.showWelcomeScreen()
                     } else if authResponse.isPreAuth {
                         store.addPreAuth(posPayment)
-                        showMessage("Pre-Auth successful")
+                        if payment.externalPaymentId != nil && payment.externalPaymentId! == preAuthExpectedResponseId {
+                            showMessage("Auth proccessed as Pre-Auth successful")
+                        } else {
+                            showMessage("Auth proccessed as Pre-Auth, with unexpected payment id")
+                        }
+                        preAuthExpectedResponseId = nil
                     }
+                    store.newOrder()
                 }
             }
         } else {
             if authResponse.result == .CANCEL {
-                showMessage("Auth canceled")
+                showMessage("Auth Canceled")
             } else if authResponse.result == .FAIL {
                 showMessage("Auth Tx Failed")
             } else {
@@ -159,18 +188,50 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
      */
     public func onPreAuthResponse(_ preAuthResponse: PreAuthResponse) {
         if preAuthResponse.success {
-            showMessage("PreAuth successful")
             if let store = getStore() {
-                if let payment = preAuthResponse.payment {
+                if let payment = preAuthResponse.payment,
+                    let order = store.currentOrder {
                     let posPayment:POSPayment = POSPayment(paymentId: payment.id!, externalPaymentId: payment.externalPaymentId, orderId: payment.order!.id!, employeeId: "DFLTEMPLYEE", amount: payment.amount!, tipAmount: payment.tipAmount ?? 0, cashbackAmount: payment.cashbackAmount ?? 0)
-                    store.addPreAuth(posPayment)
+                    
+                    if preAuthResponse.isSale || preAuthResponse.isAuth {
+                        store.addPaymentToOrder(posPayment, order: order)
+
+                        var expectedResponseId = true
+                        if order.pendingPaymentId != payment.externalPaymentId {
+                            expectedResponseId = false
+                        }
+                        
+
+                        if preAuthResponse.isSale {
+                            if expectedResponseId {
+                                showMessage("PreAuth successfully processed as Sale")
+                            } else {
+                                showMessage("PreAuth proccessed as Sale, with unexpected payment id")
+                            }
+                        } else if preAuthResponse.isAuth {
+                            if expectedResponseId {
+                                showMessage("PreAuth successfully processed as Auth")
+                            } else {
+                                showMessage("PreAuth processed as Auth, with unexpected payment id")
+                            }
+                        }
+                        cloverConnector?.showWelcomeScreen()
+                    } else if preAuthResponse.isPreAuth {
+                        store.addPreAuth(posPayment)
+                        if payment.externalPaymentId != nil && payment.externalPaymentId! == preAuthExpectedResponseId {
+                            showMessage("PreAuth successfully proccessed")  // Happy Path
+                        } else {
+                            showMessage("PreAuth processed, but with unexpected payment id")
+                        }
+                        preAuthExpectedResponseId = nil
+                    }
                 }
             }
         } else {
             if preAuthResponse.result == .CANCEL {
-                showMessage("Pre Auth Canceled")
+                showMessage("PreAuth Canceled")
             } else if preAuthResponse.result == .FAIL {
-                showMessage("PreAuth failed")
+                showMessage("PreAuth Tx Failed")
             } else {
                 showMessage(preAuthResponse.result.rawValue)
             }
@@ -204,7 +265,9 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                 showMessage("Couldn't get store!")
             }
         } else {
-            showMessage("PreAuth Capture Error: Payment failed with response code = \(response.result) and reason: \(response.reason)")
+            let responseResult = response.result.rawValue
+            let responseReason = response.reason ?? ""
+            showMessage("PreAuth Capture Error: Payment failed with response code = " + responseResult + " and reason: " + responseReason)
         }
     }
     
@@ -221,7 +284,9 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                         for exchange in order.payments {
                             if let exchange = exchange as? POSPayment {
                                 if exchange.paymentId == response.paymentId {
+                                    (exchange as? POSPayment)?.tipAmount = response.tipAmount
                                     updatedTip = true;
+                                    // TODO: update the table
                                     break;
                                 }
                             } else {
@@ -268,44 +333,10 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                 }
             }
         } else {
-            showMessage("There was an error voiding payment: \(response.result)")
+            showMessage("There was an error voiding payment: " + String(response.result))
         }
     }
-    
-    
-    /*
-     * Response to a payment being refunded.
-     */
-    public func  onPaymentRefundResponse ( _ response:RefundPaymentResponse ) -> Void {
-        if response.success {
-            let refund = POSRefund(refundId: response.refund!.id!, paymentId: response.paymentId!, orderID: response.orderId!, employeeId: "DFLTEMPLYEE", amount: response.refund!.amount!)
-            var done = false
-            if let store = getStore() {
-                for order in store.orders {
-                    if let order = order as? POSOrder {
-                        for payment in order.payments {
-                            if let payment = payment as? POSPayment {
-                                if payment.paymentId == response.refund!.payment?.id {
-                                    payment.status = .REFUNDED
-                                    store.addRefundToOrder(refund, order: order)
-                                    done = true
-                                }
-                            }
-                            if done {
-                                break;
-                            }
-                        }
-                    }
-                    if done {
-                        break;
-                    }
-                }
-            }
-        } else {
-            showMessage("There was an error refunding a payment: \(response.result)")
-        }
 
-    }
     
     
     /*
@@ -336,9 +367,9 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
      */
     public func  onCloseoutResponse ( _ response:CloseoutResponse ) -> Void {
         if response.success {
-            showMessage("Closeout complete for batch: \(response.batch?.id)")
+            showMessage("Closeout complete for batch: " + (response.batch?.id ?? ""))
         } else {
-            showMessage("Error scheduling closeout: \(response.reason)")
+            showMessage("Error scheduling closeout: " + (response.reason ?? ""))
         }
     }
     
@@ -353,28 +384,26 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                     self.onVerifySignatureRequest(signatureVerifyRequest)
                 })
             } else {
-                if var topViewController = UIApplication.sharedApplication().keyWindow?.rootViewController {
+                
+                if var topViewController = (UIApplication.sharedApplication().delegate as? AppDelegate)?.window?.rootViewController {
                     while let presentedViewController = topViewController.presentedViewController {
                         topViewController = presentedViewController
                     }
                     
-                    if let tvc = topViewController as? TabBarController {
-                        if let rvc = tvc.selectedViewController as? RegisterViewController {
-                            rvc.verifySignature(signatureVerifyRequest)
-                        } else {
-                            
-                            let acceptVC = UIAlertController(title: "Accept Signature?", message: nil, preferredStyle: .Alert)
-                            acceptVC.addAction(UIAlertAction(title: "Accept", style: .Cancel, handler: { (aa) in
-                                self.cloverConnector?.acceptSignature(signatureVerifyRequest)
-                            }))
-                            acceptVC.addAction(UIAlertAction(title: "Reject", style: .Default, handler: { (aa) in
-                                self.cloverConnector?.rejectSignature(signatureVerifyRequest)
-                            }))
-                            topViewController.presentViewController(acceptVC, animated: true, completion: nil)
-                            
-                        }
-
+                    if let tvc = topViewController as? TabBarController, let rvc = tvc.selectedViewController as? RegisterViewController {
+                        rvc.verifySignature(signatureVerifyRequest)
+                    } else {
+                        let acceptVC = UIAlertController(title: "Accept Signature?", message: nil, preferredStyle: .Alert)
+                        acceptVC.addAction(UIAlertAction(title: "Accept", style: .Cancel, handler: { (aa) in
+                            self.cloverConnector?.acceptSignature(signatureVerifyRequest)
+                        }))
+                        acceptVC.addAction(UIAlertAction(title: "Reject", style: .Default, handler: { (aa) in
+                            self.cloverConnector?.rejectSignature(signatureVerifyRequest)
+                        }))
+                        topViewController.presentViewController(acceptVC, animated: true, completion: nil)
+                        
                     }
+
                 }
                 
             }
@@ -423,7 +452,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     public func  onDisconnected () -> Void {}
     
     public func onDeviceActivityEnd(_ deviceEvent: CloverDeviceEvent) {
-        debugPrint("END -> \(deviceEvent.eventState ?? "UNK"):\(deviceEvent.message ?? "")")
+        debugPrint("END -> " + (deviceEvent.eventState ?? "UNK") + ":" + (deviceEvent.message ?? ""))
         dispatch_async(dispatch_get_main_queue()){
             if let uiView = self.uiAlertController {
 //                self.uiAlertController = nil
@@ -445,7 +474,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     var longPressAlert:UILongPressGestureRecognizer?
     
     public func onDeviceActivityStart(_ deviceEvent: CloverDeviceEvent) {
-        debugPrint("START -> \(deviceEvent.eventState ?? "UNK"):\(deviceEvent.message ?? "")")
+        debugPrint("START -> " + (deviceEvent.eventState ?? "UNK") + ":" + (deviceEvent.message ?? ""))
         dispatch_async(dispatch_get_main_queue()){
             if let previousUIView = self.uiAlertController,
                 let _ = self.viewController?.presentedViewController as? UIAlertController {
@@ -516,6 +545,14 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     
     
     public func onDeviceError(_ deviceErrorEvent: CloverDeviceErrorEvent) {
+        if deviceErrorEvent.errorType == .CONNECTION_ERROR && suppressConnectionErrors == true {
+            return //we've already handled this error since the last successful connection, don't spam the user
+        }
+        
+        if deviceErrorEvent.errorType == .CONNECTION_ERROR {
+            suppressConnectionErrors = true
+        }
+        
         dispatch_async(dispatch_get_main_queue()){
             let uiac = UIAlertController(title: deviceErrorEvent.errorType.rawValue, message: deviceErrorEvent.message, preferredStyle: .Alert)
             self.uiAlertController = uiac
@@ -529,6 +566,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
 
     public func onDeviceConnected() {
         ready = false // the device is connected, but not ready to communicate
+        suppressConnectionErrors = false //we've reconnected, clear the flag so we show future connection errors
     }
     
     public func onDeviceDisconnected() {
@@ -539,7 +577,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     }
     
     public func onTipAdded(_ message: TipAddedMessage) {
-        showMessage("Tip Added: \(CurrencyUtils.IntToFormat(message.tipAmount ?? 0) ?? CurrencyUtils.IntToFormat(0)!)", duration: 1)
+        showMessage("Tip Added: " + (CurrencyUtils.IntToFormat(message.tipAmount ?? 0) ?? CurrencyUtils.IntToFormat(0)!), duration: 1)
     }
     
     public func onDeviceReady(_ merchantInfo: MerchantInfo) {
@@ -556,27 +594,9 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     
     
     public func onConfirmPaymentRequest(_ request: ConfirmPaymentRequest) {
-        if let payment = request.payment {
-            let lastChallenge = request.challenges!.last!
-            for var challenge in request.challenges! {
-                
-                self.paymentConfirmDel = PaymentConfirmation(cloverConnector: self.cloverConnector!, payment:request.payment!, challenge: challenge, isLastChallenge: lastChallenge === challenge)
-                let alert = UIAlertView(title: nil, message: "Verify Payment", delegate: self.paymentConfirmDel, cancelButtonTitle: nil);
-                
-                alert.addButtonWithTitle("Accept")
-                alert.addButtonWithTitle("Reject")
-                
-                dispatch_async(dispatch_get_main_queue()){
-                    if let alertController = self.uiAlertController {
-                        alertController.dismissViewControllerAnimated(false, completion: {
-                            self.uiAlertController = nil
-                        })
-                    }
-                    alert.show()
-                }
-
-            }
-            
+        if let payment = request.payment, let challenges = request.challenges {
+            paymentConfirmDel = PaymentConfirmation(cloverConnector: self.cloverConnector!, payment:payment, challenges: challenges)
+            paymentConfirmDel?.requestConfirmation()
         } else {
             showMessage("No payment in request..")
         }
@@ -602,27 +622,27 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     }
     
     public func onPrintPaymentReceipt(_ printPaymentReceiptMessage: PrintPaymentReceiptMessage) {
-        showMessage("Print Payment Receipt: \(formatCurrency(printPaymentReceiptMessage.payment?.amount))")
+        showMessage("Print Payment Receipt: " + formatCurrency(printPaymentReceiptMessage.payment?.amount))
     }
     
     public func onPrintRefundPaymentReceipt(_ printRefundPaymentReceiptMessage: PrintRefundPaymentReceiptMessage) {
-        showMessage("Print Refund Payment Receipt: \(formatCurrency(printRefundPaymentReceiptMessage.refund?.amount)) of \(formatCurrency(printRefundPaymentReceiptMessage.payment?.amount))")
+        showMessage("Print Refund Payment Receipt: " + formatCurrency(printRefundPaymentReceiptMessage.refund?.amount) + " of " + formatCurrency(printRefundPaymentReceiptMessage.payment?.amount))
     }
     
     public func onPrintPaymentDeclineReceipt(_ printPaymentDeclineReceiptMessage: PrintPaymentDeclineReceiptMessage) {
-        showMessage("Print Payment Declined Receipt: \(formatCurrency(printPaymentDeclineReceiptMessage.payment?.amount))")
+        showMessage("Print Payment Declined Receipt: " + formatCurrency(printPaymentDeclineReceiptMessage.payment?.amount))
     }
     
     public func onPrintPaymentMerchantCopyReceipt(_ printPaymentMerchantCopyReceiptMessage: PrintPaymentMerchantCopyReceiptMessage) {
-        showMessage("Print Payment Merchant Copy Receipt: \(formatCurrency(printPaymentMerchantCopyReceiptMessage.payment?.amount))")
+        showMessage("Print Payment Merchant Copy Receipt: " + formatCurrency(printPaymentMerchantCopyReceiptMessage.payment?.amount))
     }
     
     public func onPrintManualRefundReceipt(_ printManualRefundReceiptMessage: PrintManualRefundReceiptMessage) {
-        showMessage("Print Manual Refund Receipt: \(formatCurrency(printManualRefundReceiptMessage.credit?.amount))")
+        showMessage("Print Manual Refund Receipt: " + formatCurrency(printManualRefundReceiptMessage.credit?.amount))
     }
     
     public func onPrintManualRefundDeclineReceipt(_ printManualRefundDeclineReceiptMessage: PrintManualRefundDeclineReceiptMessage) {
-        showMessage("Print Manual Refund Decline Receipt: \(formatCurrency(printManualRefundDeclineReceiptMessage.credit?.amount))")
+        showMessage("Print Manual Refund Decline Receipt: " + formatCurrency(printManualRefundDeclineReceiptMessage.credit?.amount))
     }
     
     private func formatCurrency(_ amount:Int?) -> String {
@@ -631,7 +651,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
 
     public func onRetrievePendingPaymentsResponse(_ retrievePendingPaymentResponse: RetrievePendingPaymentsResponse) {
         if retrievePendingPaymentResponse.success {
-            showMessage("Found \(retrievePendingPaymentResponse.pendingPayments?.count ?? -1) pending payment\(retrievePendingPaymentResponse.pendingPayments?.count != 1 ? "s" : "")")
+            showMessage("Found " + String(retrievePendingPaymentResponse.pendingPayments?.count ?? -1) + " pending payment " + (retrievePendingPaymentResponse.pendingPayments?.count != 1 ? "s" : ""))
         } else {
             showMessage("Error getting pending payments")
         }
@@ -639,7 +659,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     
     public func onReadCardDataResponse(_ readCardDataResponse: ReadCardDataResponse) {
         if readCardDataResponse.success {
-            showMessage("\(readCardDataResponse.cardData?.first6 ?? "______")xxxxxx\(readCardDataResponse.cardData?.last4 ?? "____")")
+            showMessage((readCardDataResponse.cardData?.first6 ?? "______") + "xxxxxx" + (readCardDataResponse.cardData?.last4 ?? "____"))
         } else {
             showMessage("Read Card Data Failed")
         }
@@ -648,7 +668,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     
     public func onCustomActivityResponse(customActivityResponse: CustomActivityResponse) {
         if customActivityResponse.success {
-            showMessage("\(customActivityResponse.payload ?? "Done")")
+            showMessage(customActivityResponse.payload ?? " Done")
         } else {
             showMessage("Custom activity canceled")
         }
@@ -656,36 +676,36 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     
     public func onResetDeviceResponse(response: ResetDeviceResponse) {
         if response.success {
-            showMessage("Device reset: \(response.state)")
+            showMessage("Device reset: " + response.state.rawValue)
         } else {
             showMessage("Device reset failed!")
         }
     }
     
     public func onMessageFromActivity(response: MessageFromActivity) {
-        showMessage("from \(response.action ?? "<nil action>"), got: \(response.payload ?? "<nil payload>")")
+        showMessage("from " + (response.action ?? "<nil action>") + ", got: " + (response.payload ?? "<nil payload>"))
     }
     
     public func onRetrievePaymentResponse(response: RetrievePaymentResponse) {
         switch response.queryStatus {
         case .FOUND:
             if let st = response.payment?.cardTransaction?.state {
-                showMessage("payment found for: \(response.externalPaymentId ?? "unk"). status: \(st)")
+                showMessage("payment found for: " + (response.externalPaymentId ?? "unk") + ". status: " + st.rawValue)
             } else {
-                showMessage("payment found for: \(response.externalPaymentId ?? "unk"). status: UNKNOWN")
+                showMessage("payment found for: " + (response.externalPaymentId ?? "unk") + ". status: UNKNOWN")
             }
         case .NOT_FOUND:
-            showMessage("payment not found for: \(response.externalPaymentId ?? "unk")")
+            showMessage("payment not found for: " + (response.externalPaymentId ?? "unk"))
         case .IN_PROGRESS:
-            showMessage("payment in process: \(response.externalPaymentId ?? "unk")")
+            showMessage("payment in process: " + (response.externalPaymentId ?? "unk"))
         }
     }
     
     public func onRetrieveDeviceStatusResponse(_ response: RetrieveDeviceStatusResponse) {
         if response.state != .WAITING_FOR_POS {
-            showMessage("Device is currently: \(response.state.rawValue)")
+            showMessage("Device is currently: " + response.state.rawValue)
         } else {
-            debugPrint("Device is currently: \(response.state.rawValue)")
+            debugPrint("Device is currently: " + response.state.rawValue)
         }
     }
     
@@ -694,7 +714,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
             if let previousUIView = self.uiAlertController {
                 previousUIView.dismissViewControllerAnimated(false, completion: {})
             }
-            let uiac = UIAlertController(title: nil, message: "Enter code: \(pairingCode)", preferredStyle: .Alert)
+            let uiac = UIAlertController(title: nil, message: "Enter code: " + pairingCode, preferredStyle: .Alert)
             
             self.uiAlertController = uiac
             self.viewController?.presentViewController(uiac, animated: true, completion: {})
@@ -714,23 +734,45 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
         private var last:Bool = false;
         private var cloverConnector:ICloverConnector
         private var payment:CLVModels.Payments.Payment
-        private var challenge:Challenge
-        
-        init(cloverConnector:ICloverConnector, payment:CLVModels.Payments.Payment, challenge: Challenge, isLastChallenge: Bool) {
-            self.last = isLastChallenge
+        private var challenges:[Challenge]
+        private var challenge:Challenge?
+        private var paymentConfirmDel:PaymentConfirmation?
+
+        init(cloverConnector:ICloverConnector, payment:CLVModels.Payments.Payment, challenges: [Challenge]) {
             self.cloverConnector = cloverConnector
             self.payment = payment
-            self.challenge = challenge
+            self.challenges = challenges
+            if challenges.count > 0 {
+                self.challenge = challenges[0]
+                self.challenges.removeAtIndex(0)
+            }
         }
         
-        public func alertView(_ alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        public func requestConfirmation() {
+            
+            let alert = UIAlertView(title: "Verify Payment", message: challenge!.message, delegate: self, cancelButtonTitle: nil);
+            
+            alert.addButtonWithTitle("Accept")
+            alert.addButtonWithTitle("Reject")
+            
+            dispatch_async(dispatch_get_main_queue()){
+                alert.show()
+            }
+            
+        }
+        
+        func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
             if(buttonIndex == 1) // reject
             {
-                cloverConnector.rejectPayment(payment, challenge: challenge)
+                cloverConnector.rejectPayment(payment, challenge: self.challenge!)
             }
-            else if(buttonIndex == 0 && last)
-            {
-                cloverConnector.acceptPayment(payment)
+            else if buttonIndex == 0 {
+                if challenges.count == 0 {
+                    cloverConnector.acceptPayment(payment)
+                } else {
+                    self.paymentConfirmDel = PaymentConfirmation(cloverConnector: cloverConnector, payment: payment, challenges: challenges)
+                    self.paymentConfirmDel?.requestConfirmation()
+                }
             }
         }
         

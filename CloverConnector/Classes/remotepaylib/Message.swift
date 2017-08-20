@@ -162,10 +162,7 @@ public class Message : NSObject, Mappable {
         }
         return nil
         }, toJSON: { (value: UiState?) -> String? in
-            if let value = value {
-                return "\(value)"
-            }
-            return nil
+            return value?.rawValue
     })
     
     static let uiDirectionTransform = TransformOf<UiState.UiDirection, String>(fromJSON: { (value: String?) -> UiState.UiDirection? in
@@ -174,10 +171,7 @@ public class Message : NSObject, Mappable {
         }
         return nil
         }, toJSON: { (value: UiState.UiDirection?) -> String? in
-            if let value = value {
-                return "\(value)"
-            }
-            return nil
+            return value?.rawValue
     })
     
     static let methodTransform = TransformOf<Method, String>(fromJSON: { (value: String?) -> Method? in
@@ -186,10 +180,7 @@ public class Message : NSObject, Mappable {
         }
         return nil
         }, toJSON: { (value: Method?) -> String? in
-            if let value = value {
-                return "\(value)"
-            }
-            return nil
+            return value?.rawValue
     })
     
     
@@ -199,11 +190,6 @@ public class Message : NSObject, Mappable {
         }
         return nil
         }, toJSON: { (value: RemoteMessageType?) -> String? in
-            if let value = value {
-                return "\(value)"
-            }
-            return nil
+            return value?.rawValue
     })
-    
-    
 }

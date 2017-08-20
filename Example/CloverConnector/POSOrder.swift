@@ -27,10 +27,10 @@ public class POSOrder {
         }
     }
     
-    public private(set) var items:NSMutableArray = NSMutableArray() // line items
-    public private(set) var discounts:NSMutableArray = NSMutableArray()
-    public private(set) var payments:NSMutableArray = NSMutableArray()
-    public private(set) var refunds:NSMutableArray = NSMutableArray()
+    public private(set) var items = [POSLineItem]() // line items
+    public private(set) var discounts = [POSDiscount]()
+    public private(set) var payments = [POSPayment]()
+    public private(set) var refunds = [POSRefund]()
     
     // transient reference to the payment id being requested
     public var pendingPaymentId:String?
@@ -116,7 +116,7 @@ public class POSOrder {
     }
     
     public func addPayment(_ payment:POSPayment) {
-        payments.addObject(payment)
+        payments.append(payment)
         notifyListenersPaymentAdded(payment)
     }
     
@@ -124,16 +124,20 @@ public class POSOrder {
         lineItem.quantity -= 1
         
         if lineItem.quantity == 0 {
-            items.removeObject(lineItem)
-            for var listener in orderListeners {
-                (listener as? POSOrderListener)!.itemRemoved(lineItem)
+            if let index = items.indexOf({ (li) -> Bool in
+                return li === lineItem
+            }) {
+                items.removeAtIndex(index)
+                for var listener in orderListeners {
+                    (listener as? POSOrderListener)!.itemRemoved(lineItem)
+                }
             }
+            
             
         } else {
             for var listener in orderListeners {
                 (listener as? POSOrderListener)!.itemModified(lineItem)
             }
-            
         }
         
         
@@ -156,7 +160,7 @@ public class POSOrder {
         }
         
         if !incrementingOnly {
-            items.addObject(lineItem)
+            items.append(lineItem)
             
             for var listener in orderListeners {
                 (listener as? POSOrderListener)!.itemAdded(lineItem)
@@ -174,7 +178,7 @@ public class POSOrder {
                 }
             }
         }
-        refunds.addObject(refund)
+        refunds.append(refund)
         notifyListenersRefundAdded(refund)
     }
     

@@ -1,13 +1,15 @@
 //
-//  CustomActivityResponse.swift
-//  Pods
+//  Copyright © 2017 Clover Network, Inc. All rights reserved.
 //
-//
-//
-import ObjectMapper
 
+import ObjectMapper
+/**
+ response when a custom activity is finished
+ */
 public class CustomActivityResponse : BaseResponse {
+    /// action name as defined for an Activity
     public var action:String?
+    /// a String payload that gets passed in to the start of a custom Activity
     public var payload:String?
     
     init(success s:Bool, result r:ResultCode, action a:String?, payload p:String?) {
@@ -15,11 +17,11 @@ public class CustomActivityResponse : BaseResponse {
         self.action = a
         self.payload = p
     }
-    
+    /// :nodoc:
     required public init?(_ map: Map) {
         super.init(map)
     }
-    
+    /// :nodoc:
     public override func mapping(map: Map) {
         super.mapping(map)
         action <- map["action"]

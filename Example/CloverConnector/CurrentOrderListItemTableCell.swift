@@ -19,7 +19,7 @@ class CurrentOrderListItemTableCell:UITableViewCell {
         didSet(value) {
             if let item = item {
                 if  let name = item.item.name {
-                    quantityLabel.text = "\(item.quantity)"
+                    quantityLabel.text = String(item.quantity)
                     itemLabel.text = name
                     priceLabel.text = CurrencyUtils.IntToFormat(item.item.price)
                 }

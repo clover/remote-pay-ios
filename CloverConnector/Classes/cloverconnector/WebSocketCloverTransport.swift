@@ -69,95 +69,113 @@ class WebSocketCloverTransport: CloverTransport {
             
             initialize(ep)
         } else {
-            print("endpoint is nil", __stderrp)
+            debugPrint("endpoint is nil", __stderrp)
         }
     }
     
     func initialize(_ endpoint:NSURL) {
-        
         self.endpoint = endpoint
         if let s = socket {
             if s.isConnected {
                 return
             }
         }
+        
         socket = WebSocket(url: endpoint)
 
         if let socket = socket {
             var pairing = false;
-            socket.onConnect = {
-                print("websocket is connected")
+            
+            socket.onConnect = { [weak self] in
+                debugPrint("websocket is connected")
                 pairing = true
 
-                self.schedulePing()
-                self.sendPairingRequest()
+                self?.schedulePing()
+                self?.sendPairingRequest()
             }
-            socket.onDisconnect = { (error: NSError?) in
-                print("websocket is disconnected: \(error?.localizedDescription)")
-                //print(error?.userInfo[NSUnderlyingErrorKey])
-                for obs in self.observers {
-                    (obs as! CloverTransportObserver).onDeviceDisconnected(self)
-                }
-                self.disconnectTimer?.invalidate()
-                self.reportDisconnectTimer?.invalidate()
-                
-                self.socket = nil
-                
-                if(self.disposed) {
+            
+            socket.onDisconnect = { [weak self] (error: NSError?) in
+                guard let strongSelf = self else {
+                    debugPrint("onDisconnect called on orphaned socket")
                     return
                 }
                 
+                if let error = error {
+                    debugPrint("websocket is disconnected: " + error.localizedDescription)
+                    
+                    for obs in strongSelf.observers {
+                        (obs as! CloverTransportObserver).onDeviceError(.CONNECTION_ERROR, int: error.code, message: error.localizedDescription)
+                    }
+                } else {
+                    debugPrint("websocket is disconnected")
+                }
                 
-                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(self.reconnectDelay) * Double(NSEC_PER_SEC)))
+                for obs in strongSelf.observers {
+                    (obs as! CloverTransportObserver).onDeviceDisconnected(strongSelf)
+                }
+                
+                strongSelf.disconnectTimer?.invalidate()
+                strongSelf.reportDisconnectTimer?.invalidate()
+                
+                strongSelf.socket = nil
+                
+                if strongSelf.disposed {
+                    return
+                }
+                
+                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(strongSelf.reconnectDelay) * Double(NSEC_PER_SEC)))
                 dispatch_after(delayTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    self.initialize(endpoint)
+                    strongSelf.initialize(endpoint)
                 })
             }
             
-            socket.onText = { (text: String) in
-                debugPrint("websocket onText: \(text)")
-                self.resetPong()
+            socket.onText = { [weak self] (text: String) in
+                guard let strongSelf = self else {
+                    debugPrint("onText called on orphaned socket")
+                    return
+                }
+                
+                debugPrint("websocket onText: " + text)
+                strongSelf.resetPong()
                 if (pairing) {
-                    //
                     let parser:Mapper<PairingResponseMessage> = Mapper<PairingResponseMessage>()
                     var remoteMessage = parser.map(text)
                     if(remoteMessage?.method == PairingCode.PAIRING_CODE) {
-                        if let pcm:PairingCodeMessage = Mapper<PairingCodeMessage>().map((remoteMessage?.payload)!) {
-                            debugPrint("Got pairing code: \(pcm.pairingCode)")
-                            self.pairingConfig.onPairingCode(pcm.pairingCode!)
+                        if let pcm:PairingCodeMessage = Mapper<PairingCodeMessage>().map((remoteMessage?.payload)!), let code = pcm.pairingCode {
+                            debugPrint("Got pairing code: " + code)
+                            strongSelf.pairingConfig.onPairingCode(code)
                         } else {
-                            debugPrint("Error getting pairing code from: \(text)", stderr)
+                            debugPrint("Error getting pairing code from: " + text, stderr)
                         }
                         
                     } else if (remoteMessage?.method == PairingCode.PAIRING_RESPONSE) {
-                        if let pr:PairingResponse = Mapper<PairingResponse>().map((remoteMessage?.payload)!) {
+                        if let pr:PairingResponse = Mapper<PairingResponse>().map((remoteMessage?.payload)!), let authToken = pr.authenticationToken {
                             if pr.pairingState == PairingCode.INITIAL || pr.pairingState == PairingCode.PAIRED {
                                 pairing = false;
-                                self.pairingAuthToken = pr.authenticationToken
-                                debugPrint("pairing successful \(pr.authenticationToken)")
-                                self.pairingConfig.onPairingSuccess(pr.authenticationToken!)
+                                strongSelf.pairingAuthToken = authToken
+                                debugPrint("pairing successful " + authToken)
+                                strongSelf.pairingConfig.onPairingSuccess(authToken)
                                 
-                                for obs in self.observers {
-                                    (obs as! CloverTransportObserver).onDeviceReady(self)
+                                for obs in strongSelf.observers {
+                                    (obs as! CloverTransportObserver).onDeviceReady(strongSelf)
                                 }
                             } else if pr.pairingState == PairingCode.FAILED {
                                 pairing = true
                                 debugPrint("pairing failed")
-                                self.pairingAuthToken = nil
+                                strongSelf.pairingAuthToken = nil
                                 //self.sendPairingRequest() // fail causes a disconnect, so this is taken care of in reconnect
                             }
                         }
                     } else {
                         if(remoteMessage?.method != "ACK" && remoteMessage?.method != "UI_STATE") {
-                            debugPrint("Error parsing message: \(text)", stderr)
+                            debugPrint("Error parsing message: " + text, stderr)
                         } else {
                             // we expect ACK and UI_STATE messages while pairing
                         }
                     }
-
                 } else {
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)){
-                        for obs in self.observers {
+                        for obs in strongSelf.observers {
                             (obs as! CloverTransportObserver).onMessage(text)
                         }
                     }
@@ -165,11 +183,12 @@ class WebSocketCloverTransport: CloverTransport {
             }
             
             socket.onData = { (data: NSData) in
-                debugPrint("got some data: \(data)") // don't expect this
+                debugPrint("got some data: " + String(data)) // don't expect this
             }
-            socket.onPong = { (Void) in
-//                print(". \(self.df.stringFromDate(NSDate()))")
-                self.resetPong()
+            
+            socket.onPong = { [weak self] (Void) in
+//                debugPrint(". " + self.df.stringFromDate(NSDate()))
+                self?.resetPong()
             }
             // This only works in newer versions of Starscream
 //            socket.disableSSLCertValidation = disableSSLValidation
@@ -191,7 +210,7 @@ class WebSocketCloverTransport: CloverTransport {
         {
             sendMessage(pairingRequestString)
         } else {
-            print("Error send pairing request!")
+            debugPrint("Error send pairing request!")
         }
         
     }
@@ -200,11 +219,11 @@ class WebSocketCloverTransport: CloverTransport {
         if let dt = self.disconnectTimer {
             if dt.valid {
                 dt.invalidate()
-//                print("invalidated")
+//                debugPrint("invalidated")
             } else {
-//                print("not invalidated!")
+//                debugPrint("not invalidated!")
             }
-//            print("timer is valid? \(self.disconnectTimer?.valid)")
+//            debugPrint("timer is valid? " + (self.disconnectTimer?.valid ?? ""))
         }
         self.reportDisconnectTimer?.invalidate()
         if reportedDisconnect {
@@ -229,7 +248,7 @@ class WebSocketCloverTransport: CloverTransport {
     }
     @objc private func sendPing() {
         if let socket = self.socket {
-//            print("sending PING \(df.stringFromDate(NSDate()))")
+//            debugPrint("sending PING " + df.stringFromDate(NSDate()))
             socket.writePing(NSData())
             self.scheduleDisconnect()
         }
@@ -265,7 +284,7 @@ class WebSocketCloverTransport: CloverTransport {
 
         if let ws = socket,
             let endpoint = endpoint {
-            print("forcing disconnect \(df.stringFromDate(NSDate()))")
+            debugPrint("forcing disconnect " + df.stringFromDate(NSDate()))
             ws.disconnect(forceTimeout: 0)
         } else {
             dispose()
@@ -287,7 +306,7 @@ class WebSocketCloverTransport: CloverTransport {
     }
     
     override func sendMessage(_ message: String) -> Int {
-        Swift.print("Sending raw message: \(message)")
+        debugPrint("Sending raw message: " + message)
         if let socket = socket {
             socket.writeString(message)
         }

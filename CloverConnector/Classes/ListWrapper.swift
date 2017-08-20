@@ -33,7 +33,7 @@ public class ListWrapper<T:Mappable> : Mappable {
             }
             
         } else {
-            Swift.print("Expected an array, but got something else:\(items)");
+            debugPrint("Expected an array, but got something else: " + String(items));
         }
     }
     
@@ -90,7 +90,7 @@ public class StringListWrapper {
             }
             
         } else {
-            Swift.print("Expected an array, but got something else:\(items)");
+            debugPrint("Expected an array, but got something else: " + String(items));
         }
     }
     

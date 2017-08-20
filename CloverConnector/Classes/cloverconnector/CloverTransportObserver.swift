@@ -9,21 +9,29 @@
 import Foundation
 
 protocol CloverTransportObserver : AnyObject{
-    /// <summary>
+
     /// Device is there but not yet ready for use
-    /// </summary>
+    ///
+    /// - Parameter transport: The transport instance being referenced
     func onDeviceConnected(_ transport:CloverTransport)
     
-    /// <summary>
     /// Device is there and ready for use
-    /// </summary>
+    ///
+    /// - Parameter transport: The transport instance being referenced
     func onDeviceReady(_ transport:CloverTransport)
     
-    /// <summary>
     /// Device is not there anymore
-    /// </summary>
-    /// <param name="transport"></param>
+    ///
+    /// - Parameter transport: The transport instance being referenced
     func onDeviceDisconnected(_ transport:CloverTransport)
+    
+    /// Device experienced an error on the transport
+    ///
+    /// - Parameters:
+    ///   - errorType: Type of the CloverDeviceErrorType being thrown
+    ///   - int: Code from the NSError experienced earlier in the flow
+    ///   - message: LocalizedDescription from the NSError experienced earlier in the flow
+    func onDeviceError(_ errorType:CloverDeviceErrorType, int:Int, message:String)
     
     func onMessage(_ message:String)
 }

@@ -2,8 +2,10 @@
 
 A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to communicate with a tethered Clover Mini
 
-
 ## Version 1.3.1
+- RC1 -> RC2
+  - additional onDeviceError callback for connection errors
+  - Fixed a few memory leaks with respect to WebSocket connections and Swift String interpolation
 - What's new since 1.2
   - Device status queries to determine that state of the device and payments processed by the device
     - retrievePayment/onRetrievePaymentResponse - query and receive the status of a payment on the device by its external id
@@ -13,6 +15,8 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
     - startCustomActivity/onCustomActivityResponse - start a custom activity on the Clover device and receive a callback when it is done
     - sendMessageToActivity/onMessageFromActivity - send and receive messages to a custom activity running on the Clover device
 
+
+## Version 1.2
 
 - Dependencies
   - ObjectMapper - provides JSON serialization/deserialization
@@ -33,14 +37,14 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
     - change the signing Team for the CloverConnector > CloverConnector_Example target
 
 - Using CloverConnector in your project
-  - pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '1.3.1-RC1'
+  - pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '1.3.1-RC2'
   - Example cocoapod (http://cocoapods.org/) `Podfile` snippet
 ---
   ```platform :ios, '8.0'
   use frameworks!
 
   target 'Register_App' do
-    pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '1.3.1-RC1'
+    pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '1.3.1-RC2'
   end
 
   post_install do |installer|
@@ -104,7 +108,7 @@ class ConnectionManager : DefaultCloverConnectorListener, PairingDeviceConfigura
     override func onDeviceDisconnected() {}
     // called when device is connected, but not ready for requests
     override func onDeviceConnected() {}
-    // called when device is ready to take requests
+    // called when device is ready to take requests. Note: May be called more than once
     override func onDeviceReady(info:MerchantInfo){}
     // required if Mini wants the POS to verify a signature
     override func onVerifySignatureRequest(signatureVerifyRequest: VerifySignatureRequest) {

@@ -26,10 +26,10 @@ class OrderDetailsViewController : UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier( "OrderItemCell") as! OrderItemCell
-        if let item = selOrder?.items[indexPath.row] as? POSLineItem {
-            cell.orderItemQuantity.text = "\(item.quantity)"
-            cell.orderItemDescription.text = "\(item.item.name ?? "Unknown")"
-            cell.orderItemPrice.text = "\(CurrencyUtils.IntToFormat(item.item.price) ?? CurrencyUtils.IntToFormat(0)!)"
+        if let item = selOrder?.items[indexPath.row]{
+            cell.orderItemQuantity.text = String(item.quantity)
+            cell.orderItemDescription.text = item.item.name ?? "Unknown"
+            cell.orderItemPrice.text = CurrencyUtils.IntToFormat(item.item.price) ?? CurrencyUtils.IntToFormat(0)!
         }
         return cell
     }
@@ -97,8 +97,8 @@ class OrderItemCell : UITableViewCell {
         if let store = self.store {
             
             if let order = store.orders.objectAtIndex((indexPath as NSIndexPath).row) as? POSOrder {
-                cell.orderPriceLabel.text = "\(order.getTotal())"
-                cell.orderNumberLabel.text = "\(order.orderNumber)"
+                cell.orderPriceLabel.text =  order.getTotal()
+                cell.orderNumberLabel.text = order.orderNumber
             }
             
         }
@@ -142,8 +142,8 @@ class OrderItemCell : UITableViewCell {
         if let store = self.store {
             
             if let order = store.orders.objectAtIndex((indexPath as NSIndexPath).row) as? POSOrder {
-                cell.orderPriceLabel.text = "\(order.getTotal())"
-                cell.orderNumberLabel.text = "\(order.orderNumber)"
+                cell.orderPriceLabel.text = order.getTotal()
+                cell.orderNumberLabel.text = order.orderNumber
             }
             
         }

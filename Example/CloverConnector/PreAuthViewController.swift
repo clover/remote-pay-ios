@@ -63,9 +63,14 @@ public class PreAuthViewController:UIViewController, UITableViewDelegate, UITabl
             cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "PACell")
         }
         
-        var payment = getStore()?.manualRefunds.objectAtIndex(indexPath.row) as? POSPayment
+        if let preAuths = getStore()?.preAuths where indexPath.row < preAuths.count {
+            
+            var preAuth = preAuths[indexPath.row] as? POSPayment
+            cell?.textLabel?.text = CurrencyUtils.IntToFormat(preAuth!.amount) ?? "$ ?.??"
+        } else {
+            cell?.textLabel?.text = "UNKNOWN"
+        }
         
-        cell?.textLabel?.text = "\(CurrencyUtils.IntToFormat(payment!.amount) ?? "$ ?.??")"
         
         return cell!
     }
@@ -74,7 +79,9 @@ public class PreAuthViewController:UIViewController, UITableViewDelegate, UITabl
         
         tableView.becomeFirstResponder()
         if let amtText = preAuthAmount.text, let amt:Int = Int(amtText) {
-            let par = PreAuthRequest(amount: amt, externalId: "\(arc4random())")
+            let externalId = String(arc4random())
+            (UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnectorListener?.preAuthExpectedResponseId = externalId
+            let par = PreAuthRequest(amount: amt, externalId: externalId)
             // below are all optional
             if let enablePrinting = store?.transactionSettings.cloverShouldHandleReceipts {
                 par.disablePrinting = !enablePrinting
@@ -115,9 +122,7 @@ extension PreAuthViewController : POSStoreListener {
     public func newOrderCreated(_ order:POSOrder){}
     public func preAuthAdded(_ payment:POSPayment){
         dispatch_async(dispatch_get_main_queue()) {
-            dispatch_after(2, dispatch_get_main_queue(), {
-                self.tableView.reloadData()
-            })
+            self.tableView.reloadData()
         }
     }
     public func preAuthRemoved(_ payment:POSPayment){}

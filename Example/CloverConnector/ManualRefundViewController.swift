@@ -24,7 +24,7 @@ class ManualRefundViewController:UIViewController, UITableViewDelegate, UITableV
         return nil
     }
     
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ManualRefundViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ManualRefundViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
@@ -48,7 +48,7 @@ class ManualRefundViewController:UIViewController, UITableViewDelegate, UITableV
         manualRefundsTable.becomeFirstResponder()
         
         if let amtText = refundAmount.text, let amt:Int = Int(amtText) {
-            let request = ManualRefundRequest(amount: amt, externalId: "\(arc4random())")
+            let request = ManualRefundRequest(amount: amt, externalId: String(arc4random()))
             (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.manualRefund(request)
         }
         
@@ -88,9 +88,14 @@ class ManualRefundViewController:UIViewController, UITableViewDelegate, UITableV
             cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "MRCell")
         }
         
-        var manualRefund = getStore()?.manualRefunds.objectAtIndex(indexPath.row) as? POSNakedRefund
+        if let refunds = getStore()?.manualRefunds where indexPath.row < refunds.count {
+            
+            var manualRefund = refunds[indexPath.row] as? POSNakedRefund
+            cell?.textLabel?.text = CurrencyUtils.IntToFormat(manualRefund!.amount) ?? "$ ?.??"
+        } else {
+            cell?.textLabel?.text = "UNKNOWN"
+        }
         
-        cell?.textLabel?.text = "\(CurrencyUtils.IntToFormat(manualRefund!.amount) ?? "$ ?.??")"
         
         return cell!
     }

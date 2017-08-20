@@ -60,6 +60,10 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         notifyListenersDisconnected()
     }
     
+    func onDeviceError(_ errorType:CloverDeviceErrorType, int:Int, message:String) {
+        notifyListenersDeviceError(errorType, int:int, message:message)
+    }
+    
     override func dispose() {
         self.transport.dispose()
         super.dispose()
@@ -77,7 +81,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     func onMessage(_ message:String) {
         // parse message and call correct CloverDeviceObserver
-        // print("Message received: \(message)")
+        // debugPrint("Message received: " + message)
         if let remotemessage = parser.map(message) {
             if remotemessage.type == .PING {
                 sendPong(remotemessage)
@@ -274,7 +278,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                 }
             }catch {
                 
-                print("error")
+                debugPrint("error")
                 //Access error here
             }
             
@@ -583,14 +587,14 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         remoteMsg.packageName = self.packageName
         remoteMsg.remoteApplicationID = config.remoteApplicationID
         remoteMsg.remoteSourceSDK = config.remoteSourceSDK
-        remoteMsg.id = "\(id)"
+        remoteMsg.id = String(id)
         remoteMsg.version = version
         
         if let remoteMsg = Mapper().toJSONString(remoteMsg, prettyPrint: false) {
-            Swift.debugPrint(remoteMsg)
+            debugPrint(remoteMsg)
             self.transport.sendMessage(remoteMsg)
         } else {
-            Swift.debugPrint("Couldn't send message. Couldn't serialize", stderr)
+            debugPrint("Couldn't send message. Couldn't serialize", stderr)
         }
         return remoteMsg.id!;
     }
@@ -632,6 +636,14 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
+    func notifyListenersDeviceError(_ errorType:CloverDeviceErrorType, int:Int, message:String) {
+        for listener in deviceObservers {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                (listener as? CloverDeviceObserver)?.onDeviceError(errorType, int: int, message: message)
+            })
+        }
+    }
+    
     func notifyListenersTxStartResponse(_ response:TxStartResponseMessage) {
         for listener in deviceObservers {
             if let result = response.result,
@@ -665,7 +677,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     func notifyObserversPaymentRefundResponse(_ response:RefundResponseMessage) {
         for listener in deviceObservers {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                (listener as? CloverDeviceObserver)?.onPaymentRefundResponse(response.orderId, String: response.reason?.rawValue ?? "", refund: response.refund, code: response.code!)
+                (listener as? CloverDeviceObserver)?.onPaymentRefundResponse(response.orderId, paymentId: response.paymentId, refund: response.refund, code: response.code!)
             })
         }
     }

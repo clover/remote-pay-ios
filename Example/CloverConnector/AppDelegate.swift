@@ -24,18 +24,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         store = POSStore()
-        store?.availableItems = NSMutableArray()
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Cheeseburger", price: 579, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Hamburger", price: 529, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Bacon Cheeseburger", price: 619, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Chicken Nuggets", price: 569, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Large Fries", price: 239, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Small Fries", price: 179, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Vanilla Milkshake", price: 229, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Chocolate Milkshake", price: 229, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Strawberry Milkshake", price: 229, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "$25 Gift Card", price: 2500, taxRate: 0.00, taxable: false, tippable: false))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "$50 Gift Card", price: 5000, taxRate: 0.000, taxable: false, tippable: false))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Cheeseburger", price: 579, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Hamburger", price: 529, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Bacon Cheeseburger", price: 619, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Chicken Nuggets", price: 569, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Large Fries", price: 239, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Small Fries", price: 179, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Vanilla Milkshake", price: 229, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Chocolate Milkshake", price: 229, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Strawberry Milkshake", price: 229, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "$25 Gift Card", price: 2500, taxRate: 0.00, taxable: false, tippable: false))
+        store?.availableItems.append(POSItem(id: String(arc4random()), name: "$50 Gift Card", price: 5000, taxRate: 0.000, taxable: false, tippable: false))
         
         if let tkn = NSUserDefaults.standardUserDefaults().stringForKey( PAIRING_AUTH_TOKEN_KEY) {
             token = tkn
@@ -44,13 +43,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
         return true
     }
     
+    override func attemptRecoveryFromError(error: NSError, optionIndex recoveryOptionIndex: Int) -> Bool {
+        debugPrint(error.domain)
+        return true
+    }
     
     func onPairingCode(pairingCode: String) {
-        print("Pairing Code: \(pairingCode)")
+        debugPrint("Pairing Code: " + pairingCode)
         self.cloverConnectorListener?.onPairingCode(pairingCode)
     }
     func onPairingSuccess(authToken: String) {
-        print("Pairing Auth Token: \(authToken)")
+        debugPrint("Pairing Auth Token: " + authToken)
         self.cloverConnectorListener?.onPairingSuccess(authToken)
         self.token = authToken
         NSUserDefaults.standardUserDefaults().setObject(self.token, forKey: PAIRING_AUTH_TOKEN_KEY)

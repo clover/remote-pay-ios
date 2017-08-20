@@ -9,7 +9,7 @@ import ObjectMapper
 
 
 
-
+/// :nodoc:
 public class Img:Mappable {
 
   /*

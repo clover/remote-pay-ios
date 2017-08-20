@@ -10,17 +10,19 @@ import Foundation
 import CloverConnector
 
 public class POSStore {
-    public var orders:NSMutableArray = NSMutableArray()
+    public var orders = [POSOrder]()
     public var currentOrder:POSOrder? = nil
-    public var availableItems = NSMutableArray()
-    public var preAuths = NSMutableArray()
-    public var vaultedCards = NSMutableArray()
-    public var manualRefunds = NSMutableArray()
+    public var availableItems = [POSItem]()
+    public var preAuths = [POSPayment]()
+    public var vaultedCards = [POSCard]()
+    public var manualRefunds = [POSNakedRefund]()
     
     private var storeListeners:NSMutableArray = NSMutableArray()
     private var orderListeners:NSMutableArray = NSMutableArray()
     
     public var transactionSettings = CLVModels.Payments.TransactionSettings()
+    
+    public var cardNotPresent:Bool?
 
     public func newOrder() {
         if let co = currentOrder {
@@ -33,7 +35,7 @@ public class POSStore {
             }
         }
         if let currentOrder = currentOrder {
-            orders.addObject(currentOrder);
+            orders.append(currentOrder);
             
             for sl in storeListeners {
                 if let listener = sl as? POSStoreListener {
@@ -73,7 +75,7 @@ public class POSStore {
     }
     
     public func addPreAuth(_ payment:POSPayment) {
-        preAuths.addObject(payment)
+        preAuths.append(payment)
         for sl in storeListeners {
             if let listener = sl as? POSStoreListener {
                 listener.preAuthAdded(payment)
@@ -82,16 +84,25 @@ public class POSStore {
     }
     
     public func removePreAuth(_ payment:POSPayment) {
-        preAuths.removeObject(payment)
-        for sl in storeListeners {
-            if let listener = sl as? POSStoreListener {
-                listener.preAuthRemoved(payment)
-            }
+        let index = preAuths.indexOf { (currentPayment) -> Bool in
+            return payment.paymentId == currentPayment.paymentId
         }
+        if let idx = index {
+            
+            preAuths.removeAtIndex(idx)
+            for sl in storeListeners {
+                if let listener = sl as? POSStoreListener {
+                    listener.preAuthRemoved(payment)
+                }
+            }
+        } else {
+            debugPrint("Couldn't find PreAuth to remove")
+        }
+
     }
     
     public func addVaultedCard(_ card:POSCard) {
-        vaultedCards.addObject(card)
+        vaultedCards.append(card)
         for sl in storeListeners {
             if let listener = sl as? POSStoreListener {
                 listener.vaultCardAdded(card)
@@ -109,7 +120,7 @@ public class POSStore {
     }
 
     public func addManualRefund(_ manualRefund:POSNakedRefund) {
-        manualRefunds.addObject(manualRefund)
+        manualRefunds.append(manualRefund)
         for ol in storeListeners {
             if let listener = ol as? POSStoreListener {
                 listener.manualRefundAdded(manualRefund)

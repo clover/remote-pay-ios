@@ -89,10 +89,15 @@ class SimpleTestViewController : UITableViewController {
             disableReceiptScreen.selectedSegmentIndex = tx.disableReceiptSelection == nil ? 0 : (tx.disableReceiptSelection! ? 1 : 2)
             disableRestartOnFail.selectedSegmentIndex = tx.disableRestartTransactionOnFailure == nil ? 0 : (tx.disableRestartTransactionOnFailure! ? 1 : 2)
             forceOfflineSwitch.selectedSegmentIndex = tx.forceOfflinePayment == nil ? 0 : (tx.forceOfflinePayment! ? 1 : 2)
-            manualSwitch.on = tx.cardEntryMethods ?? 0 & CloverConnector.CARD_ENTRY_METHOD_MANUAL != 0
-            swipeSwitch.on = tx.cardEntryMethods ?? 0 & CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE != 0
-            chipSwitch.on = tx.cardEntryMethods ?? 0 & CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT != 0
-            nfcSwitch.on = tx.cardEntryMethods ?? 0 & CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS != 0
+            manualSwitch.on = ((tx.cardEntryMethods ?? 0) & CloverConnector.CARD_ENTRY_METHOD_MANUAL) == CloverConnector.CARD_ENTRY_METHOD_MANUAL
+            swipeSwitch.on = ((tx.cardEntryMethods ?? 0) & CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE) == CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE
+            chipSwitch.on = ((tx.cardEntryMethods ?? 0) & CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT) == CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT
+            nfcSwitch.on = ((tx.cardEntryMethods ?? 0) & CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS) == CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS
+            
+            if let store = store {
+                cardNotPresent.selectedSegmentIndex = store.cardNotPresent == nil ? 0 : (store.cardNotPresent! ? 1 : 2)
+            }
+            
             if tx.signatureEntryLocation == CLVModels.Payments.DataEntryLocation.ON_SCREEN {
                 sigLocation.selectedSegmentIndex = 1
             } else if tx.signatureEntryLocation == CLVModels.Payments.DataEntryLocation.ON_PAPER {
@@ -119,43 +124,50 @@ class SimpleTestViewController : UITableViewController {
     
     @IBAction func loadSettingsFromUI(_ sender:AnyObject) {
 //        let txSettings = CLVModels.Payments.TransactionSettings()
-        if let txSettings = store?.transactionSettings {
-            txSettings.allowOfflinePayment = allowOffline.selectedSegmentIndex == 0 ? nil : (allowOffline.selectedSegmentIndex == 1 ? true : false)
-            txSettings.approveOfflinePaymentWithoutPrompt = acceptOfflineWOPrompt.selectedSegmentIndex == 0 ? nil : (acceptOfflineWOPrompt.selectedSegmentIndex == 1 ? true : false)
-            txSettings.autoAcceptPaymentConfirmations = autoAcceptPayments.selectedSegmentIndex == 0 ? nil : (autoAcceptPayments.selectedSegmentIndex == 1 ? true : false)
-            txSettings.autoAcceptSignature = autoAcceptSigs.selectedSegmentIndex == 0 ? nil : (autoAcceptSigs.selectedSegmentIndex == 1 ? true : false)
-            txSettings.cloverShouldHandleReceipts = self.disablePrinting.selectedSegmentIndex == 0 ? nil : (self.disablePrinting.selectedSegmentIndex == 1 ? false : true)
-            txSettings.disableCashBack = disableCashback.selectedSegmentIndex == 0 ? nil : (disableCashback.selectedSegmentIndex == 1 ? true : false)
-            txSettings.disableDuplicateCheck = disableDuplicateChecking.selectedSegmentIndex == 0 ? nil : (disableDuplicateChecking.selectedSegmentIndex == 1 ? true : false)
-            txSettings.disableReceiptSelection = disableReceiptScreen.selectedSegmentIndex == 0 ? nil : (disableReceiptScreen.selectedSegmentIndex == 1 ? true : false)
-            txSettings.disableRestartTransactionOnFailure = disableRestartOnFail.selectedSegmentIndex == 0 ? nil : (disableRestartOnFail.selectedSegmentIndex == 1 ? true : false)
-            txSettings.forceOfflinePayment = forceOfflineSwitch.selectedSegmentIndex == 0 ? nil : (forceOfflineSwitch.selectedSegmentIndex == 1 ? true : false)
-            var cem = 0;
-            cem |= (swipeSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE : 0)
-            cem |= (chipSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT : 0)
-            cem |= (nfcSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS : 0)
-            cem |= (manualSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_MANUAL : 0)
-            txSettings.cardEntryMethods = cem
-            
-            
-            switch sigLocation.selectedSegmentIndex {
+        let txSettings = store?.transactionSettings ?? CLVModels.Payments.TransactionSettings()
+        txSettings.allowOfflinePayment = allowOffline.selectedSegmentIndex == 0 ? nil : (allowOffline.selectedSegmentIndex == 1 ? true : false)
+        txSettings.approveOfflinePaymentWithoutPrompt = acceptOfflineWOPrompt.selectedSegmentIndex == 0 ? nil : (acceptOfflineWOPrompt.selectedSegmentIndex == 1 ? true : false)
+        txSettings.autoAcceptPaymentConfirmations = autoAcceptPayments.selectedSegmentIndex == 0 ? nil : (autoAcceptPayments.selectedSegmentIndex == 1 ? true : false)
+        txSettings.autoAcceptSignature = autoAcceptSigs.selectedSegmentIndex == 0 ? nil : (autoAcceptSigs.selectedSegmentIndex == 1 ? true : false)
+        txSettings.cloverShouldHandleReceipts = self.disablePrinting.selectedSegmentIndex == 0 ? nil : (self.disablePrinting.selectedSegmentIndex == 1 ? false : true)
+        txSettings.disableCashBack = disableCashback.selectedSegmentIndex == 0 ? nil : (disableCashback.selectedSegmentIndex == 1 ? true : false)
+        txSettings.disableDuplicateCheck = disableDuplicateChecking.selectedSegmentIndex == 0 ? nil : (disableDuplicateChecking.selectedSegmentIndex == 1 ? true : false)
+        txSettings.disableReceiptSelection = disableReceiptScreen.selectedSegmentIndex == 0 ? nil : (disableReceiptScreen.selectedSegmentIndex == 1 ? true : false)
+        txSettings.disableRestartTransactionOnFailure = disableRestartOnFail.selectedSegmentIndex == 0 ? nil : (disableRestartOnFail.selectedSegmentIndex == 1 ? true : false)
+        txSettings.forceOfflinePayment = forceOfflineSwitch.selectedSegmentIndex == 0 ? nil : (forceOfflineSwitch.selectedSegmentIndex == 1 ? true : false)
+        if let store = store {
+            store.cardNotPresent = cardNotPresent.selectedSegmentIndex == 0 ? nil : (cardNotPresent.selectedSegmentIndex == 1 ? true : false)
+        }
+        
+        var cem = 0;
+        cem |= (swipeSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE : 0)
+        cem |= (chipSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT : 0)
+        cem |= (nfcSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS : 0)
+        cem |= (manualSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_MANUAL : 0)
+        txSettings.cardEntryMethods = cem
+        
+        
+        switch sigLocation.selectedSegmentIndex {
             case 0: txSettings.signatureEntryLocation = nil
             case 1: txSettings.signatureEntryLocation = CLVModels.Payments.DataEntryLocation.ON_SCREEN
             case 2: txSettings.signatureEntryLocation = CLVModels.Payments.DataEntryLocation.ON_PAPER
             case 3: txSettings.signatureEntryLocation = CLVModels.Payments.DataEntryLocation.NONE
             default: txSettings.signatureEntryLocation = nil
-            }
-            switch tipModeButtons.selectedSegmentIndex {
+        }
+        switch tipModeButtons.selectedSegmentIndex {
             case 0: txSettings.tipMode = nil
             case 1: txSettings.tipMode = CLVModels.Payments.TipMode.ON_SCREEN_BEFORE_PAYMENT
             case 2: txSettings.tipMode = CLVModels.Payments.TipMode.TIP_PROVIDED
             case 3: txSettings.tipMode = CLVModels.Payments.TipMode.NO_TIP
             default: txSettings.tipMode = nil
-            }
+        }
 
+        self.currentExecutor = PaymentExecutor(cloverConnector: cloverConnector!, payment: nil)
+        
+        if let pe = self.currentExecutor as? PaymentExecutor {
+            pe.cardNotPresent = store?.cardNotPresent
         }
         
-        self.currentExecutor = PaymentExecutor(cloverConnector: cloverConnector!, payment: nil)
         if let amt = Int(txAmount.text ?? "2525") {
             (self.currentExecutor as! PaymentExecutor).amount = amt
         } else {
@@ -170,6 +182,11 @@ class SimpleTestViewController : UITableViewController {
     
     @objc func processTx(_ card:CLVModels.Payments.VaultedCard?)
     {
+        if let amt = Int(txAmount.text ?? "2525") {
+            (self.currentExecutor as! PaymentExecutor).amount = amt
+        } else {
+            (self.currentExecutor as! PaymentExecutor).amount = 2525
+        }
 
         (self.currentExecutor as! PaymentExecutor).transactionSettings = store?.transactionSettings
         (self.currentExecutor as! PaymentExecutor).vaultedCard = card
@@ -193,9 +210,15 @@ class SimpleTestViewController : UITableViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
+        self.currentExecutor = self.currentExecutor ?? PaymentExecutor(cloverConnector: cloverConnector!, payment: nil)
         cloverConnector?.removeCloverConnectorListener(((UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnectorListener)!)
         cloverConnector?.removeCloverConnectorListener(((UIApplication.sharedApplication().delegate as? AppDelegate)?.testCloverConnectorListener)!)
         updateUIFromSettings()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        // default back to the default controller, the other tabs can switch
+        cloverConnector?.addCloverConnectorListener(((UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnectorListener)!)
     }
     
     
@@ -249,7 +272,7 @@ class BaseExecutor : DefaultCloverConnectorListener {
     private func promptForChallenge(request:ConfirmPaymentRequest, challengeIndex index:Int) {
         let challenge = request.challenges![index]
         delegate = ConfirmPaymentDelegate(cc: cloverConnector!, executor: self, request: request, challengeIndex: index)
-        let view = UIAlertView(title: "Confirm", message: "\(challenge.message ?? "No Message.")", delegate: delegate, cancelButtonTitle: nil)
+        let view = UIAlertView(title: "Confirm", message: (challenge.message ?? "No Message."), delegate: delegate, cancelButtonTitle: nil)
         view.addButtonWithTitle("Accept")
         view.addButtonWithTitle("Reject")
         
@@ -267,6 +290,16 @@ class BaseExecutor : DefaultCloverConnectorListener {
                 view.dismissWithClickedButtonIndex(-1, animated: true)
             })
             view.show()
+        }
+    }
+    
+    func showMessage(_ title:String?, message:String) {
+        var view = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: nil)
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            dispatch_after(2, dispatch_get_main_queue(), {
+                view.dismissWithClickedButtonIndex(-1, animated: true)
+            })
         }
     }
     
@@ -350,6 +383,7 @@ class VaultCardExecutor:BaseExecutor, Executor {
 class PaymentExecutor:BaseExecutor, UIAlertViewDelegate, Executor {
     var view:UIAlertView?
     var transactionSettings:CLVModels.Payments.TransactionSettings?
+    var cardNotPresent:Bool?
     var amount:Int?
     var tipAmount:Int?
     var vaultedCard:CLVModels.Payments.VaultedCard?
@@ -388,7 +422,7 @@ class PaymentExecutor:BaseExecutor, UIAlertViewDelegate, Executor {
             let rpe = RefundPaymentExecutor(cloverConnector: cloverConnector!, payment: response.payment!)
             rpe.run()
         } else {
-            showErrorMessage("Sale Failed. \(response.reason):\(response.message)")
+            showErrorMessage("Sale Failed. " + (response.reason ?? "") + ":" + (response.message ?? ""))
         }
     }
     
@@ -398,7 +432,7 @@ class PaymentExecutor:BaseExecutor, UIAlertViewDelegate, Executor {
             let tae = TipAdjustExecutor(cloverConnector: cloverConnector!, payment: authResponse.payment!)
             tae.run()
         } else {
-            showErrorMessage("Auth Failed. \(authResponse.reason):\(authResponse.message)")
+            showErrorMessage("Auth Failed. " + (authResponse.reason ?? "") + ":" + (authResponse.message ?? ""))
         }
     }
     
@@ -408,7 +442,15 @@ class PaymentExecutor:BaseExecutor, UIAlertViewDelegate, Executor {
             let cpae = CapturePreAuthExecutor(cloverConnector: cloverConnector!, payment: preAuthResponse.payment!)
             cpae.run()
         } else {
-            showErrorMessage("PreAuth Failed. \(preAuthResponse.reason):\(preAuthResponse.message)")
+            showErrorMessage("PreAuth Failed. " + (preAuthResponse.reason ?? "") + ":" + (preAuthResponse.message ?? ""))
+        }
+    }
+    
+    override func onManualRefundResponse(manualRefundResponse: ManualRefundResponse) {
+        if manualRefundResponse.success {
+            showMessage("Success", message: "Manual Refund Successful")
+        } else {
+            showErrorMessage("Manual Refund Failed. " + (manualRefundResponse.reason ?? "") + ":" + (manualRefundResponse.message ?? ""))
         }
     }
 }
@@ -418,7 +460,7 @@ extension PaymentExecutor {
     private func processAsSale() {
         cloverConnector?.addCloverConnectorListener(self)
         
-        let sr = SaleRequest(amount: amount ?? 2300, externalId: "\(arc4random())")
+        let sr = SaleRequest(amount: amount ?? 2300, externalId: String(arc4random()))
         sr.allowOfflinePayment = transactionSettings?.allowOfflinePayment
         sr.approveOfflinePaymentWithoutPrompt = transactionSettings?.approveOfflinePaymentWithoutPrompt
         sr.disableCashback = transactionSettings?.disableCashBack
@@ -443,6 +485,7 @@ extension PaymentExecutor {
         sr.cardEntryMethods = (transactionSettings?.cardEntryMethods)!
         sr.vaultedCard = self.vaultedCard
         sr.forceOfflinePayment = transactionSettings?.forceOfflinePayment
+        sr.cardNotPresent = cardNotPresent
         
         if (transactionSettings?.tipMode) != nil {
             sr.disableTipOnScreen = (transactionSettings?.tipMode)!.rawValue == SaleRequest.TipMode.NO_TIP.rawValue || (transactionSettings?.tipMode)!.rawValue == SaleRequest.TipMode.TIP_PROVIDED.rawValue
@@ -454,7 +497,7 @@ extension PaymentExecutor {
     private func processAsAuth() {
         cloverConnector?.addCloverConnectorListener(self)
         
-        let ar = AuthRequest(amount: amount ?? 2400, externalId: "\(arc4random())")
+        let ar = AuthRequest(amount: amount ?? 2400, externalId: String(arc4random()))
         ar.allowOfflinePayment = transactionSettings?.allowOfflinePayment
         ar.approveOfflinePaymentWithoutPrompt = transactionSettings?.approveOfflinePaymentWithoutPrompt
         ar.disableCashback = transactionSettings?.disableCashBack
@@ -470,13 +513,14 @@ extension PaymentExecutor {
         ar.cardEntryMethods = (transactionSettings?.cardEntryMethods)!
         ar.vaultedCard = self.vaultedCard
         ar.forceOfflinePayment = transactionSettings?.forceOfflinePayment
+        ar.cardNotPresent = cardNotPresent
         cloverConnector?.auth(ar)
     }
     
     private func processAsPreAuth() {
         cloverConnector?.addCloverConnectorListener(self)
         
-        let par = PreAuthRequest(amount: amount ?? 2500, externalId: "\(arc4random())")
+        let par = PreAuthRequest(amount: amount ?? 2500, externalId: String(arc4random()))
         par.disableReceiptSelection = transactionSettings?.disableReceiptSelection
         par.disableDuplicateChecking = transactionSettings?.disableDuplicateCheck
         if let cshr = transactionSettings?.cloverShouldHandleReceipts {
@@ -487,6 +531,7 @@ extension PaymentExecutor {
         par.disableRestartTransactionOnFail = transactionSettings?.disableRestartTransactionOnFailure
         par.signatureEntryLocation = transactionSettings?.signatureEntryLocation
         par.cardEntryMethods = (transactionSettings?.cardEntryMethods)!
+        par.cardNotPresent = cardNotPresent
         par.vaultedCard = self.vaultedCard
         
         cloverConnector?.preAuth(par)
@@ -495,7 +540,7 @@ extension PaymentExecutor {
     private func processAsManualRefund() {
         cloverConnector?.addCloverConnectorListener(self)
         
-        let mrr = ManualRefundRequest(amount: amount ?? 2200, externalId: "\(arc4random())")
+        let mrr = ManualRefundRequest(amount: amount ?? 2200, externalId: String(arc4random()))
         mrr.disableReceiptSelection = transactionSettings?.disableReceiptSelection
         mrr.disableDuplicateChecking = transactionSettings?.disableDuplicateCheck
         if let cshr = transactionSettings?.cloverShouldHandleReceipts {
@@ -506,6 +551,7 @@ extension PaymentExecutor {
         mrr.disableRestartTransactionOnFail = transactionSettings?.disableRestartTransactionOnFailure
         mrr.signatureEntryLocation = transactionSettings?.signatureEntryLocation
         mrr.cardEntryMethods = (transactionSettings?.cardEntryMethods)!
+        mrr.cardNotPresent = cardNotPresent
         cloverConnector?.manualRefund(mrr)
     }
 }
@@ -543,7 +589,7 @@ class CapturePreAuthExecutor:BaseExecutor, UIAlertViewDelegate {
             let tae = TipAdjustExecutor(cloverConnector: cloverConnector!, payment: payment!)
             tae.run()
         } else {
-            showErrorMessage("Capture Failed. \(capturePreAuthResponse.reason):\(capturePreAuthResponse.message)")
+            showErrorMessage("Capture Failed. " + (capturePreAuthResponse.reason ?? "") + ":" + (capturePreAuthResponse.message ?? ""))
         }
     }
 }
@@ -551,7 +597,7 @@ class CapturePreAuthExecutor:BaseExecutor, UIAlertViewDelegate {
 class TipAdjustExecutor:BaseExecutor, UIAlertViewDelegate {
     func run() {
         self.delegate = self
-        let view = UIAlertView(title: "Tip", message: "Would you like to add a tip?", delegate: delegate, cancelButtonTitle: nil, otherButtonTitles: "Yes", "No")
+        let view = UIAlertView(title: "Tip", message: "Would you like to add a $200 tip?", delegate: delegate, cancelButtonTitle: nil, otherButtonTitles: "Yes", "No")
         view.alertViewStyle = UIAlertViewStyle.Default
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -563,7 +609,7 @@ class TipAdjustExecutor:BaseExecutor, UIAlertViewDelegate {
         switch buttonIndex {
         case 0:
             self.cloverConnector!.addCloverConnectorListener(self)
-            let taar = TipAdjustAuthRequest(orderId: self.payment!.order!.id!, paymentId: self.payment!.id!, tipAmount: 100)
+            let taar = TipAdjustAuthRequest(orderId: self.payment!.order!.id!, paymentId: self.payment!.id!, tipAmount: 200)
             self.cloverConnector!.tipAdjustAuth(taar)
             break
         case 1:
@@ -581,7 +627,7 @@ class TipAdjustExecutor:BaseExecutor, UIAlertViewDelegate {
             let rpe = RefundPaymentExecutor(cloverConnector: cloverConnector!, payment: payment!)
             rpe.run()
         } else {
-            showErrorMessage("Tip Adjust Failed. \(tipAdjustAuthResponse.reason):\(tipAdjustAuthResponse.message)")
+            showErrorMessage("Tip Adjust Failed. " + (tipAdjustAuthResponse.reason ?? "") + ":" + (tipAdjustAuthResponse.message ?? ""))
         }
     }
 }
@@ -591,7 +637,7 @@ class RefundPaymentExecutor:BaseExecutor, UIAlertViewDelegate  {
     var full:Bool = false
     
     deinit {
-        print("RefundPaymentExecotur d'tor")
+        debugPrint("RefundPaymentExecotur d'tor")
     }
     
     func run() {
@@ -640,7 +686,7 @@ class RefundPaymentExecutor:BaseExecutor, UIAlertViewDelegate  {
                 pre.run()
             }
         } else {
-            showErrorMessage("Refund Payment Failed. \(refundPaymentResponse.reason):\(refundPaymentResponse.message)")
+            showErrorMessage("Refund Payment Failed. " + (refundPaymentResponse.reason ?? "") + ":" + (refundPaymentResponse.message ?? ""))
         }
     }
 }

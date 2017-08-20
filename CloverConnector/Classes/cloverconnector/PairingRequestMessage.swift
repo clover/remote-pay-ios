@@ -19,7 +19,7 @@ public class PairingRequestMessage : Mappable {
     private static var reqNumber:Int = 0;
     
     public init( request:PairingRequest ) {
-        self.id = "PR-\(PairingRequestMessage.reqNumber += 1)"
+        self.id = "PR-" + String(PairingRequestMessage.reqNumber += 1)
         self.payload = Mapper().toJSONString(request, prettyPrint: true)
     }
     

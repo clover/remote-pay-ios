@@ -47,10 +47,7 @@ public class InputOption : NSObject, Mappable {
             }
             return nil
             }, toJSON: { (value: KeyPress?) -> String? in
-                if let value = value {
-                    return "\(value)"
-                }
-                return nil
+                return value?.rawValue
         })
         keyPress <- (map["keyPress"], keyPressTransform)
         //keyPress <- map["keyPress"]

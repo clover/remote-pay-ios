@@ -1,15 +1,14 @@
-//
-//  RetrievePendingPaymentsResponse.swift
-//  CloverSDKRemotepay
-//
 //  
 //  Copyright © 2017 Clover Network, Inc. All rights reserved.
 //
 
 import ObjectMapper
 
-
+/**
+ * resopnse to a retrieve pending payments request
+ */
 public class RetrievePendingPaymentsResponse:BaseResponse {
+    /// list of payments in the queue, that have not been sent to the server for processing
     public var pendingPayments:[PendingPaymentEntry]?
     
     public init(code:ResultCode, message:String, payments:[PendingPaymentEntry]?) {
@@ -17,10 +16,11 @@ public class RetrievePendingPaymentsResponse:BaseResponse {
         pendingPayments = payments
     }
     
+    /// :nodoc:
     required public init?(_ map: Map) {
         super.init(map)
     }
-    
+    /// :nodoc:
     public override func mapping(map: Map) {
         super.mapping(map)
         pendingPayments <- map["pendingPayments"]

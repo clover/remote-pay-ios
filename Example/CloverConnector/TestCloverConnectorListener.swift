@@ -43,7 +43,7 @@ class TestCloverConnectorListener : DefaultCloverConnectorListener {
     
     override func onTipAdjustAuthResponse(_ tipAdjustAuthResponse: TipAdjustAuthResponse) {
         if tipAdjustAuthResponse.success {
-            viewController?.label.text = "\(tipAdjustAuthResponse.tipAmount!) Tip Applied Successfully"
+            viewController?.label.text = String(tipAdjustAuthResponse.tipAmount!) + " Tip Applied Successfully"
             if let lastTA = lastTARequest {
                 promptForRefundAndVoid(lastTA.orderId, paymentId: lastTA.paymentId)
             }
@@ -61,7 +61,7 @@ class TestCloverConnectorListener : DefaultCloverConnectorListener {
                 promptForTip(orderId, paymentId: paymentId)
             }
         } else {
-            showMessage("Auth Failed!: \(authResponse.result.rawValue): \(authResponse.message)")
+            showMessage("Auth Failed!: " + authResponse.result.rawValue + ":" + (authResponse.message ?? ""))
         }
     }
     
@@ -105,7 +105,7 @@ class TestCloverConnectorListener : DefaultCloverConnectorListener {
             
         } else {
             viewController?.label.text = "PreAuth Capture Failed!"
-            showMessage("Capture PreAuth Failed!: \(capturePreAuthResponse.result.rawValue): \(capturePreAuthResponse.message)")
+            showMessage("Capture PreAuth Failed!: " + capturePreAuthResponse.result.rawValue + ": " + (capturePreAuthResponse.message ?? ""))
         }
     }
     
@@ -150,7 +150,7 @@ class TestCloverConnectorListener : DefaultCloverConnectorListener {
     }
     
     override func onRetrievePendingPaymentsResponse(_ retrievePendingPaymentResponse: RetrievePendingPaymentsResponse) {
-        showMessage(retrievePendingPaymentResponse.success ? "\(retrievePendingPaymentResponse.pendingPayments?.count) Pending" : "Failed to get list")
+        showMessage(retrievePendingPaymentResponse.success ? String(retrievePendingPaymentResponse.pendingPayments?.count) + " Pending" : "Failed to get list")
     }
     
     private func showMessage(_ message:String?) {

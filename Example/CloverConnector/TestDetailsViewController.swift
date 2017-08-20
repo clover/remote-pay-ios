@@ -20,9 +20,9 @@ class TestDetailsViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        debugPrint( "\(self.navigationController)" )
+        debugPrint( String(self.navigationController) )
         if let name = testCase?.name {
-            nameLabel.text = "\(name) : \((testCase?.passed?.0)! ? "✅" : "🛑")"
+            nameLabel.text = name + " : " + ((testCase?.passed?.0)! ? "✅" : "🛑")
         }
         textContent.text = testCase?.response ?? "<None/>"
     }
