@@ -37,14 +37,14 @@ A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to com
     - change the signing Team for the CloverConnector > CloverConnector_Example target
 
 - Using CloverConnector in your project
-  - pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '1.3.1-RC2'
+  - pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '1.3.1'
   - Example cocoapod (http://cocoapods.org/) `Podfile` snippet
 ---
   ```platform :ios, '8.0'
   use frameworks!
 
   target 'Register_App' do
-    pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '1.3.1-RC2'
+    pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '1.3.1'
   end
 
   post_install do |installer|

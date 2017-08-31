@@ -30,7 +30,7 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
     
     public var remoteSourceSDK:String {
         get {
-            return "com.cloverconnector.ios.ws:1.3.1-RC2"
+            return "com.cloverconnector.ios.ws:1.3.1"
         }
     }
     
