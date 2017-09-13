@@ -1,28 +1,31 @@
-# remote-pay-ios
+![Clover Logo](https://www.clover.com/assets/images/public-site/press/clover_primary_gray_rgb.png)
 
-A swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to communicate with a tethered Clover Mini
 
-- Dependencies
-  - ObjectMapper - provides JSON serialization/deserialization
-  - SwiftyJSON - provides simple JSON parsing
-  - Starscream - provides websocket client capabilities
+# Clover SDK for iOS Integration
 
-- Building the example app
-  - download and insatll xcode 8.2.1 or 7.3.1 (swift 2.3 support)
-  - install cocoapods
-    - run `sudo gem install cocoapods`
-  - clone/download the CloverConnector repo
-  - cd remote-pay-ios/Example
-  - run `pod install`
-    - should create a Pods directory populated with dependencies
-    - should create a workspace file that includes the project, plus a pods project
-  - open the CloverConnector.xcworkspace file
-    - change the Bundle identifier for the CloverConnector > CloverConnector_Example target
-    - change the signing Team for the CloverConnector > CloverConnector_Example target
+This SDK provides A Swift 2.3 implementation of the CloverConnector API that enables your iOS or MacOS-based point-of-sale (POS) system to communicate with a tethered Clover Mini payment device.
 
-- Using CloverConnector in your project
+## Dependencies
+- ObjectMapper - Provides JSON serialization/deserialization
+- SwiftyJSON - Provides simple JSON parsing
+- Starscream - Provides WebSocket client capabilities
+
+## Building the Example App
+1. Download and install Xcode 8.2.1 or 7.3.1 (with Swift 2.3 support)
+2. Install CocoaPods
+	- Run `sudo gem install cocoapods` on the command line
+3. Clone the [CloverConnector repository for iOS](https://github.com/clover/remote-pay-ios)
+4. cd into remote-pay-ios/Example
+5. Run `pod install`
+    - This should create a Pods directory populated with dependencies
+    - It should also create a workspace file that includes the project, as well as a pods project
+6. Open the CloverConnector.xcworkspace file
+    - Change the Bundle identifier for the CloverConnector > CloverConnector_Example target
+    - Change the signing Team for the CloverConnector > CloverConnector_Example target
+
+## Using CloverConnector in your project
   - pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :branch => '1.2.0.b'
-  - Example cocoapod (http://cocoapods.org/) `Podfile` snippet
+  - Please see the example [CocoaPods](http://cocoapods.org/) `Podfile` snippet below.
 ---
   ```platform :ios, '8.0'
   use frameworks!
