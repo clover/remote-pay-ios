@@ -1,0 +1,23 @@
+//
+//  RetrievePrintersRequest.swift
+//  Pods
+//
+//  Created by Daniel James on 8/25/17.
+//
+//
+
+import Foundation
+
+@objc
+public class RetrievePrintersRequest: NSObject {
+    var category: PrintCategory?
+    
+    public init(printerCategory: PrintCategory?) {
+        self.category = printerCategory
+    }
+}
+
+public enum PrintCategory {
+    case ORDER
+    case RECEIPT
+}
