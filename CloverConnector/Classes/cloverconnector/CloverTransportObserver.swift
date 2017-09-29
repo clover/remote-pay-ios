@@ -31,7 +31,7 @@ protocol CloverTransportObserver : AnyObject{
     ///   - errorType: Type of the CloverDeviceErrorType being thrown
     ///   - int: Code from the NSError experienced earlier in the flow
     ///   - message: LocalizedDescription from the NSError experienced earlier in the flow
-    func onDeviceError(_ errorType:CloverDeviceErrorType, int:Int, message:String)
+    func onDeviceError(_ errorType:CloverDeviceErrorType, int:Int?, cause:NSError?, message:String)
     
     func onMessage(_ message:String)
 }

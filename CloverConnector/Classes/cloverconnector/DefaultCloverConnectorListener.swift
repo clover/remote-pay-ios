@@ -155,6 +155,10 @@ public class DefaultCloverConnectorListener : NSObject, ICloverConnectorListener
     public func onResetDeviceResponse(response: ResetDeviceResponse) {}
 
     public func onRetrievePaymentResponse(response: RetrievePaymentResponse) {}
+    
+    public func onRetrievePrinters(response: RetrievePrintersResponse) {}
+    
+    public func onPrintJobStatusResponse(_ printJobStatusResponse:PrintJobStatusResponse) {}
 
     public func onRetrieveDeviceStatusResponse(_response: RetrieveDeviceStatusResponse) {}
 }

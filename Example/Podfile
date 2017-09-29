@@ -5,6 +5,10 @@ use_frameworks!
 
 target 'CloverConnector_Example' do
 
+  # The 1.1.4-Clover branch of our fork of the Starscream framework is required for reliable transport of large files
+  # Defining it here in the PodFile overrides the podspec dependency, which isn't allowed to specify a specific location and branch
+  pod 'Starscream', :git => 'https://github.com/clover/Starscream.git', :branch => 'queuePriority-1.1.4'
+  
   pod 'CloverConnector', :path => '../'
 
   target 'CloverConnector_Tests' do

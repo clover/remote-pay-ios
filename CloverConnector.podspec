@@ -1,16 +1,13 @@
 
 Pod::Spec.new do |s|
-  s.name             = 'CloverConnector'
-  s.version          = '1.3.1'
-  s.summary          = 'Provides an api for communicating with a Clover Mini as a customer facing payment device.'
+s.name             = 'CloverConnector'
+s.version          = '1.4.0'
+s.summary          = 'Provides an api for communicating with a Clover Mini as a customer facing payment device.'
 
-  s.description      = <<-DESC
+s.description      = <<-DESC
 CloverConnector provides an interface to communicate with a tethered Clover device to enable integration with Clover's customer facing payment device capabilities.
 
-New features in 1.3 include two main areas:
-1. Supporting custom activities on the Clover Mini (Starting and communicating with Activities)
-2. Providing device and payment state information
-
+New features in 1.4 largely focused around expanding printing capabilities.
 
 ICloverConnector
 - *sale* - method to collect a final sale payment
@@ -27,9 +24,10 @@ ICloverConnector
 - *acceptSignature* - method to accept a signature when the Clover device sends a `verifySignatureRequest`
 - *rejectSignature* - method to reject a signature when the Clover device sends a `verifySignatureRequest`
 - *vaultCard* - reads a card and retrieves a multi-pay token
-- *printText* - prints simple text
-- *printImageFromURL* - print an image references in the url
-- *openCashDrawer* - opens a cash drawer attached to the Clover device
+- *printText* - prints simple text *deprecated*
+- *printImage* - prints the passed in image *deprecated*
+- *printImageFromURL* - print an image references in the url *deprecated*
+- *openCashDrawer* - opens a cash drawer attached to the Clover device *deprecated*
 - *showMessage* - displays a simple message on the Clover device
 - *showWelcomeScreen* - displays the welcome screen on the Clover device
 - *showThankYouScreen* - displays the thank you screen on the Clover device
@@ -42,11 +40,15 @@ ICloverConnector
 - *rejectPayment* - method to reject a payment when the Clover device sends a `confirmPaymentRequest`
 - *retrievePendingPayments* - requests the device send any payments taken offline that haven't been processed by the server
 - *dispose* - cleans up the CloverConnector and disconnects from the Clover Mini
-- __NEW__
-- _retrievePayment_ - query the device for the status of a payment on the device by its external id, callback on on
+- *retrievePayment* - query the device for the status of a payment on the device by its external id, callback on on
 - *retrieveDeviceStatus* - query the status of the device, callback on onRetrieveDeviceStatus
 - *startCustomActivity* - send a request to start a custom activity on the Clover device
 - *sendMessageToActivity* - send a message to a custom activity running on the Clover device
+- __NEW__
+- *print* - print the contents of the passed-in `PrintRequest` object
+- *openCashDrawer* - opens a cash drawer attached to the Clover device with a passed in `OpenCashDrawerRequest` object
+- *retrievePrinters* - request to retreive available printers
+- *retrievePrintJobStatus* - request the status of a given print job
 
 ICloverConnectorListener
 - *onSaleResponse* - called at the completion of a sale request with either a payment or a cancel state
@@ -62,12 +64,14 @@ ICloverConnectorListener
 - *verifySignatureRequest* - called if the Clover device needs acceptance of a signature
 - *onRetrievePendingPaymentsResponse* - called in response to a retrieve pending payments request. Returns a list of payments not yet submitted to the server
 - *onReadCardDataResponse* - called at the completion of a read card data request. Data may come back encrypted depending on the card type and bin
-- __NEW__
 - *onCustomActivityResponse* - called at the completion of a custom activity
 - *onResetDeviceResponse* - called at the completion of a resetDevice request
 - *onMessageFromActivity* - called if the custom activity wants to send a message back to the POS, prior to finishing
 - *onRetrievePaymentResponse* - called at the completion of a retrievePayment request
 - *onRetrieveDeviceStatusResponse* - called at the completion of a retrieveDeviceStatus request
+- __NEW__
+- *onRetrievePrintersResponse* - called at the completion of a retrievePrinters request
+- *onPrintJobStatusResponse* - called at the completion of a retrievePrintJobStatus
 
 
 

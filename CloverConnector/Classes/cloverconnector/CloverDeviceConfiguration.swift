@@ -21,4 +21,5 @@ public protocol CloverDeviceConfiguration {
     
     func getName() -> String
     
+    func getMaxMessageCharacters() -> Int
 }

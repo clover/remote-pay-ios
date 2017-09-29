@@ -31,8 +31,6 @@ public class CloverConnectorBroadcaster {
         }
     }
     
-    
-    
     public func notifyOnPaymentRefundResponse(_ refundPaymentResponse:RefundPaymentResponse) {
         for listener in listeners {
             if let listener = listener as? ICloverConnectorListener {
@@ -273,10 +271,27 @@ public class CloverConnectorBroadcaster {
             }
         }
     }
+    
     public func notifyOnResetDeviceResponse(_ response:ResetDeviceResponse) {
         for listener in listeners {
             if let listener = listener as? ICloverConnectorListener {
                 listener.onResetDeviceResponse(response)
+            }
+        }
+    }
+    
+    public func notifyOnRetrievePrinters(_ response:RetrievePrintersResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onRetrievePrinters(response)
+            }
+        }
+    }
+    
+    public func notifyOnPrintJobStatusResponse(_ response:PrintJobStatusResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onPrintJobStatusResponse(response)
             }
         }
     }

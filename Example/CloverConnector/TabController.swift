@@ -3,7 +3,7 @@
 //  CloverConnector
 //
 //  
-//  Copyright © 2016 CocoaPods. All rights reserved.
+//  Copyright © 2017 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation

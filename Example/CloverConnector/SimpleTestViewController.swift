@@ -3,7 +3,7 @@
 //  CloverConnector
 //
 //  
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation
@@ -78,7 +78,7 @@ class SimpleTestViewController : UITableViewController {
     }
     
     func updateUIFromSettings() {
-        if let tx = store?.transactionSettings {
+        if let tx = store?.transactionSettings, let cloverConnector = self.cloverConnector {
             allowOffline.selectedSegmentIndex = tx.allowOfflinePayment == nil ? 0 : (tx.allowOfflinePayment! ? 1 : 2)
             acceptOfflineWOPrompt.selectedSegmentIndex = (tx.approveOfflinePaymentWithoutPrompt == nil ? 0 : (tx.approveOfflinePaymentWithoutPrompt! ? 1 : 2))
             autoAcceptPayments.selectedSegmentIndex = tx.autoAcceptPaymentConfirmations == nil ? 0 : (tx.autoAcceptPaymentConfirmations! ? 1 : 2)
@@ -89,10 +89,10 @@ class SimpleTestViewController : UITableViewController {
             disableReceiptScreen.selectedSegmentIndex = tx.disableReceiptSelection == nil ? 0 : (tx.disableReceiptSelection! ? 1 : 2)
             disableRestartOnFail.selectedSegmentIndex = tx.disableRestartTransactionOnFailure == nil ? 0 : (tx.disableRestartTransactionOnFailure! ? 1 : 2)
             forceOfflineSwitch.selectedSegmentIndex = tx.forceOfflinePayment == nil ? 0 : (tx.forceOfflinePayment! ? 1 : 2)
-            manualSwitch.on = ((tx.cardEntryMethods ?? 0) & CloverConnector.CARD_ENTRY_METHOD_MANUAL) == CloverConnector.CARD_ENTRY_METHOD_MANUAL
-            swipeSwitch.on = ((tx.cardEntryMethods ?? 0) & CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE) == CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE
-            chipSwitch.on = ((tx.cardEntryMethods ?? 0) & CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT) == CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT
-            nfcSwitch.on = ((tx.cardEntryMethods ?? 0) & CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS) == CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS
+            manualSwitch.on = ((tx.cardEntryMethods ?? 0) & cloverConnector.CARD_ENTRY_METHOD_MANUAL) == cloverConnector.CARD_ENTRY_METHOD_MANUAL
+            swipeSwitch.on = ((tx.cardEntryMethods ?? 0) & cloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE) == cloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE
+            chipSwitch.on = ((tx.cardEntryMethods ?? 0) & cloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT) == cloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT
+            nfcSwitch.on = ((tx.cardEntryMethods ?? 0) & cloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS) == cloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS
             
             if let store = store {
                 cardNotPresent.selectedSegmentIndex = store.cardNotPresent == nil ? 0 : (store.cardNotPresent! ? 1 : 2)
@@ -123,6 +123,8 @@ class SimpleTestViewController : UITableViewController {
     }
     
     @IBAction func loadSettingsFromUI(_ sender:AnyObject) {
+        guard let cloverConnector = cloverConnector else { return }
+        
 //        let txSettings = CLVModels.Payments.TransactionSettings()
         let txSettings = store?.transactionSettings ?? CLVModels.Payments.TransactionSettings()
         txSettings.allowOfflinePayment = allowOffline.selectedSegmentIndex == 0 ? nil : (allowOffline.selectedSegmentIndex == 1 ? true : false)
@@ -140,10 +142,10 @@ class SimpleTestViewController : UITableViewController {
         }
         
         var cem = 0;
-        cem |= (swipeSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE : 0)
-        cem |= (chipSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT : 0)
-        cem |= (nfcSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS : 0)
-        cem |= (manualSwitch.on ? CloverConnector.CARD_ENTRY_METHOD_MANUAL : 0)
+        cem |= (swipeSwitch.on ? cloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE : 0)
+        cem |= (chipSwitch.on ? cloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT : 0)
+        cem |= (nfcSwitch.on ? cloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS : 0)
+        cem |= (manualSwitch.on ? cloverConnector.CARD_ENTRY_METHOD_MANUAL : 0)
         txSettings.cardEntryMethods = cem
         
         
@@ -162,7 +164,7 @@ class SimpleTestViewController : UITableViewController {
             default: txSettings.tipMode = nil
         }
 
-        self.currentExecutor = PaymentExecutor(cloverConnector: cloverConnector!, payment: nil)
+        self.currentExecutor = PaymentExecutor(cloverConnector: cloverConnector, payment: nil)
         
         if let pe = self.currentExecutor as? PaymentExecutor {
             pe.cardNotPresent = store?.cardNotPresent
@@ -361,10 +363,11 @@ class VaultCardExecutor:BaseExecutor, Executor {
     var after:((CLVModels.Payments.VaultedCard) -> Void)?
     
     func run() {
+        guard let cloverConnector = cloverConnector else { return }
         let vcr = VaultCardRequest()
-        vcr.cardEntryMethods = CloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE | CloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT | CloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS
-        cloverConnector?.addCloverConnectorListener(self)
-        cloverConnector?.vaultCard(vcr)
+        vcr.cardEntryMethods = cloverConnector.CARD_ENTRY_METHOD_MAG_STRIPE | cloverConnector.CARD_ENTRY_METHOD_ICC_CONTACT | cloverConnector.CARD_ENTRY_METHOD_NFC_CONTACTLESS
+        cloverConnector.addCloverConnectorListener(self)
+        cloverConnector.vaultCard(vcr)
     }
     
     override func onVaultCardResponse(vaultCardResponse: VaultCardResponse) {

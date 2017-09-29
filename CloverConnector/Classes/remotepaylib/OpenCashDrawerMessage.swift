@@ -12,6 +12,7 @@ import ObjectMapper
 
 public class OpenCashDrawerMessage : Message {
     public var reason:String?
+    public var printer:CLVModels.Printer.Printer?
     
     public init() {
         super.init(method: .OPEN_CASH_DRAWER)
@@ -23,6 +24,6 @@ public class OpenCashDrawerMessage : Message {
     public override func mapping(map: Map) {
         super.mapping(map)
         reason <- map["reason"]
+        printer <- (map["printer"], Message.printerTransform)
     }
-    
 }

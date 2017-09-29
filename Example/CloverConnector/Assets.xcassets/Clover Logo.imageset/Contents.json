@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "clover_installer_log.png",
+      "filename" : "clover_logo_clover.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "clover_installer_log-1.png",
+      "filename" : "clover_logo_clover-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "clover_installer_log-2.png",
+      "filename" : "clover_logo_clover-2.png",
       "scale" : "3x"
     }
   ],

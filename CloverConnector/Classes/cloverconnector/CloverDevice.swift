@@ -7,10 +7,29 @@
 //
 
 import Foundation
+#if os(iOS)
+    import UIKit
+    public typealias ImageClass = UIImage
+    func ImagePNGRepresentation(image: ImageClass) -> NSData? {
+        return UIImagePNGRepresentation(image)
+    }
+#else
+    import AppKit
+    public typealias ImageClass = NSImage
+    func ImagePNGRepresentation(image: ImageClass) -> NSData? {
+        if let imageData = image.TIFFRepresentation,
+            let imageRep = NSBitmapImageRep(data: imageData) {
+            return imageRep.representationUsingType(NSBitmapImageFileType.PNG, properties: [:])
+        }
+        return nil
+    }
+#endif
 
 
 class CloverDevice {
     var deviceObservers:NSMutableArray = NSMutableArray()
+    
+    weak var cloverConnector: ICloverConnector?
     
     var transport:CloverTransport
     var packageName:String? = nil
@@ -56,7 +75,8 @@ class CloverDevice {
     
     func doBreak() {}
     
-    func doPrintText(_ textLines:[String]) {}
+    @available(*, deprecated, message="use doPrint(_ request:PrintRequest) instead")
+    func doPrintText(_ textLines:[String], printRequestId: String?, printDeviceId: String?) {}
     
     func doShowWelcomeScreen() {}
     
@@ -64,11 +84,19 @@ class CloverDevice {
     
     func doShowThankYouScreen() {}
     
-    func doOpenCashDrawer(_ reason:String) {}
+    func doOpenCashDrawer(_ reason:String, deviceId: String?) {}
     
-    func doPrintImage(_ img:UIImage) {}
+    @available(*, deprecated, message="use doPrint(_ request:PrintRequest) instead")
+    func doPrintImage(_ img:ImageClass, printRequestId: String?, printDeviceId: String?) {}
     
-    func doPrintImage(_ url:String) {}
+    @available(*, deprecated, message="use doPrint(_ request:PrintRequest) instead")
+    func doPrintImage(_ url:String, printRequestId: String?, printDeviceId: String?) {}
+    
+    func doPrint(_ request:PrintRequest) {}
+    
+    func doRetrievePrinters(_ request:RetrievePrintersRequest) {}
+    
+    func doRetrievePrintJobStatus(_ request: PrintJobStatusRequest) {}
     
     func dispose() {
         deviceObservers.removeAllObjects()

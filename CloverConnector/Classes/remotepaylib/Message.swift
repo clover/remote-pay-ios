@@ -91,6 +91,20 @@ public class Message : NSObject, Mappable {
             return nil
     })
     
+    static let printerTransform = TransformOf<CLVModels.Printer.Printer, String>(fromJSON: { (value: String?) -> CLVModels.Printer.Printer? in
+        if let printerString = value, let printer = Mapper<CLVModels.Printer.Printer>().map(printerString) {
+            return printer
+        }
+        
+        return nil
+    }) { (obj: CLVModels.Printer.Printer?) -> String? in
+        if let printerObj = obj, let printerString = Mapper().toJSONString(printerObj, prettyPrint: false) {
+            return printerString
+        }
+        
+        return nil
+    }
+    
     static let creditTransform = TransformOf<CLVModels.Payments.Credit, String>(fromJSON: { (value: String?) -> CLVModels.Payments.Credit? in
         
         if let val = value,

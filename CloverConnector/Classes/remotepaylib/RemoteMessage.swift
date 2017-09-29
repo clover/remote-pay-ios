@@ -33,6 +33,11 @@ public class RemoteMessage:Mappable {
   public var version:Int = 1
   public var remoteSourceSDK = ""
   public var remoteApplicationID = ""
+    public var fragmentIndex:Int?
+    public var lastFragment:Bool?
+    public var attachment:String?
+    public var attachmentUri:String?
+    public var attachmentEncoding:String?
 
   public required init() {
 
@@ -58,23 +63,30 @@ public class RemoteMessage:Mappable {
             }
             return nil
     })*/
-  remoteSourceSDK <- map["remoteSourceSDK"]
 
-  remoteApplicationID <- map["remoteApplicationID"]
-
-  version <- map["version"]
+    remoteSourceSDK <- map["remoteSourceSDK"]
     
-  method <- (map["method"], Message.methodTransform)
+    remoteApplicationID <- map["remoteApplicationID"]
     
-  requestId <- map["requestId"]
-
-  packageName <- map["packageName"]
-
-  payload <- map["payload"]
-
-  type <- map["type"]
-
+    version <- map["version"]
+    
+    method <- (map["method"], Message.methodTransform)
+    
+    requestId <- map["requestId"]
+    
+    packageName <- map["packageName"]
+    
+    payload <- map["payload"]
+    
+    type <- map["type"]
     id <- map["id"]
+
+    fragmentIndex <- map["fragmentIndex"]
+    lastFragment <- map["lastFragment"]
+    attachment <- map["attachment"]
+
+    attachmentUri <- map["attachmentUri"]
+    attachmentEncoding <- map["attachmentEncoding"]
   }
 
 /*

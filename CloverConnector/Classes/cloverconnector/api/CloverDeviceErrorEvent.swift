@@ -16,12 +16,14 @@ public class CloverDeviceErrorEvent : NSObject {
      * - EXCEPTION
      */
     public private(set) var errorType:CloverDeviceErrorType
-    public private(set) var code:Int;
+    public private(set) var code:Int?
+    public private(set) var cause:NSError?
     public private(set) var message:String
     
-    public init(errorType:CloverDeviceErrorType, code:Int, message:String) {
+    public init(errorType:CloverDeviceErrorType, code:Int?, cause:NSError?, message:String) {
         self.errorType = errorType
         self.code = code
+        self.cause = cause
         self.message = message
         super.init()
     }

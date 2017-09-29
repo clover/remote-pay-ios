@@ -12,6 +12,8 @@ import ObjectMapper
 class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     private var refRespMsg:RefundResponseMessage?
+    private var remoteMessageVersion = 1
+    public let maxMessageSizeInChars:Int
     
     let parser:Mapper<RemoteMessage> = Mapper<RemoteMessage>()
     private var id:Int {
@@ -30,7 +32,10 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     init?(config:CloverDeviceConfiguration) {
         self.config = config
-        
+        if config.getMaxMessageCharacters() < 1000 {
+            print("Message size is too small, reverting to 1000", stderr);
+        }
+        maxMessageSizeInChars = max(1000, config.getMaxMessageCharacters()) // prevent an accidentally small message size
         if let transport = config.getTransport() {
             super.init(packageName: config.getMessagePackageName(), transport: transport)
             transport.subscribe(self)
@@ -47,6 +52,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     func onDeviceReady(_ transport:CloverTransport) {
         let msg:DiscoveryRequestMessage = DiscoveryRequestMessage()
+//        msg.customActivities[FlowTouchPoint.TIP_SCREEN.rawValue] = TouchPointCustomActivity(action: "com.clover.cfp.examples.CustomTip", payload: "")
         
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint: true) {
             sendCommandMessage(payload: msgJSON, method: msg.method)
@@ -60,8 +66,8 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         notifyListenersDisconnected()
     }
     
-    func onDeviceError(_ errorType:CloverDeviceErrorType, int:Int, message:String) {
-        notifyListenersDeviceError(errorType, int:int, message:message)
+    func onDeviceError(_ errorType:CloverDeviceErrorType, int:Int?, cause:NSError?, message:String) {
+        notifyListenersDeviceError(errorType, int:int, cause:cause, message:message)
     }
     
     override func dispose() {
@@ -86,6 +92,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             if remotemessage.type == .PING {
                 sendPong(remotemessage)
             } else if remotemessage.type == .COMMAND {
+                remoteMessageVersion = max(remoteMessageVersion, remotemessage.version) // if version >= 2, then chunking is supported
                 if let rmMethod = remotemessage.method {
                     if let payload = remotemessage.payload {
                         switch rmMethod {
@@ -178,6 +185,16 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                             // requests
                             case Method.PRINT_TEXT: break;
                             case Method.PRINT_IMAGE: break;
+                            case Method.GET_PRINTERS_REQUEST: break;
+                            case Method.GET_PRINTERS_RESPONSE:
+                                if let rtrm = Mapper<RetrievePrintersResponseMessage>().map(payload) {
+                                    notifyRetrievePrinterResponse(rtrm)
+                                }
+                            case Method.PRINT_JOB_STATUS_REQUEST: break;
+                            case Method.PRINT_JOB_STATUS_RESPONSE:
+                                if let pjsr = Mapper<PrintJobStatusResponseMessage>().map(payload) {
+                                    notifyRetrievePrintJobStatus(pjsr)
+                                }
                             case Method.TERMINAL_MESSAGE: break;
                             case Method.BREAK: break;
                             case Method.VOID_PAYMENT: break;
@@ -359,8 +376,9 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
             
-            var voidPacketMsgId = sendCommandMessage(payload: msgJSON, method:msg.method)
-            deviceObservers.addObject(TempDevObs(voidPacketMsgId, deviceObservers, payment, VoidReason(rawValue: reason)!))
+            if let voidPacketMsgId = sendCommandMessage(payload: msgJSON, method:msg.method) {
+                deviceObservers.addObject(TempDevObs(voidPacketMsgId, deviceObservers, payment, VoidReason(rawValue: reason)!))
+            }
         }
     }
     
@@ -373,18 +391,62 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    override func doPrintText(_ textLines: [String]) {
+    override func doPrintText(_ textLines: [String], printRequestId: String?, printDeviceId: String?) {
         let msg = TextPrintMessage()
         msg.textLines = textLines
+        msg.printRequestId = printRequestId
+        
+        if let printerId = printDeviceId {
+            let printer = CLVModels.Printer.Printer()
+            printer.id = printerId
+            msg.printer = printer
+        }
         
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
             sendCommandMessage(payload: msgJSON, method:msg.method)
         }
     }
     
-    override func doOpenCashDrawer(_ reason: String) {
+    override func doPrint(request: PrintRequest) {
+        if request.text.count > 0 {             //we can print all text lines...
+            self.doPrintText(request.text, printRequestId: request.printRequestId, printDeviceId: request.printDeviceId)
+        } else if let image = request.images.first {   //...but currently only support one image...
+            self.doPrintImage(image, printRequestId: request.printRequestId, printDeviceId: request.printDeviceId)
+        } else if let imageURLString = request.imageURLS.first?.absoluteString {   //...and one image URL
+            self.doPrintImage(imageURLString, printRequestId: request.printRequestId, printDeviceId: request.printDeviceId)
+        } else {
+            //if we got here, it's because the printRequest either had nothing on it, or has a new, unhandled content type
+            debugPrint("In doPrint: PrintRequest had no content or had an unhandled content type")
+        }
+    }
+    
+    override func doRetrievePrinters(_ request:RetrievePrintersRequest) {
+        let msg = RetrievePrintersRequestMessage()
+        msg.category = request.category
+        
+        if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
+            sendCommandMessage(payload: msgJSON, method:msg.method)
+        }
+    }
+    
+    override func doRetrievePrintJobStatus(_ request: PrintJobStatusRequest) {
+        let msg = PrintJobStatusRequestMessage()
+        msg.printRequestId = request.printRequestId
+        
+        if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
+            sendCommandMessage(payload: msgJSON, method:msg.method)
+        }
+    }
+    
+    override func doOpenCashDrawer(_ reason: String, deviceId: String?) {
         let msg = OpenCashDrawerMessage()
         msg.reason = reason
+        
+        if let printerId = deviceId {
+            let printer = CLVModels.Printer.Printer()
+            printer.id = deviceId
+            msg.printer = printer
+        }
         
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
             sendCommandMessage(payload: msgJSON, method:msg.method)
@@ -393,7 +455,6 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     override func doShowWelcomeScreen() {
         let msg:ShowWelcomeScreenMessage = ShowWelcomeScreenMessage()
-        let msgJSON = Mapper().toJSONString(msg, prettyPrint: true)
         
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
             sendCommandMessage(payload: msgJSON, method:msg.method)
@@ -448,15 +509,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
         
     }
-    
-    override func doDiscoveryRequest() {
-        let msg = DiscoveryRequestMessage()
         
-        if let msgJSON = Mapper().toJSONString(msg, prettyPrint: true) {
-            sendCommandMessage(payload: msgJSON, method:msg.method)
-        }
-    }
-    
     override func doTerminalMessage(_ text: String) {
         let msg:TerminalMessage = TerminalMessage()
         msg.text = text
@@ -502,26 +555,54 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint:false) {
             sendCommandMessage(payload: msgJSON, method:msg.method)
         }
-        
     }
     
-    override func doPrintImage(_ img: UIImage) {
-        
-        if let imageData = UIImagePNGRepresentation(img) {
-            let base64:String = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+    override func doPrintImage(_ img: ImageClass, printRequestId: String?, printDeviceId: String?) {
+        if let imageData = ImagePNGRepresentation(img) {
             let ipm = ImagePrintMessage()
             
-            ipm.png = [UInt8](base64.utf8)
+            ipm.printRequestId = printRequestId
             
-            if let msgJSON = Mapper().toJSONString(ipm, prettyPrint:false) {
-                sendCommandMessage(payload: msgJSON, method:ipm.method);
+            if let printerId = printDeviceId {
+                let printer = CLVModels.Printer.Printer()
+                printer.id = printerId
+                ipm.printer = printer
+            }
+
+            if remoteMessageVersion > 1 {
+                // Does Base 64 Fragment processing, the attachment is a byte array that will be chunked, then encoded
+                if let msgJSON = Mapper().toJSONString(ipm, prettyPrint:false) {
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), { [weak self] in
+                        if self?.sendCommandMessage(payload: msgJSON, method:ipm.method, version: 2, attachmentData: imageData) == nil {
+                            debugPrint("Error sending image")
+                        }
+                    })
+                }
+            } else {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), { [weak self] in
+
+                    let base64:String = imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+                    ipm.png = [UInt8](base64.utf8)
+                    if let msgJSON = Mapper().toJSONString(ipm, prettyPrint:false) {
+                        if self?.sendCommandMessage(payload: msgJSON, method:ipm.method) == nil {
+                            debugPrint("Error sending image")
+                        }
+                    }
+                })
             }
         }
     }
     
-    override func doPrintImage(_ url: String) {
+    override func doPrintImage(_ url: String, printRequestId: String?, printDeviceId: String?) {
         let printImageMessage = ImagePrintMessage()
         printImageMessage.urlString = url
+        printImageMessage.printRequestId = printRequestId
+        
+        if let printerId = printDeviceId {
+            let printer = CLVModels.Printer.Printer()
+            printer.id = printerId
+            printImageMessage.printer = printer
+        }
         
         let msg:ImagePrintMessage = printImageMessage
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint:false) {
@@ -574,30 +655,163 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    func sendCommandMessage(payload msgJSON:String, method:Method, version:Int = 1) -> String {
-        let rm:RemoteMessage = RemoteMessage()
-        rm.method = method
-        rm.type = RemoteMessageType.COMMAND
-        rm.payload = msgJSON
-
-        return sendRemoteMessage(rm, version: version)
+    func sendCommandMessage(payload msgJSON:String, method:Method, version:Int = 1, attachment:String? = nil, attachmentEncoding:String? = nil, attachmentData:NSData? = nil, attachmentUrl:String? = nil) -> String? {
+            let rm:RemoteMessage = RemoteMessage()
+            rm.method = method
+            rm.type = RemoteMessageType.COMMAND
+            rm.payload = msgJSON
+            rm.attachment = attachment
+            rm.attachmentEncoding = attachmentEncoding
+            
+        return sendRemoteMessage(rm, version: version, attachmentData: attachmentData, attachmentUrl: attachmentUrl, attachmentEncoding: attachmentEncoding)
     }
     
-    func sendRemoteMessage(_ remoteMsg:RemoteMessage, version:Int = 1) -> String {
+    func sendRemoteMessage(_ remoteMsg:RemoteMessage, version:Int = 1, attachmentData: NSData? = nil, attachmentUrl: String? = nil, attachmentEncoding: String? = nil) -> String? {
         remoteMsg.packageName = self.packageName
         remoteMsg.remoteApplicationID = config.remoteApplicationID
         remoteMsg.remoteSourceSDK = config.remoteSourceSDK
         remoteMsg.id = String(id)
         remoteMsg.version = version
         
-        if let remoteMsg = Mapper().toJSONString(remoteMsg, prettyPrint: false) {
-            debugPrint(remoteMsg)
-            self.transport.sendMessage(remoteMsg)
+        if remoteMsg.version > 1 { // we CAN send fragments
+            // there are 3 paths...
+            // 1. The attachment is already a string, so set change the Encoding from "BASE64" to "BASE64.ATTACHMENT" (or we could decode it, and then encode the chunks), or if the Encoding is nil, just write it...e.g. the attachment might be a large text snippet and not encoded
+            // 2. The attachmentData is binary, so we encode as "BASE64.FRAGMENT"
+            // 3. The attachmentUrl is provided, so we read and encode as "BASE64.FRAGMENT"
+            
+            
+            
+            let hasAttachmentURI = attachmentUrl != nil
+            let hasAttachmentData = attachmentData != nil
+            let payloadTooLarge = ((remoteMsg.attachment?.characters.count ?? 0) + (remoteMsg.payload?.characters.count ?? 0)) > maxMessageSizeInChars
+            let shouldFrag = hasAttachmentURI || hasAttachmentData || payloadTooLarge
+            if shouldFrag { // we NEED to fragment
+                
+                // if the payload size exceeds the max, then fail immediately
+                // note that this is not exact - data in a String will be a different length than the same data in Data thanks to the JSON conversion and multiple escaping done on messages, but there's enough pad in the max payload to account for this.
+                if (remoteMsg.attachment != nil && remoteMsg.attachment!.characters.count > cloverConnector?.MAX_PAYLOAD_SIZE) || // passed in a formatted string, check for length (this isn't actually used anywhere...)
+                    (attachmentData != nil && attachmentData!.length > cloverConnector?.MAX_PAYLOAD_SIZE) {                       // passed in a data chunk, check for length
+                    debugPrint("Error sending message - payload size is greater than the maximum allowed")
+                    return nil
+                }
+
+                // let's fragment the payload...
+                var fragmentIndex = 0
+
+                var payloadStr = remoteMsg.payload ?? ""
+                while payloadStr.characters.count > 0 {
+                    // FRAGMENT Payload
+                    let range = Range<String.Index>(start: payloadStr.startIndex, end: payloadStr.startIndex.advancedBy(maxMessageSizeInChars < payloadStr.characters.count ? maxMessageSizeInChars : payloadStr.characters.count))
+                    
+                    let fPayload = payloadStr.substringWithRange(range)
+                    //            debugPrint(fragment)
+                    
+                    payloadStr.removeRange(range)
+                    
+                    
+                    sendMessageFragment(remoteMessage:remoteMsg, payloadFragment: fPayload, attachmentFragment: nil, fragmentIndex: fragmentIndex++, isLastMessage: payloadStr.characters.count == 0 && remoteMsg.attachment?.characters.count ?? 0 == 0 && remoteMsg.attachmentUri?.characters.count ?? 0 == 0 && attachmentData == nil)
+                }
+
+                
+                // now let's fragment the attachment or attachmentData
+                if var attach = remoteMsg.attachment {
+
+                    if remoteMsg.attachmentEncoding == "BASE64" {
+                        // TODO: decode, chunk and then encode or
+                        // set encoding to BASE64.ATTACHMENT
+                        // in this case, change the encoding and chunk as-is
+                        remoteMsg.attachmentEncoding = "BASE64.ATTACHMENT" // must reconstruct the entire attachment before decoding
+                        var start = 0
+                        let count = attach.characters.count
+                        while attach.characters.count > 0 {
+                            // FRAGMENT Attachment
+                            let range = Range<String.Index>(start: attach.startIndex, end: attach.startIndex.advancedBy(maxMessageSizeInChars < attach.characters.count ? maxMessageSizeInChars : attach.characters.count))
+                            
+                            let aPayload = attach.substringWithRange(range)
+                            
+                            attach.removeRange(range)
+                            
+                            
+                            sendMessageFragment(remoteMessage:remoteMsg, payloadFragment: nil, attachmentFragment: aPayload, fragmentIndex: fragmentIndex++, isLastMessage: attach.characters.count == 0)
+                        }
+                        
+                    } else {
+                        // TODO: chunk as-as
+                    }
+                } else if let data = attachmentData {
+                    var start = 0
+                    let count = data.length
+                    
+                    while start < count {
+                        autoreleasepool {
+                            let range = NSMakeRange(start, min(maxMessageSizeInChars, count-start)) // loc and len
+                            var chunkData:NSData = data.subdataWithRange(range)
+                            start = start+maxMessageSizeInChars
+                            
+                            // FRAGMENT Payload
+                            let fAttachment = chunkData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+                            sendMessageFragment(remoteMessage:remoteMsg, payloadFragment: nil, attachmentFragment: fAttachment, fragmentIndex: fragmentIndex++, isLastMessage: start > count)
+                        }
+                    }
+                    
+                }
+
+                
+            } else {
+                // we DON'T need to fragment
+                if let remoteMsg = Mapper().toJSONString(remoteMsg, prettyPrint: false) {
+                    Swift.debugPrint(remoteMsg)
+                    self.transport.sendMessage(remoteMsg)
+                } else {
+                    Swift.debugPrint("Couldn't send message. Couldn't serialize", stderr)
+                }
+            }
+            
         } else {
-            debugPrint("Couldn't send message. Couldn't serialize", stderr)
+            // we cannot send fragments, v1 or attachments
+            if remoteMsg.attachment != nil || attachmentData != nil || attachmentUrl != nil {
+                Swift.debugPrint("Version 1 of remote message doesn't support attachments", stderr)
+            }
+
+            if let remoteMsg = Mapper().toJSONString(remoteMsg, prettyPrint: false) {
+                Swift.debugPrint(remoteMsg)
+                self.transport.sendMessage(remoteMsg)
+            } else {
+                Swift.debugPrint("Couldn't send message. Couldn't serialize", stderr)
+            }
         }
+        
+        
         return remoteMsg.id!;
     }
+        
+    private func sendMessageFragment(remoteMessage remoteMsg:RemoteMessage, payloadFragment fPayload:String?, attachmentFragment fAttachment:String?, fragmentIndex index: Int, isLastMessage lastFragment: Bool) {
+            
+            let fRemoteMessage = RemoteMessage()
+            fRemoteMessage.id = remoteMsg.id
+            fRemoteMessage.method = remoteMsg.method
+            fRemoteMessage.type = remoteMsg.type
+            fRemoteMessage.packageName = remoteMsg.packageName
+            fRemoteMessage.remoteApplicationID = remoteMsg.remoteApplicationID
+            fRemoteMessage.remoteSourceSDK = remoteMsg.remoteSourceSDK
+            fRemoteMessage.version = remoteMsg.version
+            // changes for the fragment
+            fRemoteMessage.payload = fPayload
+            fRemoteMessage.attachmentUri = nil
+            fRemoteMessage.attachmentEncoding = remoteMsg.attachmentEncoding ?? "BASE64.FRAGMENT"
+            fRemoteMessage.attachment = fAttachment
+            fRemoteMessage.fragmentIndex = index
+            fRemoteMessage.lastFragment = lastFragment
+            //                fRemoteMessage.fragmentTotal = payloadFragments + attachmentFragments
+            //
+            
+            if let remoteMsg = Mapper().toJSONString(fRemoteMessage, prettyPrint: false) {
+                Swift.debugPrint("Sending Fragment " + String(index) + (lastFragment ? " <last>" : ""))
+                self.transport.sendMessage(remoteMsg)
+            } else {
+                Swift.debugPrint("Couldn't send message. Couldn't serialize", stderr)
+            }
+        }
     
     func notifyListenerCloseoutResponse(_ response:CloseoutResponseMessage) {
         for listener in deviceObservers {
@@ -636,10 +850,10 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    func notifyListenersDeviceError(_ errorType:CloverDeviceErrorType, int:Int, message:String) {
+    func notifyListenersDeviceError(_ errorType:CloverDeviceErrorType, int:Int?, cause:NSError?, message:String) {
         for listener in deviceObservers {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                (listener as? CloverDeviceObserver)?.onDeviceError(errorType, int: int, message: message)
+                (listener as? CloverDeviceObserver)?.onDeviceError(errorType, int: int, cause:cause, message: message)
             })
         }
     }
@@ -677,7 +891,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     func notifyObserversPaymentRefundResponse(_ response:RefundResponseMessage) {
         for listener in deviceObservers {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                (listener as? CloverDeviceObserver)?.onPaymentRefundResponse(response.orderId, paymentId: response.paymentId, refund: response.refund, code: response.code!)
+                (listener as? CloverDeviceObserver)?.onPaymentRefundResponse(response.orderId, paymentId: response.paymentId, refund: response.refund, reason: response.reason, message: response.message, code: response.code!)
             })
         }
     }
@@ -816,6 +1030,22 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 let status = request.resultCode == -1 ? ResultCode.SUCCESS : ResultCode.CANCEL
                 (listener as? CloverDeviceObserver)?.onActivityResponse(status, action: request.action, payload:request.payload, failReason:  request.failReason)
+            })
+        }
+    }
+    
+    func notifyRetrievePrinterResponse(_ response:RetrievePrintersResponseMessage) {
+        for observer in deviceObservers {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                (observer as? CloverDeviceObserver)?.onRetrievePrinterResponse(response.printers)
+            })
+        }
+    }
+    
+    func notifyRetrievePrintJobStatus(_ response:PrintJobStatusResponseMessage) {
+        for observer in deviceObservers {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                (observer as? CloverDeviceObserver)?.onRetrievePrintJobStatus(response.printRequestId, status: response.status)
             })
         }
     }

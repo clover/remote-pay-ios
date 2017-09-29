@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 import CloverConnector
 
-class MiscViewController : UIViewController {
+class MiscViewController : UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var customActivityPayload: UITextField!
     @IBOutlet weak var customActivityAction: UITextField!
     @IBOutlet weak var nonBlockingSwitch: UISwitch!
     @IBOutlet weak var externalPaymentId: UITextField!
     @IBOutlet weak var sendMsgWithStatusSwitch: UISwitch!
-        
+    
     @IBAction func welcomeClicked(_ sender: UIButton) {
         (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.showWelcomeScreen()
     }
@@ -33,18 +33,16 @@ class MiscViewController : UIViewController {
         let request:ReadCardDataRequest = ReadCardDataRequest()
         (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.readCardData(request);
     }
+    
+    @IBAction func openCashDrawer(_ sender: UIButton) {
+        let cashDrawerRequest = OpenCashDrawerRequest("Cash Back", deviceId: nil)
+        (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.openCashDrawer(cashDrawerRequest)
+    }
+    
     @IBAction func requestPendingPayments(_ sender: UIButton) {
         (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.retrievePendingPayments()
     }
-    @IBAction func printImage(_ sender: UIButton) {
-//        let logo = UIImage(named: "#imageLiteral(resourceName: "clover_horizontal")")
-        if let img = UIImage(named: "Clover Logo") {// UIImage(contentsOfFile: "Clover Logo") {
-            (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.printImage(img)
-        } else {
-            debugPrint("Error loading image")
-        }
-//        let img = UIImage(contentsOfFile: #imageLiteral(resourceName: "Clover Logo"))
-    }
+    
     @IBAction func startCustomActivity(_ sender: UIButton) {
         let car = CustomActivityRequest(customActivityAction.text ?? "unk", payload: customActivityPayload.text)
         car.nonBlocking = nonBlockingSwitch.on
@@ -66,5 +64,4 @@ class MiscViewController : UIViewController {
         let rpr = RetrievePaymentRequest(epi)
         (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.retrievePayment(rpr)
     }
-    
 }

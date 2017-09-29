@@ -3,7 +3,7 @@
 //  CloverConnector
 //
 //  
-//  Copyright © 2016 CocoaPods. All rights reserved.
+//  Copyright © 2017 Clover Network, Inc. All rights reserved.
 //
 
 import UIKit
@@ -848,8 +848,10 @@ class Case {
                 
                 done( (true,nil))
                 cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
-                cloverConnector.printText(text)
                 
+                if let request = PrintRequest(text: text, printRequestId: nil, printDeviceId: nil) {
+                    cloverConnector.print(request)
+                }
             } else {
                 done( (false, "Couldn't create print message"))
             }
@@ -919,7 +921,8 @@ class Case {
             }
         } else if method == JSON_KEYS.METHOD_OPEN_CASH_DRAWER {
             let reason = json?[JSON_KEYS.REQUEST][JSON_KEYS.PAYLOAD]["reason"].string ?? "Unset"
-            cloverConnector.openCashDrawer(reason)
+            let request = OpenCashDrawerRequest(reason, deviceId: nil)
+            cloverConnector.openCashDrawer(request)
             done((true, nil))
         } else {
             self.done((false, "Unsupported test type: " + method))

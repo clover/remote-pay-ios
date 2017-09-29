@@ -12,6 +12,7 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		7E12A34A1E6E011F00EF7458 /* TestDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12A3491E6E011F00EF7458 /* TestDetailsViewController.swift */; };
 		7E22E3711E38723700E61A11 /* clover_cacerts.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 7E22E3701E38723700E61A11 /* clover_cacerts.p12 */; };
+		7E2E95411F7EE937008B50C9 /* PrintTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E95401F7EE937008B50C9 /* PrintTestViewController.swift */; };
 		7E41B1FB1E5386A60065AF21 /* ManualRefundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B1FA1E5386A60065AF21 /* ManualRefundViewController.swift */; };
 		7E41B1FD1E5386E40065AF21 /* PreAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B1FC1E5386E40065AF21 /* PreAuthViewController.swift */; };
 		7E41B1FF1E5387200065AF21 /* VaultCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B1FE1E5387200065AF21 /* VaultCardViewController.swift */; };
@@ -98,6 +99,7 @@
 		60BF16A62156B0D50E349B58 /* Pods_CloverConnector_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CloverConnector_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E12A3491E6E011F00EF7458 /* TestDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDetailsViewController.swift; sourceTree = "<group>"; };
 		7E22E3701E38723700E61A11 /* clover_cacerts.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = clover_cacerts.p12; sourceTree = "<group>"; };
+		7E2E95401F7EE937008B50C9 /* PrintTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrintTestViewController.swift; sourceTree = "<group>"; };
 		7E41B1FA1E5386A60065AF21 /* ManualRefundViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManualRefundViewController.swift; sourceTree = "<group>"; };
 		7E41B1FC1E5386E40065AF21 /* PreAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreAuthViewController.swift; sourceTree = "<group>"; };
 		7E41B1FE1E5387200065AF21 /* VaultCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultCardViewController.swift; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				7EC6DF001D90472D00D852EF /* CurrencyUtils.swift */,
 				7EC6DF011D90472D00D852EF /* CurrentOrderListItemTableCell.swift */,
 				7E41B1F91E5369340065AF21 /* model */,
+				7E2E95401F7EE937008B50C9 /* PrintTestViewController.swift */,
 				7E41B2001E5392750065AF21 /* ScrollingFormViewController.swift */,
 				7EC6DF121D90472D00D852EF /* SignatureView.swift */,
 				7EC6DF131D90472D00D852EF /* SignatureViewController.swift */,
@@ -536,6 +539,7 @@
 				7EEB720D1EAFFA81008E641D /* SimpleTestViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				7EC74A501D91BCA000D0CBBF /* TestCloverConnectorListener.swift in Sources */,
+				7E2E95411F7EE937008B50C9 /* PrintTestViewController.swift in Sources */,
 				7EC6DF1C1D90472D00D852EF /* CurrentOrderListItemTableCell.swift in Sources */,
 				7EC6DF1A1D90472D00D852EF /* CloverConnectorListener.swift in Sources */,
 				7EC6DF291D90472D00D852EF /* POSRefund.swift in Sources */,

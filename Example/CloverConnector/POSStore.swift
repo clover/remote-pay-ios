@@ -49,7 +49,7 @@ public class POSStore {
     init() {
 
         newOrder()
-        self.transactionSettings.cardEntryMethods = CloverConnector.CARD_ENTRY_METHODS_DEFAULT
+        self.transactionSettings.cardEntryMethods = (UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnector?.CARD_ENTRY_METHODS_DEFAULT
     }
     
     public func addStoreListener(_ listener:POSStoreListener) {

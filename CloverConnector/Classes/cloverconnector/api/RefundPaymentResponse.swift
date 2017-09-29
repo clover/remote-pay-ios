@@ -22,12 +22,15 @@ public class RefundPaymentResponse : BaseResponse {
    */
   public var refund:CLVModels.Payments.Refund?
 
-    public init(success:Bool, result:ResultCode, orderId:String?=nil, paymentId:String?=nil, refund:CLVModels.Payments.Refund?=nil) {
+    public init(success:Bool, result:ResultCode, orderId:String?=nil, paymentId:String?=nil, refund:CLVModels.Payments.Refund?=nil, reason:String?=nil, message:String?=nil) {
         super.init(success:success, result:result)
         // TODO these must be set if success
         self.orderId = orderId
         self.paymentId = paymentId
         self.refund = refund
+        // these do not need to be set
+        self.reason = reason
+        self.message = message
     }
     /// :nodoc:
     required public init?(_ map: Map) {

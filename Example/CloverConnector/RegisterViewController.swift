@@ -209,6 +209,7 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
         let displayLineItem = DisplayLineItem(id: String(arc4random()), name:item.item.name!, price: String(CurrencyUtils.IntToFormat(item.item.price)!), quantity: String(item.quantity))
         currentDisplayOrder.lineItems.append(displayLineItem)
         itemsToDi.setObject(displayLineItem, forKey: item.item.id as NSCopying)
+
         updateTotals()
 
         (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.showDisplayOrder(currentDisplayOrder)
@@ -244,14 +245,14 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
     
     // POSStoreListener
     func newOrderCreated(_ order:POSOrder) {
-        updateTotals()
         (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.removeDisplayOrder(currentDisplayOrder)
         currentDisplayOrder = DisplayOrder()
         currentDisplayOrder.id = String(arc4random())
         itemsToDi.removeAllObjects() // cleanup
-        dispatch_async(dispatch_get_main_queue()){
+        dispatch_async(dispatch_get_main_queue()) { [unowned self] in
             self.currentOrderListItems.reloadData()
         }
+        updateTotals()
     }
     
     func preAuthAdded(_ payment: POSPayment) {
@@ -273,8 +274,10 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
     
     
     func updateTotals() {
-        if let store = self.store, let currentOrder = store.currentOrder {
-            dispatch_async(dispatch_get_main_queue()){
+        if let store = self.store,
+            let currentOrder = store.currentOrder
+        {
+            dispatch_async(dispatch_get_main_queue()){ [unowned self] in
                 self.subTotalLabel.text = CurrencyUtils.IntToFormat(currentOrder.getSubtotal())
                 self.taxLabel.text = CurrencyUtils.IntToFormat(currentOrder.getTaxAmount())
                 self.totalLabel.text = CurrencyUtils.IntToFormat(currentOrder.getTotal())
@@ -283,10 +286,12 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
             }
             
             // update DisplayOrder..
+
             self.currentDisplayOrder.total = String(CurrencyUtils.IntToFormat(currentOrder.getTotal())!)
             self.currentDisplayOrder.subtotal = String(CurrencyUtils.IntToFormat(currentOrder.getSubtotal())!)
             self.currentDisplayOrder.tax = String(CurrencyUtils.IntToFormat(currentOrder.getTaxAmount())!)
         }
+        
     }
     
     // TableView
@@ -363,6 +368,7 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
     }
     
     @IBAction func saleButtonClicked(_ sender: UIButton) {
+        guard let cloverConnector = (UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnector else { return }
         
         if let currentOrder = store?.currentOrder {
             currentOrder.pendingPaymentId = String(arc4random())
@@ -372,7 +378,7 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
             sr.approveOfflinePaymentWithoutPrompt = store?.transactionSettings.approveOfflinePaymentWithoutPrompt
             sr.autoAcceptSignature = store?.transactionSettings.autoAcceptSignature
             sr.autoAcceptPaymentConfirmations = store?.transactionSettings.autoAcceptPaymentConfirmations
-            sr.cardEntryMethods = store?.transactionSettings.cardEntryMethods ?? CloverConnector.CARD_ENTRY_METHODS_DEFAULT
+            sr.cardEntryMethods = store?.transactionSettings.cardEntryMethods ?? cloverConnector.CARD_ENTRY_METHODS_DEFAULT
             sr.disableCashback = store?.transactionSettings.disableCashBack
             sr.disableDuplicateChecking = store?.transactionSettings.disableDuplicateCheck
             if let enablePrinting = store?.transactionSettings.cloverShouldHandleReceipts {
@@ -395,6 +401,7 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
         }
     }
     @IBAction func authButtonClicked(_ sender: UIButton) {
+        guard let cloverConnector = (UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnector else { return }
         
         if let currentOrder = store?.currentOrder {
             currentOrder.pendingPaymentId = String(arc4random())
@@ -404,7 +411,7 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
             ar.approveOfflinePaymentWithoutPrompt = store?.transactionSettings.approveOfflinePaymentWithoutPrompt
             ar.autoAcceptSignature = store?.transactionSettings.autoAcceptSignature
             ar.autoAcceptPaymentConfirmations = store?.transactionSettings.autoAcceptPaymentConfirmations
-            ar.cardEntryMethods = store?.transactionSettings.cardEntryMethods ?? CloverConnector.CARD_ENTRY_METHODS_DEFAULT
+            ar.cardEntryMethods = store?.transactionSettings.cardEntryMethods ?? cloverConnector.CARD_ENTRY_METHODS_DEFAULT
             ar.disableCashback = store?.transactionSettings.disableCashBack
             ar.disableDuplicateChecking = store?.transactionSettings.disableDuplicateCheck
             if let enablePrinting = store?.transactionSettings.cloverShouldHandleReceipts {

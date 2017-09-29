@@ -9,6 +9,18 @@ import UIKit
 import CloverConnector
 import Intents
 
+extension NSURL {
+    var queryItems: [String: String]? {
+        var params = [String: String]()
+        return NSURLComponents(URL: self, resolvingAgainstBaseURL: false)?
+            .queryItems?
+            .reduce([:], combine: { (_, item) -> [String: String] in
+                params[item.name] = item.value
+                return params
+            })
+    }
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguration {
 
@@ -24,17 +36,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         store = POSStore()
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Cheeseburger", price: 579, taxRate: 0.075, taxable: true))
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Hamburger", price: 529, taxRate: 0.075, taxable: true))
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Bacon Cheeseburger", price: 619, taxRate: 0.075, taxable: true))
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Chicken Nuggets", price: 569, taxRate: 0.075, taxable: true))
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Large Fries", price: 239, taxRate: 0.075, taxable: true))
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Small Fries", price: 179, taxRate: 0.075, taxable: true))
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Vanilla Milkshake", price: 229, taxRate: 0.075, taxable: true))
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Chocolate Milkshake", price: 229, taxRate: 0.075, taxable: true))
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "Strawberry Milkshake", price: 229, taxRate: 0.075, taxable: true))
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "$25 Gift Card", price: 2500, taxRate: 0.00, taxable: false, tippable: false))
-        store?.availableItems.append(POSItem(id: String(arc4random()), name: "$50 Gift Card", price: 5000, taxRate: 0.000, taxable: false, tippable: false))
+        store?.availableItems.append(POSItem(id: "1", name: "Cheeseburger", price: 579, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "2", name: "Hamburger", price: 529, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "3", name: "Bacon Cheeseburger", price: 619, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "4", name: "Chicken Nuggets", price: 569, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "5", name: "Large Fries", price: 239, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "6", name: "Small Fries", price: 179, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "7", name: "Vanilla Milkshake", price: 229, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "8", name: "Chocolate Milkshake", price: 229, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "9", name: "Strawberry Milkshake", price: 229, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "10", name: "$25 Gift Card", price: 2500, taxRate: 0.00, taxable: false, tippable: false))
+        store?.availableItems.append(POSItem(id: "11", name: "$50 Gift Card", price: 5000, taxRate: 0.000, taxable: false, tippable: false))
         
         if let tkn = NSUserDefaults.standardUserDefaults().stringForKey( PAIRING_AUTH_TOKEN_KEY) {
             token = tkn
@@ -67,18 +79,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
     
     func connect(_ url:String) {
         cloverConnector?.dispose()
+        var endpoint = url
+        if let queryUrl = NSURL(string: url) {
+            if let queryItems = queryUrl.queryItems {
+                self.token = queryItems["authenticationToken"] ?? self.token
+            }
+            let urlComponents = NSURLComponents(URL: queryUrl, resolvingAgainstBaseURL: false)
+            endpoint = urlComponents?.scheme ?? "wss"
+            endpoint += "://"
+            endpoint += urlComponents?.host ?? ""
+            endpoint += ":" + String(urlComponents?.port ?? 80)
+            endpoint += String(urlComponents?.path ?? "/")
+//            endpoint = (urlComponents?.scheme + urlComponents?.host + ":" + urlComponents?.port + urlComponents?.path)
+        }
         
-        let config:WebSocketDeviceConfiguration = WebSocketDeviceConfiguration(endpoint:url, remoteApplicationID: "com.clover.ios.example.app", posName: "iOS Example POS", posSerial: "POS-15", pairingAuthToken: self.token, pairingDeviceConfiguration: self)
+        let config:WebSocketDeviceConfiguration = WebSocketDeviceConfiguration(endpoint:endpoint, remoteApplicationID: "com.clover.ios.example.app", posName: "iOS Example POS", posSerial: "POS-15", pairingAuthToken: self.token, pairingDeviceConfiguration: self)
+//        config.maxCharInMessage = 2000
 //        config.pingFrequency = 1
 //        config.pongTimeout = 6
 //        config.reportConnectionProblemTimeout = 3
         
-        cloverConnector = CloverConnector(config: config);
-        cloverConnectorListener = CloverConnectorListener(cloverConnector: cloverConnector!)
-        cloverConnectorListener?.viewController = self.window?.rootViewController
-        testCloverConnectorListener = TestCloverConnectorListener(cloverConnector: cloverConnector! as! CloverConnector)
-        cloverConnector!.addCloverConnectorListener(cloverConnectorListener!)
-        cloverConnector!.initializeConnection()
+        let cc = CloverConnectorFactory.createICloverConnector(config)
+        self.cloverConnector = cc
+        let ccl = CloverConnectorListener(cloverConnector: cc)
+        self.cloverConnectorListener = ccl
+        
+        self.testCloverConnectorListener = TestCloverConnectorListener(cloverConnector: cc)
+        ccl.viewController = self.window?.rootViewController
+        cc.addCloverConnectorListener(ccl)
+        cc.initializeConnection()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

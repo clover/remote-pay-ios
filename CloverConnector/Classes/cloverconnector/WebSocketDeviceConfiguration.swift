@@ -27,10 +27,12 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
     /// set this value less than pongTimeout, and it will report a disconnect before closing the connection
     /// set this value greater than pongTimeout, and the disconnect will be reported after pongTimeout
     public var reportConnectionProblemTimeout:Int?
+
+    public var maxCharInMessage:Int = 50000
     
     public var remoteSourceSDK:String {
         get {
-            return "com.cloverconnector.ios.ws:1.3.1"
+            return "com.cloverconnector.ios.ws:1.3.1-RC2"
         }
     }
     
@@ -62,6 +64,10 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
     
     public func getName() -> String {
         return "Secure WebSocket Transport"
+    }
+    
+    public func getMaxMessageCharacters() -> Int {
+        return maxCharInMessage
     }
     
     /*

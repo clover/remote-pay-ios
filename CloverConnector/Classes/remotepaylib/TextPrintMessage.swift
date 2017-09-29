@@ -14,6 +14,8 @@ import ObjectMapper
 public class TextPrintMessage : Message {
     
     public var textLines:[String]?
+    public var printRequestId: String?
+    public var printer: CLVModels.Printer.Printer?
     
     public init() {
         super.init(method: .PRINT_TEXT)
@@ -26,5 +28,7 @@ public class TextPrintMessage : Message {
     public override func mapping(map:Map) {
         super.mapping(map)
         textLines <- map["textLines"]
+        printRequestId <- map["externalPrintJobId"]
+        printer <- (map["printer"], Message.printerTransform)
     }
 }

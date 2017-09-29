@@ -72,4 +72,8 @@ public class CloverTransport : NSObject {
     func sendMessage(_ message:String) -> Int {
         return 0;
     }
+    
+    func getRemoteMessageVersion() -> Int {
+        return 1;
+    }
 }

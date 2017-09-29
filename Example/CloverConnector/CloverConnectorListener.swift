@@ -24,6 +24,8 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     
     private var ready:Bool = false
     private var suppressConnectionErrors = false //since connection errors could conceivably occur every few seconds, use this to suppress them after the first has been shown
+    public var getPrintersCallback: ((response:RetrievePrintersResponse) -> Void)? //used in the MiscVC to allow the user to select which printer to test on. See: onRetrievePrintersResponse below
+    public var getPrintJobStatusCallback: ((response:PrintJobStatusResponse) -> Void)? //used in the MiscVC to allow the UI to respond to print status. See: onPrintJobStatusResponse below
     
     public init(cloverConnector:ICloverConnector){
         self.cloverConnector = cloverConnector;
@@ -643,6 +645,30 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     
     public func onPrintManualRefundDeclineReceipt(_ printManualRefundDeclineReceiptMessage: PrintManualRefundDeclineReceiptMessage) {
         showMessage("Print Manual Refund Decline Receipt: " + formatCurrency(printManualRefundDeclineReceiptMessage.credit?.amount))
+    }
+    
+    public func onRetrievePrinters(_ retrievePrintersResponse: RetrievePrintersResponse) {
+        if let printers = retrievePrintersResponse.printers, let printerName = printers.first?.name {
+            var message = String("Retrieved printer: " + printerName)
+        
+            if printers.count > 1 {
+                message = message + " and " + String(printers.count - 1) + " others"
+            }
+            
+            showMessage(message)
+            self.getPrintersCallback?(response: retrievePrintersResponse)
+        }
+    }
+    
+    public func onPrintJobStatusResponse(_ printJobStatusResponse:PrintJobStatusResponse) {
+        if let jobId = printJobStatusResponse.printRequestId {
+            let message = "Print job: " + jobId + "   status: " + printJobStatusResponse.status.rawValue
+            showMessage(message)
+        } else {
+            showMessage("Print job status: " + printJobStatusResponse.status.rawValue)
+        }
+        
+        self.getPrintJobStatusCallback?(response: printJobStatusResponse)
     }
     
     private func formatCurrency(_ amount:Int?) -> String {

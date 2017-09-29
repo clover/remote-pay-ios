@@ -163,6 +163,16 @@ public protocol ICloverConnectorListener : AnyObject {
      */
     func onPrintRefundPaymentReceipt(_ printRefundPaymentReceiptMessage:PrintRefundPaymentReceiptMessage) -> Void
     
+    /// Called in response to a retrievePrinters() request
+    ///
+    /// - Parameter retrievePrintersResponse: Response object containing an array of the printers being passed back
+    func onRetrievePrinters(_ retrievePrintersResponse:RetrievePrintersResponse) -> Void
+    
+    /// Called to update the status of a print job
+    ///
+    /// - Parameter printJobStatusResponse: Object containing the print job identifier and that job's status
+    func onPrintJobStatusResponse(_ printJobStatusResponse:PrintJobStatusResponse) -> Void
+    
     /**
      * Called in response to a retrievePendingPayment(...) request.
      * @param retrievePendingPaymentResponse

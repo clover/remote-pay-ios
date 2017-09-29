@@ -7,6 +7,17 @@ import Foundation
 ///  adapters.
 ///
 public protocol ICloverConnector : AnyObject {
+    
+    var CARD_ENTRY_METHOD_MAG_STRIPE:Int { get }
+    var CARD_ENTRY_METHOD_ICC_CONTACT:Int { get }
+    var CARD_ENTRY_METHOD_NFC_CONTACTLESS:Int { get }
+    var CARD_ENTRY_METHOD_MANUAL:Int { get }
+    
+    var CARD_ENTRY_METHODS_DEFAULT:Int { get }
+    
+    var MAX_PAYLOAD_SIZE:Int { get }
+    
+    
     func addCloverConnectorListener(_ cloverConnectorListener:ICloverConnectorListener) -> Void
     func removeCloverConnectorListener(_ cloverConnectorListener:ICloverConnectorListener) -> Void
     
@@ -107,8 +118,8 @@ public protocol ICloverConnector : AnyObject {
     ///
     /// Request to print some text on the default printer.
     ///
+    @available(*, deprecated=1.4.0, message="use print(_ request:PrintRequest) instead")
     func  printText ( _ lines:[String] ) -> Void
-    
     
     ///
     /// Request to print an image on the default printer.
@@ -121,20 +132,40 @@ public protocol ICloverConnector : AnyObject {
     ///
     ///
     // remove so there isn't a dependency on UIKit and it will work on MacOS
-    @available(*, deprecated)
-    func  printImage ( _ image:UIImage ) -> Void
+    @available(*, deprecated=1.4.0, message="use print(_ request:PrintRequest) instead")
+    func  printImage ( _ image:ImageClass ) -> Void
     
     ///
     /// Request to print an image based on a url
     ///
+    @available(*, deprecated=1.4.0, message="use print(_ request:PrintRequest) instead")
     func printImageFromURL(_ url:String) -> Void
     
-    
+    /// Request to print
     ///
+    /// - Parameter request: PrintRequest object that contains the information and content needed to print
+    func print(_ request:PrintRequest) -> Void
+    
+    /// Request to retreive available printers
+    ///
+    /// - Parameter request: RetrievePrintersRequest object that contains additional information to be applied during the request
+    func retrievePrinters(_ request:RetrievePrintersRequest) -> Void
+    
+    /// Request the status of a given print job
+    ///
+    /// - Parameter request: PrintJobStatusRequest object defining the print job to be queried
+    func retrievePrintJobStatus(_ request:PrintJobStatusRequest) -> Void
+    
     /// Request that the cash drawer connected to the device be opened.
     ///
-    func  openCashDrawer (_ reason: String) -> Void
+    /// - Parameter request: OpenCashDrawerRequest object defining the reason the cash drawer is being opened, and an optional device identifier
+    func  openCashDrawer(_ request: OpenCashDrawerRequest) -> Void
     
+    ///
+    /// Request that the cash drawer connected to the device be opened. Deprecated
+    ///
+    @available(*, deprecated=1.4.0, message="use openCashDrawer(_ request: OpenCashDrawerRequest) instead")
+    func  openCashDrawer (_ reason: String) -> Void
     
     ///
     /// Request to place a message on the device screen.
