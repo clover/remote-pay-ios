@@ -1,8 +1,11 @@
 # remote-pay-ios
 
-A Swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to communicate with a tethered Clover Mini
+A Swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to communicate with a tethered Clover Mini.
 
 ## Version 1.4
+NOTE: Full support of version 1.4 features requires remote-pay version 138 or higher.
+NOTE: To use the Swift 2.3 compatible version of this library, you will need to point your Podfile at the 1.4.0-swift2.3 branch as listed below in the code sample.
+
 - New Print API
     - please migrate all print requests to the new API utilizing the PrintRequest object:
         - `print(request: PrintRequest)`
