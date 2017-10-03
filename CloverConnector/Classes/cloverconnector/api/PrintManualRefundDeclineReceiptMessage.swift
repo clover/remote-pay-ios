@@ -8,7 +8,6 @@ import Foundation
 /**
  * Callback to the POS to request a manual refund declined receipt
  */
-@objc
 public class PrintManualRefundDeclineReceiptMessage : NSObject {
     /// the credit
     public var credit:CLVModels.Payments.Credit?

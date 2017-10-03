@@ -40,12 +40,12 @@ public class AuthRequest:TransactionRequest {
     }
     
     /// :nodoc:
-    public required init?(_ map: Map) {
-        super.init(map)
+    public required init?(map:Map) {
+        super.init(map: map)
     }
     
     /// :nodoc:
-    public override func mapping(map: Map) {
+    public override func mapping(map:Map) {
         disableCashback <- map["disableCashback"]
         tippableAmount <- map["tippableAmount"]
         taxAmount <- map["taxAmount"]

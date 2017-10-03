@@ -18,12 +18,12 @@ public class ResetDeviceResponseMessage:Message {
         super.init(method: .RESET_DEVICE_RESPONSE)
     }
     
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         super.init(method: .RESET_DEVICE_RESPONSE)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         result <- map["result"]
         reason <- map["reason"]
         state <- map["state"]

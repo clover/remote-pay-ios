@@ -12,7 +12,7 @@ import ObjectMapper
 public class FinishCancelMessage : Message {
     public var requestInfo:String?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.FINISH_CANCEL)
     }
 }

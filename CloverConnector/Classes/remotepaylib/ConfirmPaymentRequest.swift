@@ -9,9 +9,6 @@
 import Foundation
 import ObjectMapper
 
-//import CloverSDK
-
-@objc
 public class ConfirmPaymentRequest:NSObject, Mappable {
     public var payment:CLVModels.Payments.Payment? = nil
     public var challenges:[Challenge]? = nil
@@ -19,7 +16,7 @@ public class ConfirmPaymentRequest:NSObject, Mappable {
         super.init()
     }
     
-    required public init?(_ map: Map) {
+    required public init?(map:Map) {
         super.init()
     }
     public func mapping(map:Map) {

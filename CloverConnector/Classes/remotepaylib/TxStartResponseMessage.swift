@@ -16,12 +16,12 @@ public class TxStartResponseMessage : Message {
     public var externalPaymentId:String?
     public var requestInfo:String?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.TX_START_RESPONSE)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         order <- (map["order"], Message.orderTransform)
         result <- map["result"]
         externalPaymentId <- map["externalPaymentId"]

@@ -14,13 +14,13 @@ public class CloverConnectorBroadcaster {
     var listeners = NSMutableArray()
     
     public func addObject(_ listener:ICloverConnectorListener) {
-        if listeners.indexOfObject(listener) != -1 {
-            listeners.addObject(listener)
+        if listeners.index(of: listener) != -1 {
+            listeners.add(listener)
         }
     }
     
     public func removeObject(_ listener:ICloverConnectorListener) {
-        listeners.removeObject(listener)
+        listeners.remove(listener)
     }
     
     public func notifyOnTipAdded(_ tip:Int) {
@@ -155,11 +155,11 @@ public class CloverConnectorBroadcaster {
     
 //    public func notifyOnTxState(txState:TxState) {
     public func notifyOnTxState(_ txState:Any) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+//        for listener in listeners {
+//            if let listener = listener as? ICloverConnectorListener {
 //                listener.onTransactionState(txState)
-            }
-        }
+//            }
+//        }
     }
     
     public func notifyOnVaultCardRespose(_ ccr:VaultCardResponse) {
@@ -280,10 +280,10 @@ public class CloverConnectorBroadcaster {
         }
     }
     
-    public func notifyOnRetrievePrinters(_ response:RetrievePrintersResponse) {
+    public func notifyOnRetrievePrintersResponse(_ response:RetrievePrintersResponse) {
         for listener in listeners {
             if let listener = listener as? ICloverConnectorListener {
-                listener.onRetrievePrinters(response)
+                listener.onRetrievePrintersResponse(response)
             }
         }
     }

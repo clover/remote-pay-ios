@@ -22,7 +22,7 @@ public class OpenCashDrawerRequest : NSObject {
         self.deviceId = deviceId
     }
     
-    private override init() { //marking as private to enforce object creation through another initializer
+    fileprivate override init() { //marking as private to enforce object creation through another initializer
         self.reason = String()
         self.deviceId = nil
     }

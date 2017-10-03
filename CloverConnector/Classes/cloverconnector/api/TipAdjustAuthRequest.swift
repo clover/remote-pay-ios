@@ -7,7 +7,6 @@ import ObjectMapper
 /**
  options for a tip adjust request
  */
-@objc
 public class TipAdjustAuthRequest : NSObject, Mappable {
 
     /**
@@ -30,7 +29,7 @@ public class TipAdjustAuthRequest : NSObject, Mappable {
     }
     
     /// :nodoc:
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         orderId = ""
         paymentId = ""
         tipAmount = 0
@@ -38,7 +37,7 @@ public class TipAdjustAuthRequest : NSObject, Mappable {
     }
     
     /// :nodoc:
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         tipAmount <- map["tipAmount"]
         orderId <- map["orderId"]
         paymentId <- map["orderId"]

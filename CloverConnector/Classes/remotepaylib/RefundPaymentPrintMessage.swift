@@ -15,12 +15,12 @@ public class RefundPaymentPrintMessage : Message {
     public var refund:CLVModels.Payments.Refund?
     public var order:CLVModels.Order.Order?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .REFUND_PRINT_PAYMENT)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         payment <- (map["payment"], Message.paymentTransform)
         refund <- (map["refund"], Message.refundTransform)
         order <- (map["order"], Message.orderTransform)

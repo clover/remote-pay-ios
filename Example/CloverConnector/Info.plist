@@ -23,7 +23,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) camera use</string>
+	<string>$(PRODUCT_NAME) camera use for QR code pairing</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select Photo to Print</string>
 	<key>UILaunchStoryboardName</key>

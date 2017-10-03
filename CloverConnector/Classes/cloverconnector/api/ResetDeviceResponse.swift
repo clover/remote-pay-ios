@@ -16,13 +16,13 @@ public class ResetDeviceResponse:BaseResponse {
         super.init(success: r == .SUCCESS, result: r)
     }
     /// :nodoc:
-    required public init?(_ map: Map) {
+    required public init?(map:Map) {
         state = .UNKNOWN
-        super.init(map)
+        super.init(map: map)
     }
     /// :nodoc:
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         self.state <- map["state"]
     }
     

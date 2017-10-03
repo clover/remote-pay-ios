@@ -23,7 +23,7 @@ public class DisplayModification:Mappable {
 
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
   }
 
   public func mapping(map:Map) {
@@ -34,18 +34,5 @@ public class DisplayModification:Mappable {
   amount <- map["amount"]
 
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  id = jsonObj.valueForKey("id") as! String?
-
-  name = jsonObj.valueForKey("name") as! String?
-
-  amount = jsonObj.valueForKey("amount") as! String?
-  }
-*/
-
 }
 

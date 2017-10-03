@@ -63,40 +63,36 @@ public class TestViewController: UIViewController, UITableViewDelegate, UITableV
     public override func viewDidLoad() {
         debugPrint("stuff")
         
-        self.testResultsTable.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        self.testResultsTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 
     }
     
     public override func viewDidAppear(_ animated: Bool) {
         debugPrint("Test Did Appear")
         debugPrint("adding test listener")
-        if let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            appDelegate.cloverConnector?.removeCloverConnectorListener(appDelegate.cloverConnectorListener!)
-            //appDelegate.cloverConnector?.addCloverConnectorListener(appDelegate.testCloverConnectorListener!)
-            appDelegate.testCloverConnectorListener!.viewController = self
-        }
-        
-        
+        guard let cloverConnectorListener = (UIApplication.shared.delegate as? AppDelegate)?.cloverConnectorListener else { return }
+        (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector?.removeCloverConnectorListener(cloverConnectorListener)
+        (UIApplication.shared.delegate as? AppDelegate)?.testCloverConnectorListener?.viewController = self
     }
     
     public override func viewDidDisappear(_ animated: Bool) {
         debugPrint("Test Disappeared")
-        if let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            appDelegate.cloverConnector?.removeCloverConnectorListener(appDelegate.testCloverConnectorListener!)
-            appDelegate.cloverConnector?.addCloverConnectorListener(appDelegate.cloverConnectorListener!)
-        }
+        guard let testCloverConnectorListener = (UIApplication.shared.delegate as? AppDelegate)?.testCloverConnectorListener,
+            let cloverConnectorListener = (UIApplication.shared.delegate as? AppDelegate)?.cloverConnectorListener else { return }
+        (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector?.removeCloverConnectorListener(testCloverConnectorListener)
+        (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector?.addCloverConnectorListener(cloverConnectorListener)
     }
     
     @IBAction func handleLongPress(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == .Began {
-            let p = sender.locationInView(testResultsTable)
-            let indexPath = testResultsTable.indexPathForRowAtPoint(p)
+        if sender.state == .began {
+            let p = sender.location(in: testResultsTable)
+            let indexPath = testResultsTable.indexPathForRow(at: p)
             
             if let row = indexPath?.row {
                 
-                if let c = cases.objectAtIndex(row) as? Case {
+                if let c = cases.object(at: row) as? Case {
                     c.passed = nil
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         self.testResultsTable.reloadData()
                     }
                     c.run()
@@ -105,44 +101,43 @@ public class TestViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cases.count;
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        //        var cell:UITableViewCell = self.testResultsTable.dequeueReusableCell(withIdentifier: "defaultCell") as UITableViewCell
-        let cell:UITableViewCell = self.testResultsTable.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
-        let currentCase = (cases.objectAtIndex(indexPath.row) as! Case)
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.testResultsTable.dequeueReusableCell(withIdentifier: "cell")
+        let currentCase = cases.object(at: indexPath.row) as? Case
     
-        if let finished = currentCase.passed {
-            cell.textLabel?.text = (currentCase.name ?? "?") + ": " + (finished.0 == true ? "✅" : "🛑") + (finished.1 ?? "")
+        if let finished = currentCase?.passed {
+            cell?.textLabel?.text = "\(currentCase?.name ?? "?"): \(finished.0 == true ? "✅" : "🛑") \(finished.1 ?? "")"
         } else {
-            cell.textLabel?.text = (currentCase.name ?? "?") + ": " + "🏃"
+            cell?.textLabel?.text = (currentCase?.name ?? "?") + ": " + "🏃"
         }
         
-        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        cell?.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
         
-        return cell
+        return cell ?? UITableViewCell()
     }
     
     var selTestCase:Case?
     
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: NSIndexPath) {
-        selTestCase = cases.objectAtIndex(indexPath.row) as? Case
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selTestCase = cases.object(at: indexPath.row) as? Case
 //        if let tvc = self.storyboard?.instantiateViewController(withIdentifier: "TestDetails") as? TestDetailsViewController {
 //            tvc.testCase = selTestCase
 //            self.navigationController?.pushViewController(tvc, animated: true)
 //        }
-        performSegueWithIdentifier("TestDetails", sender: self)
+        performSegue(withIdentifier: "TestDetails", sender: self)
     }
     
     @IBAction
-    func prepareforUnwind(segue:UIStoryboardSegue) {
+    func prepareforUnwind(_ segue:UIStoryboardSegue) {
     //
     }
     
-    override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let td = segue.destinationViewController as? TestDetailsViewController,
+    override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let td = segue.destination as? TestDetailsViewController,
             let selectedTestCase = selTestCase {
             td.testCase = selectedTestCase
         }
@@ -163,39 +158,37 @@ public class TestViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     
-    private func loadAndRunTests(_ autoRun:Bool) {
-        var loadData:NSData?
+    fileprivate func loadAndRunTests(_ autoRun:Bool) {
+        var loadData:Data?
         cases.removeAllObjects()
         testResultsTable.reloadData()
         if testLoadURL.text?.characters.count == 0 {
-            if let path = NSBundle.mainBundle().pathForResource( "test1", ofType: "json") {
-                do {
-                    
-                    if let data = NSData(contentsOfURL:NSURL(fileURLWithPath: path)) {
-                        let datastring = String(data: data, encoding: NSUTF8StringEncoding)
-                        debugPrint("JSON: " + datastring!)
-                        
-                        loadData = data
-                    }
-                    
-                } catch {
-                    debugPrint("error getting file")
+            if let path = Bundle.main.path( forResource: "test1", ofType: "json") {
+                if let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
+                    let datastring = String(data: data, encoding: String.Encoding.utf8) {
+                    debugPrint("JSON: " + datastring)
+                    loadData = data
                 }
             }
             
         } else {
+            guard let urlString = testLoadURL.text,
+                let url = URL(string: urlString) else { return }
             
-            var session:NSURLSession = NSURLSession.sharedSession()
+            let session:URLSession = URLSession.shared
             
-            let task = session.dataTaskWithURL(NSURL(string: testLoadURL.text!)!, completionHandler: {data, response, error -> Void in
+            let task = session.dataTask(with: url, completionHandler: {data, response, error -> Void in
                 //            debugPrint("JSON: " + String(data:data, enco))
                 if error != nil {
                     debugPrint("error connecting")
                 } else {
-                    let datastring = String(data: data!, encoding: NSUTF8StringEncoding)
+                    guard let data = data else {
+                        debugPrint("ERROR Data is empty")
+                        return
+                    }
+                    let datastring = String(data: data, encoding: String.Encoding.utf8)
                     debugPrint("JSON: " + (datastring ?? ""))
-                    debugPrint("JSON: " + (response?.MIMEType ?? "unknown"))
-                    //let json:JSON = JSON(data: data!)
+                    debugPrint("JSON: " + (response?.mimeType ?? "unknown"))
                     
                     loadData = data
                 }
@@ -210,16 +203,16 @@ public class TestViewController: UIViewController, UITableViewDelegate, UITableV
                 self.caseRunner = CaseRunner(jsonCases)
                 self.caseRunner?.onTestStarted = {
                     (cs:Case) -> Void in
-                    if(!self.cases.containsObject(cs)) {
-                        self.cases.addObject(cs)
-                        dispatch_async(dispatch_get_main_queue()){
+                    if(!self.cases.contains(cs)) {
+                        self.cases.add(cs)
+                        DispatchQueue.main.async{
                             self.testResultsTable.reloadData()
                         }
                     }
                 }
                 self.caseRunner?.onTestEnded = {
                     (cs:Case) -> Void in
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         self.testResultsTable.reloadData()
                     }
                 }
@@ -236,40 +229,40 @@ public class TestViewController: UIViewController, UITableViewDelegate, UITableV
 
 class CaseRunner {
     var cases = NSMutableArray()
-    var onTestStarted:((testCase:Case) -> Void)?
-    var onTestEnded:((testCase:Case) -> Void)?
-    private var runningCase:Case?
+    var onTestStarted:((_ testCase:Case) -> Void)?
+    var onTestEnded:((_ testCase:Case) -> Void)?
+    fileprivate var runningCase:Case?
     var storedValues = [String: Any]()
     
-    private var nextCaseIndex = 0
+    fileprivate var nextCaseIndex = 0
     
     init(_ jsonCases:[JSON]) {
         debugPrint(cases.count)
         for var jSON in jsonCases {
             let cs = Case(name: jSON["name"].string, json: jSON, onComplete: {})
             cs.onComplete = {
-                self.onTestEnded?(testCase: cs); self.runningCase = nil; self.nextCase()
+                self.onTestEnded?(cs); self.runningCase = nil; self.nextCase()
             }
             cs.caseRunner = self
-            self.cases.addObject(cs)
+            self.cases.add(cs)
         }
     }
     init(cases:[Case]) {
         for aCase in cases {
-            self.cases.addObject(aCase)
+            self.cases.add(aCase)
         }
     }
     func nextCase() {
         
         if self.cases.count > (self.nextCaseIndex) {
-            if let currentCase = self.cases.objectAtIndex(self.nextCaseIndex) as? Case
+            if let currentCase = self.cases.object(at: self.nextCaseIndex) as? Case
             {
                 self.runningCase = currentCase
                 //                    self.cases.removeObject(at: 0)
-                onTestStarted?(testCase: currentCase)
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                onTestStarted?(currentCase)
+                DispatchQueue.global(qos: .default).async {
                     currentCase.run()
-                })
+                }
             }
             self.nextCaseIndex += 1
         } else {
@@ -287,8 +280,9 @@ class CaseRunner {
     }
     func register() {
         self.nextCaseIndex = cases.count
-        for var currentCase in self.cases {
-            self.onTestStarted?(testCase: currentCase as! Case)
+        for currentCase in self.cases {
+            guard let currentCase = currentCase as? Case else { break }
+            self.onTestStarted?(currentCase)
         }
     }
     func restart() {
@@ -319,9 +313,10 @@ class ResponseCloverConnector : DefaultCloverConnectorListener {
                 var opt = ioOpt["select"]
                 
                 if let key = opt.string,
-                    let onStr = on.string {
+                    let onStr = on.string,
+                    let keyPress = KeyPress(rawValue: key) {
                     
-                    let io = InputOption(keyPress: KeyPress(rawValue:key)!, description: key)
+                    let io = InputOption(keyPress: keyPress, description: key)
                     ioMap[onStr] = io
                 }
             }
@@ -332,16 +327,26 @@ class ResponseCloverConnector : DefaultCloverConnectorListener {
             
             let confirmMappings = json["onConfirmPayment"]
             
-            for var challenge in request.challenges! {
-                if "REJECT" == confirmMappings[(challenge.type?.rawValue)!] {
-                    cloverConnector?.rejectPayment(request.payment!, challenge: challenge)
-                    return
+            if let challenges = request.challenges {
+                for challenge in challenges {
+                    if let challengeType = challenge.type?.rawValue {
+                        if "REJECT" == confirmMappings[challengeType] {
+                            if let payment = request.payment {
+                                cloverConnector?.rejectPayment(payment, challenge: challenge)
+                                return
+                            }
+                        }
+                    }
                 }
             }
         }
         
         // accept by default
-        cloverConnector?.acceptPayment(request.payment!)
+        if let payment = request.payment {
+            cloverConnector?.acceptPayment(payment)
+        } else {
+            debugPrint("ERROR: request.payment is nil")
+        }
     }
     override func onVerifySignatureRequest(_ signatureVerifyRequest: VerifySignatureRequest) {
         if let json = self.deviceRequests {
@@ -364,7 +369,7 @@ class ResponseCloverConnector : DefaultCloverConnectorListener {
         
         if let keys = jsonA.dictionary?.keys {
             
-            for var key in (jsonA.dictionary?.keys)! {
+            for key in keys {
                 var A = jsonA[key]
                 var B = within[key]
                 if let bVal = A.bool,
@@ -374,7 +379,7 @@ class ResponseCloverConnector : DefaultCloverConnectorListener {
                     }
                 } else if let sVal = A.string {
                     if sVal == "*" {
-                        if (B.rawString() == nil || B.type == Type.Null) {
+                        if (B.rawString() == nil || B.type == Type.null) {
                             return (false, "expected a value, but was nil")
                         }
                     } else if sVal != B.string {
@@ -383,10 +388,10 @@ class ResponseCloverConnector : DefaultCloverConnectorListener {
                 } else if let iVal = A.int,
                     let biVal = B.int {
                     if(iVal != biVal) {
-                        return (false, "expected " + String(iVal) + " but got " + String(B.int))
+                        return (false, "expected " + String(iVal) + " but got " + String(describing: B.int))
                     }
                 } else if let _ = A.dictionary {
-                    var result = compare(A, within: B)
+                    let result = compare(A, within: B)
                     if !result.0 {
                         return result
                     }
@@ -495,7 +500,7 @@ class TestResponseCloverConnector : ResponseCloverConnector {
     }
 
     
-    private func storePaymentResponse(_ response:PaymentResponse) {
+    fileprivate func storePaymentResponse(_ response:PaymentResponse) {
         if store?[JSON_KEYS.PAYMENT] != nil,
             let key = store?[JSON_KEYS.PAYMENT].string,
             let payment = response.payment {
@@ -523,11 +528,13 @@ class TestResponseCloverConnector : ResponseCloverConnector {
         }
     }
     
-    private func compare(jsonString:String?) {
-        if let data = jsonString!.dataUsingEncoding(NSUTF8StringEncoding) {
-            debugPrint("response is: " + jsonString!)
+    fileprivate func compare(_ jsonString:String?) {
+        if let jsonString = jsonString,
+            let data = jsonString.data(using: String.Encoding.utf8),
+            let expectedResponse = expectedResponse {
+            debugPrint("response is: " + jsonString)
             
-            let match = compare(expectedResponse!, within: JSON(data: data))
+            let match = compare(expectedResponse, within: JSON(data: data))
             self.testCase.response = jsonString
             self.testCase.done( match)
         } else {
@@ -542,47 +549,36 @@ class Case {
     var json:JSON?
     var onComplete:() -> Void
     var cloverConnectorListener:ICloverConnectorListener?
-    var cloverConnector:ICloverConnector
+    var cloverConnector:ICloverConnector?
     var passed:(Bool, String?)?
     var caseRunner:CaseRunner?
     var testJSON:JSON?
     var request:String?
     var response:String?
     
-    init(name:String?, json:JSON, onComplete:() -> Void) {
+    init(name:String?, json:JSON, onComplete:@escaping () -> Void) {
         self.name = name
         self.json = json
         self.onComplete = onComplete
-        self.cloverConnector = ((UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnector)!
+        self.cloverConnector = (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector
     }
     
     func resolveVaultedCard(_ payload:JSON) -> CLVModels.Payments.VaultedCard? {
-        var vaultedCard:CLVModels.Payments.VaultedCard?
-        
         if payload[JSON_KEYS.VAULTED_CARD].dictionary != nil {
-            if let vcStr = (payload[JSON_KEYS.VAULTED_CARD] as JSON).rawString(NSUTF8StringEncoding) {
-                vaultedCard = Mapper<CLVModels.Payments.VaultedCard>().map(vcStr)
-                
+            if let vcStr = (payload[JSON_KEYS.VAULTED_CARD] as JSON).rawString(String.Encoding.utf8) {
+                return Mapper<CLVModels.Payments.VaultedCard>().map(JSONString: vcStr)
             }
-        } else if let vcVarMarker = payload[JSON_KEYS.VAULTED_CARD].string where
-            vcVarMarker.substringToIndex(vcVarMarker.startIndex.advancedBy(1)) == "$" &&
-            vcVarMarker.characters.count > 1 {
-            let key = vcVarMarker.substringFromIndex(vcVarMarker.startIndex.advancedBy(1))
-            if let vc = self.caseRunner?.storedValues[key] as? CLVModels.Payments.VaultedCard {
-                vaultedCard = vc
-            }
+        } else if var vcVarMarker = payload[JSON_KEYS.VAULTED_CARD].string,
+            vcVarMarker.characters.removeFirst() == "$" {
+            return self.caseRunner?.storedValues[vcVarMarker] as? CLVModels.Payments.VaultedCard
         }
-        return vaultedCard
+        return nil
     }
     
-    func resolvePrimitive(_ key:String?) -> Any?
-    {
-        if let key = key {
-            if key.substringToIndex(key.startIndex.advancedBy(1)) == "$" &&
-                key.characters.count > 1 {
-                let keyName = key.substringFromIndex(key.startIndex.advancedBy(1))
-                return caseRunner?.storedValues[keyName]
-            }
+    func resolvePrimitive(_ key:String?) -> Any? {
+        if var key = key,
+            key.removeFirst() == "$" {
+            return caseRunner?.storedValues[key]
         }
         return key
     }
@@ -590,7 +586,7 @@ class Case {
     public func done(_ withResult: (Bool, String?)) {
         passed = withResult
         if let ccl = cloverConnectorListener {
-            self.cloverConnector.removeCloverConnectorListener(ccl)
+            self.cloverConnector?.removeCloverConnectorListener(ccl)
         }
         onComplete()
     }
@@ -598,6 +594,10 @@ class Case {
     public func run() {
         guard let method = json?[JSON_KEYS.METHOD].string else {
             debugPrint("No method")
+            return
+        }
+        guard let cloverConnector = cloverConnector else {
+            debugPrint("No Connector")
             return
         }
         
@@ -634,8 +634,9 @@ class Case {
                     
                     request = Mapper<SaleRequest>.toJSONString(sr, prettyPrint:true)
                     
-                    cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
-                    cloverConnector.addCloverConnectorListener(cloverConnectorListener!)
+                    let ccl = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+                    cloverConnectorListener = ccl
+                    cloverConnector.addCloverConnectorListener(ccl)
                     cloverConnector.sale(sr)
                 } else {
                     done((false, "Couldn't get payload"))
@@ -667,8 +668,9 @@ class Case {
                     
                     request = Mapper<AuthRequest>.toJSONString(ar, prettyPrint:true)
                     
-                    cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
-                    cloverConnector.addCloverConnectorListener(cloverConnectorListener!)
+                    let ccl = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+                    cloverConnectorListener = ccl
+                    cloverConnector.addCloverConnectorListener(ccl)
                     cloverConnector.auth(ar)
                     
                 } else {
@@ -697,8 +699,9 @@ class Case {
                     
                     request = Mapper<PreAuthRequest>.toJSONString(par, prettyPrint:true)
                     
-                    cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
-                    cloverConnector.addCloverConnectorListener(cloverConnectorListener!)
+                    let ccl = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+                    cloverConnectorListener = ccl
+                    cloverConnector.addCloverConnectorListener(ccl)
                     cloverConnector.preAuth(par)
                     
                 } else {
@@ -728,8 +731,9 @@ class Case {
                     
                     request = Mapper<ManualRefundRequest>.toJSONString(mrr, prettyPrint:true)
                     
-                    cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
-                    cloverConnector.addCloverConnectorListener(cloverConnectorListener!)
+                    let ccl = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+                    cloverConnectorListener = ccl
+                    cloverConnector.addCloverConnectorListener(ccl)
                     cloverConnector.manualRefund(mrr)
                     
                 } else {
@@ -749,8 +753,9 @@ class Case {
                 
                 request = Mapper<TipAdjustAuthRequest>.toJSONString(tar, prettyPrint:true)
                 
-                cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
-                cloverConnector.addCloverConnectorListener(cloverConnectorListener!)
+                let ccl = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+                cloverConnectorListener = ccl
+                cloverConnector.addCloverConnectorListener(ccl)
                 cloverConnector.tipAdjustAuth(tar)
                 
             } else {
@@ -767,8 +772,9 @@ class Case {
                 
                 request = Mapper<CapturePreAuthRequest>.toJSONString(cpa, prettyPrint:true)
                 
-                cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
-                cloverConnector.addCloverConnectorListener(cloverConnectorListener!)
+                let ccl = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+                cloverConnectorListener = ccl
+                cloverConnector.addCloverConnectorListener(ccl)
                 cloverConnector.capturePreAuth(cpa)
             } else {
                 done( (false, "Couldn't get paymentId"))
@@ -784,8 +790,9 @@ class Case {
             
             request = Mapper<VaultCardRequest>.toJSONString(vcr, prettyPrint:true)
             
-            cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
-            cloverConnector.addCloverConnectorListener(cloverConnectorListener!)
+            let ccl = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+            cloverConnectorListener = ccl
+            cloverConnector.addCloverConnectorListener(ccl)
             cloverConnector.vaultCard(vcr)
         } else if method == JSON_KEYS.METHOD_READ_CARD_DATA {
             let rcdr = ReadCardDataRequest()
@@ -800,7 +807,7 @@ class Case {
             
             request = Mapper<ReadCardDataRequest>.toJSONString(rcdr, prettyPrint:true)
             
-            cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+            cloverConnectorListener = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
             cloverConnector.addCloverConnectorListener(cloverConnectorListener!)
             cloverConnector.readCardData(rcdr)
         } else if method == JSON_KEYS.METHOD_REFUND_PAYMENT {
@@ -816,8 +823,9 @@ class Case {
                 
                 request = Mapper<RefundPaymentRequest>.toJSONString(rpr, prettyPrint:true)
                 
-                cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
-                cloverConnector.addCloverConnectorListener(cloverConnectorListener!)
+                let ccl = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+                cloverConnectorListener = ccl
+                cloverConnector.addCloverConnectorListener(ccl)
                 cloverConnector.refundPayment(rpr)
             } else {
                 done( (false, "Couldn't get orderId and paymentId"))
@@ -833,21 +841,22 @@ class Case {
                 
                 request = Mapper<VoidPaymentRequest>.toJSONString(vpr, prettyPrint:true)
                 
-                cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
-                cloverConnector.addCloverConnectorListener(cloverConnectorListener!)
+                let ccl = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+                cloverConnectorListener = ccl
+                cloverConnector.addCloverConnectorListener(ccl)
                 cloverConnector.voidPayment(vpr)
             } else {
                 done( (false, "Couldn't get orderId and paymentId"))
             }
         } else if method == JSON_KEYS.METHOD_PRINT_TEXT {
             if let textLines = json?[JSON_KEYS.REQUEST][JSON_KEYS.PAYLOAD]["text"].array {
-                var text = [String](count:textLines.count, repeatedValue: "")
-                for (index, line) in textLines.enumerate() {
+                var text = Array(repeating: "", count: textLines.count)
+                for (index, line) in textLines.enumerated() {
                     text[index] = line.string ?? "N/A"
                 }
                 
                 done( (true,nil))
-                cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+                cloverConnectorListener = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
                 
                 if let request = PrintRequest(text: text, printRequestId: nil, printDeviceId: nil) {
                     cloverConnector.print(request)
@@ -862,7 +871,7 @@ class Case {
                 displayOrder.subtotal = payload["subTotal"].string ?? "$-0.00"
                 displayOrder.tax = payload["tax"].string ?? "$-0.00"
                 if let items = payload["displayOrderItems"].array {
-                    for (index, item) in items.enumerate() {
+                    for (index, item) in items.enumerated() {
                         let dli = DisplayLineItem(id: String(index), name: item["name"].string ?? "Unknown", price: item["unitPrice"].string ?? "$0.00", quantity: String(item["quantity"].int ?? 1))
                         dli.alternateName = item["alternateName"].string
                         dli.binName = item["binName"].string
@@ -878,7 +887,7 @@ class Case {
                         dli.unitQuantity = item["unityQuantity"].string ?? nil
                         if let mods = item["modifications"].array {
                             let dlMods = [DisplayModification]()
-                            for (modIndex, mod) in mods.enumerate() {
+                            for mod in mods {
                                 
                                 let dm = DisplayModification()
                                 dm.id = String(arc4random())
@@ -889,7 +898,7 @@ class Case {
                         }
                         if let discounts = item["discounts"].array {
                             let diDiscounts = [DisplayDiscount]()
-                            for (discountIndex, discount) in discounts.enumerate() {
+                            for (discountIndex, discount) in discounts.enumerated() {
                                 
                                 let dd = DisplayDiscount()
                                 dd.id = String(discountIndex)
@@ -912,9 +921,9 @@ class Case {
                 done((false, "Couldn't build Display Order"))
             }
         } else if method == JSON_KEYS.METHOD_RETRIEVE_PENDING_PAYMENTS {
-            if let payload = json?[JSON_KEYS.REQUEST][JSON_KEYS.PAYLOAD] {
+            if (json?[JSON_KEYS.REQUEST][JSON_KEYS.PAYLOAD]) != nil {
                 done((true,nil))
-                cloverConnectorListener = TestResponseCloverConnector(cloverConnector: self.cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
+                cloverConnectorListener = TestResponseCloverConnector(cloverConnector: cloverConnector, testCase: self, deviceRequests: json?[JSON_KEYS.DEVICE_REQUESTS], expectedResponse: json?[JSON_KEYS.EXPECT][JSON_KEYS.RESPONSE][JSON_KEYS.PAYLOAD], inputOptions: json?[JSON_KEYS.INPUT_OPTIONS], store: json?[JSON_KEYS.EXPECT][JSON_KEYS.STORE])
                 cloverConnector.retrievePendingPayments()
             } else {
                 done((false, "Error getting payload"))

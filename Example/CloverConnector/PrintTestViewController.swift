@@ -2,7 +2,8 @@
 //  PrintTestViewController.swift
 //  CloverConnector
 //
-//  Copyright © 2017 Clover Network, Inc. All rights reserved.
+//  Created by Clover on 9/13/17.
+//  Copyright © 2017 Clover Networks, Inc. All rights reserved.
 //
 
 import UIKit
@@ -18,7 +19,7 @@ class PrintTestViewController: UIViewController {
     @IBOutlet var spinner: UIActivityIndicatorView!
     @IBOutlet var printerTableView: UITableView!
     
-    var selectedIndexPath: NSIndexPath?
+    var selectedIndexPath: IndexPath?
     var selectedPrinter: CLVModels.Printer.Printer? {
         get {
             if let index = self.printerTableView.indexPathForSelectedRow?.row {
@@ -31,7 +32,7 @@ class PrintTestViewController: UIViewController {
     
     var appDelegate: AppDelegate? {
         get {
-            return UIApplication.sharedApplication().delegate as? AppDelegate
+            return UIApplication.shared.delegate as? AppDelegate
         }
     }
     
@@ -40,7 +41,7 @@ class PrintTestViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         /*
          In the event that the UI is "compact" (such as for an iPhone), the tabBarController will show a "more" option for extra tabs.
          The "more" tab is a tableView containing the tabs that wouldn't otherwise fit on the tabBar. This includes a UINavigationController
@@ -49,9 +50,9 @@ class PrintTestViewController: UIViewController {
          the user to dismiss this view. Without it, the user would be stuck on this view without access to a nav bar or the tab bar.
          */
         if self.tabBarController?.moreNavigationController != nil {
-            self.closeButton.hidden = true
+            self.closeButton.isHidden = true
         } else {
-            self.closeButton.hidden = false
+            self.closeButton.isHidden = false
         }
         
         //delegation handled in extension
@@ -61,24 +62,24 @@ class PrintTestViewController: UIViewController {
         //fetch the accessible printers
         spinner.startAnimating()
         retrievePrinters { [weak self] (response) in
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async {
                 self?.spinner.stopAnimating()
                 self?.printers = response.printers
                 self?.printerTableView.reloadData()
-            })
+            }
         }
         
-        //setup a way to respond to a print job finishing, as a way to cleanup 
+        //setup a way to respond to a print job finishing, as a way to cleanup
         appDelegate?.cloverConnectorListener?.getPrintJobStatusCallback = { [weak self] (response:PrintJobStatusResponse) -> Void in
-            dispatch_async(dispatch_get_main_queue(), { 
+            DispatchQueue.main.async {
                 if response.status == .IN_QUEUE || response.status == .PRINTING {
                     return
                 } else {
-                     //printing finished, cleanup
+                    //printing finished, cleanup
                     self?.spinner.stopAnimating()
-                    UIApplication.sharedApplication().idleTimerDisabled = false
+                    UIApplication.shared.isIdleTimerDisabled = false
                 }
-            })
+            }
         }
     }
     
@@ -109,24 +110,24 @@ class PrintTestViewController: UIViewController {
         let imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = false
         imagePicker.delegate = self
-        imagePicker.sourceType = .PhotoLibrary
+        imagePicker.sourceType = .photoLibrary
         
-        self.presentViewController(imagePicker, animated: true, completion: nil)
+        self.present(imagePicker, animated: true, completion: nil)
     }
     
     @IBAction func printURL(_ sender: UIButton) {
         let printRequestID = "testURLPrintJob"
-        guard let validURL = verifyUrl(urlTF.text) else { return }
+        guard let validURL = verifyUrl(urlString: urlTF.text) else { return }
         let request = PrintRequest(imageURL: validURL, printRequestId: printRequestID, printDeviceId: self.selectedPrinter?.id)
         
         if let appDelegate = self.appDelegate {
             appDelegate.cloverConnector?.print(request)
             spinner.startAnimating()
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = true
         }
     }
     
-    func retrievePrinters(completion: ((response:RetrievePrintersResponse) -> Void)?) {
+    func retrievePrinters(completion: ((_ response:RetrievePrintersResponse) -> Void)?) {
         let request = RetrievePrintersRequest(printerCategory: nil)
         appDelegate?.cloverConnector?.retrievePrinters(request)
         
@@ -134,17 +135,17 @@ class PrintTestViewController: UIViewController {
         appDelegate?.cloverConnectorListener?.getPrintersCallback = completion
     }
     
-    private func verifyUrl(urlString: String?) -> NSURL? {
+    private func verifyUrl(urlString: String?) -> URL? {
         guard let urlString = urlString,
-            let url = NSURL(string: urlString) else {
+            let url = URL(string: urlString) else {
                 return nil
         }
         
-        return (UIApplication.sharedApplication().canOpenURL(url) ? url : nil)
+        return (UIApplication.shared.canOpenURL(url) ? url : nil)
     }
     
     @IBAction func closeButtonTapped(_ sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -153,17 +154,17 @@ extension PrintTestViewController: UITableViewDataSource, UITableViewDelegate {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return printers?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let printer = printers?[indexPath.row] else {
             debugPrint("Tried to display printer that didn't exist. Off-by-one error?")
             return UITableViewCell()
         }
         
-        let cell = self.printerTableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
+        let cell = self.printerTableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         
         if let _ = cell.textLabel,
             let _ = cell.detailTextLabel {
@@ -174,72 +175,71 @@ extension PrintTestViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if selectedIndexPath == indexPath {
-            self.printerTableView.deselectRowAtIndexPath(indexPath, animated: true)
+            self.printerTableView.deselectRow(at: indexPath, animated: true)
             selectedIndexPath = nil
         } else {
-            self.printerTableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Top)
+            self.printerTableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
             selectedIndexPath = indexPath
         }
     }
 }
 
 extension PrintTestViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             self.spinner.startAnimating()
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = true
             
             //dispatch off of main for the re-size operation, which is relatively heavy
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { [weak self] in
-                guard let image = self?.resizeImage(pickedImage) else {
-                    dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.global().async { [weak self] in
+                guard let image = self?.resizeImage(image: pickedImage) else {
+                    DispatchQueue.main.async { [weak self] in
                         self?.spinner.stopAnimating()
-                        UIApplication.sharedApplication().idleTimerDisabled = false
-                    })
+                        UIApplication.shared.isIdleTimerDisabled = false
+                    }
+
                     return
                 }
                 
                 //dispatch back to main because we have to call the app delegate
-                dispatch_async(dispatch_get_main_queue(), { [weak self] in
+                DispatchQueue.main.async { [weak self] in
                     let request = PrintRequest(image: image, printRequestId: "testImagePrintJob", printDeviceId: self?.selectedPrinter?.id)
                     self?.appDelegate?.cloverConnector?.print(request)
-                })
-            })
+                }
+            }
         } else {
             debugPrint("Error loading image")
         }
         
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
     
     /// Resizes an image to fit within CloverConnector.MAX_PAYLOAD_SIZE
     func resizeImage(image:UIImage) -> UIImage {
         var scaledImage = image
         guard var scaledData = UIImagePNGRepresentation(image) else { return image }
-        guard let cloverConnector = (UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnector else { return image }
-        
-        debugPrint("Start Size: " + String(scaledImage.size))
-        while scaledData.length > cloverConnector.MAX_PAYLOAD_SIZE {
-            var scale = sqrt((CGFloat(cloverConnector.MAX_PAYLOAD_SIZE) / CGFloat(scaledData.length)))
+        guard let cloverConnector = (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector else { return image }
+        debugPrint("Start Size: " + String(describing: scaledImage.size))
+        while scaledData.count > cloverConnector.MAX_PAYLOAD_SIZE {
+            var scale = sqrt((CGFloat(cloverConnector.MAX_PAYLOAD_SIZE) / CGFloat(scaledData.count)))
             scale = scale > 0.9 ? 0.9 : scale
-            debugPrint("Scaling " + String(scale) + "%")
+            debugPrint("Scaling " + String(describing: scale) + "%")
             let newSize = CGSize(width: scaledImage.size.width * scale, height: scaledImage.size.height * scale)
             UIGraphicsBeginImageContextWithOptions(CGSize(width: newSize.width, height: newSize.height), true, 1.0)
-            scaledImage.drawInRect(CGRect(origin: CGPoint(x: 0, y: 0), size: newSize))
+            scaledImage.draw(in: CGRect(origin: CGPoint(x: 0, y: 0), size: newSize))
             guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else { return scaledImage }
             scaledImage = newImage
             guard let newData = UIImagePNGRepresentation(scaledImage) else { return scaledImage }
             scaledData = newData
             UIGraphicsEndImageContext()
         }
-        debugPrint("Final Size: " + String(scaledImage.size))
+        debugPrint("Final Size: " + String(describing: scaledImage.size))
         return scaledImage
     }
 }

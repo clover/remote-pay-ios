@@ -8,8 +8,8 @@
 import Foundation
 
 public class PrintJobStatusResponse: NSObject {
-    public private(set) var printRequestId: String?
-    public private(set) var status: PrintJobStatus
+    public fileprivate(set) var printRequestId: String?
+    public fileprivate(set) var status: PrintJobStatus
     
     init(_ printRequestId: String?, status: String?) {
         self.printRequestId = printRequestId

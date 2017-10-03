@@ -22,13 +22,13 @@ public class RetrievePaymentResponseMessage:Message {
         super.init(method: .RETRIEVE_PAYMENT_RESPONSE)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         queryStatus = .NOT_FOUND
         super.init(method: .RETRIEVE_PAYMENT_RESPONSE)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         queryStatus <- map["queryStatus"]
         externalPaymentId <- map["externalPaymentId"]
         payment <- (map["payment"], Message.paymentTransform)

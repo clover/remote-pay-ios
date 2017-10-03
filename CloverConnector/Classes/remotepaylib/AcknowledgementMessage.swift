@@ -13,12 +13,12 @@ public class AcknowledgementMessage : Message {
     
     public var sourceMessageId:String?
     
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         super.init(method: .ACK)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         sourceMessageId <- map["sourceMessageId"]
     }
 }

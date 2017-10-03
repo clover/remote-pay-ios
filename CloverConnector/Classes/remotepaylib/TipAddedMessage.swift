@@ -13,7 +13,7 @@ public class TipAddedMessage : Message {
     
     public var tipAmount:Int?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.TIP_ADDED)
     }
     
@@ -23,7 +23,7 @@ public class TipAddedMessage : Message {
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         tipAmount <- map["tipAmount"]
     }
 }

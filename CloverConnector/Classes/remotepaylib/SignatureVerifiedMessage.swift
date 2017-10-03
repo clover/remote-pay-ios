@@ -18,7 +18,7 @@ public class SignatureVerifiedMessage : Message {
     public required init() {
         super.init(method: .SIGNATURE_VERIFIED)
     }
-    required public init?(_ map: Map) {
+    required public init?(map:Map) {
         super.init(method: .SIGNATURE_VERIFIED)
     }
     public init(payment:CLVModels.Payments.Payment, verified:Bool) {
@@ -28,7 +28,7 @@ public class SignatureVerifiedMessage : Message {
         self.verified = verified
     }
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         payment <- (map["payment"], Message.paymentTransform)
         verified <- map["verified"]
     }

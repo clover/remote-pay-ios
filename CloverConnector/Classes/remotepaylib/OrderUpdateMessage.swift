@@ -26,13 +26,13 @@ public class OrderUpdateMessage : Message {
         self.operation = operation
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .SHOW_ORDER_SCREEN)
         
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
 
         displayOrder <- (map["order"], Message.displayOrderTransform)
     }

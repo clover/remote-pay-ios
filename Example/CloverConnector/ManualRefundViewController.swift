@@ -17,26 +17,36 @@ class ManualRefundViewController:UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var refundButton: UIButton!
     @IBOutlet weak var manualRefundsTable: UITableView!
     
-    private func getStore() -> POSStore? {
-        if let appDelegate = (UIApplication.sharedApplication().delegate as? AppDelegate) {
+    fileprivate func getStore() -> POSStore? {
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
             return appDelegate.store
         }
         return nil
     }
     
-    override func viewDidLoad() {
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ManualRefundViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ManualRefundViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        
-    }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         getStore()?.addStoreListener(self)
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name.UIKeyboardWillShow, object: nil, queue: OperationQueue.main, using: {[weak self] notification in
+            guard let strongSelf = self else { return }
+            if strongSelf.refundAmount.isFirstResponder {
+                strongSelf.view.window?.frame.origin.y = -1 * ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height ?? 0)
+            }
+        })
+        NotificationCenter.default.addObserver(forName: Notification.Name.UIKeyboardWillHide, object: nil, queue: OperationQueue.main, using: {[weak self] notification in
+            guard let strongSelf = self else { return }
+            if strongSelf.view.window?.frame.origin.y != 0 {
+                strongSelf.view.window?.frame.origin.y += ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height ?? 0)
+            }
+        })
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         getStore()?.removeStoreListener(self)
+        
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
     }
     
     deinit {
@@ -45,59 +55,40 @@ class ManualRefundViewController:UIViewController, UITableViewDelegate, UITableV
     
     
     @IBAction func onManualRefund(_ sender: UIButton) {
-        manualRefundsTable.becomeFirstResponder()
+        refundAmount.resignFirstResponder()
         
         if let amtText = refundAmount.text, let amt:Int = Int(amtText) {
             let request = ManualRefundRequest(amount: amt, externalId: String(arc4random()))
-            (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.manualRefund(request)
+            (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector?.manualRefund(request)
         }
         
     }
     
     
-    @objc
-    func keyboardWillShow(notification: NSNotification) {
-        if refundAmount.editing {
-            self.view.window?.frame.origin.y = -1 * getKeyboardHeight(notification)
-        }
+
+    
+    fileprivate func getKeyboardHeight(_ notification: Notification) -> CGFloat? {
+        return (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
     }
     
-    @objc
-    func keyboardWillHide(notification: NSNotification) {
-        if self.view.window?.frame.origin.y != 0 {
-            self.view.window?.frame.origin.y += getKeyboardHeight(notification)
-        }
-    }
-    
-    private func getKeyboardHeight(_ notification: NSNotification) -> CGFloat {
-        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
-        let keyboardFrame:NSValue = userInfo.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue
-        let keyboardRectangle = keyboardFrame.CGRectValue()
-        let keyboardHeight = keyboardRectangle.height
-        return keyboardHeight
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return getStore()?.manualRefunds.count ?? 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var cell =  manualRefundsTable.dequeueReusableCellWithIdentifier("MRCell")
+        var cell =  manualRefundsTable.dequeueReusableCell(withIdentifier: "MRCell")
         if cell == nil {
-            cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "MRCell")
+            cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "MRCell")
         }
         
-        if let refunds = getStore()?.manualRefunds where indexPath.row < refunds.count {
-            
-            var manualRefund = refunds[indexPath.row] as? POSNakedRefund
-            cell?.textLabel?.text = CurrencyUtils.IntToFormat(manualRefund!.amount) ?? "$ ?.??"
+        if let refunds = getStore()?.manualRefunds, indexPath.row < refunds.count {
+            cell?.textLabel?.text = CurrencyUtils.IntToFormat(refunds[indexPath.row].amount) ?? "$ ?.??"
         } else {
             cell?.textLabel?.text = "UNKNOWN"
         }
         
-        
-        return cell!
+        return cell ?? UITableViewCell()
     }
     
     
@@ -112,8 +103,8 @@ extension ManualRefundViewController : POSStoreListener {
     func preAuthRemoved(_ payment:POSPayment){}
     func vaultCardAdded(_ card:POSCard){}
     func manualRefundAdded(_ credit:POSNakedRefund){
-        dispatch_async(dispatch_get_main_queue()) {
-            dispatch_after(2, dispatch_get_main_queue(), {
+        DispatchQueue.main.async {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
                 self.manualRefundsTable.reloadData()
             })
         }

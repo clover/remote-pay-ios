@@ -23,17 +23,17 @@ public class ListWrapper<T:Mappable> : Mappable {
     var elements = Array<T>()
     
     public init(jsonObj:NSDictionary) {
-        let items = jsonObj.valueForKey("elements")
+        let items = jsonObj.value(forKey: "elements")
         
-        if items is NSArray {
-            for var obj in (items as! NSArray) {
-                let type = T.self
-                let elType = type.init(obj as! Map)
-                elements.append(elType!)
+        if let items = items as? NSArray {
+            for obj in items {
+                if let obj = obj as? Map,
+                    let mapObj = T.self.init(map: obj) {
+                    elements.append(mapObj)
+                }
             }
-            
         } else {
-            debugPrint("Expected an array, but got something else: " + String(items));
+            debugPrint("Expected an array, but got something else: " + String(describing: items));
         }
     }
     
@@ -41,11 +41,11 @@ public class ListWrapper<T:Mappable> : Mappable {
         
     }
     
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         
     }
     
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         elements <- map["elements"]
     }
     
@@ -81,29 +81,30 @@ public class StringListWrapper {
     let elements = NSMutableArray()
     
     public init(jsonObj:NSDictionary) {
-        let items = jsonObj.valueForKey("elements")
+        let items = jsonObj.value(forKey: "elements")
         
-        if items is NSArray {
-            for var obj in (items as! NSArray) {
-                let elType:String = String(obj as! String)
-                elements.addObject(elType)
+        if let validItems = items as? NSArray {
+            for obj in validItems {
+                if let elType:String = obj as? String {
+                    elements.add(elType)
+                }
             }
             
         } else {
-            debugPrint("Expected an array, but got something else: " + String(items));
+            debugPrint("Expected an array, but got something else: " + String(describing: items));
         }
     }
     
     public func addElement(_ obj:String) {
-        elements.addObject(obj)
+        elements.add(obj)
     }
     
     public func removeElement(_ obj:String) {
-        elements.removeObject(obj);
+        elements.remove(obj);
     }
     
     public func count() {
-        elements.count
+        let _ = elements.count
     }
 }
 

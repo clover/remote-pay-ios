@@ -15,12 +15,12 @@ public class VaultCardResponseMessage : Message {
     public var status:ResultStatus?
     public var reason:String?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.VAULT_CARD_RESPONSE)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         card <- (map["card"], Message.vaultedCardTransform)
         status <- map["status"]
         reason <- map["reason"]

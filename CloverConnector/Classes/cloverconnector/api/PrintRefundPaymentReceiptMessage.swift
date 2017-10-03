@@ -8,7 +8,6 @@ import Foundation
 /**
 * Callback to the POS to request a refund payment receipt
  */
-@objc
 public class PrintRefundPaymentReceiptMessage : NSObject {
     public var payment:CLVModels.Payments.Payment?
     public var refund:CLVModels.Payments.Refund?

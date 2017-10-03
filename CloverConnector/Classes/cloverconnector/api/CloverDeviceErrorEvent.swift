@@ -7,7 +7,6 @@ import Foundation
 /**
  generic message for unanticipated or unexpected errors
  */
-@objc
 public class CloverDeviceErrorEvent : NSObject {
     /**
      * general type of error
@@ -15,12 +14,12 @@ public class CloverDeviceErrorEvent : NSObject {
      * - VALIDATION_ERROR
      * - EXCEPTION
      */
-    public private(set) var errorType:CloverDeviceErrorType
-    public private(set) var code:Int?
-    public private(set) var cause:NSError?
-    public private(set) var message:String
+    public fileprivate(set) var errorType:CloverDeviceErrorType
+    public fileprivate(set) var code:Int?
+    public fileprivate(set) var cause:Error?
+    public fileprivate(set) var message:String
     
-    public init(errorType:CloverDeviceErrorType, code:Int?, cause:NSError?, message:String) {
+    public init(errorType:CloverDeviceErrorType, code:Int?, cause:Error?, message:String) {
         self.errorType = errorType
         self.code = code
         self.cause = cause

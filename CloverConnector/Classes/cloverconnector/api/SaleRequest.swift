@@ -49,12 +49,12 @@ public class SaleRequest:TransactionRequest {
     }
     
     /// :nodoc:
-    public required init?(_ map: Map) {
-        super.init(map)
+    public required init?(map:Map) {
+        super.init(map: map)
     }
 
     /// :nodoc:
-    public override func mapping(map: Map) {
+    public override func mapping(map:Map) {
         tippableAmount <- map["tippableAmount"]
         tipAmount <- map["tipAmount"]
         taxAmount <- map["taxAmount"]

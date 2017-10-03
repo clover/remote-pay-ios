@@ -7,9 +7,6 @@
 import Foundation
 import ObjectMapper
 
-
-
-@objc
 public class DisplayOrder:NSObject, Mappable {
 
   /*
@@ -61,7 +58,7 @@ public class DisplayOrder:NSObject, Mappable {
     super.init()
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
     super.init()
   }
 
@@ -83,43 +80,5 @@ public class DisplayOrder:NSObject, Mappable {
       payments <- map["payments"]
 
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  id = jsonObj.valueForKey("id") as! String?
-
-  currency = jsonObj.valueForKey("currency") as! String?
-
-  employee = jsonObj.valueForKey("employee") as! String?
-
-  subtotal = jsonObj.valueForKey("subtotal") as! String?
-
-  tax = jsonObj.valueForKey("tax") as! String?
-
-  total = jsonObj.valueForKey("total") as! String?
-
-  title = jsonObj.valueForKey("title") as! String?
-
-  note = jsonObj.valueForKey("note") as! String?
-
-  serviceChargeName = jsonObj.valueForKey("serviceChargeName") as! String?
-
-  serviceChargeAmount = jsonObj.valueForKey("serviceChargeAmount") as! String?
-
-  discounts = ListWrapper<DisplayDiscount>(jsonObj: jsonObj.valueForKey("discounts") as! NSDictionary)
-
-
-  lineItems = ListWrapper<DisplayLineItem>(jsonObj: jsonObj.valueForKey("lineItems") as! NSDictionary)
-
-
-  amountRemaining = jsonObj.valueForKey("amountRemaining") as! String?
-
-  payments = ListWrapper<DisplayPayment>(jsonObj: jsonObj.valueForKey("payments") as! NSDictionary)
-
-  }
-*/
-
 }
 

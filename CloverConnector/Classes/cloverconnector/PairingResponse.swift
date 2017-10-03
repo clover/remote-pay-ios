@@ -21,12 +21,12 @@ public class PairingResponse : PairingRequest {
         self.millis = millis;
     }
     
-    public required init?(_ map: Map) {
-        super.init(map)
+    public required init?(map:Map) {
+        super.init(map:map)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map:map)
         pairingState <- map["pairingState"]
         applicationName <- map["applicationName"]
         millis <- map["millis"]

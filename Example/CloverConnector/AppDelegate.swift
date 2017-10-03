@@ -9,18 +9,6 @@ import UIKit
 import CloverConnector
 import Intents
 
-extension NSURL {
-    var queryItems: [String: String]? {
-        var params = [String: String]()
-        return NSURLComponents(URL: self, resolvingAgainstBaseURL: false)?
-            .queryItems?
-            .reduce([:], combine: { (_, item) -> [String: String] in
-                params[item.name] = item.value
-                return params
-            })
-    }
-}
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguration {
 
@@ -30,11 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
     public var cloverConnectorListener:CloverConnectorListener?
     public var testCloverConnectorListener:TestCloverConnectorListener?
     public var store:POSStore?
-    private var token:String?
+    fileprivate var token:String?
 
-    private let PAIRING_AUTH_TOKEN_KEY:String = "PAIRING_AUTH_TOKEN"
+    fileprivate let PAIRING_AUTH_TOKEN_KEY:String = "PAIRING_AUTH_TOKEN"
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         store = POSStore()
         store?.availableItems.append(POSItem(id: "1", name: "Cheeseburger", price: 579, taxRate: 0.075, taxable: true))
         store?.availableItems.append(POSItem(id: "2", name: "Hamburger", price: 529, taxRate: 0.075, taxable: true))
@@ -48,28 +36,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
         store?.availableItems.append(POSItem(id: "10", name: "$25 Gift Card", price: 2500, taxRate: 0.00, taxable: false, tippable: false))
         store?.availableItems.append(POSItem(id: "11", name: "$50 Gift Card", price: 5000, taxRate: 0.000, taxable: false, tippable: false))
         
-        if let tkn = NSUserDefaults.standardUserDefaults().stringForKey( PAIRING_AUTH_TOKEN_KEY) {
+        if let tkn = UserDefaults.standard.string( forKey: PAIRING_AUTH_TOKEN_KEY) {
             token = tkn
         }
         
         return true
     }
     
-    override func attemptRecoveryFromError(error: NSError, optionIndex recoveryOptionIndex: Int) -> Bool {
-        debugPrint(error.domain)
+    override func attemptRecovery(fromError error: Error, optionIndex recoveryOptionIndex: Int) -> Bool {
+        debugPrint((error as NSError).domain)
         return true
     }
     
-    func onPairingCode(pairingCode: String) {
+    func onPairingCode(_ pairingCode: String) {
         debugPrint("Pairing Code: " + pairingCode)
         self.cloverConnectorListener?.onPairingCode(pairingCode)
     }
-    func onPairingSuccess(authToken: String) {
+    func onPairingSuccess(_ authToken: String) {
         debugPrint("Pairing Auth Token: " + authToken)
         self.cloverConnectorListener?.onPairingSuccess(authToken)
         self.token = authToken
-        NSUserDefaults.standardUserDefaults().setObject(self.token, forKey: PAIRING_AUTH_TOKEN_KEY)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(self.token, forKey: PAIRING_AUTH_TOKEN_KEY)
+        UserDefaults.standard.synchronize()
     }
     
     func clearConnect(_ url:String) {
@@ -79,35 +67,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
     
     func connect(_ url:String) {
         cloverConnector?.dispose()
-        var endpoint = url
-        if let queryUrl = NSURL(string: url) {
-            if let queryItems = queryUrl.queryItems {
-                self.token = queryItems["authenticationToken"] ?? self.token
-            }
-            let urlComponents = NSURLComponents(URL: queryUrl, resolvingAgainstBaseURL: false)
-            endpoint = urlComponents?.scheme ?? "wss"
-            endpoint += "://"
-            endpoint += urlComponents?.host ?? ""
-            endpoint += ":" + String(urlComponents?.port ?? 80)
-            endpoint += String(urlComponents?.path ?? "/")
-//            endpoint = (urlComponents?.scheme + urlComponents?.host + ":" + urlComponents?.port + urlComponents?.path)
-        }
         
+        var endpoint = url
+        if let components = URLComponents(string: url), let _ = components.url { //Make sure the URL is valid, and break into URL components
+            self.token = components.queryItems?.first(where: { $0.name == "authenticationToken"})?.value //we can skip the pairing code if we already have an auth token
+            
+            endpoint = components.scheme ?? "wss"
+            endpoint += "://"
+            endpoint += components.host ?? ""
+            endpoint += ":" + String(components.port ?? 80)
+            endpoint += String(components.path)
+        }
+
         let config:WebSocketDeviceConfiguration = WebSocketDeviceConfiguration(endpoint:endpoint, remoteApplicationID: "com.clover.ios.example.app", posName: "iOS Example POS", posSerial: "POS-15", pairingAuthToken: self.token, pairingDeviceConfiguration: self)
 //        config.maxCharInMessage = 2000
 //        config.pingFrequency = 1
 //        config.pongTimeout = 6
 //        config.reportConnectionProblemTimeout = 3
         
-        let cc = CloverConnectorFactory.createICloverConnector(config)
-        self.cloverConnector = cc
-        let ccl = CloverConnectorListener(cloverConnector: cc)
-        self.cloverConnectorListener = ccl
+        let validCloverConnector = CloverConnectorFactory.createICloverConnector(config: config)
+        self.cloverConnector = validCloverConnector
+        let validCloverConnectorListener = CloverConnectorListener(cloverConnector: validCloverConnector)
+        self.cloverConnectorListener = validCloverConnectorListener
         
-        self.testCloverConnectorListener = TestCloverConnectorListener(cloverConnector: cc)
-        ccl.viewController = self.window?.rootViewController
-        cc.addCloverConnectorListener(ccl)
-        cc.initializeConnection()
+        self.testCloverConnectorListener = TestCloverConnectorListener(cloverConnector: validCloverConnector)
+        validCloverConnectorListener.viewController = self.window?.rootViewController
+        validCloverConnector.addCloverConnectorListener(validCloverConnectorListener)
+        validCloverConnector.initializeConnection()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -133,14 +119,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    // this gets called for a notification while the app is the active app
-    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
-
-    }
-    
     func applicationDidFinishLaunching(_ application: UIApplication) {
         
     }
-
 }
 

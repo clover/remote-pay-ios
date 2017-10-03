@@ -37,12 +37,12 @@ public class PaymentResponse : BaseResponse {
         self.signature = signature
     }
     
-    required public init?(_ map: Map) {
-        super.init(map)
+    required public init?(map:Map) {
+        super.init(map:map)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map:map)
         payment <- map["payment"]
         signature <- map["signature"]
     }

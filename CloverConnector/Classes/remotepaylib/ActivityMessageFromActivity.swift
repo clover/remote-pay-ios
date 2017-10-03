@@ -12,12 +12,12 @@ public class ActivityMessageFromActivity:BaseActivityRemoteMessage {
         super.init(action: a, payload: p, method: .ACTIVITY_MESSAGE_TO_ACTIVITY)
     }
     
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         super.init(action: "", payload: nil, method: .ACTIVITY_MESSAGE_FROM_ACTIVITY)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
     }
 }
 

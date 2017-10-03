@@ -14,22 +14,12 @@ public class Points:Mappable {
 
   }
 /// :nodoc:
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
   }
 /// :nodoc:
   public func mapping(map:Map) {
     points <- map["points"]
 
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  points = ListWrapper<Point>(jsonObj: jsonObj.valueForKey("points") as! NSDictionary)
-
-  }
-*/
-
 }
 

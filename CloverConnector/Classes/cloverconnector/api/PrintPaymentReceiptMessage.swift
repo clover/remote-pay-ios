@@ -9,7 +9,6 @@ import Foundation
 /**
  * Callback to the POS to request a payment receipt be printed
  */
-@objc
 public class PrintPaymentReceiptMessage : NSObject {
     public var order:CLVModels.Order.Order?
     public var payment:CLVModels.Payments.Payment?

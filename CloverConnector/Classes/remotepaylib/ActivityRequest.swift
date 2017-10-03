@@ -20,13 +20,13 @@ public class ActivityRequest: Message {
         super.init(method: Method.ACTIVITY_REQUEST)
     }
 
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         action = ""
         super.init(method: Method.ACTIVITY_REQUEST)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         action <- map["action"]
         payload <- map["payload"]
         nonBlocking <- map["nonBlocking"]

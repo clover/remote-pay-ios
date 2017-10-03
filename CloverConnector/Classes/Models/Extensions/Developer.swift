@@ -11,7 +11,7 @@ extension CLVModels {
   public class Developer {
     
     
-    public class Developer: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Developer9Developer)public class Developer: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Developer's name.  Could be a company name.  Whatever is to be shown as who made the app in App Marketplace, e.g. NoshList, Pioneer Works Inc., Seven Spaces, etc.  Also used as (optional) Business DBA (Doing Business Name) name when sending to Braintree for app billing background check.
@@ -63,10 +63,10 @@ extension CLVModels {
       /// Developer's business postal code
       public var businessPostalCode: String?
       /// Developer's billing status
-      public var billingStatus: CLVModels.Developer.DeveloperBillingStatus?
+      public var billingStatus: CLVModels.Developer.DeveloperBillingStatus? = nil
       /// Developer's billing status message
       public var billingStatusMessage: String?
-      public var approvalStatus: CLVModels.Base.ApprovalStatus?
+      public var approvalStatus: CLVModels.Base.ApprovalStatus? = nil
       /// If the user has accepted the developer agreement
       public var acceptedAgreement: Bool?
       /// Name of public relations contact
@@ -78,7 +78,7 @@ extension CLVModels {
       /// Developer's business website
       public var website: String?
       /// Timestamp indicating the last time the developer was modified.
-      public var modifiedTime: NSDate?
+      public var modifiedTime: Date?
       /// The user account that owns this developer account.
       public var owner: CLVModels.Account.Account?
       /// Temporary while we are switching US billing systems
@@ -88,95 +88,97 @@ extension CLVModels {
       /// The Infolease GL (General Ledger) code.  Only for specific apps.  Will usually be null.
       public var infoleaseGlCode: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(firstName, forKey: "firstName")
-        aCoder.encodeObject(lastName, forKey: "lastName")
-        aCoder.encodeObject(email, forKey: "email")
-        aCoder.encodeObject(phone, forKey: "phone")
-        aCoder.encodeObject(dob, forKey: "dob")
-        aCoder.encodeObject(ssn, forKey: "ssn")
-        aCoder.encodeObject(address, forKey: "address")
-        aCoder.encodeObject(city, forKey: "city")
-        aCoder.encodeObject(county, forKey: "county")
-        aCoder.encodeObject(state, forKey: "state")
-        aCoder.encodeObject(country, forKey: "country")
-        aCoder.encodeObject(postalCode, forKey: "postalCode")
-        aCoder.encodeObject(bankAccountNumber, forKey: "bankAccountNumber")
-        aCoder.encodeObject(bankRoutingNumber, forKey: "bankRoutingNumber")
-        aCoder.encodeObject(businessLegalName, forKey: "businessLegalName")
-        aCoder.encodeObject(tin, forKey: "tin")
-        aCoder.encodeObject(vatRegisterNumber, forKey: "vatRegisterNumber")
-        aCoder.encodeObject(sensitiveData, forKey: "sensitiveData")
-        aCoder.encodeObject(businessAddress, forKey: "businessAddress")
-        aCoder.encodeObject(businessCity, forKey: "businessCity")
-        aCoder.encodeObject(businessState, forKey: "businessState")
-        aCoder.encodeObject(businessCountry, forKey: "businessCountry")
-        aCoder.encodeObject(businessPostalCode, forKey: "businessPostalCode")
-        aCoder.encodeObject(billingStatus?.rawValue, forKey: "billingStatus")
-        aCoder.encodeObject(billingStatusMessage, forKey: "billingStatusMessage")
-        aCoder.encodeObject(approvalStatus?.rawValue, forKey: "approvalStatus")
-        aCoder.encodeObject(acceptedAgreement, forKey: "acceptedAgreement")
-        aCoder.encodeObject(prName, forKey: "prName")
-        aCoder.encodeObject(prEmail, forKey: "prEmail")
-        aCoder.encodeObject(prPhone, forKey: "prPhone")
-        aCoder.encodeObject(website, forKey: "website")
-        aCoder.encodeObject(modifiedTime, forKey: "modifiedTime")
-        aCoder.encodeObject(owner, forKey: "owner")
-        aCoder.encodeObject(appBillingSystem, forKey: "appBillingSystem")
-        aCoder.encodeObject(infoleaseVendorCode, forKey: "infoleaseVendorCode")
-        aCoder.encodeObject(infoleaseGlCode, forKey: "infoleaseGlCode")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(firstName, forKey: "firstName")
+        aCoder.encode(lastName, forKey: "lastName")
+        aCoder.encode(email, forKey: "email")
+        aCoder.encode(phone, forKey: "phone")
+        aCoder.encode(dob, forKey: "dob")
+        aCoder.encode(ssn, forKey: "ssn")
+        aCoder.encode(address, forKey: "address")
+        aCoder.encode(city, forKey: "city")
+        aCoder.encode(county, forKey: "county")
+        aCoder.encode(state, forKey: "state")
+        aCoder.encode(country, forKey: "country")
+        aCoder.encode(postalCode, forKey: "postalCode")
+        aCoder.encode(bankAccountNumber, forKey: "bankAccountNumber")
+        aCoder.encode(bankRoutingNumber, forKey: "bankRoutingNumber")
+        aCoder.encode(businessLegalName, forKey: "businessLegalName")
+        aCoder.encode(tin, forKey: "tin")
+        aCoder.encode(vatRegisterNumber, forKey: "vatRegisterNumber")
+        aCoder.encode(sensitiveData, forKey: "sensitiveData")
+        aCoder.encode(businessAddress, forKey: "businessAddress")
+        aCoder.encode(businessCity, forKey: "businessCity")
+        aCoder.encode(businessState, forKey: "businessState")
+        aCoder.encode(businessCountry, forKey: "businessCountry")
+        aCoder.encode(businessPostalCode, forKey: "businessPostalCode")
+        aCoder.encode(billingStatus?.rawValue, forKey: "billingStatus")
+        aCoder.encode(billingStatusMessage, forKey: "billingStatusMessage")
+        aCoder.encode(approvalStatus?.rawValue, forKey: "approvalStatus")
+        aCoder.encode(acceptedAgreement, forKey: "acceptedAgreement")
+        aCoder.encode(prName, forKey: "prName")
+        aCoder.encode(prEmail, forKey: "prEmail")
+        aCoder.encode(prPhone, forKey: "prPhone")
+        aCoder.encode(website, forKey: "website")
+        aCoder.encode(modifiedTime, forKey: "modifiedTime")
+        aCoder.encode(owner, forKey: "owner")
+        aCoder.encode(appBillingSystem, forKey: "appBillingSystem")
+        aCoder.encode(infoleaseVendorCode, forKey: "infoleaseVendorCode")
+        aCoder.encode(infoleaseGlCode, forKey: "infoleaseGlCode")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        firstName = aDecoder.decodeObjectForKey("firstName") as? String
-        lastName = aDecoder.decodeObjectForKey("lastName") as? String
-        email = aDecoder.decodeObjectForKey("email") as? String
-        phone = aDecoder.decodeObjectForKey("phone") as? String
-        dob = aDecoder.decodeObjectForKey("dob") as? String
-        ssn = aDecoder.decodeObjectForKey("ssn") as? String
-        address = aDecoder.decodeObjectForKey("address") as? String
-        city = aDecoder.decodeObjectForKey("city") as? String
-        county = aDecoder.decodeObjectForKey("county") as? String
-        state = aDecoder.decodeObjectForKey("state") as? String
-        country = aDecoder.decodeObjectForKey("country") as? String
-        postalCode = aDecoder.decodeObjectForKey("postalCode") as? String
-        bankAccountNumber = aDecoder.decodeObjectForKey("bankAccountNumber") as? String
-        bankRoutingNumber = aDecoder.decodeObjectForKey("bankRoutingNumber") as? String
-        businessLegalName = aDecoder.decodeObjectForKey("businessLegalName") as? String
-        tin = aDecoder.decodeObjectForKey("tin") as? String
-        vatRegisterNumber = aDecoder.decodeObjectForKey("vatRegisterNumber") as? String
-        sensitiveData = aDecoder.decodeObjectForKey("sensitiveData") as? String
-        businessAddress = aDecoder.decodeObjectForKey("businessAddress") as? String
-        businessCity = aDecoder.decodeObjectForKey("businessCity") as? String
-        businessState = aDecoder.decodeObjectForKey("businessState") as? String
-        businessCountry = aDecoder.decodeObjectForKey("businessCountry") as? String
-        businessPostalCode = aDecoder.decodeObjectForKey("businessPostalCode") as? String
-        billingStatus = (aDecoder.decodeObjectForKey("billingStatus") as? String) != nil ?
-          CLVModels.Developer.DeveloperBillingStatus(rawValue: (aDecoder.decodeObjectForKey("billingStatus") as! String)) : nil
-        billingStatusMessage = aDecoder.decodeObjectForKey("billingStatusMessage") as? String
-        approvalStatus = (aDecoder.decodeObjectForKey("approvalStatus") as? String) != nil ?
-          CLVModels.Base.ApprovalStatus(rawValue: (aDecoder.decodeObjectForKey("approvalStatus") as! String)) : nil
-        acceptedAgreement = aDecoder.decodeObjectForKey("acceptedAgreement") as? Bool
-        prName = aDecoder.decodeObjectForKey("prName") as? String
-        prEmail = aDecoder.decodeObjectForKey("prEmail") as? String
-        prPhone = aDecoder.decodeObjectForKey("prPhone") as? String
-        website = aDecoder.decodeObjectForKey("website") as? String
-        modifiedTime = aDecoder.decodeObjectForKey("modifiedTime") as? NSDate
-        owner = aDecoder.decodeObjectForKey("owner") as? CLVModels.Account.Account
-        appBillingSystem = aDecoder.decodeObjectForKey("appBillingSystem") as? String
-        infoleaseVendorCode = aDecoder.decodeObjectForKey("infoleaseVendorCode") as? String
-        infoleaseGlCode = aDecoder.decodeObjectForKey("infoleaseGlCode") as? String
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        firstName = aDecoder.decodeObject(forKey: "firstName") as? String
+        lastName = aDecoder.decodeObject(forKey: "lastName") as? String
+        email = aDecoder.decodeObject(forKey: "email") as? String
+        phone = aDecoder.decodeObject(forKey: "phone") as? String
+        dob = aDecoder.decodeObject(forKey: "dob") as? String
+        ssn = aDecoder.decodeObject(forKey: "ssn") as? String
+        address = aDecoder.decodeObject(forKey: "address") as? String
+        city = aDecoder.decodeObject(forKey: "city") as? String
+        county = aDecoder.decodeObject(forKey: "county") as? String
+        state = aDecoder.decodeObject(forKey: "state") as? String
+        country = aDecoder.decodeObject(forKey: "country") as? String
+        postalCode = aDecoder.decodeObject(forKey: "postalCode") as? String
+        bankAccountNumber = aDecoder.decodeObject(forKey: "bankAccountNumber") as? String
+        bankRoutingNumber = aDecoder.decodeObject(forKey: "bankRoutingNumber") as? String
+        businessLegalName = aDecoder.decodeObject(forKey: "businessLegalName") as? String
+        tin = aDecoder.decodeObject(forKey: "tin") as? String
+        vatRegisterNumber = aDecoder.decodeObject(forKey: "vatRegisterNumber") as? String
+        sensitiveData = aDecoder.decodeObject(forKey: "sensitiveData") as? String
+        businessAddress = aDecoder.decodeObject(forKey: "businessAddress") as? String
+        businessCity = aDecoder.decodeObject(forKey: "businessCity") as? String
+        businessState = aDecoder.decodeObject(forKey: "businessState") as? String
+        businessCountry = aDecoder.decodeObject(forKey: "businessCountry") as? String
+        businessPostalCode = aDecoder.decodeObject(forKey: "businessPostalCode") as? String
+        if let billingStatusString = (aDecoder.decodeObject(forKey: "billingStatus") as? String) {
+            billingStatus = CLVModels.Developer.DeveloperBillingStatus(rawValue: billingStatusString)
+        }
+        billingStatusMessage = aDecoder.decodeObject(forKey: "billingStatusMessage") as? String
+        if let approvalStatusString = (aDecoder.decodeObject(forKey: "approvalStatus") as? String) {
+            approvalStatus = CLVModels.Base.ApprovalStatus(rawValue: approvalStatusString)
+        }
+        acceptedAgreement = aDecoder.decodeObject(forKey: "acceptedAgreement") as? Bool
+        prName = aDecoder.decodeObject(forKey: "prName") as? String
+        prEmail = aDecoder.decodeObject(forKey: "prEmail") as? String
+        prPhone = aDecoder.decodeObject(forKey: "prPhone") as? String
+        website = aDecoder.decodeObject(forKey: "website") as? String
+        modifiedTime = aDecoder.decodeObject(forKey: "modifiedTime") as? Date
+        owner = aDecoder.decodeObject(forKey: "owner") as? CLVModels.Account.Account
+        appBillingSystem = aDecoder.decodeObject(forKey: "appBillingSystem") as? String
+        infoleaseVendorCode = aDecoder.decodeObject(forKey: "infoleaseVendorCode") as? String
+        infoleaseGlCode = aDecoder.decodeObject(forKey: "infoleaseGlCode") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -231,28 +233,28 @@ extension CLVModels {
     
     
     
-    public class DeveloperPermission: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Developer19DeveloperPermission)public class DeveloperPermission: NSObject, NSCoding, Mappable {
       public var id: String?
       public var name: String?
       public var label: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(label, forKey: "label")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(label, forKey: "label")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        label = aDecoder.decodeObjectForKey("label") as? String
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        label = aDecoder.decodeObject(forKey: "label") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -263,7 +265,7 @@ extension CLVModels {
     
     
     
-    public class DeveloperRole: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Developer13DeveloperRole)public class DeveloperRole: NSObject, NSCoding, Mappable {
       public var id: String?
       public var name: String?
       public var label: String?
@@ -273,33 +275,33 @@ extension CLVModels {
       public var permissions: [CLVModels.Employees.Permissions]?
       public var developerRef: CLVModels.Developer.Developer?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(label, forKey: "label")
-        aCoder.encodeObject(system, forKey: "system")
-        aCoder.encodeObject(templateRole, forKey: "templateRole")
-        aCoder.encodeObject(accounts, forKey: "accounts")
-        aCoder.encodeObject(permissions, forKey: "permissions")
-        aCoder.encodeObject(developerRef, forKey: "developerRef")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(label, forKey: "label")
+        aCoder.encode(system, forKey: "system")
+        aCoder.encode(templateRole, forKey: "templateRole")
+        aCoder.encode(accounts, forKey: "accounts")
+        aCoder.encode(permissions, forKey: "permissions")
+        aCoder.encode(developerRef, forKey: "developerRef")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        label = aDecoder.decodeObjectForKey("label") as? String
-        system = aDecoder.decodeObjectForKey("system") as? Bool
-        templateRole = aDecoder.decodeObjectForKey("templateRole") as? CLVModels.Developer.DeveloperRole
-        accounts = aDecoder.decodeObjectForKey("accounts") as? [CLVModels.Account.Account]
-        permissions = aDecoder.decodeObjectForKey("permissions") as? [CLVModels.Employees.Permissions]
-        developerRef = aDecoder.decodeObjectForKey("developerRef") as? CLVModels.Developer.Developer
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        label = aDecoder.decodeObject(forKey: "label") as? String
+        system = aDecoder.decodeObject(forKey: "system") as? Bool
+        templateRole = aDecoder.decodeObject(forKey: "templateRole") as? CLVModels.Developer.DeveloperRole
+        accounts = aDecoder.decodeObject(forKey: "accounts") as? [CLVModels.Account.Account]
+        permissions = aDecoder.decodeObject(forKey: "permissions") as? [CLVModels.Employees.Permissions]
+        developerRef = aDecoder.decodeObject(forKey: "developerRef") as? CLVModels.Developer.Developer
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -315,7 +317,7 @@ extension CLVModels {
     
     
     
-    public class MerchantGroup: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Developer13MerchantGroup)public class MerchantGroup: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Group name.
@@ -323,7 +325,7 @@ extension CLVModels {
       /// The developer that created this merchant group.
       public var developer_: CLVModels.Developer.Developer?
       /// Timestamp indicating when the group was created.
-      public var createdTime: NSDate?
+      public var createdTime: Date?
       /// The merchants directly added to the group (static merchants).
       public var merchants: [CLVModels.Merchant.Merchant]?
       /// The number of merchants that belong to this group.
@@ -335,35 +337,35 @@ extension CLVModels {
       /// The merchants in the group joined by the filter.
       public var filterMerchants: [CLVModels.Merchant.Merchant]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(developer_, forKey: "developer_")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
-        aCoder.encodeObject(merchants, forKey: "merchants")
-        aCoder.encodeObject(merchantCount, forKey: "merchantCount")
-        aCoder.encodeObject(androidVersions, forKey: "androidVersions")
-        aCoder.encodeObject(merchantFilter, forKey: "merchantFilter")
-        aCoder.encodeObject(filterMerchants, forKey: "filterMerchants")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(developer_, forKey: "developer_")
+        aCoder.encode(createdTime, forKey: "createdTime")
+        aCoder.encode(merchants, forKey: "merchants")
+        aCoder.encode(merchantCount, forKey: "merchantCount")
+        aCoder.encode(androidVersions, forKey: "androidVersions")
+        aCoder.encode(merchantFilter, forKey: "merchantFilter")
+        aCoder.encode(filterMerchants, forKey: "filterMerchants")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        developer_ = aDecoder.decodeObjectForKey("developer_") as? CLVModels.Developer.Developer
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-        merchants = aDecoder.decodeObjectForKey("merchants") as? [CLVModels.Merchant.Merchant]
-        merchantCount = aDecoder.decodeObjectForKey("merchantCount") as? Int
-        androidVersions = aDecoder.decodeObjectForKey("androidVersions") as? [CLVModels.Apps.AndroidVersion]
-        merchantFilter = aDecoder.decodeObjectForKey("merchantFilter") as? String
-        filterMerchants = aDecoder.decodeObjectForKey("filterMerchants") as? [CLVModels.Merchant.Merchant]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        developer_ = aDecoder.decodeObject(forKey: "developer_") as? CLVModels.Developer.Developer
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+        merchants = aDecoder.decodeObject(forKey: "merchants") as? [CLVModels.Merchant.Merchant]
+        merchantCount = aDecoder.decodeObject(forKey: "merchantCount") as? Int
+        androidVersions = aDecoder.decodeObject(forKey: "androidVersions") as? [CLVModels.Apps.AndroidVersion]
+        merchantFilter = aDecoder.decodeObject(forKey: "merchantFilter") as? String
+        filterMerchants = aDecoder.decodeObject(forKey: "filterMerchants") as? [CLVModels.Merchant.Merchant]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]

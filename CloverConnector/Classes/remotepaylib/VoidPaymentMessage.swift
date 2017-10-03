@@ -19,12 +19,12 @@ public class VoidPaymentMessage : Message {
         super.init(method: .VOID_PAYMENT)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .VOID_PAYMENT)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         payment <- (map["payment"], Message.paymentTransform)
         voidReason <- map["voidReason"]
     }

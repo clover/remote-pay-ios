@@ -4,12 +4,11 @@
 
 import Foundation
 
-@objc
 public class PrintRequest: NSObject {
-    //MARK: Private data source for the print request. These should not be modifiable externally, because for now we want to make sure that only one type of data is printed
-    public private(set) var images = [ImageClass]()
-    public private(set) var imageURLS = [NSURL]()
-    public private(set) var text = [String]()
+   //Private data source for the print request. These should not be modifiable externally, because for now we want to enforce the encompassed print data via constructors
+    public fileprivate(set) var images = [ImageClass]()
+    public fileprivate(set) var imageURLS = [URL]()
+    public fileprivate(set) var text = [String]()
     public var printRequestId: String?
     public var printDeviceId: String?
     
@@ -32,7 +31,7 @@ public class PrintRequest: NSObject {
     ///   - imageURL: URL to the image to print
     ///   - printRequestId: Optional identifier to give to the print job, so it can later be queried
     ///   - printDeviceId: Optional identifier to speciy which printer to use
-    public init(imageURL: NSURL, printRequestId: String?, printDeviceId: String?) {
+    public init(imageURL: URL, printRequestId: String?, printDeviceId: String?) {
         self.imageURLS.append(imageURL)
         self.printRequestId = printRequestId
         self.printDeviceId = printDeviceId
@@ -54,5 +53,5 @@ public class PrintRequest: NSObject {
         self.printDeviceId = printDeviceId
     }
     
-    private override init() {} //marking as private to enforce object creation through one of the other initializers
+    fileprivate override init() {} //marking as private to enforce object creation through one of the other initializers
 }

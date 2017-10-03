@@ -33,7 +33,7 @@ public class DisplayDiscount:Mappable {
 
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map: Map) {
   }
 
   public func mapping(map:Map) {
@@ -48,22 +48,5 @@ public class DisplayDiscount:Mappable {
   percentage <- map["percentage"]
 
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  id = jsonObj.valueForKey("id") as! String?
-
-  lineItemId = jsonObj.valueForKey("lineItemId") as! String?
-
-  name = jsonObj.valueForKey("name") as! String?
-
-  amount = jsonObj.valueForKey("amount") as! String?
-
-  percentage = jsonObj.valueForKey("percentage") as! String?
-  }
-*/
-
 }
 

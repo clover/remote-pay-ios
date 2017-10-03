@@ -8,15 +8,14 @@
 
 import Foundation
 
-@objc
 public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration {
     var endpoint:String
     public var remoteApplicationID:String
     public var posName:String
     public var posSerialNumber:String
     public var pairingAuthToken:String?
-    private var pairingConfig:PairingDeviceConfiguration
-//    public var disableSSLValidation:Bool = false
+    fileprivate var pairingConfig:PairingDeviceConfiguration
+    public var disableSSLValidation:Bool = false
     /// How ofter a ping is sent to the device server
     public var pingFrequency:Int?
     /// How long to wait for a pong, before disconnecting
@@ -50,7 +49,7 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
     }
     
     public func getTransport() -> CloverTransport? {
-        let transport = WebSocketCloverTransport(endpointURL: endpoint, posName: posName, serialNumber: posSerialNumber, pairingAuthToken: pairingAuthToken, pairingDeviceConfiguration: pairingConfig, pingFrequency: self.pingFrequency, pongTimeout: pongTimeout, reconnectDelay: reconnectTimer, reportConnectionProblemAfter: reportConnectionProblemTimeout);
+        let transport = WebSocketCloverTransport(endpointURL: endpoint, posName: posName, serialNumber: posSerialNumber, pairingAuthToken: pairingAuthToken, pairingDeviceConfiguration: pairingConfig, disableSSLCertificateValidation: disableSSLValidation, pongTimeout: pongTimeout, pingFrequency: self.pingFrequency, reconnectDelay: reconnectTimer, reportConnectionProblemAfter: reportConnectionProblemTimeout);
         return transport
     }
     

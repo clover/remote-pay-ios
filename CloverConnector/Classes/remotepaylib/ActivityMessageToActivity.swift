@@ -17,12 +17,12 @@ public class BaseActivityRemoteMessage:Message {
         super.init(method: m)
     }
     
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         return nil
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         action <- map["action"]
         payload <- map["payload"]
     }
@@ -34,12 +34,12 @@ public class ActivityMessageToActivity:BaseActivityRemoteMessage {
         super.init(action: a, payload: p, method: .ACTIVITY_MESSAGE_TO_ACTIVITY)
     }
     
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         super.init(action: "", payload: nil, method: .ACTIVITY_MESSAGE_TO_ACTIVITY)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
     }
 }
 

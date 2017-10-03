@@ -18,7 +18,7 @@ extension CLVModels {
     
     
     
-    public class Device: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels6Device6Device)public class Device: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Name of the device (if entered)
@@ -29,7 +29,7 @@ extension CLVModels {
       public var serial: String?
       public var buildNumber: Int?
       public var secureId: String?
-      public var buildType: CLVModels.Device.BuildType?
+      public var buildType: CLVModels.Device.BuildType? = nil
       public var cpuId: String?
       /// The IMEI of the device
       public var imei: String?
@@ -41,50 +41,51 @@ extension CLVModels {
       public var pedCertificate: String?
       public var deviceTypeName: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(model, forKey: "model")
-        aCoder.encodeObject(orderPrefix, forKey: "orderPrefix")
-        aCoder.encodeObject(terminalPrefix, forKey: "terminalPrefix")
-        aCoder.encodeObject(serial, forKey: "serial")
-        aCoder.encodeObject(buildNumber, forKey: "buildNumber")
-        aCoder.encodeObject(secureId, forKey: "secureId")
-        aCoder.encodeObject(buildType?.rawValue, forKey: "buildType")
-        aCoder.encodeObject(cpuId, forKey: "cpuId")
-        aCoder.encodeObject(imei, forKey: "imei")
-        aCoder.encodeObject(imsi, forKey: "imsi")
-        aCoder.encodeObject(simIccid, forKey: "simIccid")
-        aCoder.encodeObject(deviceCertificate, forKey: "deviceCertificate")
-        aCoder.encodeObject(pedCertificate, forKey: "pedCertificate")
-        aCoder.encodeObject(deviceTypeName, forKey: "deviceTypeName")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(model, forKey: "model")
+        aCoder.encode(orderPrefix, forKey: "orderPrefix")
+        aCoder.encode(terminalPrefix, forKey: "terminalPrefix")
+        aCoder.encode(serial, forKey: "serial")
+        aCoder.encode(buildNumber, forKey: "buildNumber")
+        aCoder.encode(secureId, forKey: "secureId")
+        aCoder.encode(buildType?.rawValue, forKey: "buildType")
+        aCoder.encode(cpuId, forKey: "cpuId")
+        aCoder.encode(imei, forKey: "imei")
+        aCoder.encode(imsi, forKey: "imsi")
+        aCoder.encode(simIccid, forKey: "simIccid")
+        aCoder.encode(deviceCertificate, forKey: "deviceCertificate")
+        aCoder.encode(pedCertificate, forKey: "pedCertificate")
+        aCoder.encode(deviceTypeName, forKey: "deviceTypeName")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        model = aDecoder.decodeObjectForKey("model") as? String
-        orderPrefix = aDecoder.decodeObjectForKey("orderPrefix") as? String
-        terminalPrefix = aDecoder.decodeObjectForKey("terminalPrefix") as? Int
-        serial = aDecoder.decodeObjectForKey("serial") as? String
-        buildNumber = aDecoder.decodeObjectForKey("buildNumber") as? Int
-        secureId = aDecoder.decodeObjectForKey("secureId") as? String
-        buildType = (aDecoder.decodeObjectForKey("buildType") as? String) != nil ?
-          CLVModels.Device.BuildType(rawValue: (aDecoder.decodeObjectForKey("buildType") as! String)) : nil
-        cpuId = aDecoder.decodeObjectForKey("cpuId") as? String
-        imei = aDecoder.decodeObjectForKey("imei") as? String
-        imsi = aDecoder.decodeObjectForKey("imsi") as? String
-        simIccid = aDecoder.decodeObjectForKey("simIccid") as? String
-        deviceCertificate = aDecoder.decodeObjectForKey("deviceCertificate") as? String
-        pedCertificate = aDecoder.decodeObjectForKey("pedCertificate") as? String
-        deviceTypeName = aDecoder.decodeObjectForKey("deviceTypeName") as? String
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        model = aDecoder.decodeObject(forKey: "model") as? String
+        orderPrefix = aDecoder.decodeObject(forKey: "orderPrefix") as? String
+        terminalPrefix = aDecoder.decodeObject(forKey: "terminalPrefix") as? Int
+        serial = aDecoder.decodeObject(forKey: "serial") as? String
+        buildNumber = aDecoder.decodeObject(forKey: "buildNumber") as? Int
+        secureId = aDecoder.decodeObject(forKey: "secureId") as? String
+        if let buildTypeString = (aDecoder.decodeObject(forKey: "buildType") as? String) {
+            buildType = CLVModels.Device.BuildType(rawValue: buildTypeString)
+        }
+        cpuId = aDecoder.decodeObject(forKey: "cpuId") as? String
+        imei = aDecoder.decodeObject(forKey: "imei") as? String
+        imsi = aDecoder.decodeObject(forKey: "imsi") as? String
+        simIccid = aDecoder.decodeObject(forKey: "simIccid") as? String
+        deviceCertificate = aDecoder.decodeObject(forKey: "deviceCertificate") as? String
+        pedCertificate = aDecoder.decodeObject(forKey: "pedCertificate") as? String
+        deviceTypeName = aDecoder.decodeObject(forKey: "deviceTypeName") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -108,11 +109,11 @@ extension CLVModels {
     
     
     
-    public class DeviceProvision: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels6Device15DeviceProvision)public class DeviceProvision: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       public var deviceRef: CLVModels.Device.Device?
-      public var state: CLVModels.Device.DeviceProvisionState?
+      public var state: CLVModels.Device.DeviceProvisionState? = nil
       public var lastActivationCode: String?
       public var activationCode: String?
       public var emailSent: Bool?
@@ -120,51 +121,52 @@ extension CLVModels {
       public var serialNumber: String?
       public var merchant: CLVModels.Merchant.Merchant?
       public var deviceType: String?
-      public var provisionedTime: NSDate?
-      public var activatedTime: NSDate?
+      public var provisionedTime: Date?
+      public var activatedTime: Date?
       public var reseller: CLVModels.Base.Reference?
       public var currentRom: CLVModels.Device.Rom?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(deviceRef, forKey: "deviceRef")
-        aCoder.encodeObject(state?.rawValue, forKey: "state")
-        aCoder.encodeObject(lastActivationCode, forKey: "lastActivationCode")
-        aCoder.encodeObject(activationCode, forKey: "activationCode")
-        aCoder.encodeObject(emailSent, forKey: "emailSent")
-        aCoder.encodeObject(hasShipment, forKey: "hasShipment")
-        aCoder.encodeObject(serialNumber, forKey: "serialNumber")
-        aCoder.encodeObject(merchant, forKey: "merchant")
-        aCoder.encodeObject(deviceType, forKey: "deviceType")
-        aCoder.encodeObject(provisionedTime, forKey: "provisionedTime")
-        aCoder.encodeObject(activatedTime, forKey: "activatedTime")
-        aCoder.encodeObject(reseller, forKey: "reseller")
-        aCoder.encodeObject(currentRom, forKey: "currentRom")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(deviceRef, forKey: "deviceRef")
+        aCoder.encode(state?.rawValue, forKey: "state")
+        aCoder.encode(lastActivationCode, forKey: "lastActivationCode")
+        aCoder.encode(activationCode, forKey: "activationCode")
+        aCoder.encode(emailSent, forKey: "emailSent")
+        aCoder.encode(hasShipment, forKey: "hasShipment")
+        aCoder.encode(serialNumber, forKey: "serialNumber")
+        aCoder.encode(merchant, forKey: "merchant")
+        aCoder.encode(deviceType, forKey: "deviceType")
+        aCoder.encode(provisionedTime, forKey: "provisionedTime")
+        aCoder.encode(activatedTime, forKey: "activatedTime")
+        aCoder.encode(reseller, forKey: "reseller")
+        aCoder.encode(currentRom, forKey: "currentRom")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        deviceRef = aDecoder.decodeObjectForKey("deviceRef") as? CLVModels.Device.Device
-        state = (aDecoder.decodeObjectForKey("state") as? String) != nil ?
-          CLVModels.Device.DeviceProvisionState(rawValue: (aDecoder.decodeObjectForKey("state") as! String)) : nil
-        lastActivationCode = aDecoder.decodeObjectForKey("lastActivationCode") as? String
-        activationCode = aDecoder.decodeObjectForKey("activationCode") as? String
-        emailSent = aDecoder.decodeObjectForKey("emailSent") as? Bool
-        hasShipment = aDecoder.decodeObjectForKey("hasShipment") as? Bool
-        serialNumber = aDecoder.decodeObjectForKey("serialNumber") as? String
-        merchant = aDecoder.decodeObjectForKey("merchant") as? CLVModels.Merchant.Merchant
-        deviceType = aDecoder.decodeObjectForKey("deviceType") as? String
-        provisionedTime = aDecoder.decodeObjectForKey("provisionedTime") as? NSDate
-        activatedTime = aDecoder.decodeObjectForKey("activatedTime") as? NSDate
-        reseller = aDecoder.decodeObjectForKey("reseller") as? CLVModels.Base.Reference
-        currentRom = aDecoder.decodeObjectForKey("currentRom") as? CLVModels.Device.Rom
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        deviceRef = aDecoder.decodeObject(forKey: "deviceRef") as? CLVModels.Device.Device
+        if let stateString = (aDecoder.decodeObject(forKey: "state") as? String) {
+            state = CLVModels.Device.DeviceProvisionState(rawValue: stateString)
+        }
+        lastActivationCode = aDecoder.decodeObject(forKey: "lastActivationCode") as? String
+        activationCode = aDecoder.decodeObject(forKey: "activationCode") as? String
+        emailSent = aDecoder.decodeObject(forKey: "emailSent") as? Bool
+        hasShipment = aDecoder.decodeObject(forKey: "hasShipment") as? Bool
+        serialNumber = aDecoder.decodeObject(forKey: "serialNumber") as? String
+        merchant = aDecoder.decodeObject(forKey: "merchant") as? CLVModels.Merchant.Merchant
+        deviceType = aDecoder.decodeObject(forKey: "deviceType") as? String
+        provisionedTime = aDecoder.decodeObject(forKey: "provisionedTime") as? Date
+        activatedTime = aDecoder.decodeObject(forKey: "activatedTime") as? Date
+        reseller = aDecoder.decodeObject(forKey: "reseller") as? CLVModels.Base.Reference
+        currentRom = aDecoder.decodeObject(forKey: "currentRom") as? CLVModels.Device.Rom
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -194,7 +196,7 @@ extension CLVModels {
     
     
     
-    public class Rom: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels6Device3Rom)public class Rom: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// When the ROM was created
@@ -202,41 +204,42 @@ extension CLVModels {
       public var version_: Int?
       public var versionName: String?
       public var description_: String?
-      public var buildType: CLVModels.Device.RomBuildType?
+      public var buildType: CLVModels.Device.RomBuildType? = nil
       public var isCritical: Bool?
       public var published: Bool?
       public var enabled: Bool?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(createdAt, forKey: "createdAt")
-        aCoder.encodeObject(version_, forKey: "version_")
-        aCoder.encodeObject(versionName, forKey: "versionName")
-        aCoder.encodeObject(description_, forKey: "description_")
-        aCoder.encodeObject(buildType?.rawValue, forKey: "buildType")
-        aCoder.encodeObject(isCritical, forKey: "isCritical")
-        aCoder.encodeObject(published, forKey: "published")
-        aCoder.encodeObject(enabled, forKey: "enabled")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(createdAt, forKey: "createdAt")
+        aCoder.encode(version_, forKey: "version_")
+        aCoder.encode(versionName, forKey: "versionName")
+        aCoder.encode(description_, forKey: "description_")
+        aCoder.encode(buildType?.rawValue, forKey: "buildType")
+        aCoder.encode(isCritical, forKey: "isCritical")
+        aCoder.encode(published, forKey: "published")
+        aCoder.encode(enabled, forKey: "enabled")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        createdAt = aDecoder.decodeObjectForKey("createdAt") as? Int
-        version_ = aDecoder.decodeObjectForKey("version_") as? Int
-        versionName = aDecoder.decodeObjectForKey("versionName") as? String
-        description_ = aDecoder.decodeObjectForKey("description_") as? String
-        buildType = (aDecoder.decodeObjectForKey("buildType") as? String) != nil ?
-          CLVModels.Device.RomBuildType(rawValue: (aDecoder.decodeObjectForKey("buildType") as! String)) : nil
-        isCritical = aDecoder.decodeObjectForKey("isCritical") as? Bool
-        published = aDecoder.decodeObjectForKey("published") as? Bool
-        enabled = aDecoder.decodeObjectForKey("enabled") as? Bool
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        createdAt = aDecoder.decodeObject(forKey: "createdAt") as? Int
+        version_ = aDecoder.decodeObject(forKey: "version_") as? Int
+        versionName = aDecoder.decodeObject(forKey: "versionName") as? String
+        description_ = aDecoder.decodeObject(forKey: "description_") as? String
+        if let buildTypeString = (aDecoder.decodeObject(forKey: "buildType") as? String) {
+            buildType = CLVModels.Device.RomBuildType(rawValue: buildTypeString)
+        }
+        isCritical = aDecoder.decodeObject(forKey: "isCritical") as? Bool
+        published = aDecoder.decodeObject(forKey: "published") as? Bool
+        enabled = aDecoder.decodeObject(forKey: "enabled") as? Bool
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]

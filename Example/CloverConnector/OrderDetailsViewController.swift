@@ -20,18 +20,18 @@ class OrderDetailsViewController : UITableViewController {
 //        self.navigationItem.leftItemsSupplementBackButton = true
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return selOrder?.items.count ?? 0
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier( "OrderItemCell") as! OrderItemCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell( withIdentifier: "OrderItemCell") as? OrderItemCell
         if let item = selOrder?.items[indexPath.row]{
-            cell.orderItemQuantity.text = String(item.quantity)
-            cell.orderItemDescription.text = item.item.name ?? "Unknown"
-            cell.orderItemPrice.text = CurrencyUtils.IntToFormat(item.item.price) ?? CurrencyUtils.IntToFormat(0)!
+            cell?.orderItemQuantity.text = String(item.quantity)
+            cell?.orderItemDescription.text = item.item.name ?? "Unknown"
+            cell?.orderItemPrice.text = CurrencyUtils.IntToFormat(item.item.price) ?? CurrencyUtils.FormatZero()
         }
-        return cell
+        return cell ?? UITableViewCell()
     }
 }
 
@@ -79,7 +79,7 @@ class OrderItemCell : UITableViewCell {
     
     private var store:POSStore? {
         get {
-            return ((UIApplication.sharedApplication().delegate as? AppDelegate)?.store)!
+            return ((UIApplication.shared.delegate as? AppDelegate)?.store)!
         }
     }
     
@@ -126,7 +126,7 @@ class OrderItemCell : UITableViewCell {
 /*class OrderPaymentsTableDelegate : UITableViewController {
     private var store:POSStore? {
         get {
-            return ((UIApplication.sharedApplication().delegate as? AppDelegate)?.store)!
+            return ((UIApplication.shared.delegate as? AppDelegate)?.store)!
         }
     }
     

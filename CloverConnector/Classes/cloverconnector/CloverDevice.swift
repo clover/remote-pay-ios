@@ -10,16 +10,16 @@ import Foundation
 #if os(iOS)
     import UIKit
     public typealias ImageClass = UIImage
-    func ImagePNGRepresentation(image: ImageClass) -> NSData? {
+    func ImagePNGRepresentation(_ image: ImageClass) -> Data? {
         return UIImagePNGRepresentation(image)
     }
 #else
     import AppKit
     public typealias ImageClass = NSImage
-    func ImagePNGRepresentation(image: ImageClass) -> NSData? {
-        if let imageData = image.TIFFRepresentation,
+    func ImagePNGRepresentation(_ image: ImageClass) -> Data? {
+        if let imageData = image.tiffRepresentation,
             let imageRep = NSBitmapImageRep(data: imageData) {
-            return imageRep.representationUsingType(NSBitmapImageFileType.PNG, properties: [:])
+            return imageRep.representation(using: NSBitmapImageRep.FileType.png, properties: [:])
         }
         return nil
     }
@@ -27,9 +27,9 @@ import Foundation
 
 
 class CloverDevice {
-    var deviceObservers:NSMutableArray = NSMutableArray()
+    var deviceObservers = [CloverDeviceObserver]()
     
-    weak var cloverConnector: ICloverConnector?
+    weak var cloverConnector:ICloverConnector?
     
     var transport:CloverTransport
     var packageName:String? = nil
@@ -40,11 +40,12 @@ class CloverDevice {
     }
     
     func subscribe(_ observer:CloverDeviceObserver) {
-        deviceObservers.addObject(observer)
+        deviceObservers.append(observer)
     }
     
     func unsubscribe(_ observer:CloverDeviceObserver) {
-        deviceObservers.removeObject(observer)
+        guard let index = deviceObservers.index(where: {$0 === observer}) else { return }
+        deviceObservers.remove(at: index)
     }
     
     deinit {
@@ -75,7 +76,6 @@ class CloverDevice {
     
     func doBreak() {}
     
-    @available(*, deprecated, message="use doPrint(_ request:PrintRequest) instead")
     func doPrintText(_ textLines:[String], printRequestId: String?, printDeviceId: String?) {}
     
     func doShowWelcomeScreen() {}
@@ -86,10 +86,8 @@ class CloverDevice {
     
     func doOpenCashDrawer(_ reason:String, deviceId: String?) {}
     
-    @available(*, deprecated, message="use doPrint(_ request:PrintRequest) instead")
     func doPrintImage(_ img:ImageClass, printRequestId: String?, printDeviceId: String?) {}
     
-    @available(*, deprecated, message="use doPrint(_ request:PrintRequest) instead")
     func doPrintImage(_ url:String, printRequestId: String?, printDeviceId: String?) {}
     
     func doPrint(_ request:PrintRequest) {}
@@ -99,8 +97,7 @@ class CloverDevice {
     func doRetrievePrintJobStatus(_ request: PrintJobStatusRequest) {}
     
     func dispose() {
-        deviceObservers.removeAllObjects()
-//        transport
+        deviceObservers.removeAll()
     }
     
     func doCloseout(_ allowOpenTabs:Bool, batchId:String?) {}

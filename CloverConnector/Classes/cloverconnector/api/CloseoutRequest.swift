@@ -7,7 +7,6 @@ import ObjectMapper
 
 
 
-@objc
 public class CloseoutRequest : NSObject {
 
   /**

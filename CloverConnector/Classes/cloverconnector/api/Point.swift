@@ -17,7 +17,7 @@ public class Point:Mappable {
 
   }
 /// :nodoc:
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
     //
   }
 /// :nodoc:
@@ -25,16 +25,5 @@ public class Point:Mappable {
     x <- map["x"]
     y <- map["y"]
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  x = jsonObj.valueForKey("x") as! Int?
-
-  y = jsonObj.valueForKey("y") as! Int?
-  }
-*/
-
 }
 

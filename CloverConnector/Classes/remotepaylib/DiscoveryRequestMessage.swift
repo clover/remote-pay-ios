@@ -22,12 +22,12 @@ public class DiscoveryRequestMessage:Message {
     super.init(method: .DISCOVERY_REQUEST)
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
     super.init(method: .DISCOVERY_REQUEST)
   }
 
   public override func mapping(map:Map) {
-    super.mapping(map)
+    super.mapping(map: map)
     requestId <- map["requestId"]
   }
 

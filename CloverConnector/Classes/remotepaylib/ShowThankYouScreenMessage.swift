@@ -19,12 +19,12 @@ public class ShowThankYouScreenMessage:Message {
         super.init(method: .SHOW_THANK_YOU_SCREEN)
     }
     
-    required public init?(_ map: Map){
+    required public init?(map:Map){
         super.init(method: .SHOW_THANK_YOU_SCREEN)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
     }
     
 }

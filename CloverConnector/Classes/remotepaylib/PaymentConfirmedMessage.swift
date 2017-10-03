@@ -17,12 +17,12 @@ public class PaymentConfirmedMessage : Message
     public init() {
         super.init(method: .PAYMENT_CONFIRMED)
     }
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.PAYMENT_CONFIRMED)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         payment <- (map["payment"], Message.paymentTransform)
     }
 }
@@ -36,12 +36,12 @@ public class PaymentRejectedMessage : Message
         super.init(method: .PAYMENT_REJECTED)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.PAYMENT_REJECTED)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         payment <- (map["payment"], Message.paymentTransform)
         reason <- map["reason"]
     }

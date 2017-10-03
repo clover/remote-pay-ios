@@ -9,7 +9,6 @@ import Foundation
  * Callback to request the POS print a refund for a
  * ManualRefund
  */
-@objc
 public class PrintManualRefundReceiptMessage : NSObject {
     public var credit:CLVModels.Payments.Credit?
     

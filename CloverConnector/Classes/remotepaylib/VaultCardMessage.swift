@@ -17,12 +17,12 @@ public class VaultCardMessage : Message {
         super.init(method: .VAULT_CARD)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .VAULT_CARD)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         cardEntryMethods <- map["cardEntryMethods"]
     }
 }

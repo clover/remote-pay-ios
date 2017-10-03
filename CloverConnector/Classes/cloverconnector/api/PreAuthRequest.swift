@@ -6,7 +6,6 @@ import ObjectMapper
 /**
  options for a pre-authorization request
  */
-@objc
 public class PreAuthRequest:TransactionRequest {
 
     /// :nodoc:
@@ -23,8 +22,8 @@ public class PreAuthRequest:TransactionRequest {
     }
     
     /// :nodoc:
-    public required init?(_ map: Map) {
-        super.init(map)
+    public required init?(map:Map) {
+        super.init(map:map)
     }
 
 }

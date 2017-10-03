@@ -16,6 +16,7 @@ public protocol ICloverConnector : AnyObject {
     var CARD_ENTRY_METHODS_DEFAULT:Int { get }
     
     var MAX_PAYLOAD_SIZE:Int { get }
+
     
     
     func addCloverConnectorListener(_ cloverConnectorListener:ICloverConnectorListener) -> Void
@@ -94,7 +95,7 @@ public protocol ICloverConnector : AnyObject {
     ///
     /// Request receipt options be displayed for a payment.
     ///
-    func displayPaymentReceiptOptions( _ orderId:String, paymentId: String) -> Void
+    func displayPaymentReceiptOptions(orderId:String, paymentId: String) -> Void
     
     
     ///
@@ -118,7 +119,7 @@ public protocol ICloverConnector : AnyObject {
     ///
     /// Request to print some text on the default printer.
     ///
-    @available(*, deprecated=1.4.0, message="use print(_ request:PrintRequest) instead")
+    @available(*, deprecated: 1.4.0, message: "use print(_ request:PrintRequest) instead")
     func  printText ( _ lines:[String] ) -> Void
     
     ///
@@ -132,13 +133,13 @@ public protocol ICloverConnector : AnyObject {
     ///
     ///
     // remove so there isn't a dependency on UIKit and it will work on MacOS
-    @available(*, deprecated=1.4.0, message="use print(_ request:PrintRequest) instead")
+    @available(*, deprecated: 1.4.0, message: "use print(_ request:PrintRequest) instead")
     func  printImage ( _ image:ImageClass ) -> Void
     
     ///
     /// Request to print an image based on a url
     ///
-    @available(*, deprecated=1.4.0, message="use print(_ request:PrintRequest) instead")
+    @available(*, deprecated: 1.4.0, message: "use print(_ request:PrintRequest) instead")
     func printImageFromURL(_ url:String) -> Void
     
     /// Request to print
@@ -164,8 +165,8 @@ public protocol ICloverConnector : AnyObject {
     ///
     /// Request that the cash drawer connected to the device be opened. Deprecated
     ///
-    @available(*, deprecated=1.4.0, message="use openCashDrawer(_ request: OpenCashDrawerRequest) instead")
-    func  openCashDrawer (_ reason: String) -> Void
+    @available(*, deprecated: 1.4.0, message: "use openCashDrawer(_ request: OpenCashDrawerRequest) instead")
+    func  openCashDrawer (reason: String) -> Void
     
     ///
     /// Request to place a message on the device screen.
@@ -245,10 +246,10 @@ public protocol ICloverConnector : AnyObject {
     ///
     /// request the current status of the device
     ///
-    func retrieveDeviceStatus(_request: RetrieveDeviceStatusRequest) -> Void
+    func retrieveDeviceStatus(_ _request: RetrieveDeviceStatusRequest) -> Void
     
     ///
     /// request the payment for a given external id
     ///
-    func retrievePayment(_request: RetrievePaymentRequest) -> Void
+    func retrievePayment(_ _request: RetrievePaymentRequest) -> Void
 }

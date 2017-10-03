@@ -14,7 +14,7 @@ public class ResultStatusEnum:Mappable {
 
   }
   /// :nodoc:
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
   }
     
   /// :nodoc:

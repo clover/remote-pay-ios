@@ -43,26 +43,12 @@ public class RemoteMessage:Mappable {
 
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
     payload = map["payload"].currentValue as? String
     method = map["method"].currentValue as? Method
   }
 
   public func mapping(map:Map) {
-    /*
-    let transform = TransformOf<Mappable, String>(fromJSON: { (value: String?) -> Mappable? in
-        // transform value from String? to Int?
-        if let pi = Mapper<Mappable>().map(value!) {
-            return pi
-        }
-        return nil
-        }, toJSON: { (value: Mappable?) -> String? in
-            // transform value from Int? to String?
-            if let value = Mapper().toJSONString(value!, prettyPrint:true) {
-                return String(value)
-            }
-            return nil
-    })*/
 
     remoteSourceSDK <- map["remoteSourceSDK"]
     
@@ -88,20 +74,5 @@ public class RemoteMessage:Mappable {
     attachmentUri <- map["attachmentUri"]
     attachmentEncoding <- map["attachmentEncoding"]
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  requestId = jsonObj.valueForKey("requestId") as! String?
-
-  packageName = jsonObj.valueForKey("packageName") as! String?
-
-  payload = jsonObj.valueForKey("payload") as! String?
-
-  type = RemoteMessageType(rawValue: jsonObj.valueForKey("type") as! String)
-  }
-*/
-
 }
 

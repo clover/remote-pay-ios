@@ -9,12 +9,15 @@
 import Foundation
 
 class CurrencyUtils {
-    class func IntToFormat(value:Int, locale:NSLocale = NSLocale.currentLocale()) -> String? {
-        let formatter:NSNumberFormatter = NSNumberFormatter()
-        formatter.numberStyle = .CurrencyStyle
+    class func IntToFormat(_ value:Int, locale:Locale = Locale.current) -> String? {
+        let formatter:NumberFormatter = NumberFormatter()
+        formatter.numberStyle = .currency
         formatter.locale = locale
         let price = Float(value) / 100
 
-        return formatter.stringFromNumber(NSNumber(float: price))
+        return formatter.string(from: NSNumber(value: price as Float))
+    }
+    class func FormatZero() -> String {
+        return CurrencyUtils.IntToFormat(0)!
     }
 }

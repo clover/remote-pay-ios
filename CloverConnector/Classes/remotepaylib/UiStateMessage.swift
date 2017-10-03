@@ -84,11 +84,11 @@ public class UiStateMessage : Message {
     public required init() {
         super.init(method: .UI_STATE)
     }
-    required public init?(_ map: Map) {
+    required public init?(map:Map) {
         super.init(method: .UI_STATE)
     }
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         
         uiState <- (map["uiState"], Message.uiStateTransform)
         uiText <- map["uiText"]

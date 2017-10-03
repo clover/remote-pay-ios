@@ -21,12 +21,12 @@ public class TextPrintMessage : Message {
         super.init(method: .PRINT_TEXT)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .PRINT_TEXT)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         textLines <- map["textLines"]
         printRequestId <- map["externalPrintJobId"]
         printer <- (map["printer"], Message.printerTransform)

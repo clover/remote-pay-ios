@@ -11,7 +11,7 @@ extension CLVModels {
   public class Inventory {
     
     
-    public class Attribute: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory9Attribute)public class Attribute: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Name of this attribute
@@ -21,25 +21,25 @@ extension CLVModels {
       /// Options associated with this attribute
       public var options: [CLVModels.Inventory.Option]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(itemGroup, forKey: "itemGroup")
-        aCoder.encodeObject(options, forKey: "options")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(itemGroup, forKey: "itemGroup")
+        aCoder.encode(options, forKey: "options")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        itemGroup = aDecoder.decodeObjectForKey("itemGroup") as? CLVModels.Inventory.ItemGroup
-        options = aDecoder.decodeObjectForKey("options") as? [CLVModels.Inventory.Option]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        itemGroup = aDecoder.decodeObject(forKey: "itemGroup") as? CLVModels.Inventory.ItemGroup
+        options = aDecoder.decodeObject(forKey: "options") as? [CLVModels.Inventory.Option]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -51,7 +51,7 @@ extension CLVModels {
     
     
     
-    public class Category: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory8Category)public class Category: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// 
@@ -60,25 +60,25 @@ extension CLVModels {
       /// Items associated with this category
       public var items: [CLVModels.Inventory.Item]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(sortOrder, forKey: "sortOrder")
-        aCoder.encodeObject(items, forKey: "items")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(sortOrder, forKey: "sortOrder")
+        aCoder.encode(items, forKey: "items")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        sortOrder = aDecoder.decodeObjectForKey("sortOrder") as? Int
-        items = aDecoder.decodeObjectForKey("items") as? [CLVModels.Inventory.Item]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        sortOrder = aDecoder.decodeObject(forKey: "sortOrder") as? Int
+        items = aDecoder.decodeObject(forKey: "items") as? [CLVModels.Inventory.Item]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -90,25 +90,25 @@ extension CLVModels {
     
     
     
-    public class CategoryItem: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory12CategoryItem)public class CategoryItem: NSObject, NSCoding, Mappable {
       public var item: CLVModels.Inventory.Item?
       public var category: CLVModels.Inventory.Category?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(item, forKey: "item")
-        aCoder.encodeObject(category, forKey: "category")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(item, forKey: "item")
+        aCoder.encode(category, forKey: "category")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        item = aDecoder.decodeObjectForKey("item") as? CLVModels.Inventory.Item
-        category = aDecoder.decodeObjectForKey("category") as? CLVModels.Inventory.Category
+        item = aDecoder.decodeObject(forKey: "item") as? CLVModels.Inventory.Item
+        category = aDecoder.decodeObject(forKey: "category") as? CLVModels.Inventory.Category
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         item <- map["item"]
@@ -118,7 +118,7 @@ extension CLVModels {
     
     
     
-    public class Discount: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory8Discount)public class Discount: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Name of the discount
@@ -128,25 +128,25 @@ extension CLVModels {
       /// Discount amount in percent
       public var percentage: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(amount, forKey: "amount")
-        aCoder.encodeObject(percentage, forKey: "percentage")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(amount, forKey: "amount")
+        aCoder.encode(percentage, forKey: "percentage")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        amount = aDecoder.decodeObjectForKey("amount") as? Int
-        percentage = aDecoder.decodeObjectForKey("percentage") as? Int
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
+        percentage = aDecoder.decodeObject(forKey: "percentage") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -158,7 +158,7 @@ extension CLVModels {
     
     
     
-    public class Item: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory4Item)public class Item: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// True if this item is hidden from register
@@ -175,7 +175,7 @@ extension CLVModels {
       public var sku: String?
       /// Price of the item, typically in cents; use priceType and merchant currency to determine actual item price
       public var price: Int?
-      public var priceType: CLVModels.Inventory.PriceType?
+      public var priceType: CLVModels.Inventory.PriceType? = nil
       /// Flag to indicate whether or not to use default tax rates
       public var defaultTaxRates: Bool?
       /// Unit name, e.g. oz, lb
@@ -194,60 +194,61 @@ extension CLVModels {
       public var tags: [CLVModels.Inventory.Tag]?
       /// Item stock attribute that can be expanded to show stock quantity
       public var itemStock: CLVModels.Inventory.ItemStock?
-      public var modifiedTime: NSDate?
+      public var modifiedTime: Date?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(hidden, forKey: "hidden")
-        aCoder.encodeObject(itemGroup, forKey: "itemGroup")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(alternateName, forKey: "alternateName")
-        aCoder.encodeObject(code, forKey: "code")
-        aCoder.encodeObject(sku, forKey: "sku")
-        aCoder.encodeObject(price, forKey: "price")
-        aCoder.encodeObject(priceType?.rawValue, forKey: "priceType")
-        aCoder.encodeObject(defaultTaxRates, forKey: "defaultTaxRates")
-        aCoder.encodeObject(unitName, forKey: "unitName")
-        aCoder.encodeObject(cost, forKey: "cost")
-        aCoder.encodeObject(isRevenue, forKey: "isRevenue")
-        aCoder.encodeObject(stockCount, forKey: "stockCount")
-        aCoder.encodeObject(taxRates, forKey: "taxRates")
-        aCoder.encodeObject(modifierGroups, forKey: "modifierGroups")
-        aCoder.encodeObject(categories, forKey: "categories")
-        aCoder.encodeObject(tags, forKey: "tags")
-        aCoder.encodeObject(itemStock, forKey: "itemStock")
-        aCoder.encodeObject(modifiedTime, forKey: "modifiedTime")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(hidden, forKey: "hidden")
+        aCoder.encode(itemGroup, forKey: "itemGroup")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(alternateName, forKey: "alternateName")
+        aCoder.encode(code, forKey: "code")
+        aCoder.encode(sku, forKey: "sku")
+        aCoder.encode(price, forKey: "price")
+        aCoder.encode(priceType?.rawValue, forKey: "priceType")
+        aCoder.encode(defaultTaxRates, forKey: "defaultTaxRates")
+        aCoder.encode(unitName, forKey: "unitName")
+        aCoder.encode(cost, forKey: "cost")
+        aCoder.encode(isRevenue, forKey: "isRevenue")
+        aCoder.encode(stockCount, forKey: "stockCount")
+        aCoder.encode(taxRates, forKey: "taxRates")
+        aCoder.encode(modifierGroups, forKey: "modifierGroups")
+        aCoder.encode(categories, forKey: "categories")
+        aCoder.encode(tags, forKey: "tags")
+        aCoder.encode(itemStock, forKey: "itemStock")
+        aCoder.encode(modifiedTime, forKey: "modifiedTime")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        hidden = aDecoder.decodeObjectForKey("hidden") as? Bool
-        itemGroup = aDecoder.decodeObjectForKey("itemGroup") as? CLVModels.Inventory.ItemGroup
-        name = aDecoder.decodeObjectForKey("name") as? String
-        alternateName = aDecoder.decodeObjectForKey("alternateName") as? String
-        code = aDecoder.decodeObjectForKey("code") as? String
-        sku = aDecoder.decodeObjectForKey("sku") as? String
-        price = aDecoder.decodeObjectForKey("price") as? Int
-        priceType = (aDecoder.decodeObjectForKey("priceType") as? String) != nil ?
-          CLVModels.Inventory.PriceType(rawValue: (aDecoder.decodeObjectForKey("priceType") as! String)) : nil
-        defaultTaxRates = aDecoder.decodeObjectForKey("defaultTaxRates") as? Bool
-        unitName = aDecoder.decodeObjectForKey("unitName") as? String
-        cost = aDecoder.decodeObjectForKey("cost") as? Int
-        isRevenue = aDecoder.decodeObjectForKey("isRevenue") as? Bool
-        stockCount = aDecoder.decodeObjectForKey("stockCount") as? Int
-        taxRates = aDecoder.decodeObjectForKey("taxRates") as? [CLVModels.Inventory.TaxRate]
-        modifierGroups = aDecoder.decodeObjectForKey("modifierGroups") as? [CLVModels.Inventory.ModifierGroup]
-        categories = aDecoder.decodeObjectForKey("categories") as? [CLVModels.Inventory.Category]
-        tags = aDecoder.decodeObjectForKey("tags") as? [CLVModels.Inventory.Tag]
-        itemStock = aDecoder.decodeObjectForKey("itemStock") as? CLVModels.Inventory.ItemStock
-        modifiedTime = aDecoder.decodeObjectForKey("modifiedTime") as? NSDate
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        hidden = aDecoder.decodeObject(forKey: "hidden") as? Bool
+        itemGroup = aDecoder.decodeObject(forKey: "itemGroup") as? CLVModels.Inventory.ItemGroup
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        alternateName = aDecoder.decodeObject(forKey: "alternateName") as? String
+        code = aDecoder.decodeObject(forKey: "code") as? String
+        sku = aDecoder.decodeObject(forKey: "sku") as? String
+        price = aDecoder.decodeObject(forKey: "price") as? Int
+        if let priceTypeString = (aDecoder.decodeObject(forKey: "priceType") as? String) {
+            priceType = CLVModels.Inventory.PriceType(rawValue: priceTypeString)
+        }
+        defaultTaxRates = aDecoder.decodeObject(forKey: "defaultTaxRates") as? Bool
+        unitName = aDecoder.decodeObject(forKey: "unitName") as? String
+        cost = aDecoder.decodeObject(forKey: "cost") as? Int
+        isRevenue = aDecoder.decodeObject(forKey: "isRevenue") as? Bool
+        stockCount = aDecoder.decodeObject(forKey: "stockCount") as? Int
+        taxRates = aDecoder.decodeObject(forKey: "taxRates") as? [CLVModels.Inventory.TaxRate]
+        modifierGroups = aDecoder.decodeObject(forKey: "modifierGroups") as? [CLVModels.Inventory.ModifierGroup]
+        categories = aDecoder.decodeObject(forKey: "categories") as? [CLVModels.Inventory.Category]
+        tags = aDecoder.decodeObject(forKey: "tags") as? [CLVModels.Inventory.Tag]
+        itemStock = aDecoder.decodeObject(forKey: "itemStock") as? CLVModels.Inventory.ItemStock
+        modifiedTime = aDecoder.decodeObject(forKey: "modifiedTime") as? Date
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -275,7 +276,7 @@ extension CLVModels {
     
     
     
-    public class ItemGroup: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory9ItemGroup)public class ItemGroup: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Name of the option
@@ -285,25 +286,25 @@ extension CLVModels {
       /// Attributes that belong to this group
       public var attributes: [CLVModels.Inventory.Attribute]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(items, forKey: "items")
-        aCoder.encodeObject(attributes, forKey: "attributes")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(items, forKey: "items")
+        aCoder.encode(attributes, forKey: "attributes")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        items = aDecoder.decodeObjectForKey("items") as? [CLVModels.Inventory.Item]
-        attributes = aDecoder.decodeObjectForKey("attributes") as? [CLVModels.Inventory.Attribute]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        items = aDecoder.decodeObject(forKey: "items") as? [CLVModels.Inventory.Item]
+        attributes = aDecoder.decodeObject(forKey: "attributes") as? [CLVModels.Inventory.Attribute]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -315,25 +316,25 @@ extension CLVModels {
     
     
     
-    public class ItemModifierGroup: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory17ItemModifierGroup)public class ItemModifierGroup: NSObject, NSCoding, Mappable {
       public var item: CLVModels.Inventory.Item?
       public var modifierGroup: CLVModels.Inventory.ModifierGroup?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(item, forKey: "item")
-        aCoder.encodeObject(modifierGroup, forKey: "modifierGroup")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(item, forKey: "item")
+        aCoder.encode(modifierGroup, forKey: "modifierGroup")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        item = aDecoder.decodeObjectForKey("item") as? CLVModels.Inventory.Item
-        modifierGroup = aDecoder.decodeObjectForKey("modifierGroup") as? CLVModels.Inventory.ModifierGroup
+        item = aDecoder.decodeObject(forKey: "item") as? CLVModels.Inventory.Item
+        modifierGroup = aDecoder.decodeObject(forKey: "modifierGroup") as? CLVModels.Inventory.ModifierGroup
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         item <- map["item"]
@@ -344,7 +345,7 @@ extension CLVModels {
     
     
     /// The class is used to update the item stock
-    public class ItemStock: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory9ItemStock)public class ItemStock: NSObject, NSCoding, Mappable {
       /// Reference to an item
       public var item: CLVModels.Inventory.Item?
       /// DEPRECATED: use quantity instead
@@ -352,23 +353,23 @@ extension CLVModels {
       /// Current count of this item in stock
       public var quantity: Double?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(item, forKey: "item")
-        aCoder.encodeObject(stockCount, forKey: "stockCount")
-        aCoder.encodeObject(quantity, forKey: "quantity")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(item, forKey: "item")
+        aCoder.encode(stockCount, forKey: "stockCount")
+        aCoder.encode(quantity, forKey: "quantity")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        item = aDecoder.decodeObjectForKey("item") as? CLVModels.Inventory.Item
-        stockCount = aDecoder.decodeObjectForKey("stockCount") as? Int
-        quantity = aDecoder.decodeObjectForKey("quantity") as? Double
+        item = aDecoder.decodeObject(forKey: "item") as? CLVModels.Inventory.Item
+        stockCount = aDecoder.decodeObject(forKey: "stockCount") as? Int
+        quantity = aDecoder.decodeObject(forKey: "quantity") as? Double
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         item <- map["item"]
@@ -379,7 +380,7 @@ extension CLVModels {
     
     
     
-    public class Modifier: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory8Modifier)public class Modifier: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Name of the modifier
@@ -389,27 +390,27 @@ extension CLVModels {
       public var price: Int?
       public var modifierGroup: CLVModels.Inventory.ModifierGroup?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(alternateName, forKey: "alternateName")
-        aCoder.encodeObject(price, forKey: "price")
-        aCoder.encodeObject(modifierGroup, forKey: "modifierGroup")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(alternateName, forKey: "alternateName")
+        aCoder.encode(price, forKey: "price")
+        aCoder.encode(modifierGroup, forKey: "modifierGroup")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        alternateName = aDecoder.decodeObjectForKey("alternateName") as? String
-        price = aDecoder.decodeObjectForKey("price") as? Int
-        modifierGroup = aDecoder.decodeObjectForKey("modifierGroup") as? CLVModels.Inventory.ModifierGroup
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        alternateName = aDecoder.decodeObject(forKey: "alternateName") as? String
+        price = aDecoder.decodeObject(forKey: "price") as? Int
+        modifierGroup = aDecoder.decodeObject(forKey: "modifierGroup") as? CLVModels.Inventory.ModifierGroup
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -422,7 +423,7 @@ extension CLVModels {
     
     
     
-    public class ModifierGroup: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory13ModifierGroup)public class ModifierGroup: NSObject, NSCoding, Mappable {
       public var id: String?
       /// Name of the modifier group
       public var name: String?
@@ -435,35 +436,35 @@ extension CLVModels {
       public var modifierIds: String?
       public var items: [CLVModels.Inventory.Item]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(alternateName, forKey: "alternateName")
-        aCoder.encodeObject(minRequired, forKey: "minRequired")
-        aCoder.encodeObject(maxAllowed, forKey: "maxAllowed")
-        aCoder.encodeObject(showByDefault, forKey: "showByDefault")
-        aCoder.encodeObject(modifiers, forKey: "modifiers")
-        aCoder.encodeObject(modifierIds, forKey: "modifierIds")
-        aCoder.encodeObject(items, forKey: "items")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(alternateName, forKey: "alternateName")
+        aCoder.encode(minRequired, forKey: "minRequired")
+        aCoder.encode(maxAllowed, forKey: "maxAllowed")
+        aCoder.encode(showByDefault, forKey: "showByDefault")
+        aCoder.encode(modifiers, forKey: "modifiers")
+        aCoder.encode(modifierIds, forKey: "modifierIds")
+        aCoder.encode(items, forKey: "items")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        alternateName = aDecoder.decodeObjectForKey("alternateName") as? String
-        minRequired = aDecoder.decodeObjectForKey("minRequired") as? Int
-        maxAllowed = aDecoder.decodeObjectForKey("maxAllowed") as? Int
-        showByDefault = aDecoder.decodeObjectForKey("showByDefault") as? Bool
-        modifiers = aDecoder.decodeObjectForKey("modifiers") as? [CLVModels.Inventory.Modifier]
-        modifierIds = aDecoder.decodeObjectForKey("modifierIds") as? String
-        items = aDecoder.decodeObjectForKey("items") as? [CLVModels.Inventory.Item]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        alternateName = aDecoder.decodeObject(forKey: "alternateName") as? String
+        minRequired = aDecoder.decodeObject(forKey: "minRequired") as? Int
+        maxAllowed = aDecoder.decodeObject(forKey: "maxAllowed") as? Int
+        showByDefault = aDecoder.decodeObject(forKey: "showByDefault") as? Bool
+        modifiers = aDecoder.decodeObject(forKey: "modifiers") as? [CLVModels.Inventory.Modifier]
+        modifierIds = aDecoder.decodeObject(forKey: "modifierIds") as? String
+        items = aDecoder.decodeObject(forKey: "items") as? [CLVModels.Inventory.Item]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -480,30 +481,30 @@ extension CLVModels {
     
     
     
-    public class Option: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory6Option)public class Option: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Name of the option
       public var name: String?
       public var attribute: CLVModels.Inventory.Attribute?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(attribute, forKey: "attribute")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(attribute, forKey: "attribute")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        attribute = aDecoder.decodeObjectForKey("attribute") as? CLVModels.Inventory.Attribute
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        attribute = aDecoder.decodeObject(forKey: "attribute") as? CLVModels.Inventory.Attribute
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -515,27 +516,27 @@ extension CLVModels {
     
     
     /// This class represents the association between an item and an option
-    public class OptionItem: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory10OptionItem)public class OptionItem: NSObject, NSCoding, Mappable {
       /// Reference to an option
       public var option: CLVModels.Inventory.Option?
       /// Reference to an item
       public var item: CLVModels.Inventory.Item?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(option, forKey: "option")
-        aCoder.encodeObject(item, forKey: "item")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(option, forKey: "option")
+        aCoder.encode(item, forKey: "item")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        option = aDecoder.decodeObjectForKey("option") as? CLVModels.Inventory.Option
-        item = aDecoder.decodeObjectForKey("item") as? CLVModels.Inventory.Item
+        option = aDecoder.decodeObject(forKey: "option") as? CLVModels.Inventory.Option
+        item = aDecoder.decodeObject(forKey: "item") as? CLVModels.Inventory.Item
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         option <- map["option"]
@@ -553,7 +554,7 @@ extension CLVModels {
     
     
     
-    public class Tag: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory3Tag)public class Tag: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Tag name
@@ -563,25 +564,25 @@ extension CLVModels {
       /// Printers associated with this tag
       public var printers: [CLVModels.Printer.Printer]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(items, forKey: "items")
-        aCoder.encodeObject(printers, forKey: "printers")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(items, forKey: "items")
+        aCoder.encode(printers, forKey: "printers")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        items = aDecoder.decodeObjectForKey("items") as? [CLVModels.Inventory.Item]
-        printers = aDecoder.decodeObjectForKey("printers") as? [CLVModels.Printer.Printer]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        items = aDecoder.decodeObject(forKey: "items") as? [CLVModels.Inventory.Item]
+        printers = aDecoder.decodeObject(forKey: "printers") as? [CLVModels.Printer.Printer]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -593,25 +594,25 @@ extension CLVModels {
     
     
     
-    public class TagItem: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory7TagItem)public class TagItem: NSObject, NSCoding, Mappable {
       public var tag: CLVModels.Inventory.Tag?
       public var item: CLVModels.Inventory.Item?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(tag, forKey: "tag")
-        aCoder.encodeObject(item, forKey: "item")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(tag, forKey: "tag")
+        aCoder.encode(item, forKey: "item")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        tag = aDecoder.decodeObjectForKey("tag") as? CLVModels.Inventory.Tag
-        item = aDecoder.decodeObjectForKey("item") as? CLVModels.Inventory.Item
+        tag = aDecoder.decodeObject(forKey: "tag") as? CLVModels.Inventory.Tag
+        item = aDecoder.decodeObject(forKey: "item") as? CLVModels.Inventory.Item
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         tag <- map["tag"]
@@ -621,25 +622,25 @@ extension CLVModels {
     
     
     
-    public class TagPrinter: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory10TagPrinter)public class TagPrinter: NSObject, NSCoding, Mappable {
       public var tag: CLVModels.Inventory.Tag?
       public var printer: CLVModels.Printer.Printer?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(tag, forKey: "tag")
-        aCoder.encodeObject(printer, forKey: "printer")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(tag, forKey: "tag")
+        aCoder.encode(printer, forKey: "printer")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        tag = aDecoder.decodeObjectForKey("tag") as? CLVModels.Inventory.Tag
-        printer = aDecoder.decodeObjectForKey("printer") as? CLVModels.Printer.Printer
+        tag = aDecoder.decodeObject(forKey: "tag") as? CLVModels.Inventory.Tag
+        printer = aDecoder.decodeObject(forKey: "printer") as? CLVModels.Printer.Printer
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         tag <- map["tag"]
@@ -649,7 +650,7 @@ extension CLVModels {
     
     
     
-    public class TaxRate: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory7TaxRate)public class TaxRate: NSObject, NSCoding, Mappable {
       public var id: String?
       /// The line item with which the tax rate is associated
       public var lineItemRef: CLVModels.Order.LineItem?
@@ -659,29 +660,29 @@ extension CLVModels {
       /// Items associated with this tax rate
       public var items: [CLVModels.Inventory.Item]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(lineItemRef, forKey: "lineItemRef")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(rate, forKey: "rate")
-        aCoder.encodeObject(isDefault, forKey: "isDefault")
-        aCoder.encodeObject(items, forKey: "items")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(lineItemRef, forKey: "lineItemRef")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(rate, forKey: "rate")
+        aCoder.encode(isDefault, forKey: "isDefault")
+        aCoder.encode(items, forKey: "items")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        lineItemRef = aDecoder.decodeObjectForKey("lineItemRef") as? CLVModels.Order.LineItem
-        name = aDecoder.decodeObjectForKey("name") as? String
-        rate = aDecoder.decodeObjectForKey("rate") as? Int
-        isDefault = aDecoder.decodeObjectForKey("isDefault") as? Bool
-        items = aDecoder.decodeObjectForKey("items") as? [CLVModels.Inventory.Item]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        lineItemRef = aDecoder.decodeObject(forKey: "lineItemRef") as? CLVModels.Order.LineItem
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        rate = aDecoder.decodeObject(forKey: "rate") as? Int
+        isDefault = aDecoder.decodeObject(forKey: "isDefault") as? Bool
+        items = aDecoder.decodeObject(forKey: "items") as? [CLVModels.Inventory.Item]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -695,25 +696,25 @@ extension CLVModels {
     
     
     
-    public class TaxRateItem: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels9Inventory11TaxRateItem)public class TaxRateItem: NSObject, NSCoding, Mappable {
       public var taxRate: CLVModels.Inventory.TaxRate?
       public var item: CLVModels.Inventory.Item?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(taxRate, forKey: "taxRate")
-        aCoder.encodeObject(item, forKey: "item")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(taxRate, forKey: "taxRate")
+        aCoder.encode(item, forKey: "item")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        taxRate = aDecoder.decodeObjectForKey("taxRate") as? CLVModels.Inventory.TaxRate
-        item = aDecoder.decodeObjectForKey("item") as? CLVModels.Inventory.Item
+        taxRate = aDecoder.decodeObject(forKey: "taxRate") as? CLVModels.Inventory.TaxRate
+        item = aDecoder.decodeObject(forKey: "item") as? CLVModels.Inventory.Item
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         taxRate <- map["taxRate"]

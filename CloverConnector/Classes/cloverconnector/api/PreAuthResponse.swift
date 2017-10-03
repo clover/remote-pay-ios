@@ -13,8 +13,8 @@ public class PreAuthResponse:PaymentResponse {
         super.init(success:success, result:result)
     }
     /// :nodoc:
-    required public init?(_ map: Map) {
-        super.init(map)
+    required public init?(map:Map) {
+        super.init(map: map)
     }
 
 }

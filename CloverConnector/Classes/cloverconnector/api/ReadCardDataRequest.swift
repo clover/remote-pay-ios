@@ -7,7 +7,6 @@ import ObjectMapper
 /**
  options for a request to read card data 
  */
-@objc
 public class ReadCardDataRequest:NSObject, Mappable
 {
     /**
@@ -23,7 +22,7 @@ public class ReadCardDataRequest:NSObject, Mappable
     }
     
     /// :nodoc:
-    required public init?(_ map: Map) {
+    required public init?(map:Map) {
         super.init()
     }
     

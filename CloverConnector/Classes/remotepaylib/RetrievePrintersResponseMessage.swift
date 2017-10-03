@@ -19,12 +19,12 @@ public class RetrievePrintersResponseMessage : Message {
         super.init(method: .GET_PRINTERS_RESPONSE)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .GET_PRINTERS_RESPONSE)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         
         printers <- (map["printers"], Message.printerTransform)
     }

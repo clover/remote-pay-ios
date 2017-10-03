@@ -8,7 +8,6 @@
 
 import Foundation
 
-@objc
 public protocol CloverDeviceConfiguration {
     var remoteApplicationID:String { get set }
     var remoteSourceSDK:String { get }

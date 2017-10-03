@@ -12,12 +12,12 @@ import ObjectMapper
 public class OrderActionAddDiscountMessage : Message {
     public var addDiscountAction:AddDiscountAction?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .ORDER_ACTION_ADD_DISCOUNT)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         addDiscountAction <- map["addDiscountAction"]
     }
 }

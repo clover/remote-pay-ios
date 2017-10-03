@@ -20,11 +20,11 @@ public class ExternalDeviceStateData:Mappable {
         
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         
     }
     
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         externalPaymentId <- map["externalPaymentId"]
         customActivityId <- map["customerActivityId"]
     }

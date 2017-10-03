@@ -6,7 +6,6 @@ import ObjectMapper
 /**
  Provides base capabilities for TransactionRequests like SaleRequest, AuthRequest, PreAuthRequest, etc.
  */
-@objc
 public class TransactionRequest : NSObject, Mappable {
     /// The amount of the transaction. This includes amount, tax, service charges, etc. except the tip
     public var amount:Int = 0
@@ -76,14 +75,14 @@ public class TransactionRequest : NSObject, Mappable {
     
     /// This function can be used to validate JSON prior to mapping. Return nil to cancel mapping at this point
     /// :nodoc:
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         self.externalId=""
         super.init()
     }
 
     /// This function is where all variable mappings should occur. It is executed by Mapper during the mapping (serialization and deserialization) process.
     /// :nodoc:
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         amount <- map["amount"]
         autoAcceptPaymentConfirmations <- map["autoAcceptPaymentConfirmations"]
         autoAcceptSignature <- map["autoAcceptSignature"]

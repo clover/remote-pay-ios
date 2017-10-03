@@ -17,12 +17,12 @@ public class PrintJobStatusResponseMessage : Message {
         super.init(method: .PRINT_JOB_STATUS_RESPONSE)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .PRINT_JOB_STATUS_RESPONSE)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         printRequestId <- map["externalPrintJobId"]
         status <- map["status"]
     }

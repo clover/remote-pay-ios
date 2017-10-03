@@ -21,7 +21,7 @@ public class TxStartRequestMessage : Message {
     public var suppressOnScreenTips:Bool?
     public var requestInfo:String?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .TX_START)
         self.version = 2
     }
@@ -41,7 +41,7 @@ public class TxStartRequestMessage : Message {
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
 
         payIntent <- map["payIntent"]
         order <- (map["order"], Message.orderTransform)

@@ -10,9 +10,9 @@ import ObjectMapper
 public class ManualRefundResponse:BaseResponse {
 
     /// the credit object for the manual refund
-  public private(set) var credit:CLVModels.Payments.Credit?
+  public fileprivate(set) var credit:CLVModels.Payments.Credit?
     /// :nodoc:
-  public private(set) var transactionNumber:String?
+  public fileprivate(set) var transactionNumber:String?
 
     
 
@@ -22,12 +22,12 @@ public class ManualRefundResponse:BaseResponse {
         self.transactionNumber = transactionNumber
     }
     /// :nodoc:
-    required public init?(_ map: Map) {
-        super.init(map)
+    required public init?(map:Map) {
+        super.init(map:map)
     }
     /// :nodoc:
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map:map)
         credit <- (map["credit"], Message.creditTransform)
         transactionNumber <- map["transactionNumber"]
     }

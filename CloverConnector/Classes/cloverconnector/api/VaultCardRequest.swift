@@ -7,7 +7,6 @@ import ObjectMapper
 /**
  options for a vault card request
  */
-@objc
 public class VaultCardRequest : NSObject, Mappable {
 
     /*
@@ -24,7 +23,7 @@ public class VaultCardRequest : NSObject, Mappable {
     }
     
     /// :nodoc:
-    required public init?(_ map: Map) {
+    required public init?(map:Map) {
     }
     
     public func mapping(map:Map) {

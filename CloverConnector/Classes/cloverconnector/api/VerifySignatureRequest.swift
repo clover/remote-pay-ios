@@ -10,7 +10,6 @@ import ObjectMapper
  request information for a request initiated by the device
  for a transaction
  */
-@objc
 public class VerifySignatureRequest:NSObject, Mappable {
 
   /*
@@ -27,7 +26,7 @@ public class VerifySignatureRequest:NSObject, Mappable {
     super.init()
   }
 /// :nodoc:
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
     super.init()
   }
 /// :nodoc:
@@ -37,7 +36,7 @@ public class VerifySignatureRequest:NSObject, Mappable {
     let paymentTransform = TransformOf<CLVModels.Payments.Payment, String>(fromJSON: { (value: String?) -> CLVModels.Payments.Payment? in
         
         if let val = value,
-            let pi = Mapper<CLVModels.Payments.Payment>().map(val) {
+            let pi = Mapper<CLVModels.Payments.Payment>().map(JSONString: val) {
             return pi
         }
         return nil
@@ -52,24 +51,6 @@ public class VerifySignatureRequest:NSObject, Mappable {
     
     payment <- (map["payment"], paymentTransform)
     
-    let signatureTransform = TransformOf<Signature, String>(fromJSON: { (value: String?) -> Signature? in
-        
-        if let val = value,
-            let pi = Mapper<Signature>().map(val) {
-            return pi
-        }
-        return nil
-        }, toJSON: { (obj: Signature?) -> String? in
-            
-            if let val = obj,
-                let value = Mapper().toJSONString(val, prettyPrint:true) {
-                return String(value)
-            }
-            return nil
-    })
-    //debugPrint(map["signature"])
-    
-    //    signature <- (map["signature"], sigTransform)
     signature <- map["signature"]
   }
 

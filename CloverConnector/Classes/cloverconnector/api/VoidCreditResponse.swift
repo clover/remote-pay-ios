@@ -23,7 +23,7 @@ public class VoidCreditResponse:Mappable {
 
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
   }
 
   public func mapping(map:Map) {
@@ -34,19 +34,5 @@ public class VoidCreditResponse:Mappable {
   credit <- map["credit"]
 
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  requestId = jsonObj.valueForKey("requestId") as! String?
-
-  status = ResultStatus(rawValue: jsonObj.valueForKey("status") as! String)
-
-  credit = Credit(jsonObj: jsonObj.valueForKey("credit") as! NSDictionary)
-
-  }
-*/
-
 }
 

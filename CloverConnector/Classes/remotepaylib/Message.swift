@@ -10,14 +10,14 @@ import Foundation
 import ObjectMapper
 
 public class Message : NSObject, Mappable {
-    public private(set) var method:Method
+    public fileprivate(set) var method:Method
     public var version:Int = 1
     
     public init(method:Method) {
         self.method = method
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         method = Method.BREAK
     }
     
@@ -28,23 +28,22 @@ public class Message : NSObject, Mappable {
     
     static let displayOrderTransform = TransformOf<DisplayOrder, String>(fromJSON: { (value: String?) -> DisplayOrder? in
         if let val = value {
-            if let pi = Mapper<DisplayOrder>().map(val) {
+            if let pi = Mapper<DisplayOrder>().map(JSONString: val) {
                 return pi
             }
         }
         return nil
         }, toJSON: { (value: DisplayOrder?) -> String? in
-            if value != nil {
-                if let value = Mapper().toJSONString(value!, prettyPrint:false) {
-                    return String(value)
-                }
+            if let value = value,
+                let valueJSON = Mapper().toJSONString(value, prettyPrint: false) {
+                return String(valueJSON)
             }
             return nil
     })
     
     static let employeeTransform = TransformOf<CLVModels.Employees.Employee, String>(fromJSON: { (value: String?) -> CLVModels.Employees.Employee? in
         if let val = value {
-            if let pi = Mapper<CLVModels.Employees.Employee>().map(val) {
+            if let pi = Mapper<CLVModels.Employees.Employee>().map(JSONString: val) {
                 return pi
             }
         }
@@ -61,7 +60,7 @@ public class Message : NSObject, Mappable {
 
     static let orderTransform = TransformOf<CLVModels.Order.Order, String>(fromJSON: { (value: String?) -> CLVModels.Order.Order? in
         if let val = value {
-            if let pi = Mapper<CLVModels.Order.Order>().map(val) {
+            if let pi = Mapper<CLVModels.Order.Order>().map(JSONString: val) {
                 return pi
             }
         }
@@ -77,7 +76,7 @@ public class Message : NSObject, Mappable {
     
     static let paymentTransform = TransformOf<CLVModels.Payments.Payment, String>(fromJSON: { (value: String?) -> CLVModels.Payments.Payment? in
         if let val = value,
-            let pi = Mapper<CLVModels.Payments.Payment>().map(val) {
+            let pi = Mapper<CLVModels.Payments.Payment>().map(JSONString: val) {
             return pi
         }
         return nil
@@ -92,7 +91,7 @@ public class Message : NSObject, Mappable {
     })
     
     static let printerTransform = TransformOf<CLVModels.Printer.Printer, String>(fromJSON: { (value: String?) -> CLVModels.Printer.Printer? in
-        if let printerString = value, let printer = Mapper<CLVModels.Printer.Printer>().map(printerString) {
+        if let printerString = value, let printer = Mapper<CLVModels.Printer.Printer>().map(JSONString: printerString) {
             return printer
         }
         
@@ -108,7 +107,7 @@ public class Message : NSObject, Mappable {
     static let creditTransform = TransformOf<CLVModels.Payments.Credit, String>(fromJSON: { (value: String?) -> CLVModels.Payments.Credit? in
         
         if let val = value,
-            let pi = Mapper<CLVModels.Payments.Credit>().map(val) {
+            let pi = Mapper<CLVModels.Payments.Credit>().map(JSONString: val) {
             return pi
         }
         return nil
@@ -125,7 +124,7 @@ public class Message : NSObject, Mappable {
     static let refundTransform = TransformOf<CLVModels.Payments.Refund, String>(fromJSON: { (value: String?) -> CLVModels.Payments.Refund? in
         
         if let val = value,
-            let pi = Mapper<CLVModels.Payments.Refund>().map(val) {
+            let pi = Mapper<CLVModels.Payments.Refund>().map(JSONString: val) {
             return pi
         }
         return nil
@@ -143,7 +142,7 @@ public class Message : NSObject, Mappable {
     static let vaultedCardTransform = TransformOf<CLVModels.Payments.VaultedCard, String>(fromJSON: { (value: String?) -> CLVModels.Payments.VaultedCard? in
         
         if let val = value,
-            let pi = Mapper<CLVModels.Payments.VaultedCard>().map(val) {
+            let pi = Mapper<CLVModels.Payments.VaultedCard>().map(JSONString: val) {
             return pi
         }
         return nil
@@ -165,7 +164,7 @@ public class Message : NSObject, Mappable {
         }, toJSON: { (value: [UInt8]?) -> String? in
             if let value = value {
                 
-                return String(bytes: value, encoding: NSUTF8StringEncoding)
+                return String(bytes: value, encoding: String.Encoding.utf8)
             }
             return nil
     })

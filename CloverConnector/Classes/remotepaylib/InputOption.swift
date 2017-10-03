@@ -9,11 +9,10 @@
 import Foundation
 import ObjectMapper
 
-@objc
 public class InputOption : NSObject, Mappable {
-    public private(set) var keyPress:KeyPress?
-    //open override fileprivate(set) var description:String
-    private var _desc:String
+    public fileprivate(set) var keyPress:KeyPress?
+    //public override fileprivate(set) var description:String
+    fileprivate var _desc:String
     public override var description:String {
         get
         {
@@ -35,7 +34,7 @@ public class InputOption : NSObject, Mappable {
         super.init()
     }
     
-    public required init(_ map:Map){
+    public required init(map:Map){
         _desc = ""
         super.init()
     }

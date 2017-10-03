@@ -7,7 +7,6 @@ import ObjectMapper
 /**
  options for refunding a payment
  */
-@objc
 public class RefundPaymentRequest: NSObject, Mappable {
 
   /**
@@ -50,14 +49,14 @@ public class RefundPaymentRequest: NSObject, Mappable {
     }
     
     /// :nodoc:
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         orderId = ""
         paymentId = ""
         super.init()
     }
     
     /// :nodoc:
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         amount <- map["amount"]
         orderId <- map["orderId"]
         paymentId <- map["paymentId"]

@@ -13,7 +13,7 @@ import CloverConnector
 class TabBarController : UITabBarController {
     
     override func viewDidLoad() {
-        if let cc = (UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnector {
+        if let cc = (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector {
             cc.addCloverConnectorListener(ConnectionListener(cloverConnector: cc, tabBar: self))
         }
     }
@@ -37,18 +37,18 @@ class TabBarController : UITabBarController {
         }
         
         override func onDeviceConnected() {
-            dispatch_async(dispatch_get_main_queue()) {
-                self.barController.tabBar.backgroundColor = UIColor.yellowColor()
+            DispatchQueue.main.async {
+                self.barController.tabBar.backgroundColor = UIColor.yellow
             }
         }
         override func onDeviceDisconnected() {
-            dispatch_async(dispatch_get_main_queue()) {
-                self.barController.tabBar.backgroundColor = UIColor.redColor()
+            DispatchQueue.main.async {
+                self.barController.tabBar.backgroundColor = UIColor.red
             }
         }
-        override func onDeviceReady(merchantInfo: MerchantInfo) {
-            dispatch_async(dispatch_get_main_queue()) {
-                self.barController.tabBar.backgroundColor = UIColor.lightGrayColor()
+        override func onDeviceReady(_ merchantInfo: MerchantInfo) {
+            DispatchQueue.main.async {
+                self.barController.tabBar.backgroundColor = UIColor.lightGray
             }
         }
         
@@ -56,7 +56,7 @@ class TabBarController : UITabBarController {
             // override and do nothing in this instance
         }
         
-        override func onVerifySignatureRequest(signatureVerifyRequest: VerifySignatureRequest) {
+        override func onVerifySignatureRequest(_ signatureVerifyRequest: VerifySignatureRequest) {
             // override to do nothing in this instance
         }
     }

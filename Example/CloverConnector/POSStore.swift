@@ -17,8 +17,8 @@ public class POSStore {
     public var vaultedCards = [POSCard]()
     public var manualRefunds = [POSNakedRefund]()
     
-    private var storeListeners:NSMutableArray = NSMutableArray()
-    private var orderListeners:NSMutableArray = NSMutableArray()
+    fileprivate var storeListeners:NSMutableArray = NSMutableArray()
+    fileprivate var orderListeners:NSMutableArray = NSMutableArray()
     
     public var transactionSettings = CLVModels.Payments.TransactionSettings()
     
@@ -49,24 +49,24 @@ public class POSStore {
     init() {
 
         newOrder()
-        self.transactionSettings.cardEntryMethods = (UIApplication.sharedApplication().delegate as? AppDelegate)?.cloverConnector?.CARD_ENTRY_METHODS_DEFAULT
+        self.transactionSettings.cardEntryMethods = (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector?.CARD_ENTRY_METHODS_DEFAULT
     }
     
     public func addStoreListener(_ listener:POSStoreListener) {
-        storeListeners.addObject(listener)
+        storeListeners.add(listener)
     }
     
     public func removeStoreListener(_ listener:POSStoreListener) {
-        storeListeners.removeObject(listener)
+        storeListeners.remove(listener)
     }
     
     public func addCurrentOrderListener(_ listener:POSOrderListener) {
-        orderListeners.addObject(listener)
+        orderListeners.add(listener)
         currentOrder?.addListener(listener)
     }
     
     public func removeCurrentOrderListener(_ listener:POSOrderListener) {
-        orderListeners.removeObject(listener)
+        orderListeners.remove(listener)
         currentOrder?.removeListener(listener)
     }
     
@@ -84,12 +84,12 @@ public class POSStore {
     }
     
     public func removePreAuth(_ payment:POSPayment) {
-        let index = preAuths.indexOf { (currentPayment) -> Bool in
+        let index = preAuths.index { (currentPayment) -> Bool in
             return payment.paymentId == currentPayment.paymentId
         }
         if let idx = index {
             
-            preAuths.removeAtIndex(idx)
+            preAuths.remove(at: idx)
             for sl in storeListeners {
                 if let listener = sl as? POSStoreListener {
                     listener.preAuthRemoved(payment)

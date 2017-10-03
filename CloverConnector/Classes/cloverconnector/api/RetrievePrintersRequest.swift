@@ -8,7 +8,6 @@
 
 import Foundation
 
-@objc
 public class RetrievePrintersRequest: NSObject {
     var category: PrintCategory?
     
@@ -18,6 +17,6 @@ public class RetrievePrintersRequest: NSObject {
 }
 
 public enum PrintCategory {
-    case ORDER
-    case RECEIPT
+    case order
+    case receipt
 }

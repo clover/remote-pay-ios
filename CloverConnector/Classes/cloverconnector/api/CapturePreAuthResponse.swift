@@ -9,11 +9,11 @@ import ObjectMapper
 public class CapturePreAuthResponse : BaseResponse {
 
     /// id of the pre-auth payment being captured
-    public private(set) var paymentId:String?
+    public fileprivate(set) var paymentId:String?
     /// the base amount of the capture
-    public private(set) var amount:Int?
+    public fileprivate(set) var amount:Int?
     /// additional tip amount for the capture
-    public private(set) var tipAmount:Int?
+    public fileprivate(set) var tipAmount:Int?
 
     public init(success:Bool, result:ResultCode, paymentId:String?, amount:Int?, tipAmount:Int?) {
         super.init(success: success, result:result)
@@ -23,12 +23,12 @@ public class CapturePreAuthResponse : BaseResponse {
     }
 
     /// :nodoc:
-    required public init?(_ map: Map) {
-        super.init(map)
+    required public init?(map:Map) {
+        super.init(map: map)
     }
     /// :nodoc:
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         paymentId <- map["paymentId"]
         amount <- map["amount"]
         tipAmount <- map["tipAmount"]

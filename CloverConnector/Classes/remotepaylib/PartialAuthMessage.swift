@@ -12,12 +12,12 @@ import ObjectMapper
 public class PartialAuthMessage : Message {
     public var partialAuthAmount:Int?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.PARTIAL_AUTH)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         partialAuthAmount <- map["partialAuthAmount"]
     }
 }

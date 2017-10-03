@@ -42,13 +42,13 @@ public class BaseResponse : NSObject, Mappable {
     }
     
     /// :nodoc:
-    required public init?(_ map: Map) {
+    required public init?(map:Map) {
         self.success = false
         self.result = ResultCode.CANCEL
     }
     
     /// :nodoc:
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         success <- map["success"]
         result <- map["result"]
         reason <- map["reason"]

@@ -14,12 +14,12 @@ public class RetrievePaymentRequestMessage:Message {
         super.init(method: Method.RETRIEVE_PAYMENT_REQUEST)
     }
     
-    public required init?(_ map: Map) {
-        super.init(map)
+    public required init?(map:Map) {
+        super.init(map: map)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         self.externalPaymentId <- map["externalPaymentId"]
     }
 }

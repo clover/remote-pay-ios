@@ -16,12 +16,12 @@ public class TipAdjustResponseMessage : Message {
     public var amount:Int?
     public var success:Bool?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.TIP_ADJUST_RESPONSE)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         paymentId <- map["paymentId"]
         orderId <- map["orderId"]
         amount <- map["amount"]

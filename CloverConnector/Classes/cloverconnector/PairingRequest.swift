@@ -22,7 +22,7 @@ public class PairingRequest:Mappable {
         self.authenticationToken = token
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
     }
     
     public func mapping(map:Map) {

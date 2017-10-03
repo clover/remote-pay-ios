@@ -18,12 +18,12 @@ public class CustomActivityResponse : BaseResponse {
         self.payload = p
     }
     /// :nodoc:
-    required public init?(_ map: Map) {
-        super.init(map)
+    required public init?(map:Map) {
+        super.init(map: map)
     }
     /// :nodoc:
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         action <- map["action"]
         payload <- map["payload"]
     }

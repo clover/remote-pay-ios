@@ -16,12 +16,12 @@ public class CustomActivityRequest : BaseActivityMessage, Mappable {
     }
     
     /// :nodoc:
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         super.init(action: "")
     }
     
     /// :nodoc:
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         action <- map["action"]
         payload <- map["payload"]
         nonBlocking <- map["nonBlocking"]

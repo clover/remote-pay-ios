@@ -19,12 +19,12 @@ public class RetrievePrintersRequestMessage : Message {
         super.init(method: .GET_PRINTERS_REQUEST)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .GET_PRINTERS_REQUEST)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         category <- map["category"]
     }
 }

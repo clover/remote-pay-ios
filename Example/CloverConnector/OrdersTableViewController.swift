@@ -10,29 +10,29 @@ import Foundation
 import UIKit
 import CloverConnector
 
-class OrdersTableViewController : UITableViewController, POSStoreListener {
+class OrdersTableViewController : UITableViewController, POSStoreListener, POSOrderListener {
     
     @IBOutlet var ordersTable: UITableView!
     
     weak var selOrder:POSOrder?
     
-    private var items:[(type: ITEM_TYPE, data: AnyObject)] {
+    fileprivate var items:[(type: ITEM_TYPE, data: AnyObject)] {
         get {
             var _items:[(type: ITEM_TYPE, data: AnyObject)] = []
             if let orders = self.store?.orders {
-                for var o in orders {
-                    if (o as! POSOrder).status != .READY {
-                        _items.append((type: .ORDER, data: o))
+                for o in orders {
+                    if (o ).status != .READY {
+                        _items.append((type: .order, data: o))
                         
                         if selOrder != nil && selOrder! === o {
                             if let payments = selOrder?.payments {
-                                for var p in payments {
-                                    _items.append((type: .PAYMENT, data: p))
+                                for p in payments {
+                                    _items.append((type: .payment, data: p))
                                 }
                             }
                             if let refunds = selOrder?.refunds {
-                                for var r in refunds {
-                                    _items.append((type: .REFUND, data: r))
+                                for r in refunds {
+                                    _items.append((type: .refund, data: r))
                                 }
                             }
                             /*if let items = selOrder?.items {
@@ -48,11 +48,11 @@ class OrdersTableViewController : UITableViewController, POSStoreListener {
         }
     }
     
-    private enum ITEM_TYPE {
-        case ORDER
+    fileprivate enum ITEM_TYPE {
+        case order
 //        case ITEM
-        case PAYMENT
-        case REFUND
+        case payment
+        case refund
     }
     
 
@@ -60,131 +60,118 @@ class OrdersTableViewController : UITableViewController, POSStoreListener {
     override func viewDidLoad() {
         if let store = self.store {
             store.addStoreListener(self)
+            store.addCurrentOrderListener(self)
             selOrder = store.orders.last
         }
         
     }
     
-    private var store:POSStore? {
-        return (UIApplication.sharedApplication().delegate as? AppDelegate)?.store
+    fileprivate var store:POSStore? {
+        return (UIApplication.shared.delegate as? AppDelegate)?.store
     }
     
-    private var cloverConnector:ICloverConnector? {
+    fileprivate var cloverConnector:ICloverConnector? {
         get {
-            return (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector
+            return (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector
         }
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
         switch item.type {
-            case .ORDER:
-                let order = item.data as! POSOrder
-                let cell = tableView.dequeueReusableCellWithIdentifier("OrderTableCell") as! OrdersTableViewCell
+            case .order:
+                guard let order = item.data as? POSOrder,
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "OrderTableCell") as? OrdersTableViewCell else { return UITableViewCell() }
                 
-                cell.orderPriceLabel.text = (CurrencyUtils.IntToFormat(order.getTotal() ?? 0) ?? CurrencyUtils.IntToFormat(0)!)
+                cell.orderPriceLabel.text = (CurrencyUtils.IntToFormat(order.getTotal()) ?? CurrencyUtils.FormatZero())
                 cell.orderNumberLabel.text = String(order.orderNumber)
                 cell.orderStatusLabel.text = order.status.rawValue
-                cell.orderDateLabel.text = String(order.date)
+                cell.orderDateLabel.text = String(describing: order.date)
                 return cell
-            case .PAYMENT:
-                let payment = item.data as! POSPayment
-                let cell = tableView.dequeueReusableCellWithIdentifier("OrderTablePaymentCell") as! OrdersTablePaymentViewCell
+            case .payment:
+                guard let payment = item.data as? POSPayment,
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "OrderTablePaymentCell") as? OrdersTablePaymentViewCell else { return UITableViewCell() }
                 
-                cell.paymentPriceLabel.text = CurrencyUtils.IntToFormat(payment.amount ?? 0) ?? CurrencyUtils.IntToFormat(0)!
+                cell.paymentPriceLabel.text = CurrencyUtils.IntToFormat(payment.amount) ?? CurrencyUtils.FormatZero()
                 cell.paymentExternalIdLabel.text = payment.externalPaymentId ?? ""
                 cell.paymentStatusLabel.text = payment.status.rawValue
-                cell.paymentTipLabel.text = CurrencyUtils.IntToFormat(payment.tipAmount ?? 0) ?? CurrencyUtils.IntToFormat(0)!
+                cell.paymentTipLabel.text = CurrencyUtils.IntToFormat(payment.tipAmount ?? 0) ?? CurrencyUtils.FormatZero()
                 return cell
-        case .REFUND:
-            let refund = item.data as! POSRefund
-            let cell = tableView.dequeueReusableCellWithIdentifier("OrderTablePaymentCell") as! OrdersTablePaymentViewCell
+        case .refund:
+            guard let refund = item.data as? POSRefund,
+                let cell = tableView.dequeueReusableCell(withIdentifier: "OrderTablePaymentCell") as? OrdersTablePaymentViewCell else { return UITableViewCell() }
             
-            cell.paymentPriceLabel.text = CurrencyUtils.IntToFormat(refund.amount ?? 0) ?? CurrencyUtils.IntToFormat(0)!
+            cell.paymentPriceLabel.text = CurrencyUtils.IntToFormat(refund.amount) ?? CurrencyUtils.FormatZero()
             cell.paymentExternalIdLabel.text = "REFUND"
             cell.paymentStatusLabel.text = ""
             cell.paymentTipLabel.text = ""
             return cell
-            
-//            case .ITEM:
-//                let cell = tableView.dequeueReusableCellWithIdentifier( "OrderTableItemCell") as! OrdersTableItemViewCell
-            
         }
-        return UITableViewCell()
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let selItem = items[indexPath.row]
-        if selItem.type == .ORDER {
-            selOrder = selItem.data as! POSOrder
+        if selItem.type == .order {
+            selOrder = selItem.data as? POSOrder
             tableView.reloadData()
-        } else if selItem.type == .PAYMENT {
+        } else if selItem.type == .payment {
             debugPrint("selected payment")
             // options? tip, void, refund
-            let payment = selItem.data as! POSPayment
+            guard let payment = selItem.data as? POSPayment else { return }
             
             if payment.status != .VOIDED {
                 
-                let uvc = UIAlertController(title: "Modify Payment", message: "", preferredStyle: .Alert)
+                let uvc = UIAlertController(title: "Modify Payment", message: "", preferredStyle: .alert)
                 
-                uvc.addAction(UIAlertAction(title: "Void", style: .Default, handler: { (aa) in
-                    uvc.dismissViewControllerAnimated(true, completion: nil)
+                uvc.addAction(UIAlertAction(title: "Void", style: .default, handler: { (aa) in
+                    uvc.dismiss(animated: true, completion: nil)
                     let vpr = VoidPaymentRequest(orderId: payment.orderId, paymentId: payment.paymentId, voidReason: .USER_CANCEL)
                     self.cloverConnector?.voidPayment(vpr)
                     
                 }))
-                uvc.addAction(UIAlertAction(title: "Refund", style: .Default, handler: { (aa) in
+                uvc.addAction(UIAlertAction(title: "Refund", style: .default, handler: { (aa) in
                     
-                    
-                    let fullRefundAC = UIAlertController(title: "Refund Payment", message: "", preferredStyle: .Alert)
-                    fullRefundAC.addAction(UIAlertAction(title: "Full", style: .Default, handler: { (aa) in
+                    let fullRefundAC = UIAlertController(title: "Refund Payment", message: "", preferredStyle: .alert)
+                    fullRefundAC.addAction(UIAlertAction(title: "Full", style: .default, handler: { (aa) in
                         let rpr = RefundPaymentRequest(orderId: payment.orderId, paymentId: payment.paymentId, fullRefund: true)
                         self.cloverConnector?.refundPayment(rpr)
                     }))
-                    fullRefundAC.addAction(UIAlertAction(title: "Partial", style: .Cancel, handler: { (aa) in
+                    fullRefundAC.addAction(UIAlertAction(title: "Partial", style: .cancel, handler: { (aa) in
                         let rpr = RefundPaymentRequest(orderId: payment.orderId, paymentId: payment.paymentId, amount: payment.amount / 2)
                         self.cloverConnector?.refundPayment(rpr)
                     }))
-                    self.presentViewController(fullRefundAC, animated: true, completion: nil)
+                    self.present(fullRefundAC, animated: true, completion: nil)
                 }))
                 if payment.status == .AUTHORIZED {
-                    uvc.addAction(UIAlertAction(title: "Add Tip", style: .Default, handler: { (aa) in
-                        //
-                        //uvc.dismissViewControllerAnimated(false, completion: {
+                    uvc.addAction(UIAlertAction(title: "Add Tip", style: .default, handler: { (aa) in
                         debugPrint("Add tip dismissed")
-                        let tipCtrl = UIAlertController(title: "Add Tip", message: "enter amount", preferredStyle: .Alert)
-                        tipCtrl.addTextFieldWithConfigurationHandler { (textField : UITextField!) -> Void in
+                        let tipCtrl = UIAlertController(title: "Add Tip", message: "enter amount", preferredStyle: .alert)
+                        tipCtrl.addTextField { textField in
                             textField.placeholder = "Enter Tip Amount"
                         }
-                        tipCtrl.addAction(UIAlertAction(title: "Done", style: .Default, handler: { (aa) in
-                            let tipAmountTextField = tipCtrl.textFields![0] as UITextField
-                            if let amt = Int(tipAmountTextField.text ?? "0") {
-                                if amt > 0 {
-                                    let tipAdjust = TipAdjustAuthRequest(orderId: payment.orderId, paymentId: payment.paymentId, tipAmount: amt)
-                                    self.cloverConnector?.tipAdjustAuth(tipAdjust)
-                                }
+                        tipCtrl.addAction(UIAlertAction(title: "Done", style: .default, handler: { (aa) in
+                            guard let tipAmountText = tipCtrl.textFields?.first?.text,
+                                let tipAmount = Int(tipAmountText) else { return }
+                            if tipAmount > 0 {
+                                let tipAdjust = TipAdjustAuthRequest(orderId: payment.orderId, paymentId: payment.paymentId, tipAmount: tipAmount)
+                                self.cloverConnector?.tipAdjustAuth(tipAdjust)
                             }
-                            
                         }))
-                        self.presentViewController(tipCtrl, animated: true, completion: nil)
-                        //                    })
+                        self.present(tipCtrl, animated: true, completion: nil)
                     }))
                 }
-                uvc.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (aa) in
-                    //                uvc.dismissViewControllerAnimated(true, completion: nil)
+                uvc.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (aa) in
                 }))
-                self.presentViewController(uvc, animated: true, completion: nil)
-                //        } else if selItem.type == .ITEM {
-                //            debugPrint("selected item")
+                self.present(uvc, animated: true, completion: nil)
             } else {
                 // do nothing...it is voided
             }
-        } else if selItem.type == .REFUND {
+        } else if selItem.type == .refund {
             // do nothing extra
         } else {
             debugPrint("unknown type selected")
@@ -192,27 +179,28 @@ class OrdersTableViewController : UITableViewController, POSStoreListener {
         
     }
     
-    override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         // show order items...
         selOrder = items[indexPath.row].data as? POSOrder
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 65
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let orderDetails = segue.destinationViewController as! OrderDetailsViewController
-        
-        if let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell) {
-            orderDetails.selOrder = items[indexPath.row].data as? POSOrder
-        }
-        
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let orderDetails = segue.destination as? OrderDetailsViewController,
+            let sender = sender as? UITableViewCell,
+            let indexPath = tableView.indexPath(for: sender ) else { return }
+        orderDetails.selOrder = items[indexPath.row].data as? POSOrder
     }
 
     
+    // MARK: - Store Listener
     func newOrderCreated(_ order: POSOrder) {
-        ordersTable.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.ordersTable.reloadData()
+        }
     }
     func preAuthAdded(_ payment:POSPayment) {
         
@@ -223,10 +211,32 @@ class OrdersTableViewController : UITableViewController, POSStoreListener {
     func vaultCardAdded(_ card:POSCard) {
         
     }
-    func refundAdded(_ refund:POSRefund) {
-        ordersTable.reloadData()
+    func manualRefundAdded(_ credit: POSNakedRefund) {
+        
     }
-    func manualRefundAdded(credit: POSNakedRefund) {
+
+    // MARK: - Order Listener
+    func itemAdded(_ item:POSLineItem) {
+        
+    }
+    func itemRemoved(_ item:POSLineItem) {
+        
+    }
+    func itemModified(_ item:POSLineItem) {
+        
+    }
+    func discountAdded(_ item:POSDiscount) {
+        
+    }
+    func paymentAdded(_ item:POSPayment) {
+        
+    }
+    func refundAdded(_ refund:POSRefund) {
+        DispatchQueue.main.async { [weak self] in
+            self?.ordersTable.reloadData()
+        }
+    }
+    func paymentChanged(_ item:POSPayment) {
         
     }
 }

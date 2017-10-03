@@ -15,12 +15,12 @@ public class RetrieveDeviceStatusRequestMessage:Message {
         super.init(method: Method.RETRIEVE_DEVICE_STATUS_REQUEST)
     }
     
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         super.init(method: Method.RETRIEVE_DEVICE_STATUS_REQUEST)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         sendLastMessage <- map["sendLastMessage"]
     }
 }

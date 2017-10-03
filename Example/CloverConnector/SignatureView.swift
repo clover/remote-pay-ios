@@ -12,45 +12,44 @@ import CloverConnector
 
 public class SignatureView : UIView {
     var sig:Signature?
-    public override func drawRect(rect: CGRect) {
-        //
-        super.drawRect(rect)
+    public override func draw(_ rect: CGRect) {
+        super.draw(rect)
+
+        guard let sig = sig else { return }
+        guard let strokes = sig.strokes else { return }
         
-        if let sig = sig {
-
-            
-            let width = frame.width
-            //let height = frame.height
-            
-            var scale = 1.0
-            if let sw = sig.width {
-                scale = Double(width) / Double(sw)
-            }
-            
-//            let widthMultiplier = sig.
-
-            if let strokes = sig.strokes {
-                for var stroke in strokes {
-                    
-                    let strokePath = UIBezierPath()
-                    
-                    if let points = stroke.points {
-                        strokePath.moveToPoint(CGPoint(x: scale * Double(points[0].x!), y: scale * Double(points[0].y!)))
-                        for (index, element) in points.enumerate() {
-                            if(index > 0) {
-                                strokePath.addLineToPoint(CGPoint(x: scale * Double(element.x!), y: scale * Double(element.y!)))
-                            }
-                        }
-                    }
-                    UIColor.blueColor().set()
-                    strokePath.stroke()
-                }
-                
-            }
-            
-//            context?.strokePath()
-
+        let width = frame.width
+        var scale = 1.0
+        if let sw = sig.width {
+            scale = Double(width) / Double(sw)
         }
         
+        func point2CGPoint(point:Point?, scale:Double = 1) -> CGPoint? {
+            guard let point = point,
+                let x = point.x,
+                let y = point.y else { return nil }
+            return CGPoint(x: Double(x) * scale, y: Double(y) * scale)
+        }
+
+        for stroke in strokes {
+            guard let points = stroke.points else { break }
+            guard points.count > 0 else { break }
+            let strokePath = UIBezierPath()
+            
+            // Move to the starting point
+            guard let cgpoint = point2CGPoint(point: points.first, scale: scale) else { break }
+            strokePath.move(to: cgpoint)
+            
+            // Add lines to the remaining points
+            for (index, point) in points.enumerated() {
+                if(index > 0) {
+                    guard let cgpoint = point2CGPoint(point: point, scale: scale) else { break }
+                    strokePath.addLine(to: cgpoint)
+                }
+            }
+            
+            UIColor.blue.set()
+            strokePath.stroke()
+        }
     }
 }

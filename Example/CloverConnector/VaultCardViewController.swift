@@ -15,8 +15,8 @@ public class VaultCardViewController:UIViewController, UITableViewDataSource
     
     @IBOutlet weak var tableView: UITableView!
     
-    private func getStore() -> POSStore? {
-        if let appDelegate = (UIApplication.sharedApplication().delegate as? AppDelegate) {
+    fileprivate func getStore() -> POSStore? {
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
             return appDelegate.store
         }
         return nil
@@ -29,52 +29,44 @@ public class VaultCardViewController:UIViewController, UITableViewDataSource
         
     }
     
-    override public func viewDidAppear(animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         getStore()?.addStoreListener(self)
     }
     
-    override public func viewDidDisappear(animated: Bool) {
+    override public func viewDidDisappear(_ animated: Bool) {
         getStore()?.removeStoreListener(self)
     }
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return getStore()?.vaultedCards.count ?? 0
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //        let cell:UITableViewCell = manualRefundsTable.dequeueReusableCellWithIdentifier(withIdentifier: "ManualRefundCell")
         
-        var cell =  tableView.dequeueReusableCellWithIdentifier("VCCell")
+        var cell =  tableView.dequeueReusableCell(withIdentifier: "VCCell")
         if cell == nil {
-            cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "VCCell")
+            cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "VCCell")
         }
         
-        if let vals = getStore()?.vaultedCards where
+        if let vals = getStore()?.vaultedCards,
             indexPath.row < vals.count {
             
-            var card = vals[indexPath.row]
+            let card = vals[indexPath.row]
             
-            cell?.textLabel?.text = (card.first6 ?? "------") + "-XXXXXX-" + (card.last4 ?? "------")
+            cell?.textLabel?.text = (card.first6) + "-XXXXXX-" + (card.last4)
             cell?.detailTextLabel?.text = card.token ?? "---"
         } else {
             cell?.textLabel?.text = "UNKNOWN"
             cell?.detailTextLabel?.text = ""
         }
         
-        return cell!
+        return cell ?? UITableViewCell()
     }
     
     @IBAction func onVaultCard(_ sender: UIButton) {
         tableView.becomeFirstResponder()
-        (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.vaultCard(VaultCardRequest())
-    }
-    
-    private func getKeyboardHeight(_ notification: NSNotification) -> CGFloat {
-        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
-        let keyboardFrame:NSValue = userInfo.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue
-        let keyboardRectangle = keyboardFrame.CGRectValue()
-        let keyboardHeight = keyboardRectangle.height
-        return keyboardHeight
+        (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector?.vaultCard(VaultCardRequest())
     }
 }
 
@@ -86,11 +78,9 @@ extension VaultCardViewController : POSStoreListener {
     }
     public func preAuthRemoved(_ payment:POSPayment){}
     public func vaultCardAdded(_ card:POSCard){
-        dispatch_async(dispatch_get_main_queue()) {
-            dispatch_after(2, dispatch_get_main_queue(), {
-                self.tableView.reloadData()
-            })
-        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+            self.tableView.reloadData()
+        })
     }
     public func manualRefundAdded(_ credit:POSNakedRefund){}
     // End POSStoreListener

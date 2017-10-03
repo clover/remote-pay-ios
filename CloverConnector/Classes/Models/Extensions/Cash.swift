@@ -11,9 +11,9 @@ extension CLVModels {
   public class Cash {
     
     
-    public class CashEvent: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels4Cash9CashEvent)public class CashEvent: NSObject, NSCoding, Mappable {
       /// The type of event that occured
-      public var type_: CLVModels.Cash.Type_?
+      public var type_: CLVModels.Cash.Type_? = nil
       /// The amount that was either added, removed of modified by the event
       public var amountChange: Int?
       /// Time at which the event was exectued
@@ -25,30 +25,31 @@ extension CLVModels {
       /// The device that initiated the event
       public var device: CLVModels.Device.Device?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(type_?.rawValue, forKey: "type_")
-        aCoder.encodeObject(amountChange, forKey: "amountChange")
-        aCoder.encodeObject(timestamp, forKey: "timestamp")
-        aCoder.encodeObject(note, forKey: "note")
-        aCoder.encodeObject(employee, forKey: "employee")
-        aCoder.encodeObject(device, forKey: "device")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(type_?.rawValue, forKey: "type_")
+        aCoder.encode(amountChange, forKey: "amountChange")
+        aCoder.encode(timestamp, forKey: "timestamp")
+        aCoder.encode(note, forKey: "note")
+        aCoder.encode(employee, forKey: "employee")
+        aCoder.encode(device, forKey: "device")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        type_ = (aDecoder.decodeObjectForKey("type_") as? String) != nil ?
-          CLVModels.Cash.Type_(rawValue: (aDecoder.decodeObjectForKey("type_") as! String)) : nil
-        amountChange = aDecoder.decodeObjectForKey("amountChange") as? Int
-        timestamp = aDecoder.decodeObjectForKey("timestamp") as? Int
-        note = aDecoder.decodeObjectForKey("note") as? String
-        employee = aDecoder.decodeObjectForKey("employee") as? CLVModels.Employees.Employee
-        device = aDecoder.decodeObjectForKey("device") as? CLVModels.Device.Device
+        if let typeString = (aDecoder.decodeObject(forKey: "type_") as? String) {
+            type_ = CLVModels.Cash.Type_(rawValue: typeString)
+        }
+        amountChange = aDecoder.decodeObject(forKey: "amountChange") as? Int
+        timestamp = aDecoder.decodeObject(forKey: "timestamp") as? Int
+        note = aDecoder.decodeObject(forKey: "note") as? String
+        employee = aDecoder.decodeObject(forKey: "employee") as? CLVModels.Employees.Employee
+        device = aDecoder.decodeObject(forKey: "device") as? CLVModels.Device.Device
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         type_ <- map["type"]

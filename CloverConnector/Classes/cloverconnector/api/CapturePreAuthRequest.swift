@@ -7,7 +7,6 @@ import ObjectMapper
 /**
  options for capturing a pre-auth
  */
-@objc
 public class CapturePreAuthRequest : NSObject, Mappable {
 
   /**
@@ -30,14 +29,14 @@ public class CapturePreAuthRequest : NSObject, Mappable {
   }
 
     /// :nodoc:
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         amount = 0
         paymentId = ""
         super.init()
     }
 
     /// :nodoc:
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         amount <- map["amount"]
         tipAmount <- map["tipAmount"]
         paymentId <- map["paymentId"]

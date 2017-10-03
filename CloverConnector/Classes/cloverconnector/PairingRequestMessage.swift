@@ -16,18 +16,18 @@ public class PairingRequestMessage : Mappable {
     public var payload:String?
     public var type:String = "COMMAND"
     
-    private static var reqNumber:Int = 0;
+    fileprivate static var reqNumber:Int = 0;
     
     public init( request:PairingRequest ) {
-        self.id = "PR-" + String(PairingRequestMessage.reqNumber += 1)
+        self.id = "PR-" + String(describing: PairingRequestMessage.reqNumber += 1)
         self.payload = Mapper().toJSONString(request, prettyPrint: true)
     }
     
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         
     }
     
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         self.id <- map["id"]
         self.payload <- map["payload"]
         self.method <- map["method"]

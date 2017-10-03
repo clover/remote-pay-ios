@@ -23,13 +23,13 @@ public class ActivityResponseMessage:Message {
         super.init(method: Method.ACTIVITY_RESPONSE)
     }
     
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         self.action = "<unknown>"
         super.init(method: Method.ACTIVITY_RESPONSE)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         self.action <- map["action"]
         self.resultCode <- map["resultCode"]
         self.payload <- map["payload"]

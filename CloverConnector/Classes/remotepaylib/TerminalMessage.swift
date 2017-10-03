@@ -17,12 +17,12 @@ public class TerminalMessage : Message {
         super.init(method: .TERMINAL_MESSAGE)
     }
     
-    required public init?(_ map: Map) {
+    required public init?(map:Map) {
         super.init(method: .TERMINAL_MESSAGE)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         text <- map["text"]
     }
 }

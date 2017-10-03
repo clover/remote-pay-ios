@@ -16,7 +16,7 @@ public class Challenge : Mappable {
     public var reason:VoidReason?
     public var type:ChallengeType?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         
     }
     

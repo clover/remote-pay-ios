@@ -17,12 +17,12 @@ public class OpenCashDrawerMessage : Message {
     public init() {
         super.init(method: .OPEN_CASH_DRAWER)
     }
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .OPEN_CASH_DRAWER)
     }
     
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         reason <- map["reason"]
         printer <- (map["printer"], Message.printerTransform)
     }

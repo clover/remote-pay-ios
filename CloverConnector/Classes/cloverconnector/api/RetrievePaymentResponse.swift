@@ -27,13 +27,13 @@ public class RetrievePaymentResponse:BaseResponse {
         self.externalPaymentId = epi
     }
     /// :nodoc:
-    required public init?(_ map: Map) {
+    required public init?(map:Map) {
         self.queryStatus = .NOT_FOUND
         super.init(success: false, result: .FAIL)
     }
     /// :nodoc:
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         self.payment <- map["payment"]
     }
 }

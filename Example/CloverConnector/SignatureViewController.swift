@@ -19,13 +19,15 @@ public class SignatureViewController:UIViewController {
         signatureView.sig = signatureVerifyRequest?.signature
     }
     
-    @IBAction func rejectSignature(sender: UIButton) {
-        (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.rejectSignature(signatureVerifyRequest!)
-        dismissViewControllerAnimated(true, completion: {})
+    @IBAction func rejectSignature(_ sender: UIButton) {
+        guard let signatureVerifyRequest = signatureVerifyRequest else { return }
+        (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector?.rejectSignature(signatureVerifyRequest)
+        dismiss(animated: true, completion: {})
         
     }
-    @IBAction func acceptSignature(sender: UIButton) {
-        (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.acceptSignature(signatureVerifyRequest!)
-        dismissViewControllerAnimated(true, completion: {})
+    @IBAction func acceptSignature(_ sender: UIButton) {
+        guard let signatureVerifyRequest = signatureVerifyRequest else { return }
+        (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector?.acceptSignature(signatureVerifyRequest)
+        dismiss(animated: true, completion: {})
     }
 }

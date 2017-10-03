@@ -7,7 +7,6 @@ import ObjectMapper
 /**
  options for void payment request
  */
-@objc
 public class VoidPaymentRequest:NSObject, Mappable {
 
   /*
@@ -28,12 +27,12 @@ public class VoidPaymentRequest:NSObject, Mappable {
         super.init()
   }
     /// :nodoc:
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         voidReason = .USER_CANCEL
         super.init()
     }
     /// :nodoc:
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         
         orderId <- map["orderId"]
         paymentId <- map["paymentId"]

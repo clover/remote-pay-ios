@@ -38,7 +38,7 @@ protocol CloverDeviceObserver:AnyObject {
     
     func onKeyPressed(_ keyPress:KeyPress)
     
-    func onPaymentRefundResponse(_ orderId:String?, paymentId paymentId:String?, refund:CLVModels.Payments.Refund?, reason:ErrorCode?, message:String?, code:TxState)
+    func onPaymentRefundResponse(_ orderId:String?, paymentId:String?, refund:CLVModels.Payments.Refund?, reason:ErrorCode?, message:String?, code:TxState)
     
     func onVaultCardResponse( _ vaultedCard:CLVModels.Payments.VaultedCard?, code:ResultStatus?, reason:String?)
     
@@ -51,10 +51,10 @@ protocol CloverDeviceObserver:AnyObject {
     //func onModifyOrder(AddLineItemAction addLineItemAction)
     //func onModifyOrder(RemoveLineItemAction removeLineItemAction)
     
-    func onPrintRefundPayment(_ refund:CLVModels.Payments.Refund?, payment:CLVModels.Payments.Payment?, order:CLVModels.Order.Order?)
-    func onPrintMerchantReceipt(_ payment:CLVModels.Payments.Payment?)
-    func onPrintPaymentDecline(_ reason:String, payment:CLVModels.Payments.Payment?)
-    func onPrintPayment(_ order:CLVModels.Order.Order?, payment:CLVModels.Payments.Payment?)
+    func onPrintRefundPayment(_ refund:CLVModels.Payments.Refund, payment:CLVModels.Payments.Payment, order:CLVModels.Order.Order)
+    func onPrintMerchantReceipt(_ payment:CLVModels.Payments.Payment)
+    func onPrintPaymentDecline(_ reason:String, payment:CLVModels.Payments.Payment)
+    func onPrintPayment(_ order:CLVModels.Order.Order, payment:CLVModels.Payments.Payment)
     func onPrintCredit(_ credit:CLVModels.Payments.Credit)
     func onPrintCreditDecline(_ reason:String, credit:CLVModels.Payments.Credit?)
     
@@ -70,7 +70,7 @@ protocol CloverDeviceObserver:AnyObject {
     ///   - errorType: Type of the CloverDeviceErrorType being thrown
     ///   - int: Code from the NSError experienced earlier in the flow
     ///   - message: LocalizedDescription from the NSError experienced earlier in the flow
-    func onDeviceError(_ errorType:CloverDeviceErrorType, int:Int?, cause:NSError?, message:String)
+    func onDeviceError(_ errorType:CloverDeviceErrorType, int:Int?, cause:Error?, message:String)
     
     func onMessageAck(_ sourceMessageId:String)
     
@@ -80,9 +80,9 @@ protocol CloverDeviceObserver:AnyObject {
     func onConfirmPayment(_ payment:CLVModels.Payments.Payment?, challenges: [Challenge]?)
     func onActivityResponse(_ status:ResultCode, action:String?, payload:String?, failReason: String?)
     func onDeviceStatusResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState, subState: ExternalDeviceSubState?, data: ExternalDeviceStateData?)
-    func onMessageFromActivity(action: String, payload: String?)
+    func onMessageFromActivity(_ action: String, payload: String?)
     func onRetrievePaymentResponse(_ result: ResultStatus, reason:String?, queryStatus: QueryStatus, payment:CLVModels.Payments.Payment?, externalPaymentId:String?)
-    func onRetrievePrinterResponse(_ printers:[CLVModels.Printer.Printer]?)
+    func onRetrievePrintersResponse(_ printers:[CLVModels.Printer.Printer]?)
     func onRetrievePrintJobStatus(_ printRequestId:String?, status:String?)
     func onResetDeviceResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState)
 }
@@ -125,10 +125,10 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     //func onModifyOrder(AddLineItemAction addLineItemAction)
     //func onModifyOrder(RemoveLineItemAction removeLineItemAction)
     
-    func onPrintRefundPayment(_ refund:CLVModels.Payments.Refund?, payment:CLVModels.Payments.Payment?, order:CLVModels.Order.Order?){}
-    func onPrintMerchantReceipt(_ payment:CLVModels.Payments.Payment?){}
-    func onPrintPaymentDecline(_ reason:String, payment:CLVModels.Payments.Payment?){}
-    func onPrintPayment(_ order:CLVModels.Order.Order?, payment:CLVModels.Payments.Payment?){}
+    func onPrintRefundPayment(_ refund:CLVModels.Payments.Refund, payment:CLVModels.Payments.Payment, order:CLVModels.Order.Order){}
+    func onPrintMerchantReceipt(_ payment:CLVModels.Payments.Payment){}
+    func onPrintPaymentDecline(_ reason:String, payment:CLVModels.Payments.Payment){}
+    func onPrintPayment(_ order:CLVModels.Order.Order, payment:CLVModels.Payments.Payment){}
     func onPrintCredit(_ credit:CLVModels.Payments.Credit){}
     func onPrintCreditDecline(_ reason:String, credit:CLVModels.Payments.Credit?){}
     
@@ -137,7 +137,7 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     func onDeviceDisconnected( _ device:CloverDevice){}
     func onDeviceConnected(_ device:CloverDevice){}
     func onDeviceReady(_ device:CloverDevice, discoveryResponseMessage:DiscoveryResponseMessage){}
-    func onDeviceError(_ errorType:CloverDeviceErrorType, int:Int?, cause:NSError?, message:String){}
+    func onDeviceError(_ errorType:CloverDeviceErrorType, int:Int?, cause:Error?, message:String){}
     
     func onMessageAck(_ sourceMessageId:String){}
     
@@ -149,9 +149,9 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     func onActivityResponse(_ status:ResultCode, action:String?, payload:String?, failReason: String?) {}
     
     func onDeviceStatusResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState, subState: ExternalDeviceSubState?, data: ExternalDeviceStateData?) {}
-    func onMessageFromActivity(action: String, payload: String?){}
+    func onMessageFromActivity(_ action: String, payload: String?){}
     func onRetrievePaymentResponse(_ result: ResultStatus, reason:String?, queryStatus: QueryStatus, payment:CLVModels.Payments.Payment?, externalPaymentId:String?){}
-    func onRetrievePrinterResponse(_ printers:[CLVModels.Printer.Printer]?) {}
+    func onRetrievePrintersResponse(_ printers:[CLVModels.Printer.Printer]?) {}
     func onRetrievePrintJobStatus(_ printRequestId:String?, status:String?) {}
     func onResetDeviceResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState){}
 }

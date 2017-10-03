@@ -8,7 +8,7 @@
 import Foundation
 
 public class RetrievePrintersResponse: NSObject {
-    public private(set) var printers: [CLVModels.Printer.Printer]?
+    public fileprivate(set) var printers: [CLVModels.Printer.Printer]?
     
     init(_ printers: [CLVModels.Printer.Printer]?) {
         self.printers = printers

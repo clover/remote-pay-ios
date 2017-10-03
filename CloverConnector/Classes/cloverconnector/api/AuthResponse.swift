@@ -15,8 +15,8 @@ public class AuthResponse:PaymentResponse {
     }
     
     /// :nodoc:
-    required public init?(_ map: Map) {
-        super.init(map)
+    required public init?(map:Map) {
+        super.init(map: map)
     }
     
 }

@@ -8,7 +8,6 @@ import Foundation
 /**
  * Callback to the POS to request a payment declined receipt
  */
-@objc
 public class PrintPaymentDeclineReceiptMessage : NSObject {
     public var payment:CLVModels.Payments.Payment?
     public var reason:String?

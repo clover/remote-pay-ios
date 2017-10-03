@@ -13,7 +13,6 @@ import Foundation
  *  Defines the interface used to interact with remote pay
  *  adapters.
  */
-@objc
 public protocol ICloverConnectorListener : AnyObject {
     
     
@@ -166,7 +165,7 @@ public protocol ICloverConnectorListener : AnyObject {
     /// Called in response to a retrievePrinters() request
     ///
     /// - Parameter retrievePrintersResponse: Response object containing an array of the printers being passed back
-    func onRetrievePrinters(_ retrievePrintersResponse:RetrievePrintersResponse) -> Void
+    func onRetrievePrintersResponse(_ retrievePrintersResponse:RetrievePrintersResponse) -> Void
     
     /// Called to update the status of a print job
     ///
@@ -207,5 +206,5 @@ public protocol ICloverConnectorListener : AnyObject {
     /*
      * called in response to a retrieveDeviceStatus request
      */
-    func onRetrieveDeviceStatusResponse(_response: RetrieveDeviceStatusResponse) -> Void
+    func onRetrieveDeviceStatusResponse(_ _response: RetrieveDeviceStatusResponse) -> Void
 }

@@ -14,7 +14,7 @@ public class RetrievePendingPaymentsRequestMessage : Message
     public init() {
         super.init(method: .RETRIEVE_PENDING_PAYMENTS)
     }
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.RETRIEVE_PENDING_PAYMENTS)
     }
 

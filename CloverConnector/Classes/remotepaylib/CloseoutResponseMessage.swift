@@ -16,12 +16,12 @@ public class CloseoutResponseMessage : Message {
     public var reason:String?
     public var batch:CLVModels.Payments.Batch?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .CLOSEOUT_RESPONSE)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         status <- map["status"]
         reason <- map["reason"]
         batch <- map["batch"]

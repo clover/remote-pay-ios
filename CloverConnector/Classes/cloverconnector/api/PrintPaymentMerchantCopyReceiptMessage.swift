@@ -8,7 +8,6 @@ import Foundation
 /**
 * Callback to the POS to request a merchant copy of the payment receipt
  */
-@objc
 public class PrintPaymentMerchantCopyReceiptMessage : NSObject {
     public var payment:CLVModels.Payments.Payment?
     

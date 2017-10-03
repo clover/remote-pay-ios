@@ -24,7 +24,7 @@ public class Signature:Mappable {
 
   }
 /// :nodoc:
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
     
   }
 /// :nodoc:
@@ -40,7 +40,7 @@ public class Signature:Mappable {
     public class Stroke:Mappable {
         public var points:Array<Point>?
         /// :nodoc:
-        required public init?(_ map: Map) {
+        required public init?(map:Map) {
             
         }
         /// :nodoc:

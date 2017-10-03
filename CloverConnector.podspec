@@ -1,13 +1,13 @@
 
 Pod::Spec.new do |s|
-s.name             = 'CloverConnector'
-s.version          = '1.4.0'
-s.summary          = 'Provides an api for communicating with a Clover Mini as a customer facing payment device.'
+  s.name             = 'CloverConnector'
+  s.version          = '1.4.0'
+  s.summary          = 'Provides an api for communicating with a Clover Mini as a customer facing payment device.'
 
-s.description      = <<-DESC
+  s.description      = <<-DESC
 CloverConnector provides an interface to communicate with a tethered Clover device to enable integration with Clover's customer facing payment device capabilities.
 
-New features in 1.4 largely focused around expanding printing capabilities.
+New features in 1.4 largely focused around expanding printing capabilities. The 1.4 release is also the first to support Swift 4.0.
 
 ICloverConnector
 - *sale* - method to collect a final sale payment
@@ -82,7 +82,9 @@ DESC
   s.author           = { 'Clover' => 'semi-integrations@clover.com' }
   s.source           = { :git => 'https://github.com/clover/remote-pay-ios.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0' }
+
+  s.ios.deployment_target = '9.0'
   s.osx.deployment_target = '10.10'
 # s.watchos.deployment_target = '2.0'
 
@@ -91,7 +93,7 @@ DESC
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'Foundation'
-  s.dependency 'ObjectMapper', '1.5.0'
-  s.dependency 'Starscream', '1.1.4'
-  s.dependency 'SwiftyJSON', '2.4.0'
+  s.dependency 'ObjectMapper', '3.0.0'
+  s.dependency 'Starscream', '2.1.1'
+  s.dependency 'SwiftyJSON', '3.1.4'
 end

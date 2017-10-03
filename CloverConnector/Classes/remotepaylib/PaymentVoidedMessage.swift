@@ -14,12 +14,12 @@ public class PaymentVoidedMessage : Message {
     public var payment:CLVModels.Payments.Payment?
     public var voidReason:VoidReason?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .PAYMENT_VOIDED)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         payment <- (map["payment"], Message.paymentTransform)
         voidReason <- map["voidReason"]
     }

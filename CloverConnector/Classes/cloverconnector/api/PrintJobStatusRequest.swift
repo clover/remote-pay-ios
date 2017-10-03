@@ -5,7 +5,6 @@
 
 import Foundation
 
-@objc
 public class PrintJobStatusRequest: NSObject {
     let printRequestId: String
     
@@ -16,5 +15,5 @@ public class PrintJobStatusRequest: NSObject {
         self.printRequestId = printRequestId
     }
     
-    private override init() { self.printRequestId = String() }//marking as private to enforce object creation through another initializer 
+    fileprivate override init() { self.printRequestId = String() }//marking as private to enforce object creation through another initializer 
 }

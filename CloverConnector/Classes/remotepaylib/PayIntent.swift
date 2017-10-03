@@ -12,35 +12,35 @@ import ObjectMapper
 
 public class PayIntent:Mappable {
 
-    public private(set) var action:String?
-    public private(set) var amount = 0
-    public private(set) var tippableAmount:Int?
-    public private(set) var tipAmount:Int?
-    public private(set) var taxAmount:Int?
-    public private(set) var orderId:String?
-    public private(set) var employeeId:String?
-    public private(set) var transactionType:TransactionType?
+    public fileprivate(set) var action:String?
+    public fileprivate(set) var amount = 0
+    public fileprivate(set) var tippableAmount:Int?
+    public fileprivate(set) var tipAmount:Int?
+    public fileprivate(set) var taxAmount:Int?
+    public fileprivate(set) var orderId:String?
+    public fileprivate(set) var employeeId:String?
+    public fileprivate(set) var transactionType:TransactionType?
     //        public private(set) var serviceChargeAmount:ServiceChargeAmount
-    public private(set) var isDisableCashBack = false
-    public private(set) var isTesting = false
-    public private(set) var cardEntryMethods = 15
-    public private(set) var voiceAuthCode:String?
-    public private(set) var postalCode:String?
-    public private(set) var streetAddress:String?
-    public private(set) var isCardNotPresent:Bool?
-    public private(set) var cardDataMessage:String?
-    public private(set) var remotePrint:Bool?
-    public private(set) var transactionNo:String?
-    public private(set) var isForceSwipePinEntry:Bool?
-    public private(set) var disableRestartTransactionOnFail:Bool?
-    public private(set) var externalPaymentId:String
-    public private(set) var vaultedCard:CLVModels.Payments.VaultedCard?
-    public private(set) var allowOfflinePayment:Bool?
-    public private(set) var approveOfflinePaymentWithoutPrompt:Bool?
-    public private(set) var requiresRemoteConfirmation:Bool?
-    public private(set) var applicationTracking:CLVModels.Apps.AppTracking?
-    public private(set) var allowPartialAuth = true
-    public private(set) var transactionSettings:CLVModels.Payments.TransactionSettings?
+    public fileprivate(set) var isDisableCashBack = false
+    public fileprivate(set) var isTesting = false
+    public fileprivate(set) var cardEntryMethods = 15
+    public fileprivate(set) var voiceAuthCode:String?
+    public fileprivate(set) var postalCode:String?
+    public fileprivate(set) var streetAddress:String?
+    public fileprivate(set) var isCardNotPresent:Bool?
+    public fileprivate(set) var cardDataMessage:String?
+    public fileprivate(set) var remotePrint:Bool?
+    public fileprivate(set) var transactionNo:String?
+    public fileprivate(set) var isForceSwipePinEntry:Bool?
+    public fileprivate(set) var disableRestartTransactionOnFail:Bool?
+    public fileprivate(set) var externalPaymentId:String
+    public fileprivate(set) var vaultedCard:CLVModels.Payments.VaultedCard?
+    public fileprivate(set) var allowOfflinePayment:Bool?
+    public fileprivate(set) var approveOfflinePaymentWithoutPrompt:Bool?
+    public fileprivate(set) var requiresRemoteConfirmation:Bool?
+    public fileprivate(set) var applicationTracking:CLVModels.Apps.AppTracking?
+    public fileprivate(set) var allowPartialAuth = true
+    public fileprivate(set) var transactionSettings:CLVModels.Payments.TransactionSettings?
 
     public init(amount:Int, externalId:String) {
         self.amount = amount
@@ -51,7 +51,7 @@ public class PayIntent:Mappable {
     self.externalPaymentId = ""
   }
 
-  public required init(_ map:Map){
+  public required init(map:Map){
     self.amount = 0
     self.externalPaymentId = ""
 
@@ -128,7 +128,7 @@ public class PayIntent:Mappable {
         }
 
         public func build() -> PayIntent {
-            var payIntent = PayIntent()
+            let payIntent = PayIntent()
             payIntent.action = self.action
             payIntent.amount = self.amount
             payIntent.tippableAmount = self.tippableAmount

@@ -26,13 +26,13 @@ public class RetrieveDeviceStatusResponse:BaseResponse {
         super.init(success: s, result: r)
     }
     /// :nodoc:
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         self.state = .UNKNOWN
-        super.init(map)
+        super.init(map: map)
     }
     /// :nodoc:
-    public override func mapping(map: Map) {
-        super.mapping(map)
+    public override func mapping(map:Map) {
+        super.mapping(map: map)
         self.state <- map["state"]
         self.data <- map["data"]
     }

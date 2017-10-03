@@ -19,12 +19,12 @@ public class ImagePrintMessage : Message {
         super.init(method: Method.PRINT_IMAGE)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.PRINT_IMAGE)
     }
 
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         
         png <- (map["png"], Message.pngBase64transform)
         urlString <- map["urlString"]
