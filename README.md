@@ -8,7 +8,7 @@ A Swift 4 implementation of the CloverConnector to enable iOS and MacOS to commu
 
 Current version: 1.4.0
 
-NOTE: Full support for version 1.4 of the SDK requires version 138 or higher of the Remote Pay app.
+NOTE: Full support for version 1.4 of the SDK requires version 143 or higher of the Remote Pay app.
 
 NOTE: To use the Swift 2.3 compatible version of this library, you will need to point your Podfile at the [1.4.0-swift2.3](https://github.com/clover/remote-pay-ios/tree/1.4.0-swift2.3) branch as listed below in the code sample.
 
