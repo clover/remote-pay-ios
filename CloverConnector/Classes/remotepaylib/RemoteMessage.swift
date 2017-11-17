@@ -33,63 +33,46 @@ public class RemoteMessage:Mappable {
   public var version:Int = 1
   public var remoteSourceSDK = ""
   public var remoteApplicationID = ""
+    public var fragmentIndex:Int?
+    public var lastFragment:Bool?
+    public var attachment:String?
+    public var attachmentUri:String?
+    public var attachmentEncoding:String?
 
   public required init() {
 
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
     payload = map["payload"].currentValue as? String
     method = map["method"].currentValue as? Method
   }
 
   public func mapping(map:Map) {
-    /*
-    let transform = TransformOf<Mappable, String>(fromJSON: { (value: String?) -> Mappable? in
-        // transform value from String? to Int?
-        if let pi = Mapper<Mappable>().map(value!) {
-            return pi
-        }
-        return nil
-        }, toJSON: { (value: Mappable?) -> String? in
-            // transform value from Int? to String?
-            if let value = Mapper().toJSONString(value!, prettyPrint:true) {
-                return String(value)
-            }
-            return nil
-    })*/
-  remoteSourceSDK <- map["remoteSourceSDK"]
 
-  remoteApplicationID <- map["remoteApplicationID"]
-
-  version <- map["version"]
+    remoteSourceSDK <- map["remoteSourceSDK"]
     
-  method <- (map["method"], Message.methodTransform)
+    remoteApplicationID <- map["remoteApplicationID"]
     
-  requestId <- map["requestId"]
-
-  packageName <- map["packageName"]
-
-  payload <- map["payload"]
-
-  type <- map["type"]
-
+    version <- map["version"]
+    
+    method <- (map["method"], Message.methodTransform)
+    
+    requestId <- map["requestId"]
+    
+    packageName <- map["packageName"]
+    
+    payload <- map["payload"]
+    
+    type <- map["type"]
     id <- map["id"]
+
+    fragmentIndex <- map["fragmentIndex"]
+    lastFragment <- map["lastFragment"]
+    attachment <- map["attachment"]
+
+    attachmentUri <- map["attachmentUri"]
+    attachmentEncoding <- map["attachmentEncoding"]
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  requestId = jsonObj.valueForKey("requestId") as! String?
-
-  packageName = jsonObj.valueForKey("packageName") as! String?
-
-  payload = jsonObj.valueForKey("payload") as! String?
-
-  type = RemoteMessageType(rawValue: jsonObj.valueForKey("type") as! String)
-  }
-*/
-
 }
 

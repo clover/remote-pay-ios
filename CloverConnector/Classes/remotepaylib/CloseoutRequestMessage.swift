@@ -19,12 +19,12 @@ public class CloseoutRequestMessage : Message {
         super.init(method: .CLOSEOUT_REQUEST)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .CLOSEOUT_REQUEST)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         allowOpenTabs <- map["allowOpenTabs"]
         batchId <- map["batchId"]
     }

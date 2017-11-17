@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class POSLineItem : AnyObject {
+public class POSLineItem {
     public let item:POSItem
     public var quantity:Int = 1
     

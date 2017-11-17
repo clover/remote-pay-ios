@@ -8,8 +8,7 @@
 
 import Foundation
 
-@objc
 public protocol PairingDeviceConfiguration {
-    func onPairingCode(pairingCode:String)
-    func onPairingSuccess(authToken:String)
+    func onPairingCode(_ pairingCode:String)
+    func onPairingSuccess(_ authToken:String)
 }

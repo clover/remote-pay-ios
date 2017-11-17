@@ -15,7 +15,7 @@ public class DisplayOrderModifiedOperation : Mappable {
     public var ids:Array<String>?
     public var orderId:String?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         
     }
     

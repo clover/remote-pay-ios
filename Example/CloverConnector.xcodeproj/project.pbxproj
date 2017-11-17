@@ -10,12 +10,12 @@
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
+		72A845A71F6B382300BDF1B9 /* PrintTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A845A61F6B382300BDF1B9 /* PrintTestViewController.swift */; };
 		7E12A34A1E6E011F00EF7458 /* TestDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12A3491E6E011F00EF7458 /* TestDetailsViewController.swift */; };
 		7E22E3711E38723700E61A11 /* clover_cacerts.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 7E22E3701E38723700E61A11 /* clover_cacerts.p12 */; };
 		7E41B1FB1E5386A60065AF21 /* ManualRefundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B1FA1E5386A60065AF21 /* ManualRefundViewController.swift */; };
 		7E41B1FD1E5386E40065AF21 /* PreAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B1FC1E5386E40065AF21 /* PreAuthViewController.swift */; };
 		7E41B1FF1E5387200065AF21 /* VaultCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B1FE1E5387200065AF21 /* VaultCardViewController.swift */; };
-		7E41B2011E5392750065AF21 /* ScrollingFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B2001E5392750065AF21 /* ScrollingFormViewController.swift */; };
 		7E84F8FD1E60A3F8003A70B2 /* test1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E84F8FC1E60A3F8003A70B2 /* test1.json */; };
 		7E84F8FF1E60AD35003A70B2 /* UITestTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E84F8FE1E60AD35003A70B2 /* UITestTableCell.swift */; };
 		7EC6DF141D90472D00D852EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EC6DEF61D90472D00D852EF /* Assets.xcassets */; };
@@ -96,12 +96,12 @@
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* CloverConnector_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CloverConnector_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60BF16A62156B0D50E349B58 /* Pods_CloverConnector_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CloverConnector_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		72A845A61F6B382300BDF1B9 /* PrintTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintTestViewController.swift; sourceTree = "<group>"; };
 		7E12A3491E6E011F00EF7458 /* TestDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDetailsViewController.swift; sourceTree = "<group>"; };
 		7E22E3701E38723700E61A11 /* clover_cacerts.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = clover_cacerts.p12; sourceTree = "<group>"; };
 		7E41B1FA1E5386A60065AF21 /* ManualRefundViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManualRefundViewController.swift; sourceTree = "<group>"; };
 		7E41B1FC1E5386E40065AF21 /* PreAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreAuthViewController.swift; sourceTree = "<group>"; };
 		7E41B1FE1E5387200065AF21 /* VaultCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultCardViewController.swift; sourceTree = "<group>"; };
-		7E41B2001E5392750065AF21 /* ScrollingFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingFormViewController.swift; sourceTree = "<group>"; };
 		7E84F8FC1E60A3F8003A70B2 /* test1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = test1.json; path = test/data/test1.json; sourceTree = "<group>"; };
 		7E84F8FE1E60AD35003A70B2 /* UITestTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestTableCell.swift; sourceTree = "<group>"; };
 		7EC6DEF61D90472D00D852EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -196,6 +196,7 @@
 		607FACD21AFB9204008FA782 /* Example Source */ = {
 			isa = PBXGroup;
 			children = (
+				7E2E68AE1EFBE45F002BD030 /* ui */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				7EC6DEF61D90472D00D852EF /* Assets.xcassets */,
 				7EC6DEF71D90472D00D852EF /* AvailableItemCollectionViewCell.swift */,
@@ -205,18 +206,15 @@
 				7EC6DEFF1D90472D00D852EF /* CloverConnectorListener.swift */,
 				7EC6DF001D90472D00D852EF /* CurrencyUtils.swift */,
 				7EC6DF011D90472D00D852EF /* CurrentOrderListItemTableCell.swift */,
-				607FACD91AFB9204008FA782 /* Main.storyboard */,
-				7EC6DF041D90472D00D852EF /* MiscViewController.swift */,
 				7E41B1F91E5369340065AF21 /* model */,
-				7E41B2001E5392750065AF21 /* ScrollingFormViewController.swift */,
 				7EC6DF121D90472D00D852EF /* SignatureView.swift */,
 				7EC6DF131D90472D00D852EF /* SignatureViewController.swift */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 				7ED6963E1EB7CA430010032A /* tabs */,
 				7EC74A4F1D91BCA000D0CBBF /* TestCloverConnectorListener.swift */,
 				7E12A3491E6E011F00EF7458 /* TestDetailsViewController.swift */,
-				7EC74A4D1D91BB8800D0CBBF /* TestViewController.swift */,
 				7E84F8FE1E60AD35003A70B2 /* UITestTableCell.swift */,
+				72A845A61F6B382300BDF1B9 /* PrintTestViewController.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 			);
 			name = "Example Source";
@@ -258,6 +256,14 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		7E2E68AE1EFBE45F002BD030 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				607FACD91AFB9204008FA782 /* Main.storyboard */,
+			);
+			name = ui;
+			sourceTree = "<group>";
+		};
 		7E41B1F91E5369340065AF21 /* model */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,12 +296,14 @@
 			children = (
 				7EC74A511D91C32E00D0CBBF /* TabController.swift */,
 				7E41B1FA1E5386A60065AF21 /* ManualRefundViewController.swift */,
+				7EC6DF041D90472D00D852EF /* MiscViewController.swift */,
 				7EEB27291D9C0E640017879B /* OrderDetailsViewController.swift */,
 				7EC6DF051D90472D00D852EF /* OrdersTableViewController.swift */,
 				7E41B1FC1E5386E40065AF21 /* PreAuthViewController.swift */,
 				7EC6DF111D90472D00D852EF /* RegisterViewController.swift */,
 				7EEB720C1EAFFA81008E641D /* SimpleTestViewController.swift */,
 				7E41B1FE1E5387200065AF21 /* VaultCardViewController.swift */,
+				7EC74A4D1D91BB8800D0CBBF /* TestViewController.swift */,
 			);
 			name = tabs;
 			sourceTree = "<group>";
@@ -362,18 +370,18 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = Q993233M8T;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = Q993233M8T;
+						DevelopmentTeam = UVY366B5KZ;
 						LastSwiftMigration = 0800;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -429,13 +437,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CloverConnector_Example-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4CA58960FE86264DFDB26A50 /* [CP] Check Pods Manifest.lock */ = {
@@ -444,13 +455,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CloverConnector_Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A3BFB62B8451F330D0854C2B /* [CP] Embed Pods Frameworks */ = {
@@ -459,9 +473,18 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CloverConnector_Example/Pods-CloverConnector_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CloverConnector/CloverConnector.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CloverConnector.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -532,6 +555,7 @@
 				7EC6DF1A1D90472D00D852EF /* CloverConnectorListener.swift in Sources */,
 				7EC6DF291D90472D00D852EF /* POSRefund.swift in Sources */,
 				7EC6DF191D90472D00D852EF /* BaseUISplitViewController.swift in Sources */,
+				72A845A71F6B382300BDF1B9 /* PrintTestViewController.swift in Sources */,
 				7EC6DF1B1D90472D00D852EF /* CurrencyUtils.swift in Sources */,
 				7EC6DF2A1D90472D00D852EF /* POSStore.swift in Sources */,
 				7EEB272A1D9C0E640017879B /* OrderDetailsViewController.swift in Sources */,
@@ -540,7 +564,6 @@
 				7EC74A521D91C32E00D0CBBF /* TabController.swift in Sources */,
 				7EC6DF261D90472D00D852EF /* POSOrder.swift in Sources */,
 				7E41B1FB1E5386A60065AF21 /* ManualRefundViewController.swift in Sources */,
-				7E41B2011E5392750065AF21 /* ScrollingFormViewController.swift in Sources */,
 				7EC6DF1E1D90472D00D852EF /* MiscViewController.swift in Sources */,
 				7E41B1FD1E5386E40065AF21 /* PreAuthViewController.swift in Sources */,
 				7E84F8FF1E60AD35003A70B2 /* UITestTableCell.swift in Sources */,
@@ -610,14 +633,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -643,7 +672,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -659,14 +688,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -685,7 +720,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -702,12 +737,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = Q993233M8T;
 				INFOPLIST_FILE = CloverConnector/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.clover.CloverConnectorExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -721,12 +756,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = Q993233M8T;
 				INFOPLIST_FILE = CloverConnector/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.clover.CloverConnectorExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -735,7 +770,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA004E9F68C5A4678FD062F7 /* Pods-CloverConnector_Tests.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = Q993233M8T;
+				DEVELOPMENT_TEAM = UVY366B5KZ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -757,7 +792,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 459E230E62D068EDFEB5E92E /* Pods-CloverConnector_Tests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = Q993233M8T;
+				DEVELOPMENT_TEAM = UVY366B5KZ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

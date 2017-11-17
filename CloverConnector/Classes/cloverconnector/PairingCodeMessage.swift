@@ -16,11 +16,11 @@ public class PairingCodeMessage:Mappable {
         self.pairingCode = pairingCode;
     }
     
-    public required init?(_ map: Map) {
+    public required init?(map:Map) {
         
     }
     
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         pairingCode <- map["pairingCode"]
     }
     

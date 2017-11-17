@@ -8,7 +8,6 @@
 
 import Foundation
 
-@objc
 public protocol CloverDeviceConfiguration {
     var remoteApplicationID:String { get set }
     var remoteSourceSDK:String { get }
@@ -21,4 +20,5 @@ public protocol CloverDeviceConfiguration {
     
     func getName() -> String
     
+    func getMaxMessageCharacters() -> Int
 }

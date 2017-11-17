@@ -1,17 +1,25 @@
-//
-//  TransactionResponse.swift
-//  CloverSDKRemotepay
-//
 //  
 //  Copyright © 2017 Clover Network, Inc. All rights reserved.
 //
 
 import ObjectMapper
 
+/**
+ A base response for
+ */
 public class BaseResponse : NSObject, Mappable {
+    /// whether the request processed successfully
     public var success:Bool
+    /// the result
+    /// - SUCCESS -the call succeeded and was successfully queued or processed
+    /// - FAIL -the call failed because of some value passed in, or it failed for an unknown reason
+    /// - UNSUPPORTED -the capability will never work without a config changed
+    /// - CANCEL -this means the call was canceled for some reason, but could work if re-submitted
+    /// - ERROR -an unknown error occurred
     public var result:ResultCode
+    /// an optional reason for a non-success state
     public var reason:String?
+    /// an optional detail message for a non-success state
     public var message:String?
     
     public override init() {
@@ -33,12 +41,14 @@ public class BaseResponse : NSObject, Mappable {
         super.init()
     }
     
-    required public init?(_ map: Map) {
+    /// :nodoc:
+    required public init?(map:Map) {
         self.success = false
         self.result = ResultCode.CANCEL
     }
     
-    public func mapping(map: Map) {
+    /// :nodoc:
+    public func mapping(map:Map) {
         success <- map["success"]
         result <- map["result"]
         reason <- map["reason"]

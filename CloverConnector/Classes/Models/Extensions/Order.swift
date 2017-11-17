@@ -19,7 +19,7 @@ extension CLVModels {
     
     
     
-    public class Discount: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Order8Discount)public class Discount: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// The order with which the discount is associated
@@ -35,31 +35,31 @@ extension CLVModels {
       /// Discount amount in percent
       public var percentage: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(orderRef, forKey: "orderRef")
-        aCoder.encodeObject(lineItemRef, forKey: "lineItemRef")
-        aCoder.encodeObject(discount, forKey: "discount")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(amount, forKey: "amount")
-        aCoder.encodeObject(percentage, forKey: "percentage")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(orderRef, forKey: "orderRef")
+        aCoder.encode(lineItemRef, forKey: "lineItemRef")
+        aCoder.encode(discount, forKey: "discount")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(amount, forKey: "amount")
+        aCoder.encode(percentage, forKey: "percentage")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        orderRef = aDecoder.decodeObjectForKey("orderRef") as? CLVModels.Order.Order
-        lineItemRef = aDecoder.decodeObjectForKey("lineItemRef") as? CLVModels.Order.LineItem
-        discount = aDecoder.decodeObjectForKey("discount") as? CLVModels.Inventory.Discount
-        name = aDecoder.decodeObjectForKey("name") as? String
-        amount = aDecoder.decodeObjectForKey("amount") as? Int
-        percentage = aDecoder.decodeObjectForKey("percentage") as? Int
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        orderRef = aDecoder.decodeObject(forKey: "orderRef") as? CLVModels.Order.Order
+        lineItemRef = aDecoder.decodeObject(forKey: "lineItemRef") as? CLVModels.Order.LineItem
+        discount = aDecoder.decodeObject(forKey: "discount") as? CLVModels.Inventory.Discount
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
+        percentage = aDecoder.decodeObject(forKey: "percentage") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -74,7 +74,7 @@ extension CLVModels {
     
     
     
-    public class FireOrder: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Order9FireOrder)public class FireOrder: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// The id of the order to fire.
@@ -82,23 +82,23 @@ extension CLVModels {
       /// How long in seconds to wait before calling fire.
       public var delay: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(orderId, forKey: "orderId")
-        aCoder.encodeObject(delay, forKey: "delay")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(orderId, forKey: "orderId")
+        aCoder.encode(delay, forKey: "delay")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        orderId = aDecoder.decodeObjectForKey("orderId") as? String
-        delay = aDecoder.decodeObjectForKey("delay") as? Int
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        orderId = aDecoder.decodeObject(forKey: "orderId") as? String
+        delay = aDecoder.decodeObject(forKey: "delay") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -117,7 +117,7 @@ extension CLVModels {
     
     
     
-    public class LineItem: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Order8LineItem)public class LineItem: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// The order with which the line item is associated
@@ -140,8 +140,8 @@ extension CLVModels {
       public var exchangedLineItem: CLVModels.Order.LineItem?
       public var binName: String?
       public var userData: String?
-      public var createdTime: NSDate?
-      public var orderClientCreatedTime: NSDate?
+      public var createdTime: Date?
+      public var orderClientCreatedTime: Date?
       public var discounts: [CLVModels.Order.Discount]?
       /// does the calculated flag actually do anything?
       public var discountAmount: Int?
@@ -154,65 +154,65 @@ extension CLVModels {
       /// Payments that were made for this line item
       public var payments: [CLVModels.Payments.LineItemPayment]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(orderRef, forKey: "orderRef")
-        aCoder.encodeObject(item, forKey: "item")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(alternateName, forKey: "alternateName")
-        aCoder.encodeObject(price, forKey: "price")
-        aCoder.encodeObject(unitQty, forKey: "unitQty")
-        aCoder.encodeObject(unitName, forKey: "unitName")
-        aCoder.encodeObject(itemCode, forKey: "itemCode")
-        aCoder.encodeObject(note, forKey: "note")
-        aCoder.encodeObject(printed, forKey: "printed")
-        aCoder.encodeObject(exchangedLineItem, forKey: "exchangedLineItem")
-        aCoder.encodeObject(binName, forKey: "binName")
-        aCoder.encodeObject(userData, forKey: "userData")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
-        aCoder.encodeObject(orderClientCreatedTime, forKey: "orderClientCreatedTime")
-        aCoder.encodeObject(discounts, forKey: "discounts")
-        aCoder.encodeObject(discountAmount, forKey: "discountAmount")
-        aCoder.encodeObject(exchanged, forKey: "exchanged")
-        aCoder.encodeObject(modifications, forKey: "modifications")
-        aCoder.encodeObject(refunded, forKey: "refunded")
-        aCoder.encodeObject(isRevenue, forKey: "isRevenue")
-        aCoder.encodeObject(taxRates, forKey: "taxRates")
-        aCoder.encodeObject(payments, forKey: "payments")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(orderRef, forKey: "orderRef")
+        aCoder.encode(item, forKey: "item")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(alternateName, forKey: "alternateName")
+        aCoder.encode(price, forKey: "price")
+        aCoder.encode(unitQty, forKey: "unitQty")
+        aCoder.encode(unitName, forKey: "unitName")
+        aCoder.encode(itemCode, forKey: "itemCode")
+        aCoder.encode(note, forKey: "note")
+        aCoder.encode(printed, forKey: "printed")
+        aCoder.encode(exchangedLineItem, forKey: "exchangedLineItem")
+        aCoder.encode(binName, forKey: "binName")
+        aCoder.encode(userData, forKey: "userData")
+        aCoder.encode(createdTime, forKey: "createdTime")
+        aCoder.encode(orderClientCreatedTime, forKey: "orderClientCreatedTime")
+        aCoder.encode(discounts, forKey: "discounts")
+        aCoder.encode(discountAmount, forKey: "discountAmount")
+        aCoder.encode(exchanged, forKey: "exchanged")
+        aCoder.encode(modifications, forKey: "modifications")
+        aCoder.encode(refunded, forKey: "refunded")
+        aCoder.encode(isRevenue, forKey: "isRevenue")
+        aCoder.encode(taxRates, forKey: "taxRates")
+        aCoder.encode(payments, forKey: "payments")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        orderRef = aDecoder.decodeObjectForKey("orderRef") as? CLVModels.Order.Order
-        item = aDecoder.decodeObjectForKey("item") as? CLVModels.Inventory.Item
-        name = aDecoder.decodeObjectForKey("name") as? String
-        alternateName = aDecoder.decodeObjectForKey("alternateName") as? String
-        price = aDecoder.decodeObjectForKey("price") as? Int
-        unitQty = aDecoder.decodeObjectForKey("unitQty") as? Int
-        unitName = aDecoder.decodeObjectForKey("unitName") as? String
-        itemCode = aDecoder.decodeObjectForKey("itemCode") as? String
-        note = aDecoder.decodeObjectForKey("note") as? String
-        printed = aDecoder.decodeObjectForKey("printed") as? Bool
-        exchangedLineItem = aDecoder.decodeObjectForKey("exchangedLineItem") as? CLVModels.Order.LineItem
-        binName = aDecoder.decodeObjectForKey("binName") as? String
-        userData = aDecoder.decodeObjectForKey("userData") as? String
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-        orderClientCreatedTime = aDecoder.decodeObjectForKey("orderClientCreatedTime") as? NSDate
-        discounts = aDecoder.decodeObjectForKey("discounts") as? [CLVModels.Order.Discount]
-        discountAmount = aDecoder.decodeObjectForKey("discountAmount") as? Int
-        exchanged = aDecoder.decodeObjectForKey("exchanged") as? Bool
-        modifications = aDecoder.decodeObjectForKey("modifications") as? [CLVModels.Order.Modification]
-        refunded = aDecoder.decodeObjectForKey("refunded") as? Bool
-        isRevenue = aDecoder.decodeObjectForKey("isRevenue") as? Bool
-        taxRates = aDecoder.decodeObjectForKey("taxRates") as? [CLVModels.Inventory.TaxRate]
-        payments = aDecoder.decodeObjectForKey("payments") as? [CLVModels.Payments.LineItemPayment]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        orderRef = aDecoder.decodeObject(forKey: "orderRef") as? CLVModels.Order.Order
+        item = aDecoder.decodeObject(forKey: "item") as? CLVModels.Inventory.Item
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        alternateName = aDecoder.decodeObject(forKey: "alternateName") as? String
+        price = aDecoder.decodeObject(forKey: "price") as? Int
+        unitQty = aDecoder.decodeObject(forKey: "unitQty") as? Int
+        unitName = aDecoder.decodeObject(forKey: "unitName") as? String
+        itemCode = aDecoder.decodeObject(forKey: "itemCode") as? String
+        note = aDecoder.decodeObject(forKey: "note") as? String
+        printed = aDecoder.decodeObject(forKey: "printed") as? Bool
+        exchangedLineItem = aDecoder.decodeObject(forKey: "exchangedLineItem") as? CLVModels.Order.LineItem
+        binName = aDecoder.decodeObject(forKey: "binName") as? String
+        userData = aDecoder.decodeObject(forKey: "userData") as? String
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+        orderClientCreatedTime = aDecoder.decodeObject(forKey: "orderClientCreatedTime") as? Date
+        discounts = aDecoder.decodeObject(forKey: "discounts") as? [CLVModels.Order.Discount]
+        discountAmount = aDecoder.decodeObject(forKey: "discountAmount") as? Int
+        exchanged = aDecoder.decodeObject(forKey: "exchanged") as? Bool
+        modifications = aDecoder.decodeObject(forKey: "modifications") as? [CLVModels.Order.Modification]
+        refunded = aDecoder.decodeObject(forKey: "refunded") as? Bool
+        isRevenue = aDecoder.decodeObject(forKey: "isRevenue") as? Bool
+        taxRates = aDecoder.decodeObject(forKey: "taxRates") as? [CLVModels.Inventory.TaxRate]
+        payments = aDecoder.decodeObject(forKey: "payments") as? [CLVModels.Payments.LineItemPayment]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -245,7 +245,7 @@ extension CLVModels {
     
     
     /// Snapshot of a line item modifier at the time that the order was placed.
-    public class Modification: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Order12Modification)public class Modification: NSObject, NSCoding, Mappable {
       public var id: String?
       /// The line item with which the modification is associated
       public var lineItemRef: CLVModels.Order.LineItem?
@@ -255,29 +255,29 @@ extension CLVModels {
       /// The modifier object.  Values from the Modifier are copied to the Modification at the time that the order is placed.  Modifier values may change after the order is placed.
       public var modifier: CLVModels.Inventory.Modifier?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(lineItemRef, forKey: "lineItemRef")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(alternateName, forKey: "alternateName")
-        aCoder.encodeObject(amount, forKey: "amount")
-        aCoder.encodeObject(modifier, forKey: "modifier")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(lineItemRef, forKey: "lineItemRef")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(alternateName, forKey: "alternateName")
+        aCoder.encode(amount, forKey: "amount")
+        aCoder.encode(modifier, forKey: "modifier")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        lineItemRef = aDecoder.decodeObjectForKey("lineItemRef") as? CLVModels.Order.LineItem
-        name = aDecoder.decodeObjectForKey("name") as? String
-        alternateName = aDecoder.decodeObjectForKey("alternateName") as? String
-        amount = aDecoder.decodeObjectForKey("amount") as? Int
-        modifier = aDecoder.decodeObjectForKey("modifier") as? CLVModels.Inventory.Modifier
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        lineItemRef = aDecoder.decodeObject(forKey: "lineItemRef") as? CLVModels.Order.LineItem
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        alternateName = aDecoder.decodeObject(forKey: "alternateName") as? String
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
+        modifier = aDecoder.decodeObject(forKey: "modifier") as? CLVModels.Inventory.Modifier
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -291,7 +291,7 @@ extension CLVModels {
     
     
     
-    public class Order: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Order5Order)public class Order: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Currency of this order
@@ -310,13 +310,13 @@ extension CLVModels {
       public var manualTransaction: Bool?
       public var groupLineItems: Bool?
       public var testMode: Bool?
-      public var payType: CLVModels.Order.PayType?
+      public var payType: CLVModels.Order.PayType? = nil
       /// Creation timestamp
-      public var createdTime: NSDate?
-      public var clientCreatedTime: NSDate?
+      public var createdTime: Date?
+      public var clientCreatedTime: Date?
       /// Last modified time of the order
-      public var modifiedTime: NSDate?
-      public var deletedTimestamp: NSDate?
+      public var modifiedTime: Date?
+      public var deletedTimestamp: Date?
       /// Optional service charge (gratuity) applied to this order
       public var serviceCharge: CLVModels.Base.ServiceCharge?
       public var discounts: [CLVModels.Order.Discount]?
@@ -332,74 +332,75 @@ extension CLVModels {
       /// Device which created the order
       public var device: CLVModels.Device.Device?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(currency, forKey: "currency")
-        aCoder.encodeObject(customers, forKey: "customers")
-        aCoder.encodeObject(employee, forKey: "employee")
-        aCoder.encodeObject(total, forKey: "total")
-        aCoder.encodeObject(title, forKey: "title")
-        aCoder.encodeObject(note, forKey: "note")
-        aCoder.encodeObject(orderType, forKey: "orderType")
-        aCoder.encodeObject(taxRemoved, forKey: "taxRemoved")
-        aCoder.encodeObject(isVat, forKey: "isVat")
-        aCoder.encodeObject(state, forKey: "state")
-        aCoder.encodeObject(manualTransaction, forKey: "manualTransaction")
-        aCoder.encodeObject(groupLineItems, forKey: "groupLineItems")
-        aCoder.encodeObject(testMode, forKey: "testMode")
-        aCoder.encodeObject(payType?.rawValue, forKey: "payType")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
-        aCoder.encodeObject(clientCreatedTime, forKey: "clientCreatedTime")
-        aCoder.encodeObject(modifiedTime, forKey: "modifiedTime")
-        aCoder.encodeObject(deletedTimestamp, forKey: "deletedTimestamp")
-        aCoder.encodeObject(serviceCharge, forKey: "serviceCharge")
-        aCoder.encodeObject(discounts, forKey: "discounts")
-        aCoder.encodeObject(lineItems, forKey: "lineItems")
-        aCoder.encodeObject(taxRates, forKey: "taxRates")
-        aCoder.encodeObject(payments, forKey: "payments")
-        aCoder.encodeObject(refunds, forKey: "refunds")
-        aCoder.encodeObject(credits, forKey: "credits")
-        aCoder.encodeObject(voids, forKey: "voids")
-        aCoder.encodeObject(device, forKey: "device")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(currency, forKey: "currency")
+        aCoder.encode(customers, forKey: "customers")
+        aCoder.encode(employee, forKey: "employee")
+        aCoder.encode(total, forKey: "total")
+        aCoder.encode(title, forKey: "title")
+        aCoder.encode(note, forKey: "note")
+        aCoder.encode(orderType, forKey: "orderType")
+        aCoder.encode(taxRemoved, forKey: "taxRemoved")
+        aCoder.encode(isVat, forKey: "isVat")
+        aCoder.encode(state, forKey: "state")
+        aCoder.encode(manualTransaction, forKey: "manualTransaction")
+        aCoder.encode(groupLineItems, forKey: "groupLineItems")
+        aCoder.encode(testMode, forKey: "testMode")
+        aCoder.encode(payType?.rawValue, forKey: "payType")
+        aCoder.encode(createdTime, forKey: "createdTime")
+        aCoder.encode(clientCreatedTime, forKey: "clientCreatedTime")
+        aCoder.encode(modifiedTime, forKey: "modifiedTime")
+        aCoder.encode(deletedTimestamp, forKey: "deletedTimestamp")
+        aCoder.encode(serviceCharge, forKey: "serviceCharge")
+        aCoder.encode(discounts, forKey: "discounts")
+        aCoder.encode(lineItems, forKey: "lineItems")
+        aCoder.encode(taxRates, forKey: "taxRates")
+        aCoder.encode(payments, forKey: "payments")
+        aCoder.encode(refunds, forKey: "refunds")
+        aCoder.encode(credits, forKey: "credits")
+        aCoder.encode(voids, forKey: "voids")
+        aCoder.encode(device, forKey: "device")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        currency = aDecoder.decodeObjectForKey("currency") as? String
-        customers = aDecoder.decodeObjectForKey("customers") as? [CLVModels.Customers.Customer]
-        employee = aDecoder.decodeObjectForKey("employee") as? CLVModels.Employees.Employee
-        total = aDecoder.decodeObjectForKey("total") as? Int
-        title = aDecoder.decodeObjectForKey("title") as? String
-        note = aDecoder.decodeObjectForKey("note") as? String
-        orderType = aDecoder.decodeObjectForKey("orderType") as? CLVModels.Order.OrderType
-        taxRemoved = aDecoder.decodeObjectForKey("taxRemoved") as? Bool
-        isVat = aDecoder.decodeObjectForKey("isVat") as? Bool
-        state = aDecoder.decodeObjectForKey("state") as? String
-        manualTransaction = aDecoder.decodeObjectForKey("manualTransaction") as? Bool
-        groupLineItems = aDecoder.decodeObjectForKey("groupLineItems") as? Bool
-        testMode = aDecoder.decodeObjectForKey("testMode") as? Bool
-        payType = (aDecoder.decodeObjectForKey("payType") as? String) != nil ?
-          CLVModels.Order.PayType(rawValue: (aDecoder.decodeObjectForKey("payType") as! String)) : nil
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-        clientCreatedTime = aDecoder.decodeObjectForKey("clientCreatedTime") as? NSDate
-        modifiedTime = aDecoder.decodeObjectForKey("modifiedTime") as? NSDate
-        deletedTimestamp = aDecoder.decodeObjectForKey("deletedTimestamp") as? NSDate
-        serviceCharge = aDecoder.decodeObjectForKey("serviceCharge") as? CLVModels.Base.ServiceCharge
-        discounts = aDecoder.decodeObjectForKey("discounts") as? [CLVModels.Order.Discount]
-        lineItems = aDecoder.decodeObjectForKey("lineItems") as? [CLVModels.Order.LineItem]
-        taxRates = aDecoder.decodeObjectForKey("taxRates") as? [CLVModels.Order.OrderTaxRate]
-        payments = aDecoder.decodeObjectForKey("payments") as? [CLVModels.Payments.Payment]
-        refunds = aDecoder.decodeObjectForKey("refunds") as? [CLVModels.Payments.Refund]
-        credits = aDecoder.decodeObjectForKey("credits") as? [CLVModels.Payments.Credit]
-        voids = aDecoder.decodeObjectForKey("voids") as? [CLVModels.Payments.Payment]
-        device = aDecoder.decodeObjectForKey("device") as? CLVModels.Device.Device
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        currency = aDecoder.decodeObject(forKey: "currency") as? String
+        customers = aDecoder.decodeObject(forKey: "customers") as? [CLVModels.Customers.Customer]
+        employee = aDecoder.decodeObject(forKey: "employee") as? CLVModels.Employees.Employee
+        total = aDecoder.decodeObject(forKey: "total") as? Int
+        title = aDecoder.decodeObject(forKey: "title") as? String
+        note = aDecoder.decodeObject(forKey: "note") as? String
+        orderType = aDecoder.decodeObject(forKey: "orderType") as? CLVModels.Order.OrderType
+        taxRemoved = aDecoder.decodeObject(forKey: "taxRemoved") as? Bool
+        isVat = aDecoder.decodeObject(forKey: "isVat") as? Bool
+        state = aDecoder.decodeObject(forKey: "state") as? String
+        manualTransaction = aDecoder.decodeObject(forKey: "manualTransaction") as? Bool
+        groupLineItems = aDecoder.decodeObject(forKey: "groupLineItems") as? Bool
+        testMode = aDecoder.decodeObject(forKey: "testMode") as? Bool
+        if let payTypeString = (aDecoder.decodeObject(forKey: "payType") as? String) {
+            payType = CLVModels.Order.PayType(rawValue: payTypeString)
+        }
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+        clientCreatedTime = aDecoder.decodeObject(forKey: "clientCreatedTime") as? Date
+        modifiedTime = aDecoder.decodeObject(forKey: "modifiedTime") as? Date
+        deletedTimestamp = aDecoder.decodeObject(forKey: "deletedTimestamp") as? Date
+        serviceCharge = aDecoder.decodeObject(forKey: "serviceCharge") as? CLVModels.Base.ServiceCharge
+        discounts = aDecoder.decodeObject(forKey: "discounts") as? [CLVModels.Order.Discount]
+        lineItems = aDecoder.decodeObject(forKey: "lineItems") as? [CLVModels.Order.LineItem]
+        taxRates = aDecoder.decodeObject(forKey: "taxRates") as? [CLVModels.Order.OrderTaxRate]
+        payments = aDecoder.decodeObject(forKey: "payments") as? [CLVModels.Payments.Payment]
+        refunds = aDecoder.decodeObject(forKey: "refunds") as? [CLVModels.Payments.Refund]
+        credits = aDecoder.decodeObject(forKey: "credits") as? [CLVModels.Payments.Credit]
+        voids = aDecoder.decodeObject(forKey: "voids") as? [CLVModels.Payments.Payment]
+        device = aDecoder.decodeObject(forKey: "device") as? CLVModels.Device.Device
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -435,28 +436,28 @@ extension CLVModels {
     
     
     
-    public class OrderTaxRate: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Order12OrderTaxRate)public class OrderTaxRate: NSObject, NSCoding, Mappable {
       public var id: String?
       public var name: String?
       public var amount: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(amount, forKey: "amount")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(amount, forKey: "amount")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        amount = aDecoder.decodeObjectForKey("amount") as? Int
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -467,7 +468,7 @@ extension CLVModels {
     
     
     
-    public class OrderType: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Order9OrderType)public class OrderType: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Label Key
@@ -492,8 +493,8 @@ extension CLVModels {
       public var maxRadius: Int?
       /// The average time it takes to complete the order
       public var avgOrderTime: Int?
-      public var hoursAvailable: CLVModels.Order.HoursAvailable?
-      public var customerIdMethod: CLVModels.Order.CustomerIdMethod?
+      public var hoursAvailable: CLVModels.Order.HoursAvailable? = nil
+      public var customerIdMethod: CLVModels.Order.CustomerIdMethod? = nil
       /// If this order type is deleted
       public var isDeleted: Bool?
       /// Optional system order type that this order type is associated with.
@@ -503,55 +504,57 @@ extension CLVModels {
       /// The categories of items that can be assigned to this order type
       public var categories: [CLVModels.Inventory.Category]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(labelKey, forKey: "labelKey")
-        aCoder.encodeObject(label, forKey: "label")
-        aCoder.encodeObject(taxable, forKey: "taxable")
-        aCoder.encodeObject(isDefault, forKey: "isDefault")
-        aCoder.encodeObject(filterCategories, forKey: "filterCategories")
-        aCoder.encodeObject(isHidden, forKey: "isHidden")
-        aCoder.encodeObject(fee, forKey: "fee")
-        aCoder.encodeObject(minOrderAmount, forKey: "minOrderAmount")
-        aCoder.encodeObject(maxOrderAmount, forKey: "maxOrderAmount")
-        aCoder.encodeObject(maxRadius, forKey: "maxRadius")
-        aCoder.encodeObject(avgOrderTime, forKey: "avgOrderTime")
-        aCoder.encodeObject(hoursAvailable?.rawValue, forKey: "hoursAvailable")
-        aCoder.encodeObject(customerIdMethod?.rawValue, forKey: "customerIdMethod")
-        aCoder.encodeObject(isDeleted, forKey: "isDeleted")
-        aCoder.encodeObject(systemOrderTypeId, forKey: "systemOrderTypeId")
-        aCoder.encodeObject(hours, forKey: "hours")
-        aCoder.encodeObject(categories, forKey: "categories")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(labelKey, forKey: "labelKey")
+        aCoder.encode(label, forKey: "label")
+        aCoder.encode(taxable, forKey: "taxable")
+        aCoder.encode(isDefault, forKey: "isDefault")
+        aCoder.encode(filterCategories, forKey: "filterCategories")
+        aCoder.encode(isHidden, forKey: "isHidden")
+        aCoder.encode(fee, forKey: "fee")
+        aCoder.encode(minOrderAmount, forKey: "minOrderAmount")
+        aCoder.encode(maxOrderAmount, forKey: "maxOrderAmount")
+        aCoder.encode(maxRadius, forKey: "maxRadius")
+        aCoder.encode(avgOrderTime, forKey: "avgOrderTime")
+        aCoder.encode(hoursAvailable?.rawValue, forKey: "hoursAvailable")
+        aCoder.encode(customerIdMethod?.rawValue, forKey: "customerIdMethod")
+        aCoder.encode(isDeleted, forKey: "isDeleted")
+        aCoder.encode(systemOrderTypeId, forKey: "systemOrderTypeId")
+        aCoder.encode(hours, forKey: "hours")
+        aCoder.encode(categories, forKey: "categories")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        labelKey = aDecoder.decodeObjectForKey("labelKey") as? String
-        label = aDecoder.decodeObjectForKey("label") as? String
-        taxable = aDecoder.decodeObjectForKey("taxable") as? Bool
-        isDefault = aDecoder.decodeObjectForKey("isDefault") as? Bool
-        filterCategories = aDecoder.decodeObjectForKey("filterCategories") as? Bool
-        isHidden = aDecoder.decodeObjectForKey("isHidden") as? Bool
-        fee = aDecoder.decodeObjectForKey("fee") as? Int
-        minOrderAmount = aDecoder.decodeObjectForKey("minOrderAmount") as? Int
-        maxOrderAmount = aDecoder.decodeObjectForKey("maxOrderAmount") as? Int
-        maxRadius = aDecoder.decodeObjectForKey("maxRadius") as? Int
-        avgOrderTime = aDecoder.decodeObjectForKey("avgOrderTime") as? Int
-        hoursAvailable = (aDecoder.decodeObjectForKey("hoursAvailable") as? String) != nil ?
-          CLVModels.Order.HoursAvailable(rawValue: (aDecoder.decodeObjectForKey("hoursAvailable") as! String)) : nil
-        customerIdMethod = (aDecoder.decodeObjectForKey("customerIdMethod") as? String) != nil ?
-          CLVModels.Order.CustomerIdMethod(rawValue: (aDecoder.decodeObjectForKey("customerIdMethod") as! String)) : nil
-        isDeleted = aDecoder.decodeObjectForKey("isDeleted") as? Bool
-        systemOrderTypeId = aDecoder.decodeObjectForKey("systemOrderTypeId") as? String
-        hours = aDecoder.decodeObjectForKey("hours") as? CLVModels.Hours.HoursSet
-        categories = aDecoder.decodeObjectForKey("categories") as? [CLVModels.Inventory.Category]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        labelKey = aDecoder.decodeObject(forKey: "labelKey") as? String
+        label = aDecoder.decodeObject(forKey: "label") as? String
+        taxable = aDecoder.decodeObject(forKey: "taxable") as? Bool
+        isDefault = aDecoder.decodeObject(forKey: "isDefault") as? Bool
+        filterCategories = aDecoder.decodeObject(forKey: "filterCategories") as? Bool
+        isHidden = aDecoder.decodeObject(forKey: "isHidden") as? Bool
+        fee = aDecoder.decodeObject(forKey: "fee") as? Int
+        minOrderAmount = aDecoder.decodeObject(forKey: "minOrderAmount") as? Int
+        maxOrderAmount = aDecoder.decodeObject(forKey: "maxOrderAmount") as? Int
+        maxRadius = aDecoder.decodeObject(forKey: "maxRadius") as? Int
+        avgOrderTime = aDecoder.decodeObject(forKey: "avgOrderTime") as? Int
+        if let hoursAvailableString = aDecoder.decodeObject(forKey: "hoursAvailable") as? String {
+            hoursAvailable = CLVModels.Order.HoursAvailable(rawValue: hoursAvailableString)
+        }
+        if let customerIdMethodString = aDecoder.decodeObject(forKey: "customerIdMethod") as? String {
+            customerIdMethod = CLVModels.Order.CustomerIdMethod(rawValue: customerIdMethodString)
+        }
+        isDeleted = aDecoder.decodeObject(forKey: "isDeleted") as? Bool
+        systemOrderTypeId = aDecoder.decodeObject(forKey: "systemOrderTypeId") as? String
+        hours = aDecoder.decodeObject(forKey: "hours") as? CLVModels.Hours.HoursSet
+        categories = aDecoder.decodeObject(forKey: "categories") as? [CLVModels.Inventory.Category]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -577,25 +580,25 @@ extension CLVModels {
     
     
     
-    public class OrderTypeCategory: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Order17OrderTypeCategory)public class OrderTypeCategory: NSObject, NSCoding, Mappable {
       public var orderType: CLVModels.Order.OrderType?
       public var category: CLVModels.Inventory.Category?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(orderType, forKey: "orderType")
-        aCoder.encodeObject(category, forKey: "category")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(orderType, forKey: "orderType")
+        aCoder.encode(category, forKey: "category")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        orderType = aDecoder.decodeObjectForKey("orderType") as? CLVModels.Order.OrderType
-        category = aDecoder.decodeObjectForKey("category") as? CLVModels.Inventory.Category
+        orderType = aDecoder.decodeObject(forKey: "orderType") as? CLVModels.Order.OrderType
+        category = aDecoder.decodeObject(forKey: "category") as? CLVModels.Inventory.Category
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         orderType <- map["orderType"]
@@ -614,7 +617,7 @@ extension CLVModels {
     
     
     
-    public class SystemOrderType: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Order15SystemOrderType)public class SystemOrderType: NSObject, NSCoding, Mappable {
       /// Unqiue identifier
       public var id: String?
       /// Label Key
@@ -626,27 +629,27 @@ extension CLVModels {
       /// Is for retail stores?
       public var isRetail: Bool?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(labelKey, forKey: "labelKey")
-        aCoder.encodeObject(isQsr, forKey: "isQsr")
-        aCoder.encodeObject(isFsr, forKey: "isFsr")
-        aCoder.encodeObject(isRetail, forKey: "isRetail")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(labelKey, forKey: "labelKey")
+        aCoder.encode(isQsr, forKey: "isQsr")
+        aCoder.encode(isFsr, forKey: "isFsr")
+        aCoder.encode(isRetail, forKey: "isRetail")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        labelKey = aDecoder.decodeObjectForKey("labelKey") as? String
-        isQsr = aDecoder.decodeObjectForKey("isQsr") as? Bool
-        isFsr = aDecoder.decodeObjectForKey("isFsr") as? Bool
-        isRetail = aDecoder.decodeObjectForKey("isRetail") as? Bool
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        labelKey = aDecoder.decodeObject(forKey: "labelKey") as? String
+        isQsr = aDecoder.decodeObject(forKey: "isQsr") as? Bool
+        isFsr = aDecoder.decodeObject(forKey: "isFsr") as? Bool
+        isRetail = aDecoder.decodeObject(forKey: "isRetail") as? Bool
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]

@@ -7,12 +7,29 @@
 //
 
 import Foundation
+#if os(iOS)
+    import UIKit
+    public typealias ImageClass = UIImage
+    func ImagePNGRepresentation(_ image: ImageClass) -> Data? {
+        return UIImagePNGRepresentation(image)
+    }
+#else
+    import AppKit
+    public typealias ImageClass = NSImage
+    func ImagePNGRepresentation(_ image: ImageClass) -> Data? {
+        if let imageData = image.tiffRepresentation,
+            let imageRep = NSBitmapImageRep(data: imageData) {
+            return imageRep.representation(using: NSBitmapImageRep.FileType.png, properties: [:])
+        }
+        return nil
+    }
+#endif
 
-protocol ICloverDevice {
-}
 
 class CloverDevice {
-    var deviceObservers:NSMutableArray = NSMutableArray()
+    var deviceObservers = [CloverDeviceObserver]()
+    
+    weak var cloverConnector:ICloverConnector?
     
     var transport:CloverTransport
     var packageName:String? = nil
@@ -23,16 +40,23 @@ class CloverDevice {
     }
     
     func subscribe(_ observer:CloverDeviceObserver) {
-        deviceObservers.addObject(observer)
+        deviceObservers.append(observer)
     }
     
     func unsubscribe(_ observer:CloverDeviceObserver) {
-        deviceObservers.removeObject(observer)
+        guard let index = deviceObservers.index(where: {$0 === observer}) else { return }
+        deviceObservers.remove(at: index)
     }
+    
+    deinit {
+        debugPrint("deinit CloverDevice")
+    }
+    
+    func initialize() {}
     
     func doDiscoveryRequest() {}
     
-    func doTxStart(_ payIntent:PayIntent, order:CLVModels.Order.Order?, suppressTipScreen:Bool) {}
+    func doTxStart(_ payIntent:PayIntent, order:CLVModels.Order.Order?, suppressTipScreen:Bool, requestInfo:String?) {}
     
     func doKeyPress(_ keyPress:KeyPress) {}
     
@@ -52,7 +76,7 @@ class CloverDevice {
     
     func doBreak() {}
     
-    func doPrintText(_ textLines:[String]) {}
+    func doPrintText(_ textLines:[String], printRequestId: String?, printDeviceId: String?) {}
     
     func doShowWelcomeScreen() {}
     
@@ -60,12 +84,21 @@ class CloverDevice {
     
     func doShowThankYouScreen() {}
     
-    func doOpenCashDrawer(_ reason:String) {}
+    func doOpenCashDrawer(_ reason:String, deviceId: String?) {}
     
-    //func doPrintImage(_ bitmap:UIImage) {}
-    func doPrintImage(_ url:String) {}
+    func doPrintImage(_ img:ImageClass, printRequestId: String?, printDeviceId: String?) {}
     
-    func dispose() {}
+    func doPrintImage(_ url:String, printRequestId: String?, printDeviceId: String?) {}
+    
+    func doPrint(_ request:PrintRequest) {}
+    
+    func doRetrievePrinters(_ request:RetrievePrintersRequest) {}
+    
+    func doRetrievePrintJobStatus(_ request: PrintJobStatusRequest) {}
+    
+    func dispose() {
+        deviceObservers.removeAll()
+    }
     
     func doCloseout(_ allowOpenTabs:Bool, batchId:String?) {}
     
@@ -78,5 +111,13 @@ class CloverDevice {
     func doRetrievePendingPayments() {}
     
     func doReadCardData(_ payIntent:PayIntent) {}
+    
+    func doStartActivity( action a:String, payload p:String?, nonBlocking:Bool) {}
+    
+    func doSendMessageToActivity( action a:String, payload p:String?) {}
+    
+    func doRetrievePayment(_ externalPaymentId:String) {}
+    
+    func doRetrieveDeviceStatus(_ sendLast:Bool) {}
     
 }

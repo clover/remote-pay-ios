@@ -12,7 +12,7 @@ import ObjectMapper
 public class AddLineItemAction : Mappable {
     public var lineItem:DisplayLineItem?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         
     }
     

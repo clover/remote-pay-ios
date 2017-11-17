@@ -11,7 +11,7 @@ extension CLVModels {
   public class Base {
     
     
-    public class Address: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels4Base7Address)public class Address: NSObject, NSCoding, Mappable {
       public var address1: String?
       public var address2: String?
       public var address3: String?
@@ -21,33 +21,33 @@ extension CLVModels {
       public var state: String?
       public var zip: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(address1, forKey: "address1")
-        aCoder.encodeObject(address2, forKey: "address2")
-        aCoder.encodeObject(address3, forKey: "address3")
-        aCoder.encodeObject(city, forKey: "city")
-        aCoder.encodeObject(country, forKey: "country")
-        aCoder.encodeObject(phoneNumber, forKey: "phoneNumber")
-        aCoder.encodeObject(state, forKey: "state")
-        aCoder.encodeObject(zip, forKey: "zip")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(address1, forKey: "address1")
+        aCoder.encode(address2, forKey: "address2")
+        aCoder.encode(address3, forKey: "address3")
+        aCoder.encode(city, forKey: "city")
+        aCoder.encode(country, forKey: "country")
+        aCoder.encode(phoneNumber, forKey: "phoneNumber")
+        aCoder.encode(state, forKey: "state")
+        aCoder.encode(zip, forKey: "zip")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        address1 = aDecoder.decodeObjectForKey("address1") as? String
-        address2 = aDecoder.decodeObjectForKey("address2") as? String
-        address3 = aDecoder.decodeObjectForKey("address3") as? String
-        city = aDecoder.decodeObjectForKey("city") as? String
-        country = aDecoder.decodeObjectForKey("country") as? String
-        phoneNumber = aDecoder.decodeObjectForKey("phoneNumber") as? String
-        state = aDecoder.decodeObjectForKey("state") as? String
-        zip = aDecoder.decodeObjectForKey("zip") as? String
+        address1 = aDecoder.decodeObject(forKey: "address1") as? String
+        address2 = aDecoder.decodeObject(forKey: "address2") as? String
+        address3 = aDecoder.decodeObject(forKey: "address3") as? String
+        city = aDecoder.decodeObject(forKey: "city") as? String
+        country = aDecoder.decodeObject(forKey: "country") as? String
+        phoneNumber = aDecoder.decodeObject(forKey: "phoneNumber") as? String
+        state = aDecoder.decodeObject(forKey: "state") as? String
+        zip = aDecoder.decodeObject(forKey: "zip") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         address1 <- map["address1"]
@@ -104,7 +104,7 @@ extension CLVModels {
     
     
     
-    public class CountryInfo: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels4Base11CountryInfo)public class CountryInfo: NSObject, NSCoding, Mappable {
       /// ISO 3166-1-alpha-2 code
       public var countryCode: String?
       public var displayName: String?
@@ -121,37 +121,37 @@ extension CLVModels {
       /// Indicates whether the country is enabled for app market billing
       public var appMarketBillingEnabled: Bool?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(countryCode, forKey: "countryCode")
-        aCoder.encodeObject(displayName, forKey: "displayName")
-        aCoder.encodeObject(localDisplayName, forKey: "localDisplayName")
-        aCoder.encodeObject(defaultCurrency, forKey: "defaultCurrency")
-        aCoder.encodeObject(defaultTimezone, forKey: "defaultTimezone")
-        aCoder.encodeObject(stateProvinceRequired, forKey: "stateProvinceRequired")
-        aCoder.encodeObject(zipPostalRequired, forKey: "zipPostalRequired")
-        aCoder.encodeObject(countyRequired, forKey: "countyRequired")
-        aCoder.encodeObject(defaultLocale, forKey: "defaultLocale")
-        aCoder.encodeObject(appMarketBillingEnabled, forKey: "appMarketBillingEnabled")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(countryCode, forKey: "countryCode")
+        aCoder.encode(displayName, forKey: "displayName")
+        aCoder.encode(localDisplayName, forKey: "localDisplayName")
+        aCoder.encode(defaultCurrency, forKey: "defaultCurrency")
+        aCoder.encode(defaultTimezone, forKey: "defaultTimezone")
+        aCoder.encode(stateProvinceRequired, forKey: "stateProvinceRequired")
+        aCoder.encode(zipPostalRequired, forKey: "zipPostalRequired")
+        aCoder.encode(countyRequired, forKey: "countyRequired")
+        aCoder.encode(defaultLocale, forKey: "defaultLocale")
+        aCoder.encode(appMarketBillingEnabled, forKey: "appMarketBillingEnabled")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        countryCode = aDecoder.decodeObjectForKey("countryCode") as? String
-        displayName = aDecoder.decodeObjectForKey("displayName") as? String
-        localDisplayName = aDecoder.decodeObjectForKey("localDisplayName") as? String
-        defaultCurrency = aDecoder.decodeObjectForKey("defaultCurrency") as? String
-        defaultTimezone = aDecoder.decodeObjectForKey("defaultTimezone") as? String
-        stateProvinceRequired = aDecoder.decodeObjectForKey("stateProvinceRequired") as? Bool
-        zipPostalRequired = aDecoder.decodeObjectForKey("zipPostalRequired") as? Bool
-        countyRequired = aDecoder.decodeObjectForKey("countyRequired") as? Bool
-        defaultLocale = aDecoder.decodeObjectForKey("defaultLocale") as? String
-        appMarketBillingEnabled = aDecoder.decodeObjectForKey("appMarketBillingEnabled") as? Bool
+        countryCode = aDecoder.decodeObject(forKey: "countryCode") as? String
+        displayName = aDecoder.decodeObject(forKey: "displayName") as? String
+        localDisplayName = aDecoder.decodeObject(forKey: "localDisplayName") as? String
+        defaultCurrency = aDecoder.decodeObject(forKey: "defaultCurrency") as? String
+        defaultTimezone = aDecoder.decodeObject(forKey: "defaultTimezone") as? String
+        stateProvinceRequired = aDecoder.decodeObject(forKey: "stateProvinceRequired") as? Bool
+        zipPostalRequired = aDecoder.decodeObject(forKey: "zipPostalRequired") as? Bool
+        countyRequired = aDecoder.decodeObject(forKey: "countyRequired") as? Bool
+        defaultLocale = aDecoder.decodeObject(forKey: "defaultLocale") as? String
+        appMarketBillingEnabled = aDecoder.decodeObject(forKey: "appMarketBillingEnabled") as? Bool
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         countryCode <- map["countryCode"]
@@ -169,23 +169,23 @@ extension CLVModels {
     
     
     
-    public class Reference: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels4Base9Reference)public class Reference: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
+        id = aDecoder.decodeObject(forKey: "id") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -194,7 +194,7 @@ extension CLVModels {
     
     
     
-    public class ServiceCharge: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels4Base13ServiceCharge)public class ServiceCharge: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// The order with which the service charge is associated
@@ -208,29 +208,29 @@ extension CLVModels {
       /// Percent to charge times 10000, e.g. 12.5% will be 125000
       public var percentageDecimal: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(orderRef, forKey: "orderRef")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(enabled, forKey: "enabled")
-        aCoder.encodeObject(percentage, forKey: "percentage")
-        aCoder.encodeObject(percentageDecimal, forKey: "percentageDecimal")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(orderRef, forKey: "orderRef")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(enabled, forKey: "enabled")
+        aCoder.encode(percentage, forKey: "percentage")
+        aCoder.encode(percentageDecimal, forKey: "percentageDecimal")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        orderRef = aDecoder.decodeObjectForKey("orderRef") as? CLVModels.Order.Order
-        name = aDecoder.decodeObjectForKey("name") as? String
-        enabled = aDecoder.decodeObjectForKey("enabled") as? Bool
-        percentage = aDecoder.decodeObjectForKey("percentage") as? Int
-        percentageDecimal = aDecoder.decodeObjectForKey("percentageDecimal") as? Int
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        orderRef = aDecoder.decodeObject(forKey: "orderRef") as? CLVModels.Order.Order
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        enabled = aDecoder.decodeObject(forKey: "enabled") as? Bool
+        percentage = aDecoder.decodeObject(forKey: "percentage") as? Int
+        percentageDecimal = aDecoder.decodeObject(forKey: "percentageDecimal") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -244,7 +244,7 @@ extension CLVModels {
     
     
     
-    public class Tender: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels4Base6Tender)public class Tender: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// If this merchant tender is editable
@@ -264,35 +264,35 @@ extension CLVModels {
       /// Label Key
       public var instructions: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(editable, forKey: "editable")
-        aCoder.encodeObject(labelKey, forKey: "labelKey")
-        aCoder.encodeObject(label, forKey: "label")
-        aCoder.encodeObject(opensCashDrawer, forKey: "opensCashDrawer")
-        aCoder.encodeObject(supportsTipping, forKey: "supportsTipping")
-        aCoder.encodeObject(enabled, forKey: "enabled")
-        aCoder.encodeObject(visible, forKey: "visible")
-        aCoder.encodeObject(instructions, forKey: "instructions")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(editable, forKey: "editable")
+        aCoder.encode(labelKey, forKey: "labelKey")
+        aCoder.encode(label, forKey: "label")
+        aCoder.encode(opensCashDrawer, forKey: "opensCashDrawer")
+        aCoder.encode(supportsTipping, forKey: "supportsTipping")
+        aCoder.encode(enabled, forKey: "enabled")
+        aCoder.encode(visible, forKey: "visible")
+        aCoder.encode(instructions, forKey: "instructions")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        editable = aDecoder.decodeObjectForKey("editable") as? Bool
-        labelKey = aDecoder.decodeObjectForKey("labelKey") as? String
-        label = aDecoder.decodeObjectForKey("label") as? String
-        opensCashDrawer = aDecoder.decodeObjectForKey("opensCashDrawer") as? Bool
-        supportsTipping = aDecoder.decodeObjectForKey("supportsTipping") as? Bool
-        enabled = aDecoder.decodeObjectForKey("enabled") as? Bool
-        visible = aDecoder.decodeObjectForKey("visible") as? Bool
-        instructions = aDecoder.decodeObjectForKey("instructions") as? String
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        editable = aDecoder.decodeObject(forKey: "editable") as? Bool
+        labelKey = aDecoder.decodeObject(forKey: "labelKey") as? String
+        label = aDecoder.decodeObject(forKey: "label") as? String
+        opensCashDrawer = aDecoder.decodeObject(forKey: "opensCashDrawer") as? Bool
+        supportsTipping = aDecoder.decodeObject(forKey: "supportsTipping") as? Bool
+        enabled = aDecoder.decodeObject(forKey: "enabled") as? Bool
+        visible = aDecoder.decodeObject(forKey: "visible") as? Bool
+        instructions = aDecoder.decodeObject(forKey: "instructions") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]

@@ -13,56 +13,56 @@ public class CloverDeviceEvent:NSObject, Mappable {
 
     public enum DeviceEventState {
         // payment flow
-        case START
-        case FAILED
-        case FATAL
-        case TRY_AGAIN
-        case INPUT_ERROR
-        case PIN_BYPASS_CONFIRM
-        case CANCELED
-        case TIMED_OUT
-        case DECLINED
-        case VOIDED
-        case CONFIGURNIG
-        case PROCESSING
-        case REMOVE_CARD
-        case PROCESSING_GO_ONLINE
-        case PROCESSING_CREDIT
-        case PROCESSING_SWIPE
-        case SELECT_APPLICATION
-        case PIN_PAD
-        case MANUAL_CARD_NUMBER
-        case MANUAL_CARD_CVV
-        case MANUAL_CARD_CVV_UNREADABLE
-        case MANUAL_CARD_EXPIRATION
-        case SELECT_ACCOUNT
-        case CASHBACK_CONFIRM
-        case CASHBACK_SELECT
-        case CONTACTLESS_TAP_REQUIRED
-        case VOICE_REFERRAL_RESULT
-        case CONFIRM_PARTIAL_AUTH
-        case PACKET_EXCEPTION
-        case CONFIRM_DUPLICATE_CHECK
+        case start
+        case failed
+        case fatal
+        case try_AGAIN
+        case input_ERROR
+        case pin_BYPASS_CONFIRM
+        case canceled
+        case timed_OUT
+        case declined
+        case voided
+        case configurnig
+        case processing
+        case remove_CARD
+        case processing_GO_ONLINE
+        case processing_CREDIT
+        case processing_SWIPE
+        case select_APPLICATION
+        case pin_PAD
+        case manual_CARD_NUMBER
+        case manual_CARD_CVV
+        case manual_CARD_CVV_UNREADABLE
+        case manual_CARD_EXPIRATION
+        case select_ACCOUNT
+        case cashback_CONFIRM
+        case cashback_SELECT
+        case contactless_TAP_REQUIRED
+        case voice_REFERRAL_RESULT
+        case confirm_PARTIAL_AUTH
+        case packet_EXCEPTION
+        case confirm_DUPLICATE_CHECK
 
         // verify CVM flow
-        case VERIFY_SIGNATURE_ON_PAPER
-        case VERIFY_SIGNATURE_ON_PAPER_CONFIRM_VOID
-        case VERIFY_SIGNATURE_ON_SCREEN
-        case VERIFY_SIGNATURE_ON_SCREEN_CONFIRM_VOID
-        case ADD_SIGNATURE
-        case SIGNATURE_ON_SCREEN_FALLBACK
-        case RETURN_TO_MERCHANT
-        case SIGNATURE_REJECT
-        case ADD_SIGNATURE_CANCEL_CONFIRM
+        case verify_SIGNATURE_ON_PAPER
+        case verify_SIGNATURE_ON_PAPER_CONFIRM_VOID
+        case verify_SIGNATURE_ON_SCREEN
+        case verify_SIGNATURE_ON_SCREEN_CONFIRM_VOID
+        case add_SIGNATURE
+        case signature_ON_SCREEN_FALLBACK
+        case return_TO_MERCHANT
+        case signature_REJECT
+        case add_SIGNATURE_CANCEL_CONFIRM
 
         // add tip flow
-        case ADD_TIP
+        case add_TIP
 
         // receipt options flow
-        case RECEIPT_OPTIONS
+        case receipt_OPTIONS
 
         // tender handling flow
-        case HANDLE_TENDER
+        case handle_TENDER
     }
     
 //    public var eventState:DeviceEventState?
@@ -75,7 +75,7 @@ public class CloverDeviceEvent:NSObject, Mappable {
         super.init()
     }
     
-    required public init?(_ map: Map) {
+    required public init?(map:Map) {
         super.init()
     }
     

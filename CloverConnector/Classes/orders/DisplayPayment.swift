@@ -37,7 +37,7 @@ public class DisplayPayment:Mappable {
 
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
   }
 
   public func mapping(map:Map) {
@@ -52,22 +52,5 @@ public class DisplayPayment:Mappable {
   taxAmount <- map["taxAmount"]
 
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  id = jsonObj.valueForKey("id") as! String?
-
-  label = jsonObj.valueForKey("label") as! String?
-
-  amount = jsonObj.valueForKey("amount") as! String?
-
-  tipAmount = jsonObj.valueForKey("tipAmount") as! String?
-
-  taxAmount = jsonObj.valueForKey("taxAmount") as! Int?
-  }
-*/
-
 }
 

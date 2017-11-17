@@ -14,24 +14,22 @@ public class CloverConnectorBroadcaster {
     var listeners = NSMutableArray()
     
     public func addObject(_ listener:ICloverConnectorListener) {
-        if listeners.indexOfObject(listener) != -1 {
-            listeners.addObject(listener)
+        if listeners.index(of: listener) != -1 {
+            listeners.add(listener)
         }
     }
     
     public func removeObject(_ listener:ICloverConnectorListener) {
-        listeners.removeObject(listener)
+        listeners.remove(listener)
     }
     
     public func notifyOnTipAdded(_ tip:Int) {
         for listener in listeners {
             if let listener = listener as? ICloverConnectorListener {
-                //listener.onTipAdded(TipAddedMessage(tip))
+                listener.onTipAdded(TipAddedMessage(tip))
             }
         }
     }
-    
-    
     
     public func notifyOnPaymentRefundResponse(_ refundPaymentResponse:RefundPaymentResponse) {
         for listener in listeners {
@@ -157,11 +155,11 @@ public class CloverConnectorBroadcaster {
     
 //    public func notifyOnTxState(txState:TxState) {
     public func notifyOnTxState(_ txState:Any) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+//        for listener in listeners {
+//            if let listener = listener as? ICloverConnectorListener {
 //                listener.onTransactionState(txState)
-            }
-        }
+//            }
+//        }
     }
     
     public func notifyOnVaultCardRespose(_ ccr:VaultCardResponse) {
@@ -257,4 +255,61 @@ public class CloverConnectorBroadcaster {
             }
         }
     }
+    
+    public func notifyOnCustomActivityResponse(_ response: CustomActivityResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onCustomActivityResponse(response)
+            }
+        }
+    }
+    
+    public func notifyOnMessageFromActivity(_ message:MessageFromActivity) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onMessageFromActivity(message)
+            }
+        }
+    }
+    
+    public func notifyOnResetDeviceResponse(_ response:ResetDeviceResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onResetDeviceResponse(response)
+            }
+        }
+    }
+    
+    public func notifyOnRetrievePrintersResponse(_ response:RetrievePrintersResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onRetrievePrintersResponse(response)
+            }
+        }
+    }
+    
+    public func notifyOnPrintJobStatusResponse(_ response:PrintJobStatusResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onPrintJobStatusResponse(response)
+            }
+        }
+    }
+
+    public func notifyOnRetrievePayment(_ response:RetrievePaymentResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onRetrievePaymentResponse(response)
+            }
+        }
+    }
+    
+    public func notifyOnDeviceStatusResponse(_ response:RetrieveDeviceStatusResponse) {
+        for listener in listeners {
+            if let listener = listener as? ICloverConnectorListener {
+                listener.onRetrieveDeviceStatusResponse(response)
+            }
+        }
+    }
+    
 }

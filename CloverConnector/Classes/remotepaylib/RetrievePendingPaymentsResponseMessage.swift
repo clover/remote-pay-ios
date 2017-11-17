@@ -16,12 +16,12 @@ class RetrievePendingPaymentsResponseMessage : Message
     public var status:ResultStatus?
     public var reason:String?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.RETRIEVE_PENDING_PAYMENTS_RESPONSE)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         pendingPaymentEntries <- map["pendingPaymentEntries"]
         status <- map["status"]
         reason <- map["reason"]

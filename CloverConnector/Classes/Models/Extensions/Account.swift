@@ -11,7 +11,7 @@ extension CLVModels {
   public class Account {
     
     
-    public class Account: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels7Account7Account)public class Account: NSObject, NSCoding, Mappable {
       public var id: String?
       public var name: String?
       public var email: String?
@@ -22,8 +22,8 @@ extension CLVModels {
       /// The primary reseller
       public var primaryReseller: CLVModels.Base.Reference?
       public var isActive: Bool?
-      public var createdTime: NSDate?
-      public var claimedTime: NSDate?
+      public var createdTime: Date?
+      public var claimedTime: Date?
       public var lastLogin: Int?
       public var inviteSent: Bool?
       public var status: String?
@@ -34,53 +34,53 @@ extension CLVModels {
       public var csrfToken: String?
       public var authFactors: [CLVModels.Account.AuthFactor]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(email, forKey: "email")
-        aCoder.encodeObject(primaryMerchant, forKey: "primaryMerchant")
-        aCoder.encodeObject(primaryDeveloper, forKey: "primaryDeveloper")
-        aCoder.encodeObject(primaryReseller, forKey: "primaryReseller")
-        aCoder.encodeObject(isActive, forKey: "isActive")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
-        aCoder.encodeObject(claimedTime, forKey: "claimedTime")
-        aCoder.encodeObject(lastLogin, forKey: "lastLogin")
-        aCoder.encodeObject(inviteSent, forKey: "inviteSent")
-        aCoder.encodeObject(status, forKey: "status")
-        aCoder.encodeObject(role, forKey: "role")
-        aCoder.encodeObject(merchants, forKey: "merchants")
-        aCoder.encodeObject(developers, forKey: "developers")
-        aCoder.encodeObject(resellers, forKey: "resellers")
-        aCoder.encodeObject(csrfToken, forKey: "csrfToken")
-        aCoder.encodeObject(authFactors, forKey: "authFactors")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(email, forKey: "email")
+        aCoder.encode(primaryMerchant, forKey: "primaryMerchant")
+        aCoder.encode(primaryDeveloper, forKey: "primaryDeveloper")
+        aCoder.encode(primaryReseller, forKey: "primaryReseller")
+        aCoder.encode(isActive, forKey: "isActive")
+        aCoder.encode(createdTime, forKey: "createdTime")
+        aCoder.encode(claimedTime, forKey: "claimedTime")
+        aCoder.encode(lastLogin, forKey: "lastLogin")
+        aCoder.encode(inviteSent, forKey: "inviteSent")
+        aCoder.encode(status, forKey: "status")
+        aCoder.encode(role, forKey: "role")
+        aCoder.encode(merchants, forKey: "merchants")
+        aCoder.encode(developers, forKey: "developers")
+        aCoder.encode(resellers, forKey: "resellers")
+        aCoder.encode(csrfToken, forKey: "csrfToken")
+        aCoder.encode(authFactors, forKey: "authFactors")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        email = aDecoder.decodeObjectForKey("email") as? String
-        primaryMerchant = aDecoder.decodeObjectForKey("primaryMerchant") as? CLVModels.Merchant.Merchant
-        primaryDeveloper = aDecoder.decodeObjectForKey("primaryDeveloper") as? CLVModels.Developer.Developer
-        primaryReseller = aDecoder.decodeObjectForKey("primaryReseller") as? CLVModels.Base.Reference
-        isActive = aDecoder.decodeObjectForKey("isActive") as? Bool
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-        claimedTime = aDecoder.decodeObjectForKey("claimedTime") as? NSDate
-        lastLogin = aDecoder.decodeObjectForKey("lastLogin") as? Int
-        inviteSent = aDecoder.decodeObjectForKey("inviteSent") as? Bool
-        status = aDecoder.decodeObjectForKey("status") as? String
-        role = aDecoder.decodeObjectForKey("role") as? CLVModels.Employees.Role
-        merchants = aDecoder.decodeObjectForKey("merchants") as? [CLVModels.Merchant.Merchant]
-        developers = aDecoder.decodeObjectForKey("developers") as? [CLVModels.Developer.Developer]
-        resellers = aDecoder.decodeObjectForKey("resellers") as? [CLVModels.Base.Reference]
-        csrfToken = aDecoder.decodeObjectForKey("csrfToken") as? String
-        authFactors = aDecoder.decodeObjectForKey("authFactors") as? [CLVModels.Account.AuthFactor]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        email = aDecoder.decodeObject(forKey: "email") as? String
+        primaryMerchant = aDecoder.decodeObject(forKey: "primaryMerchant") as? CLVModels.Merchant.Merchant
+        primaryDeveloper = aDecoder.decodeObject(forKey: "primaryDeveloper") as? CLVModels.Developer.Developer
+        primaryReseller = aDecoder.decodeObject(forKey: "primaryReseller") as? CLVModels.Base.Reference
+        isActive = aDecoder.decodeObject(forKey: "isActive") as? Bool
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+        claimedTime = aDecoder.decodeObject(forKey: "claimedTime") as? Date
+        lastLogin = aDecoder.decodeObject(forKey: "lastLogin") as? Int
+        inviteSent = aDecoder.decodeObject(forKey: "inviteSent") as? Bool
+        status = aDecoder.decodeObject(forKey: "status") as? String
+        role = aDecoder.decodeObject(forKey: "role") as? CLVModels.Employees.Role
+        merchants = aDecoder.decodeObject(forKey: "merchants") as? [CLVModels.Merchant.Merchant]
+        developers = aDecoder.decodeObject(forKey: "developers") as? [CLVModels.Developer.Developer]
+        resellers = aDecoder.decodeObject(forKey: "resellers") as? [CLVModels.Base.Reference]
+        csrfToken = aDecoder.decodeObject(forKey: "csrfToken") as? String
+        authFactors = aDecoder.decodeObject(forKey: "authFactors") as? [CLVModels.Account.AuthFactor]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -105,41 +105,41 @@ extension CLVModels {
     }
     
     
-    
-    public class AuthFactor: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels7Account10AuthFactor)public class AuthFactor: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
-      public var type_: CLVModels.Account.AuthFactorType?
+      public var type_: CLVModels.Account.AuthFactorType? = nil
       public var phoneNumber: String?
       public var backupCodes: String?
       public var totpKey: String?
-      public var createdTime: NSDate?
+      public var createdTime: Date?
       
        
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(type_?.rawValue, forKey: "type_")
-        aCoder.encodeObject(phoneNumber, forKey: "phoneNumber")
-        aCoder.encodeObject(backupCodes, forKey: "backupCodes")
-        aCoder.encodeObject(totpKey, forKey: "totpKey")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(type_?.rawValue, forKey: "type_")
+        aCoder.encode(phoneNumber, forKey: "phoneNumber")
+        aCoder.encode(backupCodes, forKey: "backupCodes")
+        aCoder.encode(totpKey, forKey: "totpKey")
+        aCoder.encode(createdTime, forKey: "createdTime")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        type_ = (aDecoder.decodeObjectForKey("type_") as? String) != nil ?
-          CLVModels.Account.AuthFactorType(rawValue: (aDecoder.decodeObjectForKey("type_") as! String)) : nil
-        phoneNumber = aDecoder.decodeObjectForKey("phoneNumber") as? String
-        backupCodes = aDecoder.decodeObjectForKey("backupCodes") as? String
-        totpKey = aDecoder.decodeObjectForKey("totpKey") as? String
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        if let typeString = (aDecoder.decodeObject(forKey: "type_") as? String) {
+            type_ = CLVModels.Account.AuthFactorType(rawValue: typeString)
+        }
+        phoneNumber = aDecoder.decodeObject(forKey: "phoneNumber") as? String
+        backupCodes = aDecoder.decodeObject(forKey: "backupCodes") as? String
+        totpKey = aDecoder.decodeObject(forKey: "totpKey") as? String
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]

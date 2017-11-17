@@ -19,12 +19,12 @@ public class CapturePreAuthRequestMessage:Message {
         super.init(method: .CAPTURE_PREAUTH)
     }
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .CAPTURE_PREAUTH)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         paymentId <- map["paymentId"]
         amount <- map["amount"]
         tipAmount <- map["tipAmount"]

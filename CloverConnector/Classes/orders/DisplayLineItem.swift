@@ -74,7 +74,7 @@ public class DisplayLineItem:Mappable {
       self.quantity = quantity
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
   }
 
   public func mapping(map:Map) {
@@ -119,54 +119,5 @@ public class DisplayLineItem:Mappable {
       percent <- map["percent"]
 
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  id = jsonObj.valueForKey("id") as! String?
-
-  orderId = jsonObj.valueForKey("orderId") as! String?
-
-  name = jsonObj.valueForKey("name") as! String?
-
-  alternateName = jsonObj.valueForKey("alternateName") as! String?
-
-  price = jsonObj.valueForKey("price") as! String?
-
-  unitPrice = jsonObj.valueForKey("unitPrice") as! String?
-
-  quantity = jsonObj.valueForKey("quantity") as! String?
-
-  unitQuantity = jsonObj.valueForKey("unitQuantity") as! String?
-
-  note = jsonObj.valueForKey("note") as! String?
-
-  printed = jsonObj.valueForKey("printed") as! Bool
-
-  binName = jsonObj.valueForKey("binName") as! String?
-
-  userData = jsonObj.valueForKey("userData") as! String?
-
-  discounts = ListWrapper<DisplayDiscount>(jsonObj: jsonObj.valueForKey("discounts") as! NSDictionary)
-
-
-  discountAmount = jsonObj.valueForKey("discountAmount") as! String?
-
-  exchanged = jsonObj.valueForKey("exchanged") as! Bool
-
-  exchangedAmount = jsonObj.valueForKey("exchangedAmount") as! String?
-
-  modifications = ListWrapper<DisplayModification>(jsonObj: jsonObj.valueForKey("modifications") as! NSDictionary)
-
-
-  refunded = jsonObj.valueForKey("refunded") as! Bool
-
-  refundedAmount = jsonObj.valueForKey("refundedAmount") as! String?
-
-  percent = jsonObj.valueForKey("percent") as! String?
-  }
-*/
-
 }
 

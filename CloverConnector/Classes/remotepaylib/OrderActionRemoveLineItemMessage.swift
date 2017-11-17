@@ -12,12 +12,12 @@ import ObjectMapper
 public class OrderActionRemoveLineItemMessage : Message {
     public var removeLineItem:RemoveLineItemAction?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .ORDER_ACTION_REMOVE_LINE_ITEM)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         removeLineItem <- map["removeLineItem"]
     }
 }

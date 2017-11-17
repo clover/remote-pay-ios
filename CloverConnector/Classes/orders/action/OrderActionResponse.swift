@@ -13,7 +13,7 @@ public class OrderActionResponse : Mappable {
     public var id:String?
     public var accepted:Bool?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         
     }
     

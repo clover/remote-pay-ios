@@ -11,25 +11,25 @@ extension CLVModels {
   public class Hours {
     
     
-    public class HourRange: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Hours9HourRange)public class HourRange: NSObject, NSCoding, Mappable {
       public var start: Int?
       public var end: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(start, forKey: "start")
-        aCoder.encodeObject(end, forKey: "end")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(start, forKey: "start")
+        aCoder.encode(end, forKey: "end")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        start = aDecoder.decodeObjectForKey("start") as? Int
-        end = aDecoder.decodeObjectForKey("end") as? Int
+        start = aDecoder.decodeObject(forKey: "start") as? Int
+        end = aDecoder.decodeObject(forKey: "end") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         start <- map["start"]
@@ -39,7 +39,7 @@ extension CLVModels {
     
     
     
-    public class HoursSet: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Hours8HoursSet)public class HoursSet: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Friendly name to describe the hours
@@ -53,37 +53,37 @@ extension CLVModels {
       public var friday: [CLVModels.Hours.HourRange]?
       public var saturday: [CLVModels.Hours.HourRange]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(reference, forKey: "reference")
-        aCoder.encodeObject(sunday, forKey: "sunday")
-        aCoder.encodeObject(monday, forKey: "monday")
-        aCoder.encodeObject(tuesday, forKey: "tuesday")
-        aCoder.encodeObject(wednesday, forKey: "wednesday")
-        aCoder.encodeObject(thursday, forKey: "thursday")
-        aCoder.encodeObject(friday, forKey: "friday")
-        aCoder.encodeObject(saturday, forKey: "saturday")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(reference, forKey: "reference")
+        aCoder.encode(sunday, forKey: "sunday")
+        aCoder.encode(monday, forKey: "monday")
+        aCoder.encode(tuesday, forKey: "tuesday")
+        aCoder.encode(wednesday, forKey: "wednesday")
+        aCoder.encode(thursday, forKey: "thursday")
+        aCoder.encode(friday, forKey: "friday")
+        aCoder.encode(saturday, forKey: "saturday")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        reference = aDecoder.decodeObjectForKey("reference") as? CLVModels.Hours.Reference
-        sunday = aDecoder.decodeObjectForKey("sunday") as? [CLVModels.Hours.HourRange]
-        monday = aDecoder.decodeObjectForKey("monday") as? [CLVModels.Hours.HourRange]
-        tuesday = aDecoder.decodeObjectForKey("tuesday") as? [CLVModels.Hours.HourRange]
-        wednesday = aDecoder.decodeObjectForKey("wednesday") as? [CLVModels.Hours.HourRange]
-        thursday = aDecoder.decodeObjectForKey("thursday") as? [CLVModels.Hours.HourRange]
-        friday = aDecoder.decodeObjectForKey("friday") as? [CLVModels.Hours.HourRange]
-        saturday = aDecoder.decodeObjectForKey("saturday") as? [CLVModels.Hours.HourRange]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        reference = aDecoder.decodeObject(forKey: "reference") as? CLVModels.Hours.Reference
+        sunday = aDecoder.decodeObject(forKey: "sunday") as? [CLVModels.Hours.HourRange]
+        monday = aDecoder.decodeObject(forKey: "monday") as? [CLVModels.Hours.HourRange]
+        tuesday = aDecoder.decodeObject(forKey: "tuesday") as? [CLVModels.Hours.HourRange]
+        wednesday = aDecoder.decodeObject(forKey: "wednesday") as? [CLVModels.Hours.HourRange]
+        thursday = aDecoder.decodeObject(forKey: "thursday") as? [CLVModels.Hours.HourRange]
+        friday = aDecoder.decodeObject(forKey: "friday") as? [CLVModels.Hours.HourRange]
+        saturday = aDecoder.decodeObject(forKey: "saturday") as? [CLVModels.Hours.HourRange]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -101,28 +101,29 @@ extension CLVModels {
     
     
     
-    public class Reference: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels5Hours9Reference)public class Reference: NSObject, NSCoding, Mappable {
       /// ID of the reference that uses this set of hours
       public var id: String?
       /// External type that these hours reference
-      public var type_: CLVModels.Hours.ReferenceType?
+      public var type_: CLVModels.Hours.ReferenceType? = nil
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(type_?.rawValue, forKey: "type_")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(type_?.rawValue, forKey: "type_")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        type_ = (aDecoder.decodeObjectForKey("type_") as? String) != nil ?
-          CLVModels.Hours.ReferenceType(rawValue: (aDecoder.decodeObjectForKey("type_") as! String)) : nil
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        if let typeString = (aDecoder.decodeObject(forKey: "type_") as? String) {
+            type_ = CLVModels.Hours.ReferenceType(rawValue: typeString)
+        }
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]

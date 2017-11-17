@@ -1,7 +1,3 @@
-//
-//  PrintPaymentMerchantCopyReceiptMessage.swift
-//  CloverSDKRemotepay
-//
 //  
 //  Copyright © 2017 Clover Network, Inc. All rights reserved.
 //
@@ -9,7 +5,9 @@
 import Foundation
 //import CloverSDK
 
-@objc
+/**
+* Callback to the POS to request a merchant copy of the payment receipt
+ */
 public class PrintPaymentMerchantCopyReceiptMessage : NSObject {
     public var payment:CLVModels.Payments.Payment?
     

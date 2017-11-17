@@ -17,12 +17,12 @@ public class CapturePreAuthResponseMessage : Message {
     public var tipAmount:Int?
     
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method:.CAPTURE_PREAUTH_RESPONSE)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         status <- map["status"]
         reason <- map["reason"]
         paymentId <- map["paymentId"]

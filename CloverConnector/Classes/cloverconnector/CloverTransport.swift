@@ -9,31 +9,33 @@
 import Foundation
 //import CloverSDKRemotepay
 
-@objc
 public class CloverTransport : NSObject {
-    var observers:NSMutableArray = NSMutableArray()
+    var observers = [CloverTransportObserver]()
     var ready:Bool = false
     var lastDiscoveryResponseMessage:DiscoveryResponseMessage? = nil
     
-
+    public func initialize() {
+        // needs to override in subclass
+        fatalError("Must override")
+    }
     
     func onDeviceConnected() {
         for obs in observers {
-            (obs as! CloverTransportObserver).onDeviceConnected(self)
+            obs.onDeviceConnected(self)
         }
     }
     
     func onDeviceReady(_ drm:DiscoveryResponseMessage) {
         ready = true
         for obs in observers {
-            (obs as! CloverTransportObserver).onDeviceReady(self)
+            obs.onDeviceReady(self)
         }
     }
     
     func onDeviceDisconnected() {
         ready = false
         for obs in observers {
-            (obs as! CloverTransportObserver).onDeviceDisconnected(self)
+            obs.onDeviceDisconnected(self)
         }
     }
     
@@ -43,7 +45,7 @@ public class CloverTransport : NSObject {
     /// <param name="message"></param>
     func onMessage(_ message:String) {
         for obs in observers {
-            (obs as! CloverTransportObserver).onMessage(message)
+            obs.onMessage(message)
         }
     }
     
@@ -51,22 +53,28 @@ public class CloverTransport : NSObject {
         // to notify if the device has already reported as ready
         if (ready) {
             for obs in observers {
-                (obs as! CloverTransportObserver).onDeviceReady(self)
+                obs.onDeviceReady(self)
             }
         }
-        observers.addObject(observer)
+        observers.append(observer)
     }
     
     func dispose() {
-        observers.removeAllObjects()
+        observers.removeAll()
     }
     
     func unsubscribe(_ observer:CloverTransportObserver) {
-        observers.removeObject(observer)
+        guard let index = observers.index(where: {$0 === observer}) else { return }
+        observers.remove(at: index)
     }
     
     // Implement this to send info
+    @discardableResult
     func sendMessage(_ message:String) -> Int {
         return 0;
+    }
+    
+    func getRemoteMessageVersion() -> Int {
+        return 1;
     }
 }

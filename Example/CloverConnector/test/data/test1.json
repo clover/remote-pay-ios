@@ -79,7 +79,7 @@
           "payload": {
             "success": true,
             "payment": {
-              "amount": 1500
+              "amount": 1725
             }
           }
        },

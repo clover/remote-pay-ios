@@ -18,43 +18,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
     public var cloverConnectorListener:CloverConnectorListener?
     public var testCloverConnectorListener:TestCloverConnectorListener?
     public var store:POSStore?
-    private var token:String?
+    fileprivate var token:String?
 
-    private let PAIRING_AUTH_TOKEN_KEY:String = "PAIRING_AUTH_TOKEN"
+    fileprivate let PAIRING_AUTH_TOKEN_KEY:String = "PAIRING_AUTH_TOKEN"
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         store = POSStore()
-        store?.availableItems = NSMutableArray()
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Cheeseburger", price: 579, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Hamburger", price: 529, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Bacon Cheeseburger", price: 619, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Chicken Nuggets", price: 569, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Large Fries", price: 239, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Small Fries", price: 179, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Vanilla Milkshake", price: 229, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Chocolate Milkshake", price: 229, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "Strawberry Milkshake", price: 229, taxRate: 0.075, taxable: true))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "$25 Gift Card", price: 2500, taxRate: 0.00, taxable: false, tippable: false))
-        store?.availableItems.addObject(POSItem(id: "\(arc4random())", name: "$50 Gift Card", price: 5000, taxRate: 0.000, taxable: false, tippable: false))
+        store?.availableItems.append(POSItem(id: "1", name: "Cheeseburger", price: 579, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "2", name: "Hamburger", price: 529, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "3", name: "Bacon Cheeseburger", price: 619, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "4", name: "Chicken Nuggets", price: 569, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "5", name: "Large Fries", price: 239, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "6", name: "Small Fries", price: 179, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "7", name: "Vanilla Milkshake", price: 229, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "8", name: "Chocolate Milkshake", price: 229, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "9", name: "Strawberry Milkshake", price: 229, taxRate: 0.075, taxable: true))
+        store?.availableItems.append(POSItem(id: "10", name: "$25 Gift Card", price: 2500, taxRate: 0.00, taxable: false, tippable: false))
+        store?.availableItems.append(POSItem(id: "11", name: "$50 Gift Card", price: 5000, taxRate: 0.000, taxable: false, tippable: false))
         
-        if let tkn = NSUserDefaults.standardUserDefaults().stringForKey( PAIRING_AUTH_TOKEN_KEY) {
+        if let tkn = UserDefaults.standard.string( forKey: PAIRING_AUTH_TOKEN_KEY) {
             token = tkn
         }
         
         return true
     }
     
+    override func attemptRecovery(fromError error: Error, optionIndex recoveryOptionIndex: Int) -> Bool {
+        debugPrint((error as NSError).domain)
+        return true
+    }
     
-    func onPairingCode(pairingCode: String) {
-        print("Pairing Code: \(pairingCode)")
+    func onPairingCode(_ pairingCode: String) {
+        debugPrint("Pairing Code: " + pairingCode)
         self.cloverConnectorListener?.onPairingCode(pairingCode)
     }
-    func onPairingSuccess(authToken: String) {
-        print("Pairing Auth Token: \(authToken)")
+    func onPairingSuccess(_ authToken: String) {
+        debugPrint("Pairing Auth Token: " + authToken)
         self.cloverConnectorListener?.onPairingSuccess(authToken)
         self.token = authToken
-        NSUserDefaults.standardUserDefaults().setObject(self.token, forKey: PAIRING_AUTH_TOKEN_KEY)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(self.token, forKey: PAIRING_AUTH_TOKEN_KEY)
+        UserDefaults.standard.synchronize()
     }
     
     func clearConnect(_ url:String) {
@@ -65,17 +68,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
     func connect(_ url:String) {
         cloverConnector?.dispose()
         
-        let config:WebSocketDeviceConfiguration = WebSocketDeviceConfiguration(endpoint:url, remoteApplicationID: "com.clover.ios.example.app", posName: "iOS Example POS", posSerial: "POS-15", pairingAuthToken: self.token, pairingDeviceConfiguration: self)
-        config.disableSSLValidation = true
-        if let cc = cloverConnector {
-            cc.dispose() // if connect is clicked again...
+        var endpoint = url
+        if let components = URLComponents(string: url), let _ = components.url { //Make sure the URL is valid, and break into URL components
+            self.token = components.queryItems?.first(where: { $0.name == "authenticationToken"})?.value //we can skip the pairing code if we already have an auth token
+            
+            endpoint = components.scheme ?? "wss"
+            endpoint += "://"
+            endpoint += components.host ?? ""
+            endpoint += ":" + String(components.port ?? 80)
+            endpoint += String(components.path)
         }
-        cloverConnector = CloverConnector(config: config);
-        cloverConnectorListener = CloverConnectorListener(cloverConnector: cloverConnector!)
-        cloverConnectorListener?.viewController = self.window?.rootViewController
-        testCloverConnectorListener = TestCloverConnectorListener(cloverConnector: cloverConnector! as! CloverConnector)
-        cloverConnector!.addCloverConnectorListener(cloverConnectorListener!)
-        cloverConnector!.initializeConnection()
+
+        let config:WebSocketDeviceConfiguration = WebSocketDeviceConfiguration(endpoint:endpoint, remoteApplicationID: "com.clover.ios.example.app", posName: "iOS Example POS", posSerial: "POS-15", pairingAuthToken: self.token, pairingDeviceConfiguration: self)
+//        config.maxCharInMessage = 2000
+//        config.pingFrequency = 1
+//        config.pongTimeout = 6
+//        config.reportConnectionProblemTimeout = 3
+        
+        let validCloverConnector = CloverConnectorFactory.createICloverConnector(config: config)
+        self.cloverConnector = validCloverConnector
+        let validCloverConnectorListener = CloverConnectorListener(cloverConnector: validCloverConnector)
+        self.cloverConnectorListener = validCloverConnectorListener
+        
+        self.testCloverConnectorListener = TestCloverConnectorListener(cloverConnector: validCloverConnector)
+        validCloverConnectorListener.viewController = self.window?.rootViewController
+        validCloverConnector.addCloverConnectorListener(validCloverConnectorListener)
+        validCloverConnector.initializeConnection()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -101,14 +119,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    // this gets called for a notification while the app is the active app
-    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
-
-    }
-    
     func applicationDidFinishLaunching(_ application: UIApplication) {
         
     }
-
 }
 

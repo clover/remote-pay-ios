@@ -11,7 +11,7 @@ extension CLVModels {
   public class Merchant {
     
     
-    public class Gateway: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Merchant7Gateway)public class Gateway: NSObject, NSCoding, Mappable {
       public var paymentProcessorName: String?
       public var authorizationFrontEnd: String?
       public var acquiringBackEnd: String?
@@ -31,53 +31,53 @@ extension CLVModels {
       public var closingTime: String?
       public var newBatchCloseEnabled: Bool?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(paymentProcessorName, forKey: "paymentProcessorName")
-        aCoder.encodeObject(authorizationFrontEnd, forKey: "authorizationFrontEnd")
-        aCoder.encodeObject(acquiringBackEnd, forKey: "acquiringBackEnd")
-        aCoder.encodeObject(paymentGatewayApi, forKey: "paymentGatewayApi")
-        aCoder.encodeObject(accountName, forKey: "accountName")
-        aCoder.encodeObject(mid, forKey: "mid")
-        aCoder.encodeObject(tid, forKey: "tid")
-        aCoder.encodeObject(storeId, forKey: "storeId")
-        aCoder.encodeObject(supportsTipping, forKey: "supportsTipping")
-        aCoder.encodeObject(frontendMid, forKey: "frontendMid")
-        aCoder.encodeObject(backendMid, forKey: "backendMid")
-        aCoder.encodeObject(supportsTipAdjust, forKey: "supportsTipAdjust")
-        aCoder.encodeObject(supportsNakedCredit, forKey: "supportsNakedCredit")
-        aCoder.encodeObject(supportsMultiPayToken, forKey: "supportsMultiPayToken")
-        aCoder.encodeObject(keyPrefix, forKey: "keyPrefix")
-        aCoder.encodeObject(keyInfo, forKey: "keyInfo")
-        aCoder.encodeObject(closingTime, forKey: "closingTime")
-        aCoder.encodeObject(newBatchCloseEnabled, forKey: "newBatchCloseEnabled")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(paymentProcessorName, forKey: "paymentProcessorName")
+        aCoder.encode(authorizationFrontEnd, forKey: "authorizationFrontEnd")
+        aCoder.encode(acquiringBackEnd, forKey: "acquiringBackEnd")
+        aCoder.encode(paymentGatewayApi, forKey: "paymentGatewayApi")
+        aCoder.encode(accountName, forKey: "accountName")
+        aCoder.encode(mid, forKey: "mid")
+        aCoder.encode(tid, forKey: "tid")
+        aCoder.encode(storeId, forKey: "storeId")
+        aCoder.encode(supportsTipping, forKey: "supportsTipping")
+        aCoder.encode(frontendMid, forKey: "frontendMid")
+        aCoder.encode(backendMid, forKey: "backendMid")
+        aCoder.encode(supportsTipAdjust, forKey: "supportsTipAdjust")
+        aCoder.encode(supportsNakedCredit, forKey: "supportsNakedCredit")
+        aCoder.encode(supportsMultiPayToken, forKey: "supportsMultiPayToken")
+        aCoder.encode(keyPrefix, forKey: "keyPrefix")
+        aCoder.encode(keyInfo, forKey: "keyInfo")
+        aCoder.encode(closingTime, forKey: "closingTime")
+        aCoder.encode(newBatchCloseEnabled, forKey: "newBatchCloseEnabled")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        paymentProcessorName = aDecoder.decodeObjectForKey("paymentProcessorName") as? String
-        authorizationFrontEnd = aDecoder.decodeObjectForKey("authorizationFrontEnd") as? String
-        acquiringBackEnd = aDecoder.decodeObjectForKey("acquiringBackEnd") as? String
-        paymentGatewayApi = aDecoder.decodeObjectForKey("paymentGatewayApi") as? String
-        accountName = aDecoder.decodeObjectForKey("accountName") as? String
-        mid = aDecoder.decodeObjectForKey("mid") as? String
-        tid = aDecoder.decodeObjectForKey("tid") as? String
-        storeId = aDecoder.decodeObjectForKey("storeId") as? String
-        supportsTipping = aDecoder.decodeObjectForKey("supportsTipping") as? Bool
-        frontendMid = aDecoder.decodeObjectForKey("frontendMid") as? String
-        backendMid = aDecoder.decodeObjectForKey("backendMid") as? String
-        supportsTipAdjust = aDecoder.decodeObjectForKey("supportsTipAdjust") as? Bool
-        supportsNakedCredit = aDecoder.decodeObjectForKey("supportsNakedCredit") as? Bool
-        supportsMultiPayToken = aDecoder.decodeObjectForKey("supportsMultiPayToken") as? Bool
-        keyPrefix = aDecoder.decodeObjectForKey("keyPrefix") as? String
-        keyInfo = aDecoder.decodeObjectForKey("keyInfo") as? [String:String]
-        closingTime = aDecoder.decodeObjectForKey("closingTime") as? String
-        newBatchCloseEnabled = aDecoder.decodeObjectForKey("newBatchCloseEnabled") as? Bool
+        paymentProcessorName = aDecoder.decodeObject(forKey: "paymentProcessorName") as? String
+        authorizationFrontEnd = aDecoder.decodeObject(forKey: "authorizationFrontEnd") as? String
+        acquiringBackEnd = aDecoder.decodeObject(forKey: "acquiringBackEnd") as? String
+        paymentGatewayApi = aDecoder.decodeObject(forKey: "paymentGatewayApi") as? String
+        accountName = aDecoder.decodeObject(forKey: "accountName") as? String
+        mid = aDecoder.decodeObject(forKey: "mid") as? String
+        tid = aDecoder.decodeObject(forKey: "tid") as? String
+        storeId = aDecoder.decodeObject(forKey: "storeId") as? String
+        supportsTipping = aDecoder.decodeObject(forKey: "supportsTipping") as? Bool
+        frontendMid = aDecoder.decodeObject(forKey: "frontendMid") as? String
+        backendMid = aDecoder.decodeObject(forKey: "backendMid") as? String
+        supportsTipAdjust = aDecoder.decodeObject(forKey: "supportsTipAdjust") as? Bool
+        supportsNakedCredit = aDecoder.decodeObject(forKey: "supportsNakedCredit") as? Bool
+        supportsMultiPayToken = aDecoder.decodeObject(forKey: "supportsMultiPayToken") as? Bool
+        keyPrefix = aDecoder.decodeObject(forKey: "keyPrefix") as? String
+        keyInfo = aDecoder.decodeObject(forKey: "keyInfo") as? [String:String]
+        closingTime = aDecoder.decodeObject(forKey: "closingTime") as? String
+        newBatchCloseEnabled = aDecoder.decodeObject(forKey: "newBatchCloseEnabled") as? Bool
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         paymentProcessorName <- map["paymentProcessorName"]
@@ -103,32 +103,33 @@ extension CLVModels {
     
     
     
-    public class Logo: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Merchant4Logo)public class Logo: NSObject, NSCoding, Mappable {
       /// The type of merchant logo
-      public var logoType: CLVModels.Merchant.LogoType?
+      public var logoType: CLVModels.Merchant.LogoType? = nil
       /// The filename of the logo
       public var logoFilename: String?
       /// URL of the logo file. Generated from filename.
       public var url: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(logoType?.rawValue, forKey: "logoType")
-        aCoder.encodeObject(logoFilename, forKey: "logoFilename")
-        aCoder.encodeObject(url, forKey: "url")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(logoType?.rawValue, forKey: "logoType")
+        aCoder.encode(logoFilename, forKey: "logoFilename")
+        aCoder.encode(url, forKey: "url")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        logoType = (aDecoder.decodeObjectForKey("logoType") as? String) != nil ?
-          CLVModels.Merchant.LogoType(rawValue: (aDecoder.decodeObjectForKey("logoType") as! String)) : nil
-        logoFilename = aDecoder.decodeObjectForKey("logoFilename") as? String
-        url = aDecoder.decodeObjectForKey("url") as? String
+        if let logoTypeString =  (aDecoder.decodeObject(forKey: "logoType") as? String) {
+            logoType = CLVModels.Merchant.LogoType(rawValue: logoTypeString)
+        }
+        logoFilename = aDecoder.decodeObject(forKey: "logoFilename") as? String
+        url = aDecoder.decodeObject(forKey: "url") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         logoType <- map["logoType"]
@@ -146,7 +147,7 @@ extension CLVModels {
     
     
     
-    public class Merchant: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Merchant8Merchant)public class Merchant: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Name of the merchant
@@ -160,7 +161,7 @@ extension CLVModels {
       public var phoneNumber: String?
       public var website: String?
       public var logos: [CLVModels.Merchant.Logo]?
-      public var createdTime: NSDate?
+      public var createdTime: Date?
       public var properties: CLVModels.Merchant.MerchantProperties?
       public var gateway: CLVModels.Merchant.Gateway?
       public var tipSuggestions: [CLVModels.Merchant.TipSuggestion]?
@@ -187,7 +188,7 @@ extension CLVModels {
       /// This merchant's opening hours
       public var opening_hours: [CLVModels.Hours.HoursSet]?
       /// The business type of the merchant
-      public var businessTypeCode: CLVModels.Base.BusinessTypeCode?
+      public var businessTypeCode: CLVModels.Base.BusinessTypeCode? = nil
       /// Returns true when the merchant is billable.
       public var isBillable: Bool?
       /// A list of devices a merchant owns
@@ -195,78 +196,79 @@ extension CLVModels {
       /// A list of merchant groups a merchant belongs to
       public var merchantGroups: [CLVModels.Developer.MerchantGroup]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(owner, forKey: "owner")
-        aCoder.encodeObject(address, forKey: "address")
-        aCoder.encodeObject(merchantPlan, forKey: "merchantPlan")
-        aCoder.encodeObject(defaultCurrency, forKey: "defaultCurrency")
-        aCoder.encodeObject(phoneNumber, forKey: "phoneNumber")
-        aCoder.encodeObject(website, forKey: "website")
-        aCoder.encodeObject(logos, forKey: "logos")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
-        aCoder.encodeObject(properties, forKey: "properties")
-        aCoder.encodeObject(gateway, forKey: "gateway")
-        aCoder.encodeObject(tipSuggestions, forKey: "tipSuggestions")
-        aCoder.encodeObject(employees, forKey: "employees")
-        aCoder.encodeObject(items, forKey: "items")
-        aCoder.encodeObject(tags, forKey: "tags")
-        aCoder.encodeObject(tenders, forKey: "tenders")
-        aCoder.encodeObject(shifts, forKey: "shifts")
-        aCoder.encodeObject(orders, forKey: "orders")
-        aCoder.encodeObject(payments, forKey: "payments")
-        aCoder.encodeObject(taxRates, forKey: "taxRates")
-        aCoder.encodeObject(printers, forKey: "printers")
-        aCoder.encodeObject(modifierGroups, forKey: "modifierGroups")
-        aCoder.encodeObject(orderTypes, forKey: "orderTypes")
-        aCoder.encodeObject(reseller, forKey: "reseller")
-        aCoder.encodeObject(opening_hours, forKey: "opening_hours")
-        aCoder.encodeObject(businessTypeCode?.rawValue, forKey: "businessTypeCode")
-        aCoder.encodeObject(isBillable, forKey: "isBillable")
-        aCoder.encodeObject(devices, forKey: "devices")
-        aCoder.encodeObject(merchantGroups, forKey: "merchantGroups")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(owner, forKey: "owner")
+        aCoder.encode(address, forKey: "address")
+        aCoder.encode(merchantPlan, forKey: "merchantPlan")
+        aCoder.encode(defaultCurrency, forKey: "defaultCurrency")
+        aCoder.encode(phoneNumber, forKey: "phoneNumber")
+        aCoder.encode(website, forKey: "website")
+        aCoder.encode(logos, forKey: "logos")
+        aCoder.encode(createdTime, forKey: "createdTime")
+        aCoder.encode(properties, forKey: "properties")
+        aCoder.encode(gateway, forKey: "gateway")
+        aCoder.encode(tipSuggestions, forKey: "tipSuggestions")
+        aCoder.encode(employees, forKey: "employees")
+        aCoder.encode(items, forKey: "items")
+        aCoder.encode(tags, forKey: "tags")
+        aCoder.encode(tenders, forKey: "tenders")
+        aCoder.encode(shifts, forKey: "shifts")
+        aCoder.encode(orders, forKey: "orders")
+        aCoder.encode(payments, forKey: "payments")
+        aCoder.encode(taxRates, forKey: "taxRates")
+        aCoder.encode(printers, forKey: "printers")
+        aCoder.encode(modifierGroups, forKey: "modifierGroups")
+        aCoder.encode(orderTypes, forKey: "orderTypes")
+        aCoder.encode(reseller, forKey: "reseller")
+        aCoder.encode(opening_hours, forKey: "opening_hours")
+        aCoder.encode(businessTypeCode?.rawValue, forKey: "businessTypeCode")
+        aCoder.encode(isBillable, forKey: "isBillable")
+        aCoder.encode(devices, forKey: "devices")
+        aCoder.encode(merchantGroups, forKey: "merchantGroups")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        owner = aDecoder.decodeObjectForKey("owner") as? CLVModels.Employees.Employee
-        address = aDecoder.decodeObjectForKey("address") as? CLVModels.Base.Address
-        merchantPlan = aDecoder.decodeObjectForKey("merchantPlan") as? CLVModels.Merchant.MerchantPlan
-        defaultCurrency = aDecoder.decodeObjectForKey("defaultCurrency") as? String
-        phoneNumber = aDecoder.decodeObjectForKey("phoneNumber") as? String
-        website = aDecoder.decodeObjectForKey("website") as? String
-        logos = aDecoder.decodeObjectForKey("logos") as? [CLVModels.Merchant.Logo]
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-        properties = aDecoder.decodeObjectForKey("properties") as? CLVModels.Merchant.MerchantProperties
-        gateway = aDecoder.decodeObjectForKey("gateway") as? CLVModels.Merchant.Gateway
-        tipSuggestions = aDecoder.decodeObjectForKey("tipSuggestions") as? [CLVModels.Merchant.TipSuggestion]
-        employees = aDecoder.decodeObjectForKey("employees") as? [CLVModels.Employees.Employee]
-        items = aDecoder.decodeObjectForKey("items") as? [CLVModels.Inventory.Item]
-        tags = aDecoder.decodeObjectForKey("tags") as? [CLVModels.Inventory.Tag]
-        tenders = aDecoder.decodeObjectForKey("tenders") as? [CLVModels.Base.Tender]
-        shifts = aDecoder.decodeObjectForKey("shifts") as? [CLVModels.Employees.Shift]
-        orders = aDecoder.decodeObjectForKey("orders") as? [CLVModels.Order.Order]
-        payments = aDecoder.decodeObjectForKey("payments") as? [CLVModels.Payments.Payment]
-        taxRates = aDecoder.decodeObjectForKey("taxRates") as? [CLVModels.Inventory.TaxRate]
-        printers = aDecoder.decodeObjectForKey("printers") as? [CLVModels.Printer.Printer]
-        modifierGroups = aDecoder.decodeObjectForKey("modifierGroups") as? [CLVModels.Inventory.ModifierGroup]
-        orderTypes = aDecoder.decodeObjectForKey("orderTypes") as? [CLVModels.Order.OrderType]
-        reseller = aDecoder.decodeObjectForKey("reseller") as? CLVModels.Base.Reference
-        opening_hours = aDecoder.decodeObjectForKey("opening_hours") as? [CLVModels.Hours.HoursSet]
-        businessTypeCode = (aDecoder.decodeObjectForKey("businessTypeCode") as? String) != nil ?
-          CLVModels.Base.BusinessTypeCode(rawValue: (aDecoder.decodeObjectForKey("businessTypeCode") as! String)) : nil
-        isBillable = aDecoder.decodeObjectForKey("isBillable") as? Bool
-        devices = aDecoder.decodeObjectForKey("devices") as? [CLVModels.Device.Device]
-        merchantGroups = aDecoder.decodeObjectForKey("merchantGroups") as? [CLVModels.Developer.MerchantGroup]
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        owner = aDecoder.decodeObject(forKey: "owner") as? CLVModels.Employees.Employee
+        address = aDecoder.decodeObject(forKey: "address") as? CLVModels.Base.Address
+        merchantPlan = aDecoder.decodeObject(forKey: "merchantPlan") as? CLVModels.Merchant.MerchantPlan
+        defaultCurrency = aDecoder.decodeObject(forKey: "defaultCurrency") as? String
+        phoneNumber = aDecoder.decodeObject(forKey: "phoneNumber") as? String
+        website = aDecoder.decodeObject(forKey: "website") as? String
+        logos = aDecoder.decodeObject(forKey: "logos") as? [CLVModels.Merchant.Logo]
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+        properties = aDecoder.decodeObject(forKey: "properties") as? CLVModels.Merchant.MerchantProperties
+        gateway = aDecoder.decodeObject(forKey: "gateway") as? CLVModels.Merchant.Gateway
+        tipSuggestions = aDecoder.decodeObject(forKey: "tipSuggestions") as? [CLVModels.Merchant.TipSuggestion]
+        employees = aDecoder.decodeObject(forKey: "employees") as? [CLVModels.Employees.Employee]
+        items = aDecoder.decodeObject(forKey: "items") as? [CLVModels.Inventory.Item]
+        tags = aDecoder.decodeObject(forKey: "tags") as? [CLVModels.Inventory.Tag]
+        tenders = aDecoder.decodeObject(forKey: "tenders") as? [CLVModels.Base.Tender]
+        shifts = aDecoder.decodeObject(forKey: "shifts") as? [CLVModels.Employees.Shift]
+        orders = aDecoder.decodeObject(forKey: "orders") as? [CLVModels.Order.Order]
+        payments = aDecoder.decodeObject(forKey: "payments") as? [CLVModels.Payments.Payment]
+        taxRates = aDecoder.decodeObject(forKey: "taxRates") as? [CLVModels.Inventory.TaxRate]
+        printers = aDecoder.decodeObject(forKey: "printers") as? [CLVModels.Printer.Printer]
+        modifierGroups = aDecoder.decodeObject(forKey: "modifierGroups") as? [CLVModels.Inventory.ModifierGroup]
+        orderTypes = aDecoder.decodeObject(forKey: "orderTypes") as? [CLVModels.Order.OrderType]
+        reseller = aDecoder.decodeObject(forKey: "reseller") as? CLVModels.Base.Reference
+        opening_hours = aDecoder.decodeObject(forKey: "opening_hours") as? [CLVModels.Hours.HoursSet]
+        if let businessTypeCodeString = (aDecoder.decodeObject(forKey: "businessTypeCode") as? String) {
+            businessTypeCode = CLVModels.Base.BusinessTypeCode(rawValue: businessTypeCodeString)
+        }
+        isBillable = aDecoder.decodeObject(forKey: "isBillable") as? Bool
+        devices = aDecoder.decodeObject(forKey: "devices") as? [CLVModels.Device.Device]
+        merchantGroups = aDecoder.decodeObject(forKey: "merchantGroups") as? [CLVModels.Developer.MerchantGroup]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -304,7 +306,7 @@ extension CLVModels {
     
     
     
-    public class MerchantPlan: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Merchant12MerchantPlan)public class MerchantPlan: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// The name of the merchant plan
@@ -315,29 +317,29 @@ extension CLVModels {
       public var modules: [CLVModels.Merchant.Module]?
       public var appBundle: CLVModels.Apps.AppBundle?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(description_, forKey: "description_")
-        aCoder.encodeObject(price, forKey: "price")
-        aCoder.encodeObject(modules, forKey: "modules")
-        aCoder.encodeObject(appBundle, forKey: "appBundle")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(description_, forKey: "description_")
+        aCoder.encode(price, forKey: "price")
+        aCoder.encode(modules, forKey: "modules")
+        aCoder.encode(appBundle, forKey: "appBundle")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        description_ = aDecoder.decodeObjectForKey("description_") as? String
-        price = aDecoder.decodeObjectForKey("price") as? Int
-        modules = aDecoder.decodeObjectForKey("modules") as? [CLVModels.Merchant.Module]
-        appBundle = aDecoder.decodeObjectForKey("appBundle") as? CLVModels.Apps.AppBundle
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        description_ = aDecoder.decodeObject(forKey: "description_") as? String
+        price = aDecoder.decodeObject(forKey: "price") as? Int
+        modules = aDecoder.decodeObject(forKey: "modules") as? [CLVModels.Merchant.Module]
+        appBundle = aDecoder.decodeObject(forKey: "appBundle") as? CLVModels.Apps.AppBundle
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -351,7 +353,7 @@ extension CLVModels {
     
     
     
-    public class MerchantProperties: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Merchant18MerchantProperties)public class MerchantProperties: NSObject, NSCoding, Mappable {
       public var defaultCurrency: String?
       public var tipsEnabled: Bool?
       public var receiptProperties: String?
@@ -361,7 +363,7 @@ extension CLVModels {
       public var tipRateDefault: Int?
       public var onPaperTipSignatures: Bool?
       public var autoLogout: Bool?
-      public var orderTitle: CLVModels.Merchant.OrderTitle?
+      public var orderTitle: CLVModels.Merchant.OrderTitle? = nil
       public var orderTitleMax: Int?
       public var resetOnReportingTime: Bool?
       public var notesOnOrders: Bool?
@@ -402,7 +404,7 @@ extension CLVModels {
       public var logInClockInPrompt: Bool?
       public var accountType: String?
       /// The business type of the merchant
-      public var businessTypeCode: CLVModels.Base.BusinessTypeCode?
+      public var businessTypeCode: CLVModels.Base.BusinessTypeCode? = nil
       public var pinLength: Int?
       /// Whether cash back is enabled for this merchant
       public var cashBackEnabled: Bool?
@@ -415,119 +417,121 @@ extension CLVModels {
       /// Whether or not merchant has consented to infolease billing
       public var hasConsented: Bool?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(defaultCurrency, forKey: "defaultCurrency")
-        aCoder.encodeObject(tipsEnabled, forKey: "tipsEnabled")
-        aCoder.encodeObject(receiptProperties, forKey: "receiptProperties")
-        aCoder.encodeObject(summaryHour, forKey: "summaryHour")
-        aCoder.encodeObject(signatureThreshold, forKey: "signatureThreshold")
-        aCoder.encodeObject(hasDefaultEmployee, forKey: "hasDefaultEmployee")
-        aCoder.encodeObject(tipRateDefault, forKey: "tipRateDefault")
-        aCoder.encodeObject(onPaperTipSignatures, forKey: "onPaperTipSignatures")
-        aCoder.encodeObject(autoLogout, forKey: "autoLogout")
-        aCoder.encodeObject(orderTitle?.rawValue, forKey: "orderTitle")
-        aCoder.encodeObject(orderTitleMax, forKey: "orderTitleMax")
-        aCoder.encodeObject(resetOnReportingTime, forKey: "resetOnReportingTime")
-        aCoder.encodeObject(notesOnOrders, forKey: "notesOnOrders")
-        aCoder.encodeObject(deleteOrders, forKey: "deleteOrders")
-        aCoder.encodeObject(removeTaxEnabled, forKey: "removeTaxEnabled")
-        aCoder.encodeObject(groupLineItems, forKey: "groupLineItems")
-        aCoder.encodeObject(alternateInventoryNames, forKey: "alternateInventoryNames")
-        aCoder.encodeObject(autoPrint, forKey: "autoPrint")
-        aCoder.encodeObject(hardwareProfile, forKey: "hardwareProfile")
-        aCoder.encodeObject(infoleaseSuppressBilling, forKey: "infoleaseSuppressBilling")
-        aCoder.encodeObject(infoleaseSuppressPlanBilling, forKey: "infoleaseSuppressPlanBilling")
-        aCoder.encodeObject(shippingAddress, forKey: "shippingAddress")
-        aCoder.encodeObject(marketingEnabled, forKey: "marketingEnabled")
-        aCoder.encodeObject(marketingPreferenceText, forKey: "marketingPreferenceText")
-        aCoder.encodeObject(bankMarker, forKey: "bankMarker")
-        aCoder.encodeObject(supportPhone, forKey: "supportPhone")
-        aCoder.encodeObject(supportEmail, forKey: "supportEmail")
-        aCoder.encodeObject(manualCloseout, forKey: "manualCloseout")
-        aCoder.encodeObject(showCloseoutOrders, forKey: "showCloseoutOrders")
-        aCoder.encodeObject(sendCloseoutEmail, forKey: "sendCloseoutEmail")
-        aCoder.encodeObject(stayInCategory, forKey: "stayInCategory")
-        aCoder.encodeObject(locale, forKey: "locale")
-        aCoder.encodeObject(timezone, forKey: "timezone")
-        aCoder.encodeObject(vat, forKey: "vat")
-        aCoder.encodeObject(vatTaxName, forKey: "vatTaxName")
-        aCoder.encodeObject(appBillingSystem, forKey: "appBillingSystem")
-        aCoder.encodeObject(abaAccountNumber, forKey: "abaAccountNumber")
-        aCoder.encodeObject(ddaAccountNumber, forKey: "ddaAccountNumber")
-        aCoder.encodeObject(trackStock, forKey: "trackStock")
-        aCoder.encodeObject(updateStock, forKey: "updateStock")
-        aCoder.encodeObject(allowClockOutWithOpenOrders, forKey: "allowClockOutWithOpenOrders")
-        aCoder.encodeObject(logInClockInPrompt, forKey: "logInClockInPrompt")
-        aCoder.encodeObject(accountType, forKey: "accountType")
-        aCoder.encodeObject(businessTypeCode?.rawValue, forKey: "businessTypeCode")
-        aCoder.encodeObject(pinLength, forKey: "pinLength")
-        aCoder.encodeObject(cashBackEnabled, forKey: "cashBackEnabled")
-        aCoder.encodeObject(cashBackOptions, forKey: "cashBackOptions")
-        aCoder.encodeObject(maxCashBack, forKey: "maxCashBack")
-        aCoder.encodeObject(hierarchy, forKey: "hierarchy")
-        aCoder.encodeObject(hasConsented, forKey: "hasConsented")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(defaultCurrency, forKey: "defaultCurrency")
+        aCoder.encode(tipsEnabled, forKey: "tipsEnabled")
+        aCoder.encode(receiptProperties, forKey: "receiptProperties")
+        aCoder.encode(summaryHour, forKey: "summaryHour")
+        aCoder.encode(signatureThreshold, forKey: "signatureThreshold")
+        aCoder.encode(hasDefaultEmployee, forKey: "hasDefaultEmployee")
+        aCoder.encode(tipRateDefault, forKey: "tipRateDefault")
+        aCoder.encode(onPaperTipSignatures, forKey: "onPaperTipSignatures")
+        aCoder.encode(autoLogout, forKey: "autoLogout")
+        aCoder.encode(orderTitle?.rawValue, forKey: "orderTitle")
+        aCoder.encode(orderTitleMax, forKey: "orderTitleMax")
+        aCoder.encode(resetOnReportingTime, forKey: "resetOnReportingTime")
+        aCoder.encode(notesOnOrders, forKey: "notesOnOrders")
+        aCoder.encode(deleteOrders, forKey: "deleteOrders")
+        aCoder.encode(removeTaxEnabled, forKey: "removeTaxEnabled")
+        aCoder.encode(groupLineItems, forKey: "groupLineItems")
+        aCoder.encode(alternateInventoryNames, forKey: "alternateInventoryNames")
+        aCoder.encode(autoPrint, forKey: "autoPrint")
+        aCoder.encode(hardwareProfile, forKey: "hardwareProfile")
+        aCoder.encode(infoleaseSuppressBilling, forKey: "infoleaseSuppressBilling")
+        aCoder.encode(infoleaseSuppressPlanBilling, forKey: "infoleaseSuppressPlanBilling")
+        aCoder.encode(shippingAddress, forKey: "shippingAddress")
+        aCoder.encode(marketingEnabled, forKey: "marketingEnabled")
+        aCoder.encode(marketingPreferenceText, forKey: "marketingPreferenceText")
+        aCoder.encode(bankMarker, forKey: "bankMarker")
+        aCoder.encode(supportPhone, forKey: "supportPhone")
+        aCoder.encode(supportEmail, forKey: "supportEmail")
+        aCoder.encode(manualCloseout, forKey: "manualCloseout")
+        aCoder.encode(showCloseoutOrders, forKey: "showCloseoutOrders")
+        aCoder.encode(sendCloseoutEmail, forKey: "sendCloseoutEmail")
+        aCoder.encode(stayInCategory, forKey: "stayInCategory")
+        aCoder.encode(locale, forKey: "locale")
+        aCoder.encode(timezone, forKey: "timezone")
+        aCoder.encode(vat, forKey: "vat")
+        aCoder.encode(vatTaxName, forKey: "vatTaxName")
+        aCoder.encode(appBillingSystem, forKey: "appBillingSystem")
+        aCoder.encode(abaAccountNumber, forKey: "abaAccountNumber")
+        aCoder.encode(ddaAccountNumber, forKey: "ddaAccountNumber")
+        aCoder.encode(trackStock, forKey: "trackStock")
+        aCoder.encode(updateStock, forKey: "updateStock")
+        aCoder.encode(allowClockOutWithOpenOrders, forKey: "allowClockOutWithOpenOrders")
+        aCoder.encode(logInClockInPrompt, forKey: "logInClockInPrompt")
+        aCoder.encode(accountType, forKey: "accountType")
+        aCoder.encode(businessTypeCode?.rawValue, forKey: "businessTypeCode")
+        aCoder.encode(pinLength, forKey: "pinLength")
+        aCoder.encode(cashBackEnabled, forKey: "cashBackEnabled")
+        aCoder.encode(cashBackOptions, forKey: "cashBackOptions")
+        aCoder.encode(maxCashBack, forKey: "maxCashBack")
+        aCoder.encode(hierarchy, forKey: "hierarchy")
+        aCoder.encode(hasConsented, forKey: "hasConsented")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        defaultCurrency = aDecoder.decodeObjectForKey("defaultCurrency") as? String
-        tipsEnabled = aDecoder.decodeObjectForKey("tipsEnabled") as? Bool
-        receiptProperties = aDecoder.decodeObjectForKey("receiptProperties") as? String
-        summaryHour = aDecoder.decodeObjectForKey("summaryHour") as? Int
-        signatureThreshold = aDecoder.decodeObjectForKey("signatureThreshold") as? Int
-        hasDefaultEmployee = aDecoder.decodeObjectForKey("hasDefaultEmployee") as? Bool
-        tipRateDefault = aDecoder.decodeObjectForKey("tipRateDefault") as? Int
-        onPaperTipSignatures = aDecoder.decodeObjectForKey("onPaperTipSignatures") as? Bool
-        autoLogout = aDecoder.decodeObjectForKey("autoLogout") as? Bool
-        orderTitle = (aDecoder.decodeObjectForKey("orderTitle") as? String) != nil ?
-          CLVModels.Merchant.OrderTitle(rawValue: (aDecoder.decodeObjectForKey("orderTitle") as! String)) : nil
-        orderTitleMax = aDecoder.decodeObjectForKey("orderTitleMax") as? Int
-        resetOnReportingTime = aDecoder.decodeObjectForKey("resetOnReportingTime") as? Bool
-        notesOnOrders = aDecoder.decodeObjectForKey("notesOnOrders") as? Bool
-        deleteOrders = aDecoder.decodeObjectForKey("deleteOrders") as? Bool
-        removeTaxEnabled = aDecoder.decodeObjectForKey("removeTaxEnabled") as? Bool
-        groupLineItems = aDecoder.decodeObjectForKey("groupLineItems") as? Bool
-        alternateInventoryNames = aDecoder.decodeObjectForKey("alternateInventoryNames") as? Bool
-        autoPrint = aDecoder.decodeObjectForKey("autoPrint") as? Bool
-        hardwareProfile = aDecoder.decodeObjectForKey("hardwareProfile") as? String
-        infoleaseSuppressBilling = aDecoder.decodeObjectForKey("infoleaseSuppressBilling") as? Bool
-        infoleaseSuppressPlanBilling = aDecoder.decodeObjectForKey("infoleaseSuppressPlanBilling") as? Bool
-        shippingAddress = aDecoder.decodeObjectForKey("shippingAddress") as? String
-        marketingEnabled = aDecoder.decodeObjectForKey("marketingEnabled") as? Bool
-        marketingPreferenceText = aDecoder.decodeObjectForKey("marketingPreferenceText") as? String
-        bankMarker = aDecoder.decodeObjectForKey("bankMarker") as? Int
-        supportPhone = aDecoder.decodeObjectForKey("supportPhone") as? String
-        supportEmail = aDecoder.decodeObjectForKey("supportEmail") as? String
-        manualCloseout = aDecoder.decodeObjectForKey("manualCloseout") as? Bool
-        showCloseoutOrders = aDecoder.decodeObjectForKey("showCloseoutOrders") as? Bool
-        sendCloseoutEmail = aDecoder.decodeObjectForKey("sendCloseoutEmail") as? Bool
-        stayInCategory = aDecoder.decodeObjectForKey("stayInCategory") as? Bool
-        locale = aDecoder.decodeObjectForKey("locale") as? String
-        timezone = aDecoder.decodeObjectForKey("timezone") as? String
-        vat = aDecoder.decodeObjectForKey("vat") as? Bool
-        vatTaxName = aDecoder.decodeObjectForKey("vatTaxName") as? String
-        appBillingSystem = aDecoder.decodeObjectForKey("appBillingSystem") as? String
-        abaAccountNumber = aDecoder.decodeObjectForKey("abaAccountNumber") as? String
-        ddaAccountNumber = aDecoder.decodeObjectForKey("ddaAccountNumber") as? String
-        trackStock = aDecoder.decodeObjectForKey("trackStock") as? Bool
-        updateStock = aDecoder.decodeObjectForKey("updateStock") as? Bool
-        allowClockOutWithOpenOrders = aDecoder.decodeObjectForKey("allowClockOutWithOpenOrders") as? Bool
-        logInClockInPrompt = aDecoder.decodeObjectForKey("logInClockInPrompt") as? Bool
-        accountType = aDecoder.decodeObjectForKey("accountType") as? String
-        businessTypeCode = (aDecoder.decodeObjectForKey("businessTypeCode") as? String) != nil ?
-          CLVModels.Base.BusinessTypeCode(rawValue: (aDecoder.decodeObjectForKey("businessTypeCode") as! String)) : nil
-        pinLength = aDecoder.decodeObjectForKey("pinLength") as? Int
-        cashBackEnabled = aDecoder.decodeObjectForKey("cashBackEnabled") as? Bool
-        cashBackOptions = aDecoder.decodeObjectForKey("cashBackOptions") as? String
-        maxCashBack = aDecoder.decodeObjectForKey("maxCashBack") as? Int
-        hierarchy = aDecoder.decodeObjectForKey("hierarchy") as? String
-        hasConsented = aDecoder.decodeObjectForKey("hasConsented") as? Bool
+        defaultCurrency = aDecoder.decodeObject(forKey: "defaultCurrency") as? String
+        tipsEnabled = aDecoder.decodeObject(forKey: "tipsEnabled") as? Bool
+        receiptProperties = aDecoder.decodeObject(forKey: "receiptProperties") as? String
+        summaryHour = aDecoder.decodeObject(forKey: "summaryHour") as? Int
+        signatureThreshold = aDecoder.decodeObject(forKey: "signatureThreshold") as? Int
+        hasDefaultEmployee = aDecoder.decodeObject(forKey: "hasDefaultEmployee") as? Bool
+        tipRateDefault = aDecoder.decodeObject(forKey: "tipRateDefault") as? Int
+        onPaperTipSignatures = aDecoder.decodeObject(forKey: "onPaperTipSignatures") as? Bool
+        autoLogout = aDecoder.decodeObject(forKey: "autoLogout") as? Bool
+        if let orderTitleString = (aDecoder.decodeObject(forKey: "orderTitle") as? String) {
+            orderTitle = CLVModels.Merchant.OrderTitle(rawValue: orderTitleString)
+        }
+        orderTitleMax = aDecoder.decodeObject(forKey: "orderTitleMax") as? Int
+        resetOnReportingTime = aDecoder.decodeObject(forKey: "resetOnReportingTime") as? Bool
+        notesOnOrders = aDecoder.decodeObject(forKey: "notesOnOrders") as? Bool
+        deleteOrders = aDecoder.decodeObject(forKey: "deleteOrders") as? Bool
+        removeTaxEnabled = aDecoder.decodeObject(forKey: "removeTaxEnabled") as? Bool
+        groupLineItems = aDecoder.decodeObject(forKey: "groupLineItems") as? Bool
+        alternateInventoryNames = aDecoder.decodeObject(forKey: "alternateInventoryNames") as? Bool
+        autoPrint = aDecoder.decodeObject(forKey: "autoPrint") as? Bool
+        hardwareProfile = aDecoder.decodeObject(forKey: "hardwareProfile") as? String
+        infoleaseSuppressBilling = aDecoder.decodeObject(forKey: "infoleaseSuppressBilling") as? Bool
+        infoleaseSuppressPlanBilling = aDecoder.decodeObject(forKey: "infoleaseSuppressPlanBilling") as? Bool
+        shippingAddress = aDecoder.decodeObject(forKey: "shippingAddress") as? String
+        marketingEnabled = aDecoder.decodeObject(forKey: "marketingEnabled") as? Bool
+        marketingPreferenceText = aDecoder.decodeObject(forKey: "marketingPreferenceText") as? String
+        bankMarker = aDecoder.decodeObject(forKey: "bankMarker") as? Int
+        supportPhone = aDecoder.decodeObject(forKey: "supportPhone") as? String
+        supportEmail = aDecoder.decodeObject(forKey: "supportEmail") as? String
+        manualCloseout = aDecoder.decodeObject(forKey: "manualCloseout") as? Bool
+        showCloseoutOrders = aDecoder.decodeObject(forKey: "showCloseoutOrders") as? Bool
+        sendCloseoutEmail = aDecoder.decodeObject(forKey: "sendCloseoutEmail") as? Bool
+        stayInCategory = aDecoder.decodeObject(forKey: "stayInCategory") as? Bool
+        locale = aDecoder.decodeObject(forKey: "locale") as? String
+        timezone = aDecoder.decodeObject(forKey: "timezone") as? String
+        vat = aDecoder.decodeObject(forKey: "vat") as? Bool
+        vatTaxName = aDecoder.decodeObject(forKey: "vatTaxName") as? String
+        appBillingSystem = aDecoder.decodeObject(forKey: "appBillingSystem") as? String
+        abaAccountNumber = aDecoder.decodeObject(forKey: "abaAccountNumber") as? String
+        ddaAccountNumber = aDecoder.decodeObject(forKey: "ddaAccountNumber") as? String
+        trackStock = aDecoder.decodeObject(forKey: "trackStock") as? Bool
+        updateStock = aDecoder.decodeObject(forKey: "updateStock") as? Bool
+        allowClockOutWithOpenOrders = aDecoder.decodeObject(forKey: "allowClockOutWithOpenOrders") as? Bool
+        logInClockInPrompt = aDecoder.decodeObject(forKey: "logInClockInPrompt") as? Bool
+        accountType = aDecoder.decodeObject(forKey: "accountType") as? String
+        if let businessTypeCodeString = (aDecoder.decodeObject(forKey: "businessTypeCode") as? String) {
+          businessTypeCode = CLVModels.Base.BusinessTypeCode(rawValue: businessTypeCodeString)
+        }
+        pinLength = aDecoder.decodeObject(forKey: "pinLength") as? Int
+        cashBackEnabled = aDecoder.decodeObject(forKey: "cashBackEnabled") as? Bool
+        cashBackOptions = aDecoder.decodeObject(forKey: "cashBackOptions") as? String
+        maxCashBack = aDecoder.decodeObject(forKey: "maxCashBack") as? Int
+        hierarchy = aDecoder.decodeObject(forKey: "hierarchy") as? String
+        hasConsented = aDecoder.decodeObject(forKey: "hasConsented") as? Bool
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         defaultCurrency <- map["defaultCurrency"]
@@ -585,26 +589,26 @@ extension CLVModels {
     
     
     
-    public class Module: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Merchant6Module)public class Module: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       public var name: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -631,28 +635,29 @@ extension CLVModels {
     
     
     
-    public class SyncSettings: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Merchant12SyncSettings)public class SyncSettings: NSObject, NSCoding, Mappable {
       /// Sync authoirty
       public var authority: String?
       /// The minumum sync level rquired for this authority
-      public var level: CLVModels.Merchant.SyncLevel?
+      public var level: CLVModels.Merchant.SyncLevel? = nil
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(authority, forKey: "authority")
-        aCoder.encodeObject(level?.rawValue, forKey: "level")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(authority, forKey: "authority")
+        aCoder.encode(level?.rawValue, forKey: "level")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        authority = aDecoder.decodeObjectForKey("authority") as? String
-        level = (aDecoder.decodeObjectForKey("level") as? String) != nil ?
-          CLVModels.Merchant.SyncLevel(rawValue: (aDecoder.decodeObjectForKey("level") as! String)) : nil
+        authority = aDecoder.decodeObject(forKey: "authority") as? String
+        if let levelString = (aDecoder.decodeObject(forKey: "level") as? String) {
+            level = CLVModels.Merchant.SyncLevel(rawValue: levelString)
+        }
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         authority <- map["authority"]
@@ -662,7 +667,7 @@ extension CLVModels {
     
     
     
-    public class TipSuggestion: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Merchant13TipSuggestion)public class TipSuggestion: NSObject, NSCoding, Mappable {
       public var id: String?
       /// Name of the tip
       public var name: String?
@@ -670,25 +675,25 @@ extension CLVModels {
       public var percentage: Int?
       public var isEnabled: Bool?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(percentage, forKey: "percentage")
-        aCoder.encodeObject(isEnabled, forKey: "isEnabled")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(percentage, forKey: "percentage")
+        aCoder.encode(isEnabled, forKey: "isEnabled")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        percentage = aDecoder.decodeObjectForKey("percentage") as? Int
-        isEnabled = aDecoder.decodeObjectForKey("isEnabled") as? Bool
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        percentage = aDecoder.decodeObject(forKey: "percentage") as? Int
+        isEnabled = aDecoder.decodeObject(forKey: "isEnabled") as? Bool
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]

@@ -8,21 +8,35 @@
 
 import Foundation
 
-@objc
 public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration {
     var endpoint:String
     public var remoteApplicationID:String
     public var posName:String
     public var posSerialNumber:String
     public var pairingAuthToken:String?
-    private var pairingConfig:PairingDeviceConfiguration
+    fileprivate var pairingConfig:PairingDeviceConfiguration
     public var disableSSLValidation:Bool = false
+    /// How ofter a ping is sent to the device server
     public var pingFrequency:Int?
+    /// How long to wait for a pong, before disconnecting
+    public var pongTimeout:Int?
+    /// How long to wait after a failed connection to retry
+    public var reconnectTimer:Int?
+    /// How long to wait for a pong, before reporting a disconnect.
+    /// set this value less than pongTimeout, and it will report a disconnect before closing the connection
+    /// set this value greater than pongTimeout, and the disconnect will be reported after pongTimeout
+    public var reportConnectionProblemTimeout:Int?
+
+    public var maxCharInMessage:Int = 50000
     
     public var remoteSourceSDK:String {
         get {
-            return "com.cloverconnector.ios.ws:1.2.0.a"
+            return "com.cloverconnector.ios.ws:1.3.1-RC2"
         }
+    }
+    
+    deinit {
+        debugPrint("deinit WebSocketDeviceConfiguration")
     }
     
     public init(endpoint:String, remoteApplicationID:String, posName:String, posSerial:String, pairingAuthToken:String?, pairingDeviceConfiguration:PairingDeviceConfiguration) {
@@ -35,7 +49,7 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
     }
     
     public func getTransport() -> CloverTransport? {
-        let transport = WebSocketCloverTransport(endpointURL: endpoint, posName: posName, serialNumber: posSerialNumber, pairingAuthToken: pairingAuthToken, pairingDeviceConfiguration: pairingConfig, pingFrequency: self.pingFrequency);
+        let transport = WebSocketCloverTransport(endpointURL: endpoint, posName: posName, serialNumber: posSerialNumber, pairingAuthToken: pairingAuthToken, pairingDeviceConfiguration: pairingConfig, disableSSLCertificateValidation: disableSSLValidation, pongTimeout: pongTimeout, pingFrequency: self.pingFrequency, reconnectDelay: reconnectTimer, reportConnectionProblemAfter: reportConnectionProblemTimeout);
         return transport
     }
     
@@ -49,6 +63,10 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
     
     public func getName() -> String {
         return "Secure WebSocket Transport"
+    }
+    
+    public func getMaxMessageCharacters() -> Int {
+        return maxCharInMessage
     }
     
     /*

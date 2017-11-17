@@ -12,11 +12,11 @@ import ObjectMapper
 public class RemoveDiscountAction : Mappable {
     public var discount:DisplayDiscount?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         
     }
     
-    public func mapping(map: Map) {
+    public func mapping(map:Map) {
         discount <- map["discount"]
     }
 }

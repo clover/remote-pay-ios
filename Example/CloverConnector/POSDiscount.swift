@@ -9,7 +9,7 @@
 import Foundation
 
 
-public class POSDiscount : AnyObject {
+public class POSDiscount {
     public var description:String?
     public var amount:Int?
     public var percentOff:Int? // 10000 is 10 percent off, 125 is 1/8% off

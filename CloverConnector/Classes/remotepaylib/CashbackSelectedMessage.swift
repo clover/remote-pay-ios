@@ -13,12 +13,12 @@ public class CashbackSelectedMessage : Message {
     
     public var cashbackAmount:Int?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: Method.CASHBACK_SELECTED)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         cashbackAmount <- map["cashbackAmount"]
     }
 }

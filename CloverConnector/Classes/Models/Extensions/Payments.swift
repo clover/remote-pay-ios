@@ -11,7 +11,7 @@ extension CLVModels {
   public class Payments {
     
     
-    public class Authorization: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments13Authorization)public class Authorization: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// Payment that the auth was opened with
@@ -21,53 +21,55 @@ extension CLVModels {
       /// Amount authorized
       public var amount: Int?
       /// Type of credit card used for authorization
-      public var cardType: CLVModels.Payments.CardType?
+      public var cardType: CLVModels.Payments.CardType? = nil
       /// Last 4 digits of credit card used for authorization
       public var last4: String?
       /// Authorization code
       public var authcode: String?
-      public var type_: CLVModels.Payments.Type_?
+      public var type_: CLVModels.Payments.Type_? = nil
       public var note: String?
       /// Payment that the auth was closed with
       public var closingPayment: CLVModels.Payments.Payment?
       /// Time authorization was recorded on server
-      public var createdTime: NSDate?
+      public var createdTime: Date?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(payment, forKey: "payment")
-        aCoder.encodeObject(tabName, forKey: "tabName")
-        aCoder.encodeObject(amount, forKey: "amount")
-        aCoder.encodeObject(cardType?.rawValue, forKey: "cardType")
-        aCoder.encodeObject(last4, forKey: "last4")
-        aCoder.encodeObject(authcode, forKey: "authcode")
-        aCoder.encodeObject(type_?.rawValue, forKey: "type_")
-        aCoder.encodeObject(note, forKey: "note")
-        aCoder.encodeObject(closingPayment, forKey: "closingPayment")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(payment, forKey: "payment")
+        aCoder.encode(tabName, forKey: "tabName")
+        aCoder.encode(amount, forKey: "amount")
+        aCoder.encode(cardType?.rawValue, forKey: "cardType")
+        aCoder.encode(last4, forKey: "last4")
+        aCoder.encode(authcode, forKey: "authcode")
+        aCoder.encode(type_?.rawValue, forKey: "type_")
+        aCoder.encode(note, forKey: "note")
+        aCoder.encode(closingPayment, forKey: "closingPayment")
+        aCoder.encode(createdTime, forKey: "createdTime")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        payment = aDecoder.decodeObjectForKey("payment") as? CLVModels.Payments.Payment
-        tabName = aDecoder.decodeObjectForKey("tabName") as? String
-        amount = aDecoder.decodeObjectForKey("amount") as? Int
-        cardType = (aDecoder.decodeObjectForKey("cardType") as? String) != nil ?
-          CLVModels.Payments.CardType(rawValue: (aDecoder.decodeObjectForKey("cardType") as! String)) : nil
-        last4 = aDecoder.decodeObjectForKey("last4") as? String
-        authcode = aDecoder.decodeObjectForKey("authcode") as? String
-        type_ = (aDecoder.decodeObjectForKey("type_") as? String) != nil ?
-          CLVModels.Payments.Type_(rawValue: (aDecoder.decodeObjectForKey("type_") as! String)) : nil
-        note = aDecoder.decodeObjectForKey("note") as? String
-        closingPayment = aDecoder.decodeObjectForKey("closingPayment") as? CLVModels.Payments.Payment
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        payment = aDecoder.decodeObject(forKey: "payment") as? CLVModels.Payments.Payment
+        tabName = aDecoder.decodeObject(forKey: "tabName") as? String
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
+        if let cardTypeString = aDecoder.decodeObject(forKey: "cardType") as? String {
+            cardType = CLVModels.Payments.CardType(rawValue: cardTypeString)
+        }
+        last4 = aDecoder.decodeObject(forKey: "last4") as? String
+        authcode = aDecoder.decodeObject(forKey: "authcode") as? String
+        if let typeString = aDecoder.decodeObject(forKey: "type_") as? String {
+            type_ = CLVModels.Payments.Type_(rawValue: typeString)
+        }
+        note = aDecoder.decodeObject(forKey: "note") as? String
+        closingPayment = aDecoder.decodeObject(forKey: "closingPayment") as? CLVModels.Payments.Payment
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -102,7 +104,7 @@ extension CLVModels {
     
     
     
-    public class Batch: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments5Batch)public class Batch: NSObject, NSCoding, Mappable {
       public var id: String?
       public var merchantId: Int?
       public var firstGatewayTxId: Int?
@@ -115,54 +117,56 @@ extension CLVModels {
       public var totalBatchAmount: Int?
       /// List of devices in batch
       public var devices: String?
-      public var state: CLVModels.Payments.BatchState?
-      public var batchType: CLVModels.Payments.BatchType?
+      public var state: CLVModels.Payments.BatchState? = nil
+      public var batchType: CLVModels.Payments.BatchType? = nil
       /// Created time of batch
-      public var createdTime: NSDate?
+      public var createdTime: Date?
       /// Modified time of batch
-      public var modifiedTime: NSDate?
+      public var modifiedTime: Date?
       /// Details split based on card / employees
       public var batchDetails: CLVModels.Payments.BatchDetail?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(merchantId, forKey: "merchantId")
-        aCoder.encodeObject(firstGatewayTxId, forKey: "firstGatewayTxId")
-        aCoder.encodeObject(lastGatewayTxId, forKey: "lastGatewayTxId")
-        aCoder.encodeObject(accountId, forKey: "accountId")
-        aCoder.encodeObject(txCount, forKey: "txCount")
-        aCoder.encodeObject(totalBatchAmount, forKey: "totalBatchAmount")
-        aCoder.encodeObject(devices, forKey: "devices")
-        aCoder.encodeObject(state?.rawValue, forKey: "state")
-        aCoder.encodeObject(batchType?.rawValue, forKey: "batchType")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
-        aCoder.encodeObject(modifiedTime, forKey: "modifiedTime")
-        aCoder.encodeObject(batchDetails, forKey: "batchDetails")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(merchantId, forKey: "merchantId")
+        aCoder.encode(firstGatewayTxId, forKey: "firstGatewayTxId")
+        aCoder.encode(lastGatewayTxId, forKey: "lastGatewayTxId")
+        aCoder.encode(accountId, forKey: "accountId")
+        aCoder.encode(txCount, forKey: "txCount")
+        aCoder.encode(totalBatchAmount, forKey: "totalBatchAmount")
+        aCoder.encode(devices, forKey: "devices")
+        aCoder.encode(state?.rawValue, forKey: "state")
+        aCoder.encode(batchType?.rawValue, forKey: "batchType")
+        aCoder.encode(createdTime, forKey: "createdTime")
+        aCoder.encode(modifiedTime, forKey: "modifiedTime")
+        aCoder.encode(batchDetails, forKey: "batchDetails")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        merchantId = aDecoder.decodeObjectForKey("merchantId") as? Int
-        firstGatewayTxId = aDecoder.decodeObjectForKey("firstGatewayTxId") as? Int
-        lastGatewayTxId = aDecoder.decodeObjectForKey("lastGatewayTxId") as? Int
-        accountId = aDecoder.decodeObjectForKey("accountId") as? Int
-        txCount = aDecoder.decodeObjectForKey("txCount") as? Int
-        totalBatchAmount = aDecoder.decodeObjectForKey("totalBatchAmount") as? Int
-        devices = aDecoder.decodeObjectForKey("devices") as? String
-        state = (aDecoder.decodeObjectForKey("state") as? String) != nil ?
-          CLVModels.Payments.BatchState(rawValue: (aDecoder.decodeObjectForKey("state") as! String)) : nil
-        batchType = (aDecoder.decodeObjectForKey("batchType") as? String) != nil ?
-          CLVModels.Payments.BatchType(rawValue: (aDecoder.decodeObjectForKey("batchType") as! String)) : nil
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-        modifiedTime = aDecoder.decodeObjectForKey("modifiedTime") as? NSDate
-        batchDetails = aDecoder.decodeObjectForKey("batchDetails") as? CLVModels.Payments.BatchDetail
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        merchantId = aDecoder.decodeObject(forKey: "merchantId") as? Int
+        firstGatewayTxId = aDecoder.decodeObject(forKey: "firstGatewayTxId") as? Int
+        lastGatewayTxId = aDecoder.decodeObject(forKey: "lastGatewayTxId") as? Int
+        accountId = aDecoder.decodeObject(forKey: "accountId") as? Int
+        txCount = aDecoder.decodeObject(forKey: "txCount") as? Int
+        totalBatchAmount = aDecoder.decodeObject(forKey: "totalBatchAmount") as? Int
+        devices = aDecoder.decodeObject(forKey: "devices") as? String
+        if let stateString = aDecoder.decodeObject(forKey: "state") as? String {
+            state = CLVModels.Payments.BatchState(rawValue: stateString)
+        }
+        if let batchTypeString = aDecoder.decodeObject(forKey: "batchType") as? String {
+            batchType = CLVModels.Payments.BatchType(rawValue: batchTypeString)
+        }
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+        modifiedTime = aDecoder.decodeObject(forKey: "modifiedTime") as? Date
+        batchDetails = aDecoder.decodeObject(forKey: "batchDetails") as? CLVModels.Payments.BatchDetail
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -183,31 +187,32 @@ extension CLVModels {
     
     
     
-    public class BatchCardTotal: NSObject, NSCoding, Mappable {
-      public var cardType: CLVModels.Payments.CardType?
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments14BatchCardTotal)public class BatchCardTotal: NSObject, NSCoding, Mappable {
+      public var cardType: CLVModels.Payments.CardType? = nil
       /// Total count of types
       public var count: Int?
       /// Total amount for type
       public var total: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(cardType?.rawValue, forKey: "cardType")
-        aCoder.encodeObject(count, forKey: "count")
-        aCoder.encodeObject(total, forKey: "total")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(cardType?.rawValue, forKey: "cardType")
+        aCoder.encode(count, forKey: "count")
+        aCoder.encode(total, forKey: "total")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        cardType = (aDecoder.decodeObjectForKey("cardType") as? String) != nil ?
-          CLVModels.Payments.CardType(rawValue: (aDecoder.decodeObjectForKey("cardType") as! String)) : nil
-        count = aDecoder.decodeObjectForKey("count") as? Int
-        total = aDecoder.decodeObjectForKey("total") as? Int
+        if let cardTypeString = aDecoder.decodeObject(forKey: "cardType") as? String {
+            cardType = CLVModels.Payments.CardType(rawValue: cardTypeString)
+        }
+        count = aDecoder.decodeObject(forKey: "count") as? Int
+        total = aDecoder.decodeObject(forKey: "total") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         cardType <- map["cardType"]
@@ -218,36 +223,36 @@ extension CLVModels {
     
     
     
-    public class BatchDetail: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments11BatchDetail)public class BatchDetail: NSObject, NSCoding, Mappable {
       public var batchTotals: CLVModels.Payments.BatchTotalStats?
       public var serverTotals: [CLVModels.Payments.ServerTotalStats]?
       public var cardTotals: [CLVModels.Payments.BatchCardTotal]?
-      /// Number of open tips.
+      /// Number of public tips.
       public var openTips: Int?
-      /// Number of open tabs.
+      /// Number of public tabs.
       public var openTabs: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(batchTotals, forKey: "batchTotals")
-        aCoder.encodeObject(serverTotals, forKey: "serverTotals")
-        aCoder.encodeObject(cardTotals, forKey: "cardTotals")
-        aCoder.encodeObject(openTips, forKey: "openTips")
-        aCoder.encodeObject(openTabs, forKey: "openTabs")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(batchTotals, forKey: "batchTotals")
+        aCoder.encode(serverTotals, forKey: "serverTotals")
+        aCoder.encode(cardTotals, forKey: "cardTotals")
+        aCoder.encode(openTips, forKey: "openTips")
+        aCoder.encode(openTabs, forKey: "openTabs")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        batchTotals = aDecoder.decodeObjectForKey("batchTotals") as? CLVModels.Payments.BatchTotalStats
-        serverTotals = aDecoder.decodeObjectForKey("serverTotals") as? [CLVModels.Payments.ServerTotalStats]
-        cardTotals = aDecoder.decodeObjectForKey("cardTotals") as? [CLVModels.Payments.BatchCardTotal]
-        openTips = aDecoder.decodeObjectForKey("openTips") as? Int
-        openTabs = aDecoder.decodeObjectForKey("openTabs") as? Int
+        batchTotals = aDecoder.decodeObject(forKey: "batchTotals") as? CLVModels.Payments.BatchTotalStats
+        serverTotals = aDecoder.decodeObject(forKey: "serverTotals") as? [CLVModels.Payments.ServerTotalStats]
+        cardTotals = aDecoder.decodeObject(forKey: "cardTotals") as? [CLVModels.Payments.BatchCardTotal]
+        openTips = aDecoder.decodeObject(forKey: "openTips") as? Int
+        openTabs = aDecoder.decodeObject(forKey: "openTabs") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         batchTotals <- map["batchTotals"]
@@ -260,22 +265,22 @@ extension CLVModels {
     
     
     
-    public class BatchRequest: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments12BatchRequest)public class BatchRequest: NSObject, NSCoding, Mappable {
       public var devices: [String]?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(devices, forKey: "devices")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(devices, forKey: "devices")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        devices = aDecoder.decodeObjectForKey("devices") as? [String]
+        devices = aDecoder.decodeObject(forKey: "devices") as? [String]
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         devices <- map["devices"]
@@ -294,7 +299,7 @@ extension CLVModels {
     
     
     
-    public class BatchTotalStats: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments15BatchTotalStats)public class BatchTotalStats: NSObject, NSCoding, Mappable {
       public var sales: CLVModels.Payments.BatchTotalType?
       public var refunds: CLVModels.Payments.BatchTotalType?
       public var net: CLVModels.Payments.BatchTotalType?
@@ -303,31 +308,31 @@ extension CLVModels {
       public var tax: CLVModels.Payments.BatchTotalType?
       public var tips: CLVModels.Payments.BatchTotalType?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(sales, forKey: "sales")
-        aCoder.encodeObject(refunds, forKey: "refunds")
-        aCoder.encodeObject(net, forKey: "net")
-        aCoder.encodeObject(giftCardLoads, forKey: "giftCardLoads")
-        aCoder.encodeObject(giftCardCashOuts, forKey: "giftCardCashOuts")
-        aCoder.encodeObject(tax, forKey: "tax")
-        aCoder.encodeObject(tips, forKey: "tips")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(sales, forKey: "sales")
+        aCoder.encode(refunds, forKey: "refunds")
+        aCoder.encode(net, forKey: "net")
+        aCoder.encode(giftCardLoads, forKey: "giftCardLoads")
+        aCoder.encode(giftCardCashOuts, forKey: "giftCardCashOuts")
+        aCoder.encode(tax, forKey: "tax")
+        aCoder.encode(tips, forKey: "tips")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        sales = aDecoder.decodeObjectForKey("sales") as? CLVModels.Payments.BatchTotalType
-        refunds = aDecoder.decodeObjectForKey("refunds") as? CLVModels.Payments.BatchTotalType
-        net = aDecoder.decodeObjectForKey("net") as? CLVModels.Payments.BatchTotalType
-        giftCardLoads = aDecoder.decodeObjectForKey("giftCardLoads") as? CLVModels.Payments.BatchTotalType
-        giftCardCashOuts = aDecoder.decodeObjectForKey("giftCardCashOuts") as? CLVModels.Payments.BatchTotalType
-        tax = aDecoder.decodeObjectForKey("tax") as? CLVModels.Payments.BatchTotalType
-        tips = aDecoder.decodeObjectForKey("tips") as? CLVModels.Payments.BatchTotalType
+        sales = aDecoder.decodeObject(forKey: "sales") as? CLVModels.Payments.BatchTotalType
+        refunds = aDecoder.decodeObject(forKey: "refunds") as? CLVModels.Payments.BatchTotalType
+        net = aDecoder.decodeObject(forKey: "net") as? CLVModels.Payments.BatchTotalType
+        giftCardLoads = aDecoder.decodeObject(forKey: "giftCardLoads") as? CLVModels.Payments.BatchTotalType
+        giftCardCashOuts = aDecoder.decodeObject(forKey: "giftCardCashOuts") as? CLVModels.Payments.BatchTotalType
+        tax = aDecoder.decodeObject(forKey: "tax") as? CLVModels.Payments.BatchTotalType
+        tips = aDecoder.decodeObject(forKey: "tips") as? CLVModels.Payments.BatchTotalType
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         sales <- map["sales"]
@@ -342,27 +347,27 @@ extension CLVModels {
     
     
     
-    public class BatchTotalType: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments14BatchTotalType)public class BatchTotalType: NSObject, NSCoding, Mappable {
       /// Total count of types
       public var count: Int?
       /// Total amount for type
       public var total: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(count, forKey: "count")
-        aCoder.encodeObject(total, forKey: "total")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(count, forKey: "count")
+        aCoder.encode(total, forKey: "total")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        count = aDecoder.decodeObjectForKey("count") as? Int
-        total = aDecoder.decodeObjectForKey("total") as? Int
+        count = aDecoder.decodeObject(forKey: "count") as? Int
+        total = aDecoder.decodeObject(forKey: "total") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         count <- map["count"]
@@ -394,81 +399,86 @@ extension CLVModels {
     
     
     
-    public class CardTransaction: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments15CardTransaction)public class CardTransaction: NSObject, NSCoding, Mappable {
       /// The payment with which the card transaction is associated
       public var paymentRef: CLVModels.Payments.Payment?
       /// The credit with which the card transaction is associated
       public var creditRef: CLVModels.Payments.Credit?
-      public var cardType: CLVModels.Payments.CardType?
-      public var entryType: CLVModels.Payments.CardEntryType?
+      public var cardType: CLVModels.Payments.CardType? = nil
+      public var entryType: CLVModels.Payments.CardEntryType? = nil
       /// The first four digits of the card number
       public var first6: String?
       /// The last four digits of the card number
       public var last4: String?
-      public var type_: CLVModels.Payments.CardTransactionType?
+      public var type_: CLVModels.Payments.CardTransactionType? = nil
       /// Authorization code (if successful)
       public var authCode: String?
       public var referenceId: String?
       public var transactionNo: String?
-      public var state: CLVModels.Payments.CardTransactionState?
+      public var state: CLVModels.Payments.CardTransactionState? = nil
       /// Extra info to be stored as part of gateway/card transaction
       public var extra: [String:String]?
       public var begBalance: Int?
       public var endBalance: Int?
-      public var avsResult: CLVModels.Payments.AVSResult?
+      public var avsResult: CLVModels.Payments.AVSResult? = nil
       public var cardholderName: String?
       public var token: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(paymentRef, forKey: "paymentRef")
-        aCoder.encodeObject(creditRef, forKey: "creditRef")
-        aCoder.encodeObject(cardType?.rawValue, forKey: "cardType")
-        aCoder.encodeObject(entryType?.rawValue, forKey: "entryType")
-        aCoder.encodeObject(first6, forKey: "first6")
-        aCoder.encodeObject(last4, forKey: "last4")
-        aCoder.encodeObject(type_?.rawValue, forKey: "type_")
-        aCoder.encodeObject(authCode, forKey: "authCode")
-        aCoder.encodeObject(referenceId, forKey: "referenceId")
-        aCoder.encodeObject(transactionNo, forKey: "transactionNo")
-        aCoder.encodeObject(state?.rawValue, forKey: "state")
-        aCoder.encodeObject(extra, forKey: "extra")
-        aCoder.encodeObject(begBalance, forKey: "begBalance")
-        aCoder.encodeObject(endBalance, forKey: "endBalance")
-        aCoder.encodeObject(avsResult?.rawValue, forKey: "avsResult")
-        aCoder.encodeObject(cardholderName, forKey: "cardholderName")
-        aCoder.encodeObject(token, forKey: "token")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(paymentRef, forKey: "paymentRef")
+        aCoder.encode(creditRef, forKey: "creditRef")
+        aCoder.encode(cardType?.rawValue, forKey: "cardType")
+        aCoder.encode(entryType?.rawValue, forKey: "entryType")
+        aCoder.encode(first6, forKey: "first6")
+        aCoder.encode(last4, forKey: "last4")
+        aCoder.encode(type_?.rawValue, forKey: "type_")
+        aCoder.encode(authCode, forKey: "authCode")
+        aCoder.encode(referenceId, forKey: "referenceId")
+        aCoder.encode(transactionNo, forKey: "transactionNo")
+        aCoder.encode(state?.rawValue, forKey: "state")
+        aCoder.encode(extra, forKey: "extra")
+        aCoder.encode(begBalance, forKey: "begBalance")
+        aCoder.encode(endBalance, forKey: "endBalance")
+        aCoder.encode(avsResult?.rawValue, forKey: "avsResult")
+        aCoder.encode(cardholderName, forKey: "cardholderName")
+        aCoder.encode(token, forKey: "token")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        paymentRef = aDecoder.decodeObjectForKey("paymentRef") as? CLVModels.Payments.Payment
-        creditRef = aDecoder.decodeObjectForKey("creditRef") as? CLVModels.Payments.Credit
-        cardType = (aDecoder.decodeObjectForKey("cardType") as? String) != nil ?
-          CLVModels.Payments.CardType(rawValue: (aDecoder.decodeObjectForKey("cardType") as! String)) : nil
-        entryType = (aDecoder.decodeObjectForKey("entryType") as? String) != nil ?
-          CLVModels.Payments.CardEntryType(rawValue: (aDecoder.decodeObjectForKey("entryType") as! String)) : nil
-        first6 = aDecoder.decodeObjectForKey("first6") as? String
-        last4 = aDecoder.decodeObjectForKey("last4") as? String
-        type_ = (aDecoder.decodeObjectForKey("type_") as? String) != nil ?
-          CLVModels.Payments.CardTransactionType(rawValue: (aDecoder.decodeObjectForKey("type_") as! String)) : nil
-        authCode = aDecoder.decodeObjectForKey("authCode") as? String
-        referenceId = aDecoder.decodeObjectForKey("referenceId") as? String
-        transactionNo = aDecoder.decodeObjectForKey("transactionNo") as? String
-        state = (aDecoder.decodeObjectForKey("state") as? String) != nil ?
-          CLVModels.Payments.CardTransactionState(rawValue: (aDecoder.decodeObjectForKey("state") as! String)) : nil
-        extra = aDecoder.decodeObjectForKey("extra") as? [String:String]
-        begBalance = aDecoder.decodeObjectForKey("begBalance") as? Int
-        endBalance = aDecoder.decodeObjectForKey("endBalance") as? Int
-        avsResult = (aDecoder.decodeObjectForKey("avsResult") as? String) != nil ?
-          CLVModels.Payments.AVSResult(rawValue: (aDecoder.decodeObjectForKey("avsResult") as! String)) : nil
-        cardholderName = aDecoder.decodeObjectForKey("cardholderName") as? String
-        token = aDecoder.decodeObjectForKey("token") as? String
+        paymentRef = aDecoder.decodeObject(forKey: "paymentRef") as? CLVModels.Payments.Payment
+        creditRef = aDecoder.decodeObject(forKey: "creditRef") as? CLVModels.Payments.Credit
+        if let cardTypeString = aDecoder.decodeObject(forKey: "cardType") as? String {
+            cardType = CLVModels.Payments.CardType(rawValue: cardTypeString)
+        }
+        if let entryTypeString = aDecoder.decodeObject(forKey: "entryType") as? String {
+            entryType = CLVModels.Payments.CardEntryType(rawValue: entryTypeString)
+        }
+        first6 = aDecoder.decodeObject(forKey: "first6") as? String
+        last4 = aDecoder.decodeObject(forKey: "last4") as? String
+        if let typeString = aDecoder.decodeObject(forKey: "type_") as? String {
+            type_ = CLVModels.Payments.CardTransactionType(rawValue: typeString)
+        }
+        authCode = aDecoder.decodeObject(forKey: "authCode") as? String
+        referenceId = aDecoder.decodeObject(forKey: "referenceId") as? String
+        transactionNo = aDecoder.decodeObject(forKey: "transactionNo") as? String
+        if let stateString = aDecoder.decodeObject(forKey: "state") as? String {
+            state = CLVModels.Payments.CardTransactionState(rawValue: stateString)
+        }
+        extra = aDecoder.decodeObject(forKey: "extra") as? [String:String]
+        begBalance = aDecoder.decodeObject(forKey: "begBalance") as? Int
+        endBalance = aDecoder.decodeObject(forKey: "endBalance") as? Int
+        if let avsResultString = aDecoder.decodeObject(forKey: "avsResult") as? String {
+            avsResult = CLVModels.Payments.AVSResult(rawValue: avsResultString)
+        }
+        cardholderName = aDecoder.decodeObject(forKey: "cardholderName") as? String
+        token = aDecoder.decodeObject(forKey: "token") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         paymentRef <- map["paymentRef"]
@@ -543,7 +553,7 @@ extension CLVModels {
     
     
     
-    public class Credit: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments6Credit)public class Credit: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// The order with which the credit is associated
@@ -562,52 +572,52 @@ extension CLVModels {
       public var taxAmount: Int?
       public var taxRates: [CLVModels.Payments.TaxableAmountRate]?
       /// Time payment was recorded on server
-      public var createdTime: NSDate?
-      public var clientCreatedTime: NSDate?
+      public var createdTime: Date?
+      public var clientCreatedTime: Date?
       /// Information about the card used for credit/debit card payments
       public var cardTransaction: CLVModels.Payments.CardTransaction?
       public var voided: Bool?
       public var voidReason: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(orderRef, forKey: "orderRef")
-        aCoder.encodeObject(device, forKey: "device")
-        aCoder.encodeObject(tender, forKey: "tender")
-        aCoder.encodeObject(employee, forKey: "employee")
-        aCoder.encodeObject(customers, forKey: "customers")
-        aCoder.encodeObject(amount, forKey: "amount")
-        aCoder.encodeObject(taxAmount, forKey: "taxAmount")
-        aCoder.encodeObject(taxRates, forKey: "taxRates")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
-        aCoder.encodeObject(clientCreatedTime, forKey: "clientCreatedTime")
-        aCoder.encodeObject(cardTransaction, forKey: "cardTransaction")
-        aCoder.encodeObject(voided, forKey: "voided")
-        aCoder.encodeObject(voidReason, forKey: "voidReason")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(orderRef, forKey: "orderRef")
+        aCoder.encode(device, forKey: "device")
+        aCoder.encode(tender, forKey: "tender")
+        aCoder.encode(employee, forKey: "employee")
+        aCoder.encode(customers, forKey: "customers")
+        aCoder.encode(amount, forKey: "amount")
+        aCoder.encode(taxAmount, forKey: "taxAmount")
+        aCoder.encode(taxRates, forKey: "taxRates")
+        aCoder.encode(createdTime, forKey: "createdTime")
+        aCoder.encode(clientCreatedTime, forKey: "clientCreatedTime")
+        aCoder.encode(cardTransaction, forKey: "cardTransaction")
+        aCoder.encode(voided, forKey: "voided")
+        aCoder.encode(voidReason, forKey: "voidReason")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        orderRef = aDecoder.decodeObjectForKey("orderRef") as? CLVModels.Order.Order
-        device = aDecoder.decodeObjectForKey("device") as? CLVModels.Device.Device
-        tender = aDecoder.decodeObjectForKey("tender") as? CLVModels.Base.Tender
-        employee = aDecoder.decodeObjectForKey("employee") as? CLVModels.Employees.Employee
-        customers = aDecoder.decodeObjectForKey("customers") as? CLVModels.Customers.Customer
-        amount = aDecoder.decodeObjectForKey("amount") as? Int
-        taxAmount = aDecoder.decodeObjectForKey("taxAmount") as? Int
-        taxRates = aDecoder.decodeObjectForKey("taxRates") as? [CLVModels.Payments.TaxableAmountRate]
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-        clientCreatedTime = aDecoder.decodeObjectForKey("clientCreatedTime") as? NSDate
-        cardTransaction = aDecoder.decodeObjectForKey("cardTransaction") as? CLVModels.Payments.CardTransaction
-        voided = aDecoder.decodeObjectForKey("voided") as? Bool
-        voidReason = aDecoder.decodeObjectForKey("voidReason") as? String
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        orderRef = aDecoder.decodeObject(forKey: "orderRef") as? CLVModels.Order.Order
+        device = aDecoder.decodeObject(forKey: "device") as? CLVModels.Device.Device
+        tender = aDecoder.decodeObject(forKey: "tender") as? CLVModels.Base.Tender
+        employee = aDecoder.decodeObject(forKey: "employee") as? CLVModels.Employees.Employee
+        customers = aDecoder.decodeObject(forKey: "customers") as? CLVModels.Customers.Customer
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
+        taxAmount = aDecoder.decodeObject(forKey: "taxAmount") as? Int
+        taxRates = aDecoder.decodeObject(forKey: "taxRates") as? [CLVModels.Payments.TaxableAmountRate]
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+        clientCreatedTime = aDecoder.decodeObject(forKey: "clientCreatedTime") as? Date
+        cardTransaction = aDecoder.decodeObject(forKey: "cardTransaction") as? CLVModels.Payments.CardTransaction
+        voided = aDecoder.decodeObject(forKey: "voided") as? Bool
+        voidReason = aDecoder.decodeObject(forKey: "voidReason") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -658,28 +668,28 @@ extension CLVModels {
     
     public enum DataEntryLocation: String {
         case ON_SCREEN
-        case ON_PAPAER
+        case ON_PAPER
         case NONE
     }
     
     
-    public class GatewayTxs: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments10GatewayTxs)public class GatewayTxs: NSObject, NSCoding, Mappable {
       public var merchantGatewayId: Int?
       public var clientId: String?
       public var amount: Int?
       public var adjustAmount: Int?
       public var taxAmount: Int?
       public var tipAmount: Int?
-      public var currency: CLVModels.Payments.Currency?
-      public var state: CLVModels.Payments.GatewayTxState?
+      public var currency: CLVModels.Payments.Currency? = nil
+      public var state: CLVModels.Payments.GatewayTxState? = nil
       public var retries: Int?
-      public var type_: CLVModels.Payments.GatewayTxType?
-      public var entryType: CLVModels.Payments.CardEntryType?
+      public var type_: CLVModels.Payments.GatewayTxType? = nil
+      public var entryType: CLVModels.Payments.CardEntryType? = nil
       public var responseCode: String?
       public var responseMessage: String?
       public var first4: String?
       public var last4: String?
-      public var cardType: CLVModels.Payments.CardType?
+      public var cardType: CLVModels.Payments.CardType? = nil
       public var refnum: String?
       public var token: String?
       public var authcode: String?
@@ -688,83 +698,88 @@ extension CLVModels {
       public var captured: Bool?
       public var swiperSerial: String?
       public var ksnPrefix: String?
-      public var createdTime: NSDate?
-      public var modifiedTime: NSDate?
+      public var createdTime: Date?
+      public var modifiedTime: Date?
       public var refundId: Int?
       public var paymentRefundId: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(merchantGatewayId, forKey: "merchantGatewayId")
-        aCoder.encodeObject(clientId, forKey: "clientId")
-        aCoder.encodeObject(amount, forKey: "amount")
-        aCoder.encodeObject(adjustAmount, forKey: "adjustAmount")
-        aCoder.encodeObject(taxAmount, forKey: "taxAmount")
-        aCoder.encodeObject(tipAmount, forKey: "tipAmount")
-        aCoder.encodeObject(currency?.rawValue, forKey: "currency")
-        aCoder.encodeObject(state?.rawValue, forKey: "state")
-        aCoder.encodeObject(retries, forKey: "retries")
-        aCoder.encodeObject(type_?.rawValue, forKey: "type_")
-        aCoder.encodeObject(entryType?.rawValue, forKey: "entryType")
-        aCoder.encodeObject(responseCode, forKey: "responseCode")
-        aCoder.encodeObject(responseMessage, forKey: "responseMessage")
-        aCoder.encodeObject(first4, forKey: "first4")
-        aCoder.encodeObject(last4, forKey: "last4")
-        aCoder.encodeObject(cardType?.rawValue, forKey: "cardType")
-        aCoder.encodeObject(refnum, forKey: "refnum")
-        aCoder.encodeObject(token, forKey: "token")
-        aCoder.encodeObject(authcode, forKey: "authcode")
-        aCoder.encodeObject(employeeId, forKey: "employeeId")
-        aCoder.encodeObject(extra, forKey: "extra")
-        aCoder.encodeObject(captured, forKey: "captured")
-        aCoder.encodeObject(swiperSerial, forKey: "swiperSerial")
-        aCoder.encodeObject(ksnPrefix, forKey: "ksnPrefix")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
-        aCoder.encodeObject(modifiedTime, forKey: "modifiedTime")
-        aCoder.encodeObject(refundId, forKey: "refundId")
-        aCoder.encodeObject(paymentRefundId, forKey: "paymentRefundId")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(merchantGatewayId, forKey: "merchantGatewayId")
+        aCoder.encode(clientId, forKey: "clientId")
+        aCoder.encode(amount, forKey: "amount")
+        aCoder.encode(adjustAmount, forKey: "adjustAmount")
+        aCoder.encode(taxAmount, forKey: "taxAmount")
+        aCoder.encode(tipAmount, forKey: "tipAmount")
+        aCoder.encode(currency?.rawValue, forKey: "currency")
+        aCoder.encode(state?.rawValue, forKey: "state")
+        aCoder.encode(retries, forKey: "retries")
+        aCoder.encode(type_?.rawValue, forKey: "type_")
+        aCoder.encode(entryType?.rawValue, forKey: "entryType")
+        aCoder.encode(responseCode, forKey: "responseCode")
+        aCoder.encode(responseMessage, forKey: "responseMessage")
+        aCoder.encode(first4, forKey: "first4")
+        aCoder.encode(last4, forKey: "last4")
+        aCoder.encode(cardType?.rawValue, forKey: "cardType")
+        aCoder.encode(refnum, forKey: "refnum")
+        aCoder.encode(token, forKey: "token")
+        aCoder.encode(authcode, forKey: "authcode")
+        aCoder.encode(employeeId, forKey: "employeeId")
+        aCoder.encode(extra, forKey: "extra")
+        aCoder.encode(captured, forKey: "captured")
+        aCoder.encode(swiperSerial, forKey: "swiperSerial")
+        aCoder.encode(ksnPrefix, forKey: "ksnPrefix")
+        aCoder.encode(createdTime, forKey: "createdTime")
+        aCoder.encode(modifiedTime, forKey: "modifiedTime")
+        aCoder.encode(refundId, forKey: "refundId")
+        aCoder.encode(paymentRefundId, forKey: "paymentRefundId")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        merchantGatewayId = aDecoder.decodeObjectForKey("merchantGatewayId") as? Int
-        clientId = aDecoder.decodeObjectForKey("clientId") as? String
-        amount = aDecoder.decodeObjectForKey("amount") as? Int
-        adjustAmount = aDecoder.decodeObjectForKey("adjustAmount") as? Int
-        taxAmount = aDecoder.decodeObjectForKey("taxAmount") as? Int
-        tipAmount = aDecoder.decodeObjectForKey("tipAmount") as? Int
-        currency = (aDecoder.decodeObjectForKey("currency") as? String) != nil ?
-          CLVModels.Payments.Currency(rawValue: (aDecoder.decodeObjectForKey("currency") as! String)) : nil
-        state = (aDecoder.decodeObjectForKey("state") as? String) != nil ?
-          CLVModels.Payments.GatewayTxState(rawValue: (aDecoder.decodeObjectForKey("state") as! String)) : nil
-        retries = aDecoder.decodeObjectForKey("retries") as? Int
-        type_ = (aDecoder.decodeObjectForKey("type_") as? String) != nil ?
-          CLVModels.Payments.GatewayTxType(rawValue: (aDecoder.decodeObjectForKey("type_") as! String)) : nil
-        entryType = (aDecoder.decodeObjectForKey("entryType") as? String) != nil ?
-          CLVModels.Payments.CardEntryType(rawValue: (aDecoder.decodeObjectForKey("entryType") as! String)) : nil
-        responseCode = aDecoder.decodeObjectForKey("responseCode") as? String
-        responseMessage = aDecoder.decodeObjectForKey("responseMessage") as? String
-        first4 = aDecoder.decodeObjectForKey("first4") as? String
-        last4 = aDecoder.decodeObjectForKey("last4") as? String
-        cardType = (aDecoder.decodeObjectForKey("cardType") as? String) != nil ?
-          CLVModels.Payments.CardType(rawValue: (aDecoder.decodeObjectForKey("cardType") as! String)) : nil
-        refnum = aDecoder.decodeObjectForKey("refnum") as? String
-        token = aDecoder.decodeObjectForKey("token") as? String
-        authcode = aDecoder.decodeObjectForKey("authcode") as? String
-        employeeId = aDecoder.decodeObjectForKey("employeeId") as? String
-        extra = aDecoder.decodeObjectForKey("extra") as? String
-        captured = aDecoder.decodeObjectForKey("captured") as? Bool
-        swiperSerial = aDecoder.decodeObjectForKey("swiperSerial") as? String
-        ksnPrefix = aDecoder.decodeObjectForKey("ksnPrefix") as? String
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-        modifiedTime = aDecoder.decodeObjectForKey("modifiedTime") as? NSDate
-        refundId = aDecoder.decodeObjectForKey("refundId") as? Int
-        paymentRefundId = aDecoder.decodeObjectForKey("paymentRefundId") as? Int
+        merchantGatewayId = aDecoder.decodeObject(forKey: "merchantGatewayId") as? Int
+        clientId = aDecoder.decodeObject(forKey: "clientId") as? String
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
+        adjustAmount = aDecoder.decodeObject(forKey: "adjustAmount") as? Int
+        taxAmount = aDecoder.decodeObject(forKey: "taxAmount") as? Int
+        tipAmount = aDecoder.decodeObject(forKey: "tipAmount") as? Int
+        if let currencyString = aDecoder.decodeObject(forKey: "currency") as? String {
+            currency = CLVModels.Payments.Currency(rawValue: currencyString)
+        }
+        if let stateString = aDecoder.decodeObject(forKey: "state") as? String {
+            state = CLVModels.Payments.GatewayTxState(rawValue: stateString)
+        }
+        retries = aDecoder.decodeObject(forKey: "retries") as? Int
+        if let typeString = aDecoder.decodeObject(forKey: "type_") as? String {
+            type_ = CLVModels.Payments.GatewayTxType(rawValue: typeString)
+        }
+        if let entryTypeString = aDecoder.decodeObject(forKey: "entryType") as? String {
+            entryType = CLVModels.Payments.CardEntryType(rawValue: entryTypeString)
+        }
+        responseCode = aDecoder.decodeObject(forKey: "responseCode") as? String
+        responseMessage = aDecoder.decodeObject(forKey: "responseMessage") as? String
+        first4 = aDecoder.decodeObject(forKey: "first4") as? String
+        last4 = aDecoder.decodeObject(forKey: "last4") as? String
+        if let cardTypeString = aDecoder.decodeObject(forKey: "cardType") as? String {
+            cardType = CLVModels.Payments.CardType(rawValue: cardTypeString)
+        }
+        refnum = aDecoder.decodeObject(forKey: "refnum") as? String
+        token = aDecoder.decodeObject(forKey: "token") as? String
+        authcode = aDecoder.decodeObject(forKey: "authcode") as? String
+        employeeId = aDecoder.decodeObject(forKey: "employeeId") as? String
+        extra = aDecoder.decodeObject(forKey: "extra") as? String
+        captured = aDecoder.decodeObject(forKey: "captured") as? Bool
+        swiperSerial = aDecoder.decodeObject(forKey: "swiperSerial") as? String
+        ksnPrefix = aDecoder.decodeObject(forKey: "ksnPrefix") as? String
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+        modifiedTime = aDecoder.decodeObject(forKey: "modifiedTime") as? Date
+        refundId = aDecoder.decodeObject(forKey: "refundId") as? Int
+        paymentRefundId = aDecoder.decodeObject(forKey: "paymentRefundId") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         merchantGatewayId <- map["merchantGatewayId"]
@@ -839,7 +854,7 @@ extension CLVModels {
     
     
     
-    public class GiftCard: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments8GiftCard)public class GiftCard: NSObject, NSCoding, Mappable {
       /// Track 2 Card Data
       public var track2: String?
       /// Embossed Card Number
@@ -848,25 +863,25 @@ extension CLVModels {
       public var isManuallyEntered: Bool?
       public var deviceSerial: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(track2, forKey: "track2")
-        aCoder.encodeObject(cardNumber, forKey: "cardNumber")
-        aCoder.encodeObject(isManuallyEntered, forKey: "isManuallyEntered")
-        aCoder.encodeObject(deviceSerial, forKey: "deviceSerial")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(track2, forKey: "track2")
+        aCoder.encode(cardNumber, forKey: "cardNumber")
+        aCoder.encode(isManuallyEntered, forKey: "isManuallyEntered")
+        aCoder.encode(deviceSerial, forKey: "deviceSerial")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        track2 = aDecoder.decodeObjectForKey("track2") as? String
-        cardNumber = aDecoder.decodeObjectForKey("cardNumber") as? String
-        isManuallyEntered = aDecoder.decodeObjectForKey("isManuallyEntered") as? Bool
-        deviceSerial = aDecoder.decodeObjectForKey("deviceSerial") as? String
+        track2 = aDecoder.decodeObject(forKey: "track2") as? String
+        cardNumber = aDecoder.decodeObject(forKey: "cardNumber") as? String
+        isManuallyEntered = aDecoder.decodeObject(forKey: "isManuallyEntered") as? Bool
+        deviceSerial = aDecoder.decodeObject(forKey: "deviceSerial") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         track2 <- map["track2"]
@@ -878,9 +893,9 @@ extension CLVModels {
     
     
     
-    public class GiftCardResponse: NSObject, NSCoding, Mappable {
-      public var txType: CLVModels.Payments.TxType?
-      public var state: CLVModels.Payments.GiftCardState?
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments16GiftCardResponse)public class GiftCardResponse: NSObject, NSCoding, Mappable {
+      public var txType: CLVModels.Payments.TxType? = nil
+      public var state: CLVModels.Payments.GiftCardState? = nil
       /// Transaction Amount
       public var requestAmount: Int?
       public var payment: CLVModels.Payments.Payment?
@@ -895,47 +910,49 @@ extension CLVModels {
       public var endBal: Int?
       public var holdBal: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(txType?.rawValue, forKey: "txType")
-        aCoder.encodeObject(state?.rawValue, forKey: "state")
-        aCoder.encodeObject(requestAmount, forKey: "requestAmount")
-        aCoder.encodeObject(payment, forKey: "payment")
-        aCoder.encodeObject(responseMessage, forKey: "responseMessage")
-        aCoder.encodeObject(requestSuccessful, forKey: "requestSuccessful")
-        aCoder.encodeObject(accountNumber, forKey: "accountNumber")
-        aCoder.encodeObject(giftCardTxUuid, forKey: "giftCardTxUuid")
-        aCoder.encodeObject(transactionId, forKey: "transactionId")
-        aCoder.encodeObject(referenceUuid, forKey: "referenceUuid")
-        aCoder.encodeObject(authCode, forKey: "authCode")
-        aCoder.encodeObject(begBal, forKey: "begBal")
-        aCoder.encodeObject(endBal, forKey: "endBal")
-        aCoder.encodeObject(holdBal, forKey: "holdBal")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(txType?.rawValue, forKey: "txType")
+        aCoder.encode(state?.rawValue, forKey: "state")
+        aCoder.encode(requestAmount, forKey: "requestAmount")
+        aCoder.encode(payment, forKey: "payment")
+        aCoder.encode(responseMessage, forKey: "responseMessage")
+        aCoder.encode(requestSuccessful, forKey: "requestSuccessful")
+        aCoder.encode(accountNumber, forKey: "accountNumber")
+        aCoder.encode(giftCardTxUuid, forKey: "giftCardTxUuid")
+        aCoder.encode(transactionId, forKey: "transactionId")
+        aCoder.encode(referenceUuid, forKey: "referenceUuid")
+        aCoder.encode(authCode, forKey: "authCode")
+        aCoder.encode(begBal, forKey: "begBal")
+        aCoder.encode(endBal, forKey: "endBal")
+        aCoder.encode(holdBal, forKey: "holdBal")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        txType = (aDecoder.decodeObjectForKey("txType") as? String) != nil ?
-          CLVModels.Payments.TxType(rawValue: (aDecoder.decodeObjectForKey("txType") as! String)) : nil
-        state = (aDecoder.decodeObjectForKey("state") as? String) != nil ?
-          CLVModels.Payments.GiftCardState(rawValue: (aDecoder.decodeObjectForKey("state") as! String)) : nil
-        requestAmount = aDecoder.decodeObjectForKey("requestAmount") as? Int
-        payment = aDecoder.decodeObjectForKey("payment") as? CLVModels.Payments.Payment
-        responseMessage = aDecoder.decodeObjectForKey("responseMessage") as? String
-        requestSuccessful = aDecoder.decodeObjectForKey("requestSuccessful") as? Bool
-        accountNumber = aDecoder.decodeObjectForKey("accountNumber") as? String
-        giftCardTxUuid = aDecoder.decodeObjectForKey("giftCardTxUuid") as? String
-        transactionId = aDecoder.decodeObjectForKey("transactionId") as? String
-        referenceUuid = aDecoder.decodeObjectForKey("referenceUuid") as? String
-        authCode = aDecoder.decodeObjectForKey("authCode") as? String
-        begBal = aDecoder.decodeObjectForKey("begBal") as? Int
-        endBal = aDecoder.decodeObjectForKey("endBal") as? Int
-        holdBal = aDecoder.decodeObjectForKey("holdBal") as? Int
+        if let txTypeString = aDecoder.decodeObject(forKey: "txType") as? String {
+            txType = CLVModels.Payments.TxType(rawValue: txTypeString)
+        }
+        if let stateString = aDecoder.decodeObject(forKey: "state") as? String {
+            state = CLVModels.Payments.GiftCardState(rawValue: stateString)
+        }
+        requestAmount = aDecoder.decodeObject(forKey: "requestAmount") as? Int
+        payment = aDecoder.decodeObject(forKey: "payment") as? CLVModels.Payments.Payment
+        responseMessage = aDecoder.decodeObject(forKey: "responseMessage") as? String
+        requestSuccessful = aDecoder.decodeObject(forKey: "requestSuccessful") as? Bool
+        accountNumber = aDecoder.decodeObject(forKey: "accountNumber") as? String
+        giftCardTxUuid = aDecoder.decodeObject(forKey: "giftCardTxUuid") as? String
+        transactionId = aDecoder.decodeObject(forKey: "transactionId") as? String
+        referenceUuid = aDecoder.decodeObject(forKey: "referenceUuid") as? String
+        authCode = aDecoder.decodeObject(forKey: "authCode") as? String
+        begBal = aDecoder.decodeObject(forKey: "begBal") as? Int
+        endBal = aDecoder.decodeObject(forKey: "endBal") as? Int
+        holdBal = aDecoder.decodeObject(forKey: "holdBal") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         txType <- map["txType"]
@@ -965,7 +982,7 @@ extension CLVModels {
     
     
     
-    public class GiftCardTransaction: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments19GiftCardTransaction)public class GiftCardTransaction: NSObject, NSCoding, Mappable {
       /// Transaction Amount
       public var amount: Int?
       /// Tax Amount
@@ -981,37 +998,37 @@ extension CLVModels {
       public var lineItems: [CLVModels.Payments.LineItemPayment]?
       public var employeeId: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(amount, forKey: "amount")
-        aCoder.encodeObject(taxAmount, forKey: "taxAmount")
-        aCoder.encodeObject(orderId, forKey: "orderId")
-        aCoder.encodeObject(card, forKey: "card")
-        aCoder.encodeObject(paymentIds, forKey: "paymentIds")
-        aCoder.encodeObject(ignorePayment, forKey: "ignorePayment")
-        aCoder.encodeObject(serviceChargeAmount, forKey: "serviceChargeAmount")
-        aCoder.encodeObject(taxableAmountRates, forKey: "taxableAmountRates")
-        aCoder.encodeObject(lineItems, forKey: "lineItems")
-        aCoder.encodeObject(employeeId, forKey: "employeeId")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(amount, forKey: "amount")
+        aCoder.encode(taxAmount, forKey: "taxAmount")
+        aCoder.encode(orderId, forKey: "orderId")
+        aCoder.encode(card, forKey: "card")
+        aCoder.encode(paymentIds, forKey: "paymentIds")
+        aCoder.encode(ignorePayment, forKey: "ignorePayment")
+        aCoder.encode(serviceChargeAmount, forKey: "serviceChargeAmount")
+        aCoder.encode(taxableAmountRates, forKey: "taxableAmountRates")
+        aCoder.encode(lineItems, forKey: "lineItems")
+        aCoder.encode(employeeId, forKey: "employeeId")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        amount = aDecoder.decodeObjectForKey("amount") as? Int
-        taxAmount = aDecoder.decodeObjectForKey("taxAmount") as? Int
-        orderId = aDecoder.decodeObjectForKey("orderId") as? String
-        card = aDecoder.decodeObjectForKey("card") as? CLVModels.Payments.GiftCard
-        paymentIds = aDecoder.decodeObjectForKey("paymentIds") as? [String]
-        ignorePayment = aDecoder.decodeObjectForKey("ignorePayment") as? Bool
-        serviceChargeAmount = aDecoder.decodeObjectForKey("serviceChargeAmount") as? CLVModels.Payments.ServiceChargeAmount
-        taxableAmountRates = aDecoder.decodeObjectForKey("taxableAmountRates") as? [CLVModels.Payments.TaxableAmountRate]
-        lineItems = aDecoder.decodeObjectForKey("lineItems") as? [CLVModels.Payments.LineItemPayment]
-        employeeId = aDecoder.decodeObjectForKey("employeeId") as? String
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
+        taxAmount = aDecoder.decodeObject(forKey: "taxAmount") as? Int
+        orderId = aDecoder.decodeObject(forKey: "orderId") as? String
+        card = aDecoder.decodeObject(forKey: "card") as? CLVModels.Payments.GiftCard
+        paymentIds = aDecoder.decodeObject(forKey: "paymentIds") as? [String]
+        ignorePayment = aDecoder.decodeObject(forKey: "ignorePayment") as? Bool
+        serviceChargeAmount = aDecoder.decodeObject(forKey: "serviceChargeAmount") as? CLVModels.Payments.ServiceChargeAmount
+        taxableAmountRates = aDecoder.decodeObject(forKey: "taxableAmountRates") as? [CLVModels.Payments.TaxableAmountRate]
+        lineItems = aDecoder.decodeObject(forKey: "lineItems") as? [CLVModels.Payments.LineItemPayment]
+        employeeId = aDecoder.decodeObject(forKey: "employeeId") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         amount <- map["amount"]
@@ -1027,7 +1044,7 @@ extension CLVModels {
       }
     }
     
-    public class DCCInfo: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments7DCCInfo)public class DCCInfo: NSObject, NSCoding, Mappable {
         
         /// Inquiry Rate ID (IPG)
         public var inquiryRateId: Int?
@@ -1054,34 +1071,34 @@ extension CLVModels {
         public var exchangeRateSourceTimeStamp: String?
         
         
-        public func encodeWithCoder(aCoder: NSCoder) {
-            aCoder.encodeObject(inquiryRateId, forKey: "inquiryRateId")
-            aCoder.encodeObject(dccApplied, forKey: "dccApplied")
-            aCoder.encodeObject(foreignCurrencyCode, forKey: "foreignCurrencyCode")
-            aCoder.encodeObject(foreignAmount, forKey: "foreignAmount")
-            aCoder.encodeObject(exchangeRate, forKey: "exchangeRate")
-            aCoder.encodeObject(marginRatePercentage, forKey: "marginRatePercentage")
-            aCoder.encodeObject(exchangeRateSourceName, forKey: "exchangeRateSourceName")
-            aCoder.encodeObject(exchangeRateSourceTimeStamp, forKey: "exchangeRateSourceTimeStamp")
+        public func encode(with aCoder: NSCoder) {
+            aCoder.encode(inquiryRateId, forKey: "inquiryRateId")
+            aCoder.encode(dccApplied, forKey: "dccApplied")
+            aCoder.encode(foreignCurrencyCode, forKey: "foreignCurrencyCode")
+            aCoder.encode(foreignAmount, forKey: "foreignAmount")
+            aCoder.encode(exchangeRate, forKey: "exchangeRate")
+            aCoder.encode(marginRatePercentage, forKey: "marginRatePercentage")
+            aCoder.encode(exchangeRateSourceName, forKey: "exchangeRateSourceName")
+            aCoder.encode(exchangeRateSourceTimeStamp, forKey: "exchangeRateSourceTimeStamp")
         }
         
         required public init(coder aDecoder: NSCoder) {
-            inquiryRateId = aDecoder.decodeObjectForKey("inquiryRateId") as? Int
-            dccApplied = aDecoder.decodeObjectForKey("dccApplied") as? Bool
-            foreignCurrencyCode = aDecoder.decodeObjectForKey("foreignCurrencyCode") as? String
-            foreignAmount = aDecoder.decodeObjectForKey("foreignAmount") as? Int
-            exchangeRate = aDecoder.decodeObjectForKey("exchangeRate") as? Double
-            marginRatePercentage = aDecoder.decodeObjectForKey("marginRatePercentage") as? String
-            exchangeRateSourceName = aDecoder.decodeObjectForKey("exchangeRateSourceName") as? String
-            exchangeRateSourceTimeStamp = aDecoder.decodeObjectForKey("exchangeRateSourceTimeStamp") as? String
+            inquiryRateId = aDecoder.decodeObject(forKey: "inquiryRateId") as? Int
+            dccApplied = aDecoder.decodeObject(forKey: "dccApplied") as? Bool
+            foreignCurrencyCode = aDecoder.decodeObject(forKey: "foreignCurrencyCode") as? String
+            foreignAmount = aDecoder.decodeObject(forKey: "foreignAmount") as? Int
+            exchangeRate = aDecoder.decodeObject(forKey: "exchangeRate") as? Double
+            marginRatePercentage = aDecoder.decodeObject(forKey: "marginRatePercentage") as? String
+            exchangeRateSourceName = aDecoder.decodeObject(forKey: "exchangeRateSourceName") as? String
+            exchangeRateSourceTimeStamp = aDecoder.decodeObject(forKey: "exchangeRateSourceTimeStamp") as? String
         }
         
         override public init() {}
         
         // Mappable
-        required public init?(_ map: Map) {}
+        required public init?(map:Map) {}
         
-        public func mapping(map: Map) {
+        public func mapping(map:Map) {
             inquiryRateId <- map["inquiryRateId"]
             dccApplied <- map["dccApplied"]
             foreignCurrencyCode <- map["foreignCurrencyCode"]
@@ -1094,7 +1111,7 @@ extension CLVModels {
     }
     
     
-    public class GermanInfo: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments10GermanInfo)public class GermanInfo: NSObject, NSCoding, Mappable {
         
         public var cardTrack2: String?
         
@@ -1136,58 +1153,58 @@ extension CLVModels {
         
         public var hostResponsePrintDataBM60: String?
         
-        public func encodeWithCoder(aCoder: NSCoder) {
-            aCoder.encodeObject(cardTrack2, forKey: "cardTrack2")
-            aCoder.encodeObject(cardSequenceNumber, forKey: "cardSequenceNumber")
-            aCoder.encodeObject(transactionCaseGermany, forKey: "transactionCaseGermany")
-            aCoder.encodeObject(transactionTypeGermany, forKey: "transactionTypeGermany")
-            aCoder.encodeObject(terminalID, forKey: "terminalID")
-            aCoder.encodeObject(traceNumber, forKey: "traceNumber")
-            aCoder.encodeObject(oldTraceNumber, forKey: "oldTraceNumber")
-            aCoder.encodeObject(receiptNumber, forKey: "receiptNumber")
-            aCoder.encodeObject(transactionAID, forKey: "transactionAID")
-            aCoder.encodeObject(transactionMSApp, forKey: "transactionMSApp")
-            aCoder.encodeObject(transactionScriptResults, forKey: "transactionScriptResults")
-            aCoder.encodeObject(receiptType, forKey: "receiptType")
-            aCoder.encodeObject(customerTransactionDOLValues, forKey: "customerTransactionDOLValues")
-            aCoder.encodeObject(merchantTransactionDOLValues, forKey: "merchantTransactionDOLValues")
-            aCoder.encodeObject(merchantJournalDOL, forKey: "merchantJournalDOL")
-            aCoder.encodeObject(merchantJournalDOLValues, forKey: "merchantJournalDOLValues")
-            aCoder.encodeObject(configMerchantId, forKey: "configMerchantId")
-            aCoder.encodeObject(configProductLabel, forKey: "configProductLabel")
-            aCoder.encodeObject(hostResponseAidParBMP53, forKey: "hostResponseAidParBMP53")
-            aCoder.encodeObject(hostResponsePrintDataBM60, forKey: "hostResponsePrintDataBM60")
+        public func encode(with aCoder: NSCoder) {
+            aCoder.encode(cardTrack2, forKey: "cardTrack2")
+            aCoder.encode(cardSequenceNumber, forKey: "cardSequenceNumber")
+            aCoder.encode(transactionCaseGermany, forKey: "transactionCaseGermany")
+            aCoder.encode(transactionTypeGermany, forKey: "transactionTypeGermany")
+            aCoder.encode(terminalID, forKey: "terminalID")
+            aCoder.encode(traceNumber, forKey: "traceNumber")
+            aCoder.encode(oldTraceNumber, forKey: "oldTraceNumber")
+            aCoder.encode(receiptNumber, forKey: "receiptNumber")
+            aCoder.encode(transactionAID, forKey: "transactionAID")
+            aCoder.encode(transactionMSApp, forKey: "transactionMSApp")
+            aCoder.encode(transactionScriptResults, forKey: "transactionScriptResults")
+            aCoder.encode(receiptType, forKey: "receiptType")
+            aCoder.encode(customerTransactionDOLValues, forKey: "customerTransactionDOLValues")
+            aCoder.encode(merchantTransactionDOLValues, forKey: "merchantTransactionDOLValues")
+            aCoder.encode(merchantJournalDOL, forKey: "merchantJournalDOL")
+            aCoder.encode(merchantJournalDOLValues, forKey: "merchantJournalDOLValues")
+            aCoder.encode(configMerchantId, forKey: "configMerchantId")
+            aCoder.encode(configProductLabel, forKey: "configProductLabel")
+            aCoder.encode(hostResponseAidParBMP53, forKey: "hostResponseAidParBMP53")
+            aCoder.encode(hostResponsePrintDataBM60, forKey: "hostResponsePrintDataBM60")
         }
         
         required public init(coder aDecoder: NSCoder) {
-            cardTrack2 = aDecoder.decodeObjectForKey("cardTrack2") as? String
-            cardSequenceNumber = aDecoder.decodeObjectForKey("cardSequenceNumber") as? String
-            transactionCaseGermany = aDecoder.decodeObjectForKey("transactionCaseGermany") as? String
-            transactionTypeGermany = aDecoder.decodeObjectForKey("transactionTypeGermany") as? String
-            terminalID = aDecoder.decodeObjectForKey("terminalID") as? String
-            traceNumber = aDecoder.decodeObjectForKey("traceNumber") as? String
-            oldTraceNumber = aDecoder.decodeObjectForKey("oldTraceNumber") as? String
-            receiptNumber = aDecoder.decodeObjectForKey("receiptNumber") as? String
-            transactionAID = aDecoder.decodeObjectForKey("transactionAID") as? String
-            transactionMSApp = aDecoder.decodeObjectForKey("transactionMSApp") as? String
-            transactionScriptResults = aDecoder.decodeObjectForKey("transactionScriptResults") as? String
-            receiptType = aDecoder.decodeObjectForKey("receiptType") as? String
-            customerTransactionDOLValues = aDecoder.decodeObjectForKey("customerTransactionDOLValues") as? String
-            merchantTransactionDOLValues = aDecoder.decodeObjectForKey("merchantTransactionDOLValues") as? String
-            merchantJournalDOL = aDecoder.decodeObjectForKey("merchantJournalDOL") as? String
-            merchantJournalDOLValues = aDecoder.decodeObjectForKey("merchantJournalDOLValues") as? String
-            configMerchantId = aDecoder.decodeObjectForKey("configMerchantId") as? String
-            configProductLabel = aDecoder.decodeObjectForKey("configProductLabel") as? String
-            hostResponseAidParBMP53 = aDecoder.decodeObjectForKey("hostResponseAidParBMP53") as? String
-            hostResponsePrintDataBM60 = aDecoder.decodeObjectForKey("hostResponsePrintDataBM60") as? String
+            cardTrack2 = aDecoder.decodeObject(forKey: "cardTrack2") as? String
+            cardSequenceNumber = aDecoder.decodeObject(forKey: "cardSequenceNumber") as? String
+            transactionCaseGermany = aDecoder.decodeObject(forKey: "transactionCaseGermany") as? String
+            transactionTypeGermany = aDecoder.decodeObject(forKey: "transactionTypeGermany") as? String
+            terminalID = aDecoder.decodeObject(forKey: "terminalID") as? String
+            traceNumber = aDecoder.decodeObject(forKey: "traceNumber") as? String
+            oldTraceNumber = aDecoder.decodeObject(forKey: "oldTraceNumber") as? String
+            receiptNumber = aDecoder.decodeObject(forKey: "receiptNumber") as? String
+            transactionAID = aDecoder.decodeObject(forKey: "transactionAID") as? String
+            transactionMSApp = aDecoder.decodeObject(forKey: "transactionMSApp") as? String
+            transactionScriptResults = aDecoder.decodeObject(forKey: "transactionScriptResults") as? String
+            receiptType = aDecoder.decodeObject(forKey: "receiptType") as? String
+            customerTransactionDOLValues = aDecoder.decodeObject(forKey: "customerTransactionDOLValues") as? String
+            merchantTransactionDOLValues = aDecoder.decodeObject(forKey: "merchantTransactionDOLValues") as? String
+            merchantJournalDOL = aDecoder.decodeObject(forKey: "merchantJournalDOL") as? String
+            merchantJournalDOLValues = aDecoder.decodeObject(forKey: "merchantJournalDOLValues") as? String
+            configMerchantId = aDecoder.decodeObject(forKey: "configMerchantId") as? String
+            configProductLabel = aDecoder.decodeObject(forKey: "configProductLabel") as? String
+            hostResponseAidParBMP53 = aDecoder.decodeObject(forKey: "hostResponseAidParBMP53") as? String
+            hostResponsePrintDataBM60 = aDecoder.decodeObject(forKey: "hostResponsePrintDataBM60") as? String
         }
         
         override public init() {}
         
         // Mappable
-        required public init?(_ map: Map) {}
+        required public init?(map:Map) {}
         
-        public func mapping(map: Map) {
+        public func mapping(map:Map) {
             cardTrack2 <- map["cardTrack2"]
             cardSequenceNumber <- map["cardSequenceNumber"]
             transactionCaseGermany <- map["transactionCaseGermany"]
@@ -1211,7 +1228,7 @@ extension CLVModels {
         }
     }
     
-    public class LineItemPayment: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments15LineItemPayment)public class LineItemPayment: NSObject, NSCoding, Mappable {
       /// Unique identifier; TBD this is confusing because it's used as either line item id or payment id
       public var id: String?
       /// The line item with which the line item payment is associated
@@ -1225,29 +1242,29 @@ extension CLVModels {
       /// Payment has been refunded
       public var refunded: Bool?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(lineItemRef, forKey: "lineItemRef")
-        aCoder.encodeObject(paymentRef, forKey: "paymentRef")
-        aCoder.encodeObject(percentage, forKey: "percentage")
-        aCoder.encodeObject(binName, forKey: "binName")
-        aCoder.encodeObject(refunded, forKey: "refunded")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(lineItemRef, forKey: "lineItemRef")
+        aCoder.encode(paymentRef, forKey: "paymentRef")
+        aCoder.encode(percentage, forKey: "percentage")
+        aCoder.encode(binName, forKey: "binName")
+        aCoder.encode(refunded, forKey: "refunded")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        lineItemRef = aDecoder.decodeObjectForKey("lineItemRef") as? CLVModels.Order.LineItem
-        paymentRef = aDecoder.decodeObjectForKey("paymentRef") as? CLVModels.Payments.Payment
-        percentage = aDecoder.decodeObjectForKey("percentage") as? Int
-        binName = aDecoder.decodeObjectForKey("binName") as? String
-        refunded = aDecoder.decodeObjectForKey("refunded") as? Bool
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        lineItemRef = aDecoder.decodeObject(forKey: "lineItemRef") as? CLVModels.Order.LineItem
+        paymentRef = aDecoder.decodeObject(forKey: "paymentRef") as? CLVModels.Payments.Payment
+        percentage = aDecoder.decodeObject(forKey: "percentage") as? Int
+        binName = aDecoder.decodeObject(forKey: "binName") as? String
+        refunded = aDecoder.decodeObject(forKey: "refunded") as? Bool
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -1261,7 +1278,7 @@ extension CLVModels {
     
     
     
-    public class Payment: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments7Payment)public class Payment: NSObject, NSCoding, Mappable {
         /// Unique identifier
         public var id: String?
         
@@ -1295,16 +1312,16 @@ extension CLVModels {
         public var employee: CLVModels.Base.Reference?
         
         /// Time payment was recorded on server
-        public var createdTime: NSDate?
+        public var createdTime: Date?
         
-        public var clientCreatedTime: NSDate?
+        public var clientCreatedTime: Date?
         
         /// Last modified time of the payment
-        public var modifiedTime: NSDate?
+        public var modifiedTime: Date?
         
         public var offline: Bool?
         
-        public var result: CLVModels.Payments.Result?
+        public var result: CLVModels.Payments.Result? = nil
         
         /// Information about the card used for credit/debit card payments
         public var cardTransaction: CLVModels.Payments.CardTransaction?
@@ -1321,7 +1338,7 @@ extension CLVModels {
         public var lineItemPayments: [CLVModels.Payments.LineItemPayment]?
         
         /// If voided, the reason why (when available)
-        public var voidReason: CLVModels.Order.VoidReason?
+        public var voidReason: CLVModels.Order.VoidReason? = nil
         
         /// Dynamic Currency Conversion information
         public var dccInfo: CLVModels.Payments.DCCInfo?
@@ -1335,75 +1352,77 @@ extension CLVModels {
         /// Tracking information for the app that created this payment.
         public var appTracking: CLVModels.Apps.AppTracking?
         
-        public func encodeWithCoder(aCoder: NSCoder) {
-            aCoder.encodeObject(id, forKey: "id")
-            aCoder.encodeObject(order, forKey: "order")
-            aCoder.encodeObject(device, forKey: "device")
-            aCoder.encodeObject(tender, forKey: "tender")
-            aCoder.encodeObject(amount, forKey: "amount")
-            aCoder.encodeObject(tipAmount, forKey: "tipAmount")
-            aCoder.encodeObject(taxAmount, forKey: "taxAmount")
-            aCoder.encodeObject(cashbackAmount, forKey: "cashbackAmount")
-            aCoder.encodeObject(cashTendered, forKey: "cashTendered")
-            aCoder.encodeObject(externalPaymentId, forKey: "externalPaymentId")
-            aCoder.encodeObject(employee, forKey: "employee")
-            aCoder.encodeObject(createdTime, forKey: "createdTime")
-            aCoder.encodeObject(clientCreatedTime, forKey: "clientCreatedTime")
-            aCoder.encodeObject(modifiedTime, forKey: "modifiedTime")
-            aCoder.encodeObject(offline, forKey: "offline")
-            aCoder.encodeObject(result?.rawValue, forKey: "result")
-            aCoder.encodeObject(cardTransaction, forKey: "cardTransaction")
-            aCoder.encodeObject(serviceCharge, forKey: "serviceCharge")
-            aCoder.encodeObject(taxRates, forKey: "taxRates")
-            aCoder.encodeObject(refunds, forKey: "refunds")
-            aCoder.encodeObject(note, forKey: "note")
-            aCoder.encodeObject(lineItemPayments, forKey: "lineItemPayments")
-            aCoder.encodeObject(voidReason?.rawValue, forKey: "voidReason")
-            aCoder.encodeObject(dccInfo, forKey: "dccInfo")
-            aCoder.encodeObject(transactionSettings, forKey: "transactionSettings")
-            aCoder.encodeObject(germanInfo, forKey: "germanInfo")
-            aCoder.encodeObject(appTracking, forKey: "appTracking")
+        public func encode(with aCoder: NSCoder) {
+            aCoder.encode(id, forKey: "id")
+            aCoder.encode(order, forKey: "order")
+            aCoder.encode(device, forKey: "device")
+            aCoder.encode(tender, forKey: "tender")
+            aCoder.encode(amount, forKey: "amount")
+            aCoder.encode(tipAmount, forKey: "tipAmount")
+            aCoder.encode(taxAmount, forKey: "taxAmount")
+            aCoder.encode(cashbackAmount, forKey: "cashbackAmount")
+            aCoder.encode(cashTendered, forKey: "cashTendered")
+            aCoder.encode(externalPaymentId, forKey: "externalPaymentId")
+            aCoder.encode(employee, forKey: "employee")
+            aCoder.encode(createdTime, forKey: "createdTime")
+            aCoder.encode(clientCreatedTime, forKey: "clientCreatedTime")
+            aCoder.encode(modifiedTime, forKey: "modifiedTime")
+            aCoder.encode(offline, forKey: "offline")
+            aCoder.encode(result?.rawValue, forKey: "result")
+            aCoder.encode(cardTransaction, forKey: "cardTransaction")
+            aCoder.encode(serviceCharge, forKey: "serviceCharge")
+            aCoder.encode(taxRates, forKey: "taxRates")
+            aCoder.encode(refunds, forKey: "refunds")
+            aCoder.encode(note, forKey: "note")
+            aCoder.encode(lineItemPayments, forKey: "lineItemPayments")
+            aCoder.encode(voidReason?.rawValue, forKey: "voidReason")
+            aCoder.encode(dccInfo, forKey: "dccInfo")
+            aCoder.encode(transactionSettings, forKey: "transactionSettings")
+            aCoder.encode(germanInfo, forKey: "germanInfo")
+            aCoder.encode(appTracking, forKey: "appTracking")
         }
         
         required public init(coder aDecoder: NSCoder) {
-            id = aDecoder.decodeObjectForKey("id") as? String
-            order = aDecoder.decodeObjectForKey("order") as? CLVModels.Base.Reference
-            device = aDecoder.decodeObjectForKey("device") as? CLVModels.Base.Reference
-            tender = aDecoder.decodeObjectForKey("tender") as? CLVModels.Base.Tender
-            amount = aDecoder.decodeObjectForKey("amount") as? Int
-            tipAmount = aDecoder.decodeObjectForKey("tipAmount") as? Int
-            taxAmount = aDecoder.decodeObjectForKey("taxAmount") as? Int
-            cashbackAmount = aDecoder.decodeObjectForKey("cashbackAmount") as? Int
-            cashTendered = aDecoder.decodeObjectForKey("cashTendered") as? Int
-            externalPaymentId = aDecoder.decodeObjectForKey("externalPaymentId") as? String
-            employee = aDecoder.decodeObjectForKey("employee") as? CLVModels.Base.Reference
-            createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-            clientCreatedTime = aDecoder.decodeObjectForKey("clientCreatedTime") as? NSDate
-            modifiedTime = aDecoder.decodeObjectForKey("modifiedTime") as? NSDate
-            offline = aDecoder.decodeObjectForKey("offline") as? Bool
-            result = (aDecoder.decodeObjectForKey("result") as? String) != nil ?
-                CLVModels.Payments.Result(rawValue: (aDecoder.decodeObjectForKey("result") as! String)) : nil
-            cardTransaction = aDecoder.decodeObjectForKey("cardTransaction") as? CLVModels.Payments.CardTransaction
-            serviceCharge = aDecoder.decodeObjectForKey("serviceCharge") as? CLVModels.Payments.ServiceChargeAmount
-            taxRates = aDecoder.decodeObjectForKey("taxRates") as? [CLVModels.Payments.PaymentTaxRate]
-            refunds = aDecoder.decodeObjectForKey("refunds") as? [CLVModels.Payments.Refund]
-            note = aDecoder.decodeObjectForKey("note") as? String
-            lineItemPayments = aDecoder.decodeObjectForKey("lineItemPayments") as? [CLVModels.Payments.LineItemPayment]
-            voidReason = (aDecoder.decodeObjectForKey("voidReason") as? String) != nil ?
-                CLVModels.Order.VoidReason(rawValue: (aDecoder.decodeObjectForKey("voidReason") as! String)) : nil
-            dccInfo = aDecoder.decodeObjectForKey("dccInfo") as? CLVModels.Payments.DCCInfo
-            transactionSettings = aDecoder.decodeObjectForKey("transactionSettings") as? CLVModels.Payments.TransactionSettings
-            germanInfo = aDecoder.decodeObjectForKey("germanInfo") as? CLVModels.Payments.GermanInfo
-            appTracking = aDecoder.decodeObjectForKey("appTracking") as? CLVModels.Apps.AppTracking
+            id = aDecoder.decodeObject(forKey: "id") as? String
+            order = aDecoder.decodeObject(forKey: "order") as? CLVModels.Base.Reference
+            device = aDecoder.decodeObject(forKey: "device") as? CLVModels.Base.Reference
+            tender = aDecoder.decodeObject(forKey: "tender") as? CLVModels.Base.Tender
+            amount = aDecoder.decodeObject(forKey: "amount") as? Int
+            tipAmount = aDecoder.decodeObject(forKey: "tipAmount") as? Int
+            taxAmount = aDecoder.decodeObject(forKey: "taxAmount") as? Int
+            cashbackAmount = aDecoder.decodeObject(forKey: "cashbackAmount") as? Int
+            cashTendered = aDecoder.decodeObject(forKey: "cashTendered") as? Int
+            externalPaymentId = aDecoder.decodeObject(forKey: "externalPaymentId") as? String
+            employee = aDecoder.decodeObject(forKey: "employee") as? CLVModels.Base.Reference
+            createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+            clientCreatedTime = aDecoder.decodeObject(forKey: "clientCreatedTime") as? Date
+            modifiedTime = aDecoder.decodeObject(forKey: "modifiedTime") as? Date
+            offline = aDecoder.decodeObject(forKey: "offline") as? Bool
+            if let resultString = aDecoder.decodeObject(forKey: "result") as? String {
+                result = CLVModels.Payments.Result(rawValue: resultString)
+            }
+            cardTransaction = aDecoder.decodeObject(forKey: "cardTransaction") as? CLVModels.Payments.CardTransaction
+            serviceCharge = aDecoder.decodeObject(forKey: "serviceCharge") as? CLVModels.Payments.ServiceChargeAmount
+            taxRates = aDecoder.decodeObject(forKey: "taxRates") as? [CLVModels.Payments.PaymentTaxRate]
+            refunds = aDecoder.decodeObject(forKey: "refunds") as? [CLVModels.Payments.Refund]
+            note = aDecoder.decodeObject(forKey: "note") as? String
+            lineItemPayments = aDecoder.decodeObject(forKey: "lineItemPayments") as? [CLVModels.Payments.LineItemPayment]
+            if let voidReasonString = aDecoder.decodeObject(forKey: "voidReason") as? String {
+                voidReason = CLVModels.Order.VoidReason(rawValue: voidReasonString)
+            }
+            dccInfo = aDecoder.decodeObject(forKey: "dccInfo") as? CLVModels.Payments.DCCInfo
+            transactionSettings = aDecoder.decodeObject(forKey: "transactionSettings") as? CLVModels.Payments.TransactionSettings
+            germanInfo = aDecoder.decodeObject(forKey: "germanInfo") as? CLVModels.Payments.GermanInfo
+            appTracking = aDecoder.decodeObject(forKey: "appTracking") as? CLVModels.Apps.AppTracking
         }
         
         override public init() {}
         
         // Mappable
         
-        required public init?(_ map: Map) {}
+        required public init?(map:Map) {}
         
-        public func mapping(map: Map) {
+        public func mapping(map:Map) {
             id <- map["id"]
             order <- map["order"]
             device <- map["device"]
@@ -1436,28 +1455,28 @@ extension CLVModels {
     
     
     
-    public class PaymentResponse: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments15PaymentResponse)public class PaymentResponse: NSObject, NSCoding, Mappable {
       public var requestSuccessful: Bool?
       public var responseErrorMessage: String?
       public var payment: CLVModels.Payments.Payment?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(requestSuccessful, forKey: "requestSuccessful")
-        aCoder.encodeObject(responseErrorMessage, forKey: "responseErrorMessage")
-        aCoder.encodeObject(payment, forKey: "payment")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(requestSuccessful, forKey: "requestSuccessful")
+        aCoder.encode(responseErrorMessage, forKey: "responseErrorMessage")
+        aCoder.encode(payment, forKey: "payment")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        requestSuccessful = aDecoder.decodeObjectForKey("requestSuccessful") as? Bool
-        responseErrorMessage = aDecoder.decodeObjectForKey("responseErrorMessage") as? String
-        payment = aDecoder.decodeObjectForKey("payment") as? CLVModels.Payments.Payment
+        requestSuccessful = aDecoder.decodeObject(forKey: "requestSuccessful") as? Bool
+        responseErrorMessage = aDecoder.decodeObject(forKey: "responseErrorMessage") as? String
+        payment = aDecoder.decodeObject(forKey: "payment") as? CLVModels.Payments.Payment
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         requestSuccessful <- map["requestSuccessful"]
@@ -1468,7 +1487,7 @@ extension CLVModels {
     
     
     
-    public class PaymentTaxRate: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments14PaymentTaxRate)public class PaymentTaxRate: NSObject, NSCoding, Mappable {
       public var id: String?
       /// The payment with which the payment tax rate is associated
       public var paymentRef: CLVModels.Payments.Payment?
@@ -1477,29 +1496,29 @@ extension CLVModels {
       public var isDefault: Bool?
       public var taxableAmount: Int?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(paymentRef, forKey: "paymentRef")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(rate, forKey: "rate")
-        aCoder.encodeObject(isDefault, forKey: "isDefault")
-        aCoder.encodeObject(taxableAmount, forKey: "taxableAmount")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(paymentRef, forKey: "paymentRef")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(rate, forKey: "rate")
+        aCoder.encode(isDefault, forKey: "isDefault")
+        aCoder.encode(taxableAmount, forKey: "taxableAmount")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        paymentRef = aDecoder.decodeObjectForKey("paymentRef") as? CLVModels.Payments.Payment
-        name = aDecoder.decodeObjectForKey("name") as? String
-        rate = aDecoder.decodeObjectForKey("rate") as? Int
-        isDefault = aDecoder.decodeObjectForKey("isDefault") as? Bool
-        taxableAmount = aDecoder.decodeObjectForKey("taxableAmount") as? Int
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        paymentRef = aDecoder.decodeObject(forKey: "paymentRef") as? CLVModels.Payments.Payment
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        rate = aDecoder.decodeObject(forKey: "rate") as? Int
+        isDefault = aDecoder.decodeObject(forKey: "isDefault") as? Bool
+        taxableAmount = aDecoder.decodeObject(forKey: "taxableAmount") as? Int
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -1513,7 +1532,7 @@ extension CLVModels {
     
     
     
-    public class Refund: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments6Refund)public class Refund: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
       /// The order with which the refund is associated
@@ -1525,9 +1544,9 @@ extension CLVModels {
       /// Tax amount refunded
       public var taxAmount: Int?
       /// The time when the refund was recorded on the server
-      public var createdTime: NSDate?
+      public var createdTime: Date?
       /// The time when the refund was recorded on the client
-      public var clientCreatedTime: NSDate?
+      public var clientCreatedTime: Date?
       /// The payment with which the refund is associated
       public var payment: CLVModels.Payments.Payment?
       public var employee: CLVModels.Employees.Employee?
@@ -1537,43 +1556,43 @@ extension CLVModels {
       public var taxableAmountRates: [CLVModels.Payments.TaxableAmountRate]?
       public var serviceChargeAmount: CLVModels.Payments.ServiceChargeAmount?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(orderRef, forKey: "orderRef")
-        aCoder.encodeObject(device, forKey: "device")
-        aCoder.encodeObject(amount, forKey: "amount")
-        aCoder.encodeObject(taxAmount, forKey: "taxAmount")
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
-        aCoder.encodeObject(clientCreatedTime, forKey: "clientCreatedTime")
-        aCoder.encodeObject(payment, forKey: "payment")
-        aCoder.encodeObject(employee, forKey: "employee")
-        aCoder.encodeObject(lineItems, forKey: "lineItems")
-        aCoder.encodeObject(overrideMerchantTender, forKey: "overrideMerchantTender")
-        aCoder.encodeObject(taxableAmountRates, forKey: "taxableAmountRates")
-        aCoder.encodeObject(serviceChargeAmount, forKey: "serviceChargeAmount")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(orderRef, forKey: "orderRef")
+        aCoder.encode(device, forKey: "device")
+        aCoder.encode(amount, forKey: "amount")
+        aCoder.encode(taxAmount, forKey: "taxAmount")
+        aCoder.encode(createdTime, forKey: "createdTime")
+        aCoder.encode(clientCreatedTime, forKey: "clientCreatedTime")
+        aCoder.encode(payment, forKey: "payment")
+        aCoder.encode(employee, forKey: "employee")
+        aCoder.encode(lineItems, forKey: "lineItems")
+        aCoder.encode(overrideMerchantTender, forKey: "overrideMerchantTender")
+        aCoder.encode(taxableAmountRates, forKey: "taxableAmountRates")
+        aCoder.encode(serviceChargeAmount, forKey: "serviceChargeAmount")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        orderRef = aDecoder.decodeObjectForKey("orderRef") as? CLVModels.Order.Order
-        device = aDecoder.decodeObjectForKey("device") as? CLVModels.Device.Device
-        amount = aDecoder.decodeObjectForKey("amount") as? Int
-        taxAmount = aDecoder.decodeObjectForKey("taxAmount") as? Int
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-        clientCreatedTime = aDecoder.decodeObjectForKey("clientCreatedTime") as? NSDate
-        payment = aDecoder.decodeObjectForKey("payment") as? CLVModels.Payments.Payment
-        employee = aDecoder.decodeObjectForKey("employee") as? CLVModels.Employees.Employee
-        lineItems = aDecoder.decodeObjectForKey("lineItems") as? [CLVModels.Order.LineItem]
-        overrideMerchantTender = aDecoder.decodeObjectForKey("overrideMerchantTender") as? CLVModels.Base.Tender
-        taxableAmountRates = aDecoder.decodeObjectForKey("taxableAmountRates") as? [CLVModels.Payments.TaxableAmountRate]
-        serviceChargeAmount = aDecoder.decodeObjectForKey("serviceChargeAmount") as? CLVModels.Payments.ServiceChargeAmount
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        orderRef = aDecoder.decodeObject(forKey: "orderRef") as? CLVModels.Order.Order
+        device = aDecoder.decodeObject(forKey: "device") as? CLVModels.Device.Device
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
+        taxAmount = aDecoder.decodeObject(forKey: "taxAmount") as? Int
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+        clientCreatedTime = aDecoder.decodeObject(forKey: "clientCreatedTime") as? Date
+        payment = aDecoder.decodeObject(forKey: "payment") as? CLVModels.Payments.Payment
+        employee = aDecoder.decodeObject(forKey: "employee") as? CLVModels.Employees.Employee
+        lineItems = aDecoder.decodeObject(forKey: "lineItems") as? [CLVModels.Order.LineItem]
+        overrideMerchantTender = aDecoder.decodeObject(forKey: "overrideMerchantTender") as? CLVModels.Base.Tender
+        taxableAmountRates = aDecoder.decodeObject(forKey: "taxableAmountRates") as? [CLVModels.Payments.TaxableAmountRate]
+        serviceChargeAmount = aDecoder.decodeObject(forKey: "serviceChargeAmount") as? CLVModels.Payments.ServiceChargeAmount
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -1606,7 +1625,7 @@ extension CLVModels {
     
     
     
-    public class ServerTotalStats: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments16ServerTotalStats)public class ServerTotalStats: NSObject, NSCoding, Mappable {
       /// Employee corresponding to these stats
       public var employeeId: String?
       public var employeeName: String?
@@ -1618,35 +1637,35 @@ extension CLVModels {
       public var tax: CLVModels.Payments.BatchTotalType?
       public var tips: CLVModels.Payments.BatchTotalType?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(employeeId, forKey: "employeeId")
-        aCoder.encodeObject(employeeName, forKey: "employeeName")
-        aCoder.encodeObject(sales, forKey: "sales")
-        aCoder.encodeObject(refunds, forKey: "refunds")
-        aCoder.encodeObject(net, forKey: "net")
-        aCoder.encodeObject(giftCardLoads, forKey: "giftCardLoads")
-        aCoder.encodeObject(giftCardCashOuts, forKey: "giftCardCashOuts")
-        aCoder.encodeObject(tax, forKey: "tax")
-        aCoder.encodeObject(tips, forKey: "tips")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(employeeId, forKey: "employeeId")
+        aCoder.encode(employeeName, forKey: "employeeName")
+        aCoder.encode(sales, forKey: "sales")
+        aCoder.encode(refunds, forKey: "refunds")
+        aCoder.encode(net, forKey: "net")
+        aCoder.encode(giftCardLoads, forKey: "giftCardLoads")
+        aCoder.encode(giftCardCashOuts, forKey: "giftCardCashOuts")
+        aCoder.encode(tax, forKey: "tax")
+        aCoder.encode(tips, forKey: "tips")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        employeeId = aDecoder.decodeObjectForKey("employeeId") as? String
-        employeeName = aDecoder.decodeObjectForKey("employeeName") as? String
-        sales = aDecoder.decodeObjectForKey("sales") as? CLVModels.Payments.BatchTotalType
-        refunds = aDecoder.decodeObjectForKey("refunds") as? CLVModels.Payments.BatchTotalType
-        net = aDecoder.decodeObjectForKey("net") as? CLVModels.Payments.BatchTotalType
-        giftCardLoads = aDecoder.decodeObjectForKey("giftCardLoads") as? CLVModels.Payments.BatchTotalType
-        giftCardCashOuts = aDecoder.decodeObjectForKey("giftCardCashOuts") as? CLVModels.Payments.BatchTotalType
-        tax = aDecoder.decodeObjectForKey("tax") as? CLVModels.Payments.BatchTotalType
-        tips = aDecoder.decodeObjectForKey("tips") as? CLVModels.Payments.BatchTotalType
+        employeeId = aDecoder.decodeObject(forKey: "employeeId") as? String
+        employeeName = aDecoder.decodeObject(forKey: "employeeName") as? String
+        sales = aDecoder.decodeObject(forKey: "sales") as? CLVModels.Payments.BatchTotalType
+        refunds = aDecoder.decodeObject(forKey: "refunds") as? CLVModels.Payments.BatchTotalType
+        net = aDecoder.decodeObject(forKey: "net") as? CLVModels.Payments.BatchTotalType
+        giftCardLoads = aDecoder.decodeObject(forKey: "giftCardLoads") as? CLVModels.Payments.BatchTotalType
+        giftCardCashOuts = aDecoder.decodeObject(forKey: "giftCardCashOuts") as? CLVModels.Payments.BatchTotalType
+        tax = aDecoder.decodeObject(forKey: "tax") as? CLVModels.Payments.BatchTotalType
+        tips = aDecoder.decodeObject(forKey: "tips") as? CLVModels.Payments.BatchTotalType
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         employeeId <- map["employeeId"]
@@ -1663,32 +1682,32 @@ extension CLVModels {
     
     
     
-    public class ServiceChargeAmount: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments19ServiceChargeAmount)public class ServiceChargeAmount: NSObject, NSCoding, Mappable {
       public var id: String?
       public var name: String?
       public var amount: Int?
       /// The payment with which the payment tax rate is associated
       public var paymentRef: CLVModels.Payments.Payment?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(amount, forKey: "amount")
-        aCoder.encodeObject(paymentRef, forKey: "paymentRef")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(amount, forKey: "amount")
+        aCoder.encode(paymentRef, forKey: "paymentRef")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        amount = aDecoder.decodeObjectForKey("amount") as? Int
-        paymentRef = aDecoder.decodeObjectForKey("paymentRef") as? CLVModels.Payments.Payment
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
+        paymentRef = aDecoder.decodeObject(forKey: "paymentRef") as? CLVModels.Payments.Payment
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -1700,34 +1719,34 @@ extension CLVModels {
     
     
     
-    public class TaxableAmountRate: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments17TaxableAmountRate)public class TaxableAmountRate: NSObject, NSCoding, Mappable {
       public var id: String?
       public var name: String?
       public var taxableAmount: Int?
       public var rate: Int?
       public var isVat: Bool?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(taxableAmount, forKey: "taxableAmount")
-        aCoder.encodeObject(rate, forKey: "rate")
-        aCoder.encodeObject(isVat, forKey: "isVat")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(taxableAmount, forKey: "taxableAmount")
+        aCoder.encode(rate, forKey: "rate")
+        aCoder.encode(isVat, forKey: "isVat")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as? String
-        name = aDecoder.decodeObjectForKey("name") as? String
-        taxableAmount = aDecoder.decodeObjectForKey("taxableAmount") as? Int
-        rate = aDecoder.decodeObjectForKey("rate") as? Int
-        isVat = aDecoder.decodeObjectForKey("isVat") as? Bool
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        taxableAmount = aDecoder.decodeObject(forKey: "taxableAmount") as? Int
+        rate = aDecoder.decodeObject(forKey: "rate") as? Int
+        isVat = aDecoder.decodeObject(forKey: "isVat") as? Bool
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         id <- map["id"]
@@ -1740,36 +1759,36 @@ extension CLVModels {
     
     
     
-    public class Transaction: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments11Transaction)public class Transaction: NSObject, NSCoding, Mappable {
       /// The time when the transaction was recorded on the server
-      public var createdTime: NSDate?
+      public var createdTime: Date?
       /// The time when the transaction was recorded on the client
-      public var clientCreatedTime: NSDate?
+      public var clientCreatedTime: Date?
       public var payment: CLVModels.Payments.Payment?
       public var refund: CLVModels.Payments.Refund?
       public var credit: CLVModels.Payments.Credit?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(createdTime, forKey: "createdTime")
-        aCoder.encodeObject(clientCreatedTime, forKey: "clientCreatedTime")
-        aCoder.encodeObject(payment, forKey: "payment")
-        aCoder.encodeObject(refund, forKey: "refund")
-        aCoder.encodeObject(credit, forKey: "credit")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(createdTime, forKey: "createdTime")
+        aCoder.encode(clientCreatedTime, forKey: "clientCreatedTime")
+        aCoder.encode(payment, forKey: "payment")
+        aCoder.encode(refund, forKey: "refund")
+        aCoder.encode(credit, forKey: "credit")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        createdTime = aDecoder.decodeObjectForKey("createdTime") as? NSDate
-        clientCreatedTime = aDecoder.decodeObjectForKey("clientCreatedTime") as? NSDate
-        payment = aDecoder.decodeObjectForKey("payment") as? CLVModels.Payments.Payment
-        refund = aDecoder.decodeObjectForKey("refund") as? CLVModels.Payments.Refund
-        credit = aDecoder.decodeObjectForKey("credit") as? CLVModels.Payments.Credit
+        createdTime = aDecoder.decodeObject(forKey: "createdTime") as? Date
+        clientCreatedTime = aDecoder.decodeObject(forKey: "clientCreatedTime") as? Date
+        payment = aDecoder.decodeObject(forKey: "payment") as? CLVModels.Payments.Payment
+        refund = aDecoder.decodeObject(forKey: "refund") as? CLVModels.Payments.Refund
+        credit = aDecoder.decodeObject(forKey: "credit") as? CLVModels.Payments.Credit
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         createdTime <- (map["createdTime"], CLVDateTransform())
@@ -1814,7 +1833,7 @@ extension CLVModels {
     }
     
     
-    public class TransactionSettings: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments19TransactionSettings)public class TransactionSettings: NSObject, NSCoding, Mappable {
         
         public var cardEntryMethods: Int?
         
@@ -1832,9 +1851,9 @@ extension CLVModels {
         
         public var signatureThreshold: Int?
         
-        public var signatureEntryLocation: CLVModels.Payments.DataEntryLocation?
+        public var signatureEntryLocation: CLVModels.Payments.DataEntryLocation? = nil
         
-        public var tipMode: CLVModels.Payments.TipMode?
+        public var tipMode: CLVModels.Payments.TipMode? = nil
         
         public var tippableAmount: Int?
         
@@ -1846,50 +1865,56 @@ extension CLVModels {
         
         public var autoAcceptSignature: Bool?
         
-        public func encodeWithCoder(aCoder: NSCoder) {
-            aCoder.encodeObject(cardEntryMethods, forKey: "cardEntryMethods")
-            aCoder.encodeObject(disableCashBack, forKey: "disableCashBack")
-            aCoder.encodeObject(cloverShouldHandleReceipts, forKey: "cloverShouldHandleReceipts")
-            aCoder.encodeObject(forcePinEntryOnSwipe, forKey: "forcePinEntryOnSwipe")
-            aCoder.encodeObject(disableRestartTransactionOnFailure, forKey: "disableRestartTransactionOnFailure")
-            aCoder.encodeObject(allowOfflinePayment, forKey: "allowOfflinePayment")
-            aCoder.encodeObject(approveOfflinePaymentWithoutPrompt, forKey: "approveOfflinePaymentWithoutPrompt")
-            aCoder.encodeObject(signatureThreshold, forKey: "signatureThreshold")
-            aCoder.encodeObject(signatureEntryLocation?.rawValue, forKey: "signatureEntryLocation")
-            aCoder.encodeObject(tipMode?.rawValue, forKey: "tipMode")
-            aCoder.encodeObject(tippableAmount, forKey: "tippableAmount")
-            aCoder.encodeObject(disableReceiptSelection, forKey: "disableReceiptSelection")
-            aCoder.encodeObject(disableDuplicateCheck, forKey: "disableDuplicateCheck")
-            aCoder.encodeObject(autoAcceptPaymentConfirmations, forKey: "autoAcceptPaymentConfirmations")
-            aCoder.encodeObject(autoAcceptSignature, forKey: "autoAcceptSignature")
+        public var forceOfflinePayment: Bool?
+        
+        public func encode(with aCoder: NSCoder) {
+            aCoder.encode(cardEntryMethods, forKey: "cardEntryMethods")
+            aCoder.encode(disableCashBack, forKey: "disableCashBack")
+            aCoder.encode(cloverShouldHandleReceipts, forKey: "cloverShouldHandleReceipts")
+            aCoder.encode(forcePinEntryOnSwipe, forKey: "forcePinEntryOnSwipe")
+            aCoder.encode(disableRestartTransactionOnFailure, forKey: "disableRestartTransactionOnFailure")
+            aCoder.encode(allowOfflinePayment, forKey: "allowOfflinePayment")
+            aCoder.encode(approveOfflinePaymentWithoutPrompt, forKey: "approveOfflinePaymentWithoutPrompt")
+            aCoder.encode(signatureThreshold, forKey: "signatureThreshold")
+            aCoder.encode(signatureEntryLocation?.rawValue, forKey: "signatureEntryLocation")
+            aCoder.encode(tipMode?.rawValue, forKey: "tipMode")
+            aCoder.encode(tippableAmount, forKey: "tippableAmount")
+            aCoder.encode(disableReceiptSelection, forKey: "disableReceiptSelection")
+            aCoder.encode(disableDuplicateCheck, forKey: "disableDuplicateCheck")
+            aCoder.encode(autoAcceptPaymentConfirmations, forKey: "autoAcceptPaymentConfirmations")
+            aCoder.encode(autoAcceptSignature, forKey: "autoAcceptSignature")
+            aCoder.encode(forceOfflinePayment, forKey: "forceOfflinePayment")
         }
         
         required public init(coder aDecoder: NSCoder) {
-            cardEntryMethods = aDecoder.decodeObjectForKey("cardEntryMethods") as? Int
-            disableCashBack = aDecoder.decodeObjectForKey("disableCashBack") as? Bool
-            cloverShouldHandleReceipts = aDecoder.decodeObjectForKey("cloverShouldHandleReceipts") as? Bool
-            forcePinEntryOnSwipe = aDecoder.decodeObjectForKey("forcePinEntryOnSwipe") as? Bool
-            disableRestartTransactionOnFailure = aDecoder.decodeObjectForKey("disableRestartTransactionOnFailure") as? Bool
-            allowOfflinePayment = aDecoder.decodeObjectForKey("allowOfflinePayment") as? Bool
-            approveOfflinePaymentWithoutPrompt = aDecoder.decodeObjectForKey("approveOfflinePaymentWithoutPrompt") as? Bool
-            signatureThreshold = aDecoder.decodeObjectForKey("signatureThreshold") as? Int
-            signatureEntryLocation = (aDecoder.decodeObjectForKey("signatureEntryLocation") as? String) != nil ?
-                CLVModels.Payments.DataEntryLocation(rawValue: (aDecoder.decodeObjectForKey("signatureEntryLocation") as! String)) : nil
-            tipMode = (aDecoder.decodeObjectForKey("tipMode") as? String) != nil ?
-                CLVModels.Payments.TipMode(rawValue: (aDecoder.decodeObjectForKey("tipMode") as! String)) : nil
-            tippableAmount = aDecoder.decodeObjectForKey("tippableAmount") as? Int
-            disableReceiptSelection = aDecoder.decodeObjectForKey("disableReceiptSelection") as? Bool
-            disableDuplicateCheck = aDecoder.decodeObjectForKey("disableDuplicateCheck") as? Bool
-            autoAcceptPaymentConfirmations = aDecoder.decodeObjectForKey("autoAcceptPaymentConfirmations") as? Bool
-            autoAcceptSignature = aDecoder.decodeObjectForKey("autoAcceptSignature") as? Bool
+            cardEntryMethods = aDecoder.decodeObject(forKey: "cardEntryMethods") as? Int
+            disableCashBack = aDecoder.decodeObject(forKey: "disableCashBack") as? Bool
+            cloverShouldHandleReceipts = aDecoder.decodeObject(forKey: "cloverShouldHandleReceipts") as? Bool
+            forcePinEntryOnSwipe = aDecoder.decodeObject(forKey: "forcePinEntryOnSwipe") as? Bool
+            disableRestartTransactionOnFailure = aDecoder.decodeObject(forKey: "disableRestartTransactionOnFailure") as? Bool
+            allowOfflinePayment = aDecoder.decodeObject(forKey: "allowOfflinePayment") as? Bool
+            approveOfflinePaymentWithoutPrompt = aDecoder.decodeObject(forKey: "approveOfflinePaymentWithoutPrompt") as? Bool
+            signatureThreshold = aDecoder.decodeObject(forKey: "signatureThreshold") as? Int
+            if let signatureEntryLocationString = aDecoder.decodeObject(forKey: "signatureEntryLocation") as? String {
+                signatureEntryLocation = CLVModels.Payments.DataEntryLocation(rawValue: signatureEntryLocationString)
+            }
+            if let tipModeString = aDecoder.decodeObject(forKey: "tipMode") as? String {
+                tipMode = CLVModels.Payments.TipMode(rawValue: tipModeString)
+            }
+            tippableAmount = aDecoder.decodeObject(forKey: "tippableAmount") as? Int
+            disableReceiptSelection = aDecoder.decodeObject(forKey: "disableReceiptSelection") as? Bool
+            disableDuplicateCheck = aDecoder.decodeObject(forKey: "disableDuplicateCheck") as? Bool
+            autoAcceptPaymentConfirmations = aDecoder.decodeObject(forKey: "autoAcceptPaymentConfirmations") as? Bool
+            autoAcceptSignature = aDecoder.decodeObject(forKey: "autoAcceptSignature") as? Bool
+            forceOfflinePayment = aDecoder.decodeObject(forKey: "forceOfflinePayment") as? Bool
         }
         
         override public init() {}
         
         // Mappable
-        required public init?(_ map: Map) {}
+        required public init?(map:Map) {}
         
-        public func mapping(map: Map) {
+        public func mapping(map:Map) {
             cardEntryMethods <- map["cardEntryMethods"]
             disableCashBack <- map["disableCashBack"]
             cloverShouldHandleReceipts <- map["cloverShouldHandleReceipts"]
@@ -1905,6 +1930,7 @@ extension CLVModels {
             disableDuplicateCheck <- map["disableDuplicateCheck"]
             autoAcceptPaymentConfirmations <- map["autoAcceptPaymentConfirmations"]
             autoAcceptSignature <- map["autoAcceptSignature"]
+            forceOfflinePayment <- map["forceOfflinePayment"]
         }
     }
     
@@ -1916,34 +1942,34 @@ extension CLVModels {
     
     
     
-    public class VaultedCard: NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments11VaultedCard)public class VaultedCard: NSObject, NSCoding, Mappable {
       public var first6: String?
       public var last4: String?
       public var cardholderName: String?
       public var expirationDate: String?
       public var token: String?
       
-      public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(first6, forKey: "first6")
-        aCoder.encodeObject(last4, forKey: "last4")
-        aCoder.encodeObject(cardholderName, forKey: "cardholderName")
-        aCoder.encodeObject(expirationDate, forKey: "expirationDate")
-        aCoder.encodeObject(token, forKey: "token")
+      public func encode(with aCoder: NSCoder) {
+        aCoder.encode(first6, forKey: "first6")
+        aCoder.encode(last4, forKey: "last4")
+        aCoder.encode(cardholderName, forKey: "cardholderName")
+        aCoder.encode(expirationDate, forKey: "expirationDate")
+        aCoder.encode(token, forKey: "token")
       }
       
       required public init(coder aDecoder: NSCoder) {
-        first6 = aDecoder.decodeObjectForKey("first6") as? String
-        last4 = aDecoder.decodeObjectForKey("last4") as? String
-        cardholderName = aDecoder.decodeObjectForKey("cardholderName") as? String
-        expirationDate = aDecoder.decodeObjectForKey("expirationDate") as? String
-        token = aDecoder.decodeObjectForKey("token") as? String
+        first6 = aDecoder.decodeObject(forKey: "first6") as? String
+        last4 = aDecoder.decodeObject(forKey: "last4") as? String
+        cardholderName = aDecoder.decodeObject(forKey: "cardholderName") as? String
+        expirationDate = aDecoder.decodeObject(forKey: "expirationDate") as? String
+        token = aDecoder.decodeObject(forKey: "token") as? String
       }
       
       override public init() {}
       
       // Mappable
       
-      required public init?(_ map:Map) {}
+      required public init?(map:Map) {}
       
       public func mapping(map:Map) {
         first6 <- map["first6"]
@@ -1954,7 +1980,7 @@ extension CLVModels {
       }
     }
     
-    public class CardData:NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments8CardData)public class CardData:NSObject, NSCoding, Mappable {
         public var track1:String?
         public var track2:String?
         public var track3:String?
@@ -1970,44 +1996,44 @@ extension CLVModels {
         public var last4:String?
         public var first6:String?
         
-        public func encodeWithCoder(aCoder: NSCoder) {
-            aCoder.encodeObject(track1, forKey: "track1")
-            aCoder.encodeObject(track2, forKey: "track2")
-            aCoder.encodeObject(track3, forKey: "track3")
-            aCoder.encodeObject(encrypted, forKey: "encrypted")
-            aCoder.encodeObject(maskedTrack1, forKey: "maskedTrack1")
-            aCoder.encodeObject(maskedTrack2, forKey: "maskedTrack2")
-            aCoder.encodeObject(maskedTrack3, forKey: "maskedTrack3")
-            aCoder.encodeObject(pan, forKey: "pan")
-            aCoder.encodeObject(cardholderName, forKey: "cardholderName")
-            aCoder.encodeObject(firstName, forKey: "firstName")
-            aCoder.encodeObject(lastName, forKey: "lastName")
-            aCoder.encodeObject(exp, forKey: "exp")
-            aCoder.encodeObject(last4, forKey: "last4")
-            aCoder.encodeObject(first6, forKey: "first6")
+        public func encode(with aCoder: NSCoder) {
+            aCoder.encode(track1, forKey: "track1")
+            aCoder.encode(track2, forKey: "track2")
+            aCoder.encode(track3, forKey: "track3")
+            aCoder.encode(encrypted, forKey: "encrypted")
+            aCoder.encode(maskedTrack1, forKey: "maskedTrack1")
+            aCoder.encode(maskedTrack2, forKey: "maskedTrack2")
+            aCoder.encode(maskedTrack3, forKey: "maskedTrack3")
+            aCoder.encode(pan, forKey: "pan")
+            aCoder.encode(cardholderName, forKey: "cardholderName")
+            aCoder.encode(firstName, forKey: "firstName")
+            aCoder.encode(lastName, forKey: "lastName")
+            aCoder.encode(exp, forKey: "exp")
+            aCoder.encode(last4, forKey: "last4")
+            aCoder.encode(first6, forKey: "first6")
             
         }
         
         required public init(coder aDecoder: NSCoder) {
-            track1 = aDecoder.decodeObjectForKey("track1") as? String
-            track2 = aDecoder.decodeObjectForKey("track2") as? String
-            track3 = aDecoder.decodeObjectForKey("track3") as? String
-            encrypted = aDecoder.decodeObjectForKey("encrypted") as? Bool
-            maskedTrack1 = aDecoder.decodeObjectForKey("maskedTrack1") as? String
-            maskedTrack2 = aDecoder.decodeObjectForKey("maskedTrack2") as? String
-            maskedTrack3 = aDecoder.decodeObjectForKey("maskedTrack3") as? String
-            pan = aDecoder.decodeObjectForKey("pan") as? String
-            cardholderName = aDecoder.decodeObjectForKey("cardholderName") as? String
-            firstName = aDecoder.decodeObjectForKey("firstName") as? String
-            lastName = aDecoder.decodeObjectForKey("lastName") as? String
-            exp = aDecoder.decodeObjectForKey("exp") as? String
-            last4 = aDecoder.decodeObjectForKey("last4") as? String
-            first6 = aDecoder.decodeObjectForKey("first6") as? String
+            track1 = aDecoder.decodeObject(forKey: "track1") as? String
+            track2 = aDecoder.decodeObject(forKey: "track2") as? String
+            track3 = aDecoder.decodeObject(forKey: "track3") as? String
+            encrypted = aDecoder.decodeObject(forKey: "encrypted") as? Bool
+            maskedTrack1 = aDecoder.decodeObject(forKey: "maskedTrack1") as? String
+            maskedTrack2 = aDecoder.decodeObject(forKey: "maskedTrack2") as? String
+            maskedTrack3 = aDecoder.decodeObject(forKey: "maskedTrack3") as? String
+            pan = aDecoder.decodeObject(forKey: "pan") as? String
+            cardholderName = aDecoder.decodeObject(forKey: "cardholderName") as? String
+            firstName = aDecoder.decodeObject(forKey: "firstName") as? String
+            lastName = aDecoder.decodeObject(forKey: "lastName") as? String
+            exp = aDecoder.decodeObject(forKey: "exp") as? String
+            last4 = aDecoder.decodeObject(forKey: "last4") as? String
+            first6 = aDecoder.decodeObject(forKey: "first6") as? String
         }
         
         override public init() {}
         
-        required public init?(_ map:Map) {}
+        required public init?(map:Map) {}
         
         public func mapping(map:Map) {
             track1 <- map["track1"]
@@ -2027,24 +2053,24 @@ extension CLVModels {
         }
     }
     
-    public class PendingPaymentEntry : NSObject, NSCoding, Mappable {
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments19PendingPaymentEntry)public class PendingPaymentEntry : NSObject, NSCoding, Mappable {
         public var paymentId:String?
         public var amount:Int?
         
         
-        public func encodeWithCoder(aCoder: NSCoder) {
-            aCoder.encodeObject(paymentId, forKey: "paymentId")
-            aCoder.encodeObject(amount, forKey: "amount")
+        public func encode(with aCoder: NSCoder) {
+            aCoder.encode(paymentId, forKey: "paymentId")
+            aCoder.encode(amount, forKey: "amount")
         }
         
         required public init(coder aDecoder: NSCoder) {
-            paymentId = aDecoder.decodeObjectForKey("paymentId") as? String
-            amount = aDecoder.decodeObjectForKey("amount") as? Int
+            paymentId = aDecoder.decodeObject(forKey: "paymentId") as? String
+            amount = aDecoder.decodeObject(forKey: "amount") as? Int
         }
         
         override public init() {}
         
-        required public init?(_ map:Map) {}
+        required public init?(map:Map) {}
         
         public func mapping(map:Map) {
             paymentId <- map["paymentId"]

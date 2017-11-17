@@ -3,14 +3,14 @@
 //  CloverConnector
 //
 //
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation
 
 public class POSNakedRefund {
     var employeeId:String
-    var date:NSDate?
+    var date:Date?
     var amount:Int
     
     init(employeeId:String, amount:Int) {

@@ -22,12 +22,12 @@ public class RefundRequestMessage : Message {
         self.amount = amount
         self.fullRefund = fullRefund
     }
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .REFUND_REQUEST)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         orderId <- map["orderId"]
         paymentId <- map["paymentId"]
         amount <- map["amount"]

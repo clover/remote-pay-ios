@@ -34,12 +34,12 @@ public class DiscoveryResponseMessage:Message {
     super.init(method: .DISCOVERY_RESPONSE)
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
     super.init(method: .DISCOVERY_RESPONSE)
   }
 
   public override func mapping(map:Map) {
-    super.mapping(map)
+    super.mapping(map: map)
     requestId <- map["requestId"]
     merchantId <- map["merchantId"]
     merchantMId <- map["merchandMId"]

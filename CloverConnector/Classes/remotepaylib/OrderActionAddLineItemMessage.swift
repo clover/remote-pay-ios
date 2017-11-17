@@ -12,12 +12,12 @@ import ObjectMapper
 public class OrderActionLineItemMessage : Message {
     public var addLineItemAction:AddLineItemAction?
     
-    public required init?(_ map:Map) {
+    public required init?(map:Map) {
         super.init(method: .ORDER_ACTION_ADD_LINE_ITEM)
     }
     
     public override func mapping(map:Map) {
-        super.mapping(map)
+        super.mapping(map: map)
         addLineItemAction <- map["addLineItemAction"]
     }
 }

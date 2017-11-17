@@ -25,44 +25,44 @@ public class CardData:NSObject, NSCoding, Mappable {
     public var last4:String?
     public var first6:String?
     
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(track1, forKey: "track1")
-        aCoder.encodeObject(track2, forKey: "track2")
-        aCoder.encodeObject(track3, forKey: "track3")
-        aCoder.encodeObject(encrypted, forKey: "encrypted")
-        aCoder.encodeObject(maskedTrack1, forKey: "maskedTrack1")
-        aCoder.encodeObject(maskedTrack2, forKey: "maskedTrack2")
-        aCoder.encodeObject(maskedTrack3, forKey: "maskedTrack3")
-        aCoder.encodeObject(pan, forKey: "pan")
-        aCoder.encodeObject(cardholderName, forKey: "cardholderName")
-        aCoder.encodeObject(firstName, forKey: "firstName")
-        aCoder.encodeObject(lastName, forKey: "lastName")
-        aCoder.encodeObject(exp, forKey: "exp")
-        aCoder.encodeObject(last4, forKey: "last4")
-        aCoder.encodeObject(first6, forKey: "first6")
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(track1, forKey: "track1")
+        aCoder.encode(track2, forKey: "track2")
+        aCoder.encode(track3, forKey: "track3")
+        aCoder.encode(encrypted, forKey: "encrypted")
+        aCoder.encode(maskedTrack1, forKey: "maskedTrack1")
+        aCoder.encode(maskedTrack2, forKey: "maskedTrack2")
+        aCoder.encode(maskedTrack3, forKey: "maskedTrack3")
+        aCoder.encode(pan, forKey: "pan")
+        aCoder.encode(cardholderName, forKey: "cardholderName")
+        aCoder.encode(firstName, forKey: "firstName")
+        aCoder.encode(lastName, forKey: "lastName")
+        aCoder.encode(exp, forKey: "exp")
+        aCoder.encode(last4, forKey: "last4")
+        aCoder.encode(first6, forKey: "first6")
         
     }
     
     required public init(coder aDecoder: NSCoder) {
-        track1 = aDecoder.decodeObjectForKey("track1") as? String
-        track2 = aDecoder.decodeObjectForKey("track2") as? String
-        track3 = aDecoder.decodeObjectForKey("track3") as? String
-        encrypted = aDecoder.decodeObjectForKey("encrypted") as? Bool
-        maskedTrack1 = aDecoder.decodeObjectForKey("maskedTrack1") as? String
-        maskedTrack2 = aDecoder.decodeObjectForKey("maskedTrack2") as? String
-        maskedTrack3 = aDecoder.decodeObjectForKey("maskedTrack3") as? String
-        pan = aDecoder.decodeObjectForKey("pan") as? String
-        cardholderName = aDecoder.decodeObjectForKey("cardholderName") as? String
-        firstName = aDecoder.decodeObjectForKey("firstName") as? String
-        lastName = aDecoder.decodeObjectForKey("lastName") as? String
-        exp = aDecoder.decodeObjectForKey("exp") as? String
-        last4 = aDecoder.decodeObjectForKey("last4") as? String
-        first6 = aDecoder.decodeObjectForKey("first6") as? String
+        track1 = aDecoder.decodeObject(forKey: "track1") as? String
+        track2 = aDecoder.decodeObject(forKey: "track2") as? String
+        track3 = aDecoder.decodeObject(forKey: "track3") as? String
+        encrypted = aDecoder.decodeObject(forKey: "encrypted") as? Bool
+        maskedTrack1 = aDecoder.decodeObject(forKey: "maskedTrack1") as? String
+        maskedTrack2 = aDecoder.decodeObject(forKey: "maskedTrack2") as? String
+        maskedTrack3 = aDecoder.decodeObject(forKey: "maskedTrack3") as? String
+        pan = aDecoder.decodeObject(forKey: "pan") as? String
+        cardholderName = aDecoder.decodeObject(forKey: "cardholderName") as? String
+        firstName = aDecoder.decodeObject(forKey: "firstName") as? String
+        lastName = aDecoder.decodeObject(forKey: "lastName") as? String
+        exp = aDecoder.decodeObject(forKey: "exp") as? String
+        last4 = aDecoder.decodeObject(forKey: "last4") as? String
+        first6 = aDecoder.decodeObject(forKey: "first6") as? String
     }
     
     override public init() {}
     
-    required public init?(_ map:Map) {}
+    required public init?(map:Map) {}
     
     public func mapping(map:Map) {
         track1 <- map["track1"]

@@ -9,7 +9,7 @@ import ObjectMapper
 
 
 
-
+/// :nodoc:
 public class Img:Mappable {
 
   /*
@@ -29,7 +29,7 @@ public class Img:Mappable {
 
   }
 
-  required public init?(_ map: Map) {
+  required public init?(map:Map) {
   }
 
   public func mapping(map:Map) {
@@ -40,18 +40,5 @@ public class Img:Mappable {
   height <- map["height"]
 
   }
-
-/*
-  public required init(jsonObj:NSDictionary){
-    super.init()
-
-  src = jsonObj.valueForKey("src") as! String?
-
-  width = jsonObj.valueForKey("width") as! Int?
-
-  height = jsonObj.valueForKey("height") as! Int?
-  }
-*/
-
 }
 

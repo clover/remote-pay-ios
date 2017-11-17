@@ -1,7 +1,3 @@
-//
-//  PrintPaymentRefundReceiptMessage.swift
-//  CloverSDKRemotepay
-//
 //  
 //  Copyright © 2017 Clover Network, Inc. All rights reserved.
 //
@@ -9,7 +5,9 @@
 import Foundation
 //import CloverSDK
 
-@objc
+/**
+* Callback to the POS to request a refund payment receipt
+ */
 public class PrintRefundPaymentReceiptMessage : NSObject {
     public var payment:CLVModels.Payments.Payment?
     public var refund:CLVModels.Payments.Refund?
