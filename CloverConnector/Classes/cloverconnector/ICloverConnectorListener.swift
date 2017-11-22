@@ -19,7 +19,7 @@ public protocol ICloverConnectorListener : AnyObject {
      * **Note:** A Sale transaction my come back as a tip-adjustable Auth, depending on 
      * the payment gateway. The SaleResponse has a boolean isSale flag that 
      * indicates whether the sale is final, or will be finalized during closeout.
-     * @param SaleResponse: The response to the transaction request.
+     * @param response: The response to the transaction request.
      */
     func  onSaleResponse ( _ response:SaleResponse ) -> Void
     
@@ -27,7 +27,7 @@ public protocol ICloverConnectorListener : AnyObject {
      * Called in response to an Auth() request. **Note:** An Auth transaction may come 
      * back as a final Sale, depending on the payment gateway. The AuthResponse has 
      * a boolean isAuth flag that indicates whether the Payment can still be tip-adjusted.
-     * @param response: The response to the transaction request.
+     * @param authResponse: The response to the transaction request.
      */
     func  onAuthResponse ( _ authResponse:AuthResponse ) -> Void 
     
@@ -37,30 +37,30 @@ public protocol ICloverConnectorListener : AnyObject {
     * for the returned Payment. If the isPreAuth flag is false and the isAuth flag is 
     * true, then the payment gateway coerced the PreAuth() request to an Auth. 
     * The payment will need to be voided or it will be automatically captured at closeout.
-    * @param PreAuthResponse: The response to the transaction request.
+    * @param preAuthResponse: The response to the transaction request.
      */
     func  onPreAuthResponse ( _ preAuthResponse:PreAuthResponse ) -> Void
     
     /*
      * Called in response to a CapturePreAuth() request. 
      * Contains the new Amount and TipAmount if successful.
-     * @param response: The response to the transaction request.
+     * @param capturePreAuthResponse: The response to the transaction request.
      */
-    func  onCapturePreAuthResponse ( _ capturePreAuthResponse:CapturePreAuthResponse ) -> Void  
+    func  onCapturePreAuthResponse ( _ capturePreAuthResponse:CapturePreAuthResponse ) -> Void
     
     /*
      * Called in response to a tip adjustment for an Auth transaction. 
      * Contains the tipAmount if successful.
-     * @param response: The response to the transaction request.
+     * @param tipAdjustResponse: The response to the transaction request.
      */
     func  onTipAdjustAuthResponse ( _ tipAdjustAuthResponse:TipAdjustAuthResponse ) -> Void 
     
     /*
-     * Called in response to a voidPayment() request. Contains a 
+     * Called in response to a VoidPayment() request. Contains a
      * [ResultCode](https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html) 
      * and a Success boolean. If successful, the response will also contain the paymentId 
      * for the voided Payment.
-     * @param response The response to the transaction request.
+     * @param voidPaymentResponse The response to the transaction request.
      */
     func  onVoidPaymentResponse ( _ voidPaymentResponse:VoidPaymentResponse ) -> Void
     
@@ -69,7 +69,7 @@ public protocol ICloverConnectorListener : AnyObject {
      * [ResultCode](https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html) 
      * and a Success boolean. The response to a successful transaction will contain the 
      * Refund. The Refund includes the original paymentId as a reference.
-     * @param RefundPaymentResponse: The response to the transaction request.
+     * @param refundPaymentResponse: The response to the transaction request.
      */
     func  onRefundPaymentResponse ( _ refundPaymentResponse:RefundPaymentResponse ) -> Void
     
@@ -78,21 +78,20 @@ public protocol ICloverConnectorListener : AnyObject {
      * [ResultCode](https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html) 
      * and a Success boolean. If successful, the ManualRefundResponse will have 
      * a Credit object associated with the relevant Payment information.
-     * @param ManualRefundResponse: The response to the transaction request.
+     * @param manualRefundResponse: The response to the transaction request.
      */
     func  onManualRefundResponse ( _ manualRefundResponse:ManualRefundResponse ) -> Void    
     
     /*
      * Called in response to a Closeout() request.
-     * @param response: The response to the transaction request.
+     * @param closeoutResponse: The response to the transaction request.
      */
     func  onCloseoutResponse ( _ closeoutResponse:CloseoutResponse ) -> Void
     
     /*
      * Called when the Clover device requests verification for a user's on-screen 
-     * signature.
-     * The Payment and Signature will be passed in.
-     * @param request: The verification request.
+     * signature. The Payment and Signature will be passed in.
+     * @param signatureVerifyRequest: The verification request.
      */
     func  onVerifySignatureRequest ( _ signatureVerifyRequest:VerifySignatureRequest ) -> Void
     
@@ -102,7 +101,7 @@ public protocol ICloverConnectorListener : AnyObject {
      * and a Success boolean. If successful, the response will contain a VaultedCard 
      * object with a token value that's unique for the card and merchant that 
      * can be used for future Sale() and Auth() requests.
-     * @param response The response to the request.
+     * @param vaultCardResponse The response to the request.
      */
     func  onVaultCardResponse ( _ vaultCardResponse:VaultCardResponse ) -> Void
     
@@ -172,7 +171,7 @@ public protocol ICloverConnectorListener : AnyObject {
      * CloverConnector.RejectPayment() on all instances of DUPLICATE_CHALLENGE. 
      * For more information, see [Working with 
      * Challenges](https://docs.clover.com/build/working-with-challenges/). 
-     * @param The request for confirmation.
+     * @param request The request for confirmation.
      */
     func onConfirmPaymentRequest(_ request:ConfirmPaymentRequest) -> Void
     
@@ -229,7 +228,7 @@ public protocol ICloverConnectorListener : AnyObject {
     
     /// Called in response to a retrievePrinters() request.
     ///
-    /// - Parameter RetrievePrintersResponse: The response to the request. 
+    /// - Parameter retrievePrintersResponse: The response to the request.
     func onRetrievePrintersResponse(_ retrievePrintersResponse:RetrievePrintersResponse) -> Void
     
     /// Called in response to a retrievePrintJobStatus() request.
@@ -245,13 +244,13 @@ public protocol ICloverConnectorListener : AnyObject {
     
     /*
      * Called in response to a readCardData() request.
-     * @param response The response to the request.
+     * @param readCardDataResponse The response to the request.
      */
     func onReadCardDataResponse(_ readCardDataResponse:ReadCardDataResponse) -> Void
     
     /*
      * Called when a Custom Activity finishes normally.
-     * @param response The CustomActivityResponse.
+     * @param customActivityResponse The response.
      */
     func onCustomActivityResponse(_ customActivityResponse:CustomActivityResponse) -> Void
     
@@ -263,7 +262,7 @@ public protocol ICloverConnectorListener : AnyObject {
     
     /*
      * Called when a Custom Activity sends a message to the POS.
-     * @param message The message.
+     * @param response The message from the Custom Activity.
      */
     func onMessageFromActivity(_ response:MessageFromActivity) -> Void
     
