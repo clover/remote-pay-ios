@@ -1,9 +1,9 @@
 import Foundation
 
 ///
-///  Interface to the Clover Remote Pay iOS API.
+///  ICloverConnector is the interface to the Clover Remote Pay iOS API.
 ///
-///  Defines the interface used to interact with Remote Pay
+///  It defines the interface used to interact with Remote Pay
 ///  adapters.
 ///
 public protocol ICloverConnector : AnyObject {
@@ -169,7 +169,7 @@ public protocol ICloverConnector : AnyObject {
     ///
     /// Opens the cash drawer connected to the Clover device. Deprecated.
     ///
-    @available(*, deprecated: 1.4.0, message: "use openCashDrawer(_ request: OpenCashDrawerRequest) instead")
+    /// @available(*, deprecated: 1.4.0, message: "use openCashDrawer(_ request: OpenCashDrawerRequest) instead")
     func  openCashDrawer (reason: String) -> Void
     
     /// Displays a string-based message on the Clover device's screen.
