@@ -259,7 +259,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Enums.html">Other Enums</a>
+            <a href="../Other Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/ErrorCode.html">ErrorCode</a>
@@ -293,9 +293,9 @@
 
                 </div>
               </div>
-            <p>Interface to the Clover remote-pay API.</p>
+            <p>Interface to the Clover Remote Pay iOS API.</p>
 
-<p>Defines the interface used to interact with remote pay
+<p>Defines the interface used to interact with Remote Pay
 adapters.</p>
 
           </section>
@@ -321,7 +321,7 @@ adapters.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnector</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">CARD_ENTRY_METHOD_MAG_STRIPE</span><span class="p">:</span><span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -347,7 +347,7 @@ adapters.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnector</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">CARD_ENTRY_METHOD_ICC_CONTACT</span><span class="p">:</span><span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -373,7 +373,7 @@ adapters.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnector</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">CARD_ENTRY_METHOD_NFC_CONTACTLESS</span><span class="p">:</span><span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -399,7 +399,7 @@ adapters.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnector</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">CARD_ENTRY_METHOD_MANUAL</span><span class="p">:</span><span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -425,7 +425,7 @@ adapters.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnector</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">CARD_ENTRY_METHODS_DEFAULT</span><span class="p">:</span><span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -451,7 +451,7 @@ adapters.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnector</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">MAX_PAYLOAD_SIZE</span><span class="p">:</span><span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -471,15 +471,35 @@ adapters.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>Adds a Clover Connector listener.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnector</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">addCloverConnectorListener</span><span class="p">(</span><span class="n">_</span> <span class="nv">cloverConnectorListener</span><span class="p">:</span><span class="kt"><a href="../Protocols/ICloverConnectorListener.html">ICloverConnectorListener</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cloverConnectorListener</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The connection listener.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -497,15 +517,35 @@ adapters.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>Removes a Clover Connector listener.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnector</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">removeCloverConnectorListener</span><span class="p">(</span><span class="n">_</span> <span class="nv">cloverConnectorListener</span><span class="p">:</span><span class="kt"><a href="../Protocols/ICloverConnectorListener.html">ICloverConnectorListener</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cloverConnectorListener</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The connection listener.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -523,8 +563,9 @@ adapters.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Must be called to initialize the connection to the Clover device before calling any other methods
-on ICloverConnector</p>
+                        <p>Initializes the connection and starts communication with the Clover device.
+This method is called after the connector has been created and listeners have been added to it.
+It must be called before any other method (other than those that add or remove listeners).</p>
 
                       </div>
                       <div class="declaration">
@@ -551,8 +592,7 @@ on ICloverConnector</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request a sale operation.
-parameter: SaleRequest</p>
+                        <p>Requests a Sale transaction (i.e. purchase).</p>
 
                       </div>
                       <div class="declaration">
@@ -562,6 +602,25 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">sale</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">saleRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/SaleRequest.html">SaleRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>saleRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A SaleRequest object containing basic information for the transaction.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -579,7 +638,9 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request an authorization operation.</p>
+                        <p>Requests an Auth transaction. The tip for an Auth can be adjusted through the
+TipAdjustAuth() call until the batch Closeout is processed.
+<strong>Note:</strong> The MerchantInfo.SupportsAuths boolean must be set to true.</p>
 
                       </div>
                       <div class="declaration">
@@ -589,6 +650,25 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">auth</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">authRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/AuthRequest.html">AuthRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>authRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -606,7 +686,11 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request a preauth operation.</p>
+                        <p>Initiates a PreAuth transaction (a pre-authorization for a certain amount). This transaction
+lets the merchant know whether the account associated with a card has sufficient funds,
+without actually charging the card. When the merchant is ready to charge a final amount,
+the POS will call CapturePreAuth() to complete the Payment.
+<strong>Note:</strong> The MerchantInfo.SupportsPreAuths boolean must be set to true.</p>
 
                       </div>
                       <div class="declaration">
@@ -616,6 +700,25 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">preAuth</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">preAuthRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/PreAuthRequest.html">PreAuthRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>preAuthRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -633,7 +736,9 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request a preauth be captured.</p>
+                        <p>Marks a PreAuth Payment for capture by a Closeout process. After a PreAuth is captured,
+it is effectively the same as an Auth Payment. <strong>Note:</strong> Should only be called
+if the request&rsquo;s PaymentID is from a PreAuthResponse.</p>
 
                       </div>
                       <div class="declaration">
@@ -643,6 +748,25 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">capturePreAuth</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">capturePreAuthRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/CapturePreAuthRequest.html">CapturePreAuthRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>capturePreAuthRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -660,7 +784,9 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request a tip adjustment to an auth.</p>
+                        <p>Adjusts the tip for a previous Auth transaction. This call can be made until
+the Auth Payment has been finalized by a Closeout.
+<strong>Note:</strong> Should only be called if the request&rsquo;s PaymentID is from an AuthResponse.</p>
 
                       </div>
                       <div class="declaration">
@@ -670,6 +796,25 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">tipAdjustAuth</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">authTipAdjustRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/TipAdjustAuthRequest.html">TipAdjustAuthRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>authTipAdjustRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -687,7 +832,7 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request a payment be voided.</p>
+                        <p>Voids a transaction.</p>
 
                       </div>
                       <div class="declaration">
@@ -697,6 +842,26 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">voidPayment</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">voidPaymentRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/VoidPaymentRequest.html">VoidPaymentRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>voidPaymentRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A VoidRequest object containing basic information
+needed to void the transaction.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -714,7 +879,7 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request a payment be refunded.</p>
+                        <p>Refunds the full or partial amount of a Payment.</p>
 
                       </div>
                       <div class="declaration">
@@ -724,6 +889,25 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">refundPayment</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">refundPaymentRequest</span><span class="p">:</span><span class="kt">RefundPaymentRequest</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>refundPaymentRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -741,7 +925,8 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request an amount be refunded.</p>
+                        <p>Initiates a Manual Refund transaction (a “Refund” or credit
+that is not associated with a previous Payment).</p>
 
                       </div>
                       <div class="declaration">
@@ -751,6 +936,25 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">manualRefund</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">manualRefundRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/ManualRefundRequest.html">ManualRefundRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>manualRefundRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A ManualRefundRequest object with the request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -768,9 +972,9 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request a cancel be sent to the device.</p>
-
-<p>Use resetDevice() or invokeInputOption() with the screen appropriate options instead.</p>
+                        <p>Sends a <q>cancel</q> button press to the Clover device.
+Use resetDevice() or invokeInputOption() with the screen appropriate options 
+instead.</p>
 
                       </div>
                       <div class="declaration">
@@ -797,7 +1001,8 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request a closeout.</p>
+                        <p>Sends a request to the Clover server to close out all transactions.
+<strong>Note:</strong> The merchant account must be configured to allow transaction closeout.</p>
 
                       </div>
                       <div class="declaration">
@@ -808,15 +1013,34 @@ parameter: SaleRequest</p>
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>closeoutRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15CloverConnector07ICloverB0P28displayPaymentReceiptOptionsySS_SS9paymentIdtF"></a>
-                    <a name="//apple_ref/swift/Method/displayPaymentReceiptOptions(_:paymentId:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15CloverConnector07ICloverB0P28displayPaymentReceiptOptionsySS_SS9paymentIdtF">displayPaymentReceiptOptions(_:paymentId:)</a>
+                    <a name="/s:15CloverConnector07ICloverB0P28displayPaymentReceiptOptionsySS7orderId_SS07paymentI0tF"></a>
+                    <a name="//apple_ref/swift/Method/displayPaymentReceiptOptions(orderId:paymentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P28displayPaymentReceiptOptionsySS7orderId_SS07paymentI0tF">displayPaymentReceiptOptions(orderId:paymentId:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -824,16 +1048,47 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request receipt options be displayed for a payment.</p>
+                        <p>Displays the customer-facing receipt options (print, email, etc.) for a Payment on the Clover device.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">displayPaymentReceiptOptions</span><span class="p">(</span> <span class="n">_</span> <span class="nv">orderId</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">paymentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">displayPaymentReceiptOptions</span><span class="p">(</span><span class="nv">orderId</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">paymentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>orderId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ID of the Order associated with the receipt.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>paymentId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ID of the Payment associated with the receipt.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -851,7 +1106,8 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Accept a signature verification request.</p>
+                        <p>If a signature is captured during a transaction, this method accepts the signature
+as entered.</p>
 
                       </div>
                       <div class="declaration">
@@ -861,6 +1117,26 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">acceptSignature</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">signatureVerifyRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>signatureVerifyRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The accepted VerifySignatureRequest the device
+passed to onVerifySignatureRequest().</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -878,7 +1154,8 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Reject a signature verification request.</p>
+                        <p>If a signature is captured during a transaction, this method rejects the signature
+as entered.</p>
 
                       </div>
                       <div class="declaration">
@@ -888,6 +1165,26 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">rejectSignature</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">signatureVerifyRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>signatureVerifyRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The rejected VerifySignatureRequest()
+the device passed to onVerifySignatureRequest().</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -905,7 +1202,10 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to vault a card.</p>
+                        <p>Asks the Clover device to capture card information and request a payment token
+from the payment gateway. The payment token can be used for future Sale and Auth requests
+in place of the card details. The merchant account must be configured to allow payment tokens.
+<strong>Note:</strong> The MerchantInfo.SupportsVaultCards boolean must be set to true.</p>
 
                       </div>
                       <div class="declaration">
@@ -915,6 +1215,28 @@ parameter: SaleRequest</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">vaultCard</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">vaultCardRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/VaultCardRequest.html">VaultCardRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>vaultCardRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details, including the card entry methods allowed to
+capture the payment token. If the card entry methods are null, the default values
+(CARD_ENTRY_METHOD_MAG_STRIPE, CARD_ENTRY_METHOD_ICC_CONTACT, and CARD_ENTRY_METHOD_NFC_CONTACTLESS)
+will be used.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -932,7 +1254,7 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to print some text on the default printer.</p>
+                        <p>Prints custom messages in plain text through the Clover Mini&rsquo;s built-in printer.</p>
 
                       </div>
                       <div class="declaration">
@@ -959,20 +1281,14 @@ parameter: SaleRequest</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to print an image on the default printer.</p>
-
-<p>The size of the image should be limited, and the optimal
-width of the image is 384 pixels.</p>
-
-<p>The img parameter type is implementation specific to the
-adapter.</p>
+                        <p>Prints an image on paper receipts through the Clover Mini&rsquo;s built-in printer.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnector</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">printImage</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">image</span><span class="p">:</span><span class="kt">ImageClass</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
                       </div>
@@ -992,7 +1308,8 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to print an image based on a url</p>
+                        <p>Prints an image from the web on paper receipts through the Clover device&rsquo;s 
+built-in printer.</p>
 
                       </div>
                       <div class="declaration">
@@ -1002,6 +1319,25 @@ adapter.</p>
                           <pre class="highlight"><code><span class="kd">func</span> <span class="nf">printImageFromURL</span><span class="p">(</span><span class="n">_</span> <span class="nv">url</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The URL for the image to print.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1019,7 +1355,8 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to print</p>
+                        <p>Sends a print request using the PrintRequest object. 
+Used to print text, images, and images from a URL using the specified printer.</p>
 
                       </div>
                       <div class="declaration">
@@ -1042,7 +1379,7 @@ adapter.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>PrintRequest object that contains the information and content needed to print</p>
+                                  <p>The PrintRequest details.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1065,7 +1402,7 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to retreive available printers</p>
+                        <p>Queries available printers attached to the Clover device.</p>
 
                       </div>
                       <div class="declaration">
@@ -1088,7 +1425,7 @@ adapter.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>RetrievePrintersRequest object that contains additional information to be applied during the request</p>
+                                  <p>The RetrievePrintersRequest details.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1111,7 +1448,7 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request the status of a given print job</p>
+                        <p>Queries the status of a print job.</p>
 
                       </div>
                       <div class="declaration">
@@ -1134,7 +1471,8 @@ adapter.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>PrintJobStatusRequest object defining the print job to be queried</p>
+                                  <p>A PrintJobStatusRequest object containing the request
+details.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1157,7 +1495,8 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request that the cash drawer connected to the device be opened.</p>
+                        <p>Opens the first cash drawer found connected to the Clover device.
+The reason for opening the cash drawer must be set on OpenCashDrawerRequest.</p>
 
                       </div>
                       <div class="declaration">
@@ -1180,7 +1519,8 @@ adapter.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>OpenCashDrawerRequest object defining the reason the cash drawer is being opened, and an optional device identifier</p>
+                                  <p>The request object defining the reason
+the cash drawer is being opened, and an optional device identifier.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1193,9 +1533,9 @@ adapter.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15CloverConnector07ICloverB0P14openCashDrawerySSF"></a>
-                    <a name="//apple_ref/swift/Method/openCashDrawer(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15CloverConnector07ICloverB0P14openCashDrawerySSF">openCashDrawer(_:)</a>
+                    <a name="/s:15CloverConnector07ICloverB0P14openCashDrawerySS6reason_tF"></a>
+                    <a name="//apple_ref/swift/Method/openCashDrawer(reason:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P14openCashDrawerySS6reason_tF">openCashDrawer(reason:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1203,14 +1543,14 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request that the cash drawer connected to the device be opened. Deprecated</p>
+                        <p>Opens the cash drawer connected to the Clover device. Deprecated.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">openCashDrawer</span> <span class="p">(</span><span class="n">_</span> <span class="nv">reason</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">openCashDrawer</span> <span class="p">(</span><span class="nv">reason</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
                       </div>
@@ -1230,7 +1570,7 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to place a message on the device screen.</p>
+                        <p>Displays a string-based message on the Clover device&rsquo;s screen.</p>
 
                       </div>
                       <div class="declaration">
@@ -1240,6 +1580,25 @@ adapter.</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">showMessage</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">message</span><span class="p">:</span><span class="kt">String</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>message</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The string message to display.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1257,7 +1616,7 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to display the default welcome screen on the device.</p>
+                        <p>Displays the welcome screen on the Clover device.</p>
 
                       </div>
                       <div class="declaration">
@@ -1284,7 +1643,7 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to display the default thank you screen on the device.</p>
+                        <p>Displays the thank you screen on the Clover device.</p>
 
                       </div>
                       <div class="declaration">
@@ -1311,7 +1670,8 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to display an order on the device.</p>
+                        <p>Displays an Order and associated lineItems on the Clover device. Will replace an Order
+that is already displayed on the device screen.</p>
 
                       </div>
                       <div class="declaration">
@@ -1321,6 +1681,25 @@ adapter.</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">showDisplayOrder</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">order</span><span class="p">:</span><span class="kt"><a href="../Classes/DisplayOrder.html">DisplayOrder</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>order</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Order to display.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1338,7 +1717,7 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Request to display an order on the device.</p>
+                        <p>Removes the DisplayOrder object from the Clover device&rsquo;s screen.</p>
 
                       </div>
                       <div class="declaration">
@@ -1348,6 +1727,25 @@ adapter.</p>
                           <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">removeDisplayOrder</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">order</span><span class="p">:</span><span class="kt"><a href="../Classes/DisplayOrder.html">DisplayOrder</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>order</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Order to remove.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1365,7 +1763,10 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>sends a reset request to the device if the POS and device get out of sync.</p>
+                        <p>Sends a request to reset the Clover device back to the welcome screen. Can be used when
+the device is in an unknown or invalid state from the perspective of the POS.
+<strong>Note:</strong> This request could cause the POS to miss a transaction or other information.
+Use cautiously as a last resort.</p>
 
                       </div>
                       <div class="declaration">
@@ -1392,7 +1793,10 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>Sends a keystroke to the Clover device that invokes an input option (e.g., OK, 
+CANCEL, DONE, etc.) on the customer&rsquo;s behalf.
+InputOptions are on the CloverDeviceEvent passed to onDeviceActivityStart().</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -1401,6 +1805,25 @@ adapter.</p>
                           <pre class="highlight"><code><span class="kd">func</span> <span class="nf">invokeInputOption</span><span class="p">(</span> <span class="n">_</span> <span class="nv">inputOption</span><span class="p">:</span><span class="kt">InputOption</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>inputOption</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The input option to invoke.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1418,7 +1841,7 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Used to request card information. Specifically track1 and track2 information</p>
+                        <p>Requests card information (specifically Track 1 and Track 2 card data).</p>
 
                       </div>
                       <div class="declaration">
@@ -1428,6 +1851,25 @@ adapter.</p>
                           <pre class="highlight"><code><span class="kd">func</span> <span class="nf">readCardData</span><span class="p">(</span> <span class="n">_</span> <span class="nv">request</span><span class="p">:</span><span class="kt"><a href="../Classes/ReadCardDataRequest.html">ReadCardDataRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ReadCardDataRequest details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1445,7 +1887,9 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>If payment confirmation is required during a Sale, this method accepts the payment</p>
+                        <p>If Payment confirmation is required during a transaction due to a Challenge,
+ this method accepts the Payment. A Challenge may be triggered
+ by a potential duplicate Payment or an offline Payment.</p>
 
                       </div>
                       <div class="declaration">
@@ -1455,6 +1899,25 @@ adapter.</p>
                           <pre class="highlight"><code><span class="kd">func</span> <span class="nf">acceptPayment</span><span class="p">(</span> <span class="n">_</span> <span class="nv">payment</span><span class="p">:</span><span class="kt"><a href="../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Payments</span><span class="o">.</span><span class="kt">Payment</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>payment</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Payment to accept.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1472,7 +1935,9 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>If payment confirmation is required during a Sale, this method rejects the payment</p>
+                        <p>If Payment confirmation is required during a transaction due to a Challenge,
+ this method rejects the Payment. A Challenge may be triggered
+ by a potential duplicate Payment or an offline Payment.</p>
 
                       </div>
                       <div class="declaration">
@@ -1482,6 +1947,37 @@ adapter.</p>
                           <pre class="highlight"><code><span class="kd">func</span> <span class="nf">rejectPayment</span><span class="p">(</span> <span class="n">_</span> <span class="nv">payment</span><span class="p">:</span><span class="kt"><a href="../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Payments</span><span class="o">.</span><span class="kt">Payment</span><span class="p">,</span> <span class="nv">challenge</span><span class="p">:</span><span class="kt">Challenge</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>payment</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Payment to reject.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>challenge</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Challenge that resulted in Payment rejection.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1499,8 +1995,8 @@ adapter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Used to request a list of pending payments that have been taken offline, but
-haven&rsquo;t processed yet. will trigger an onRetrievePendingPaymentsResponse callback</p>
+                        <p>Retrieves a list of unprocessed Payments that were taken offline
+ and are pending submission to the server.</p>
 
                       </div>
                       <div class="declaration">
@@ -1527,7 +2023,10 @@ haven&rsquo;t processed yet. will trigger an onRetrievePendingPaymentsResponse c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Disposes the connector and any connections created by the connector.</p>
+                        <p>Disposes the connection to the Clover device. After this is called, the
+connection to the device is severed, and the CloverConnector object is
+no longer usable. Instantiate a new
+CloverConnector object in order to call initializeConnection().</p>
 
                       </div>
                       <div class="declaration">
@@ -1554,7 +2053,7 @@ haven&rsquo;t processed yet. will trigger an onRetrievePendingPaymentsResponse c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>start an custom activity on the device</p>
+                        <p>Starts a Custom Activity on the Clover device.</p>
 
                       </div>
                       <div class="declaration">
@@ -1564,6 +2063,25 @@ haven&rsquo;t processed yet. will trigger an onRetrievePendingPaymentsResponse c
                           <pre class="highlight"><code><span class="kd">func</span> <span class="nf">startCustomActivity</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span><span class="kt"><a href="../Classes/CustomActivityRequest.html">CustomActivityRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The CustomActivityRequest details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1581,7 +2099,7 @@ haven&rsquo;t processed yet. will trigger an onRetrievePendingPaymentsResponse c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>send a message to a currently running custom activity</p>
+                        <p>Sends a message to a Custom Activity running on a Clover device.</p>
 
                       </div>
                       <div class="declaration">
@@ -1592,15 +2110,35 @@ haven&rsquo;t processed yet. will trigger an onRetrievePendingPaymentsResponse c
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The MessageToActivity request with the message
+to send to the Custom Activity.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15CloverConnector07ICloverB0P20retrieveDeviceStatusyAA08RetrieveeF7RequestC8_request_tF"></a>
-                    <a name="//apple_ref/swift/Method/retrieveDeviceStatus(_request:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15CloverConnector07ICloverB0P20retrieveDeviceStatusyAA08RetrieveeF7RequestC8_request_tF">retrieveDeviceStatus(_request:)</a>
+                    <a name="/s:15CloverConnector07ICloverB0P20retrieveDeviceStatusyAA08RetrieveeF7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/retrieveDeviceStatus(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P20retrieveDeviceStatusyAA08RetrieveeF7RequestCF">retrieveDeviceStatus(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1608,26 +2146,45 @@ haven&rsquo;t processed yet. will trigger an onRetrievePendingPaymentsResponse c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>request the current status of the device</p>
+                        <p>Sends a message requesting the current status of the Clover device.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">retrieveDeviceStatus</span><span class="p">(</span><span class="nv">_request</span><span class="p">:</span> <span class="kt"><a href="../Classes/RetrieveDeviceStatusRequest.html">RetrieveDeviceStatusRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">retrieveDeviceStatus</span><span class="p">(</span><span class="n">_</span> <span class="nv">_request</span><span class="p">:</span> <span class="kt"><a href="../Classes/RetrieveDeviceStatusRequest.html">RetrieveDeviceStatusRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The RetrieveDeviceStatusRequest details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15CloverConnector07ICloverB0P15retrievePaymentyAA08RetrieveE7RequestC8_request_tF"></a>
-                    <a name="//apple_ref/swift/Method/retrievePayment(_request:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15CloverConnector07ICloverB0P15retrievePaymentyAA08RetrieveE7RequestC8_request_tF">retrievePayment(_request:)</a>
+                    <a name="/s:15CloverConnector07ICloverB0P15retrievePaymentyAA08RetrieveE7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/retrievePayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P15retrievePaymentyAA08RetrieveE7RequestCF">retrievePayment(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1635,14 +2192,66 @@ haven&rsquo;t processed yet. will trigger an onRetrievePendingPaymentsResponse c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>request the payment for a given external id</p>
+                        <p>Requests the Payment information corresponding to the externalPaymentId passed 
+in. Only valid for Payments made in the past 24 hours on the Clover device 
+queried.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">retrievePayment</span><span class="p">(</span><span class="nv">_request</span><span class="p">:</span> <span class="kt"><a href="../Classes/RetrievePaymentRequest.html">RetrievePaymentRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">retrievePayment</span><span class="p">(</span><span class="n">_</span> <span class="nv">_request</span><span class="p">:</span> <span class="kt"><a href="../Classes/RetrievePaymentRequest.html">RetrievePaymentRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The RetrievePaymentRequest details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P10printImageySo7NSImageCF"></a>
+                    <a name="//apple_ref/swift/Method/printImage(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P10printImageySo7NSImageCF">printImage(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Prints an image on paper receipts through the Clover Mini&rsquo;s built-in printer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">printImage</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">image</span><span class="p">:</span><span class="kt">ImageClass</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
                       </div>
@@ -1655,7 +2264,7 @@ haven&rsquo;t processed yet. will trigger an onRetrievePendingPaymentsResponse c
         </section>
         <section id="footer">
           <p>Copyright © 2017 Clover Network, Inc. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
