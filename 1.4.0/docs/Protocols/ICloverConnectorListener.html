@@ -315,7 +315,7 @@
 ResultCode and a Success boolean. A successful Sale transaction will also have 
 the Payment object, which can be for the full or partial amount of the Sale 
 request. 
-<strong>Note:</strong> A Sale transaction my come back as a tip-adjustable Auth, depending on 
+<strong>Note:</strong> A Sale transaction may come back as a tip-adjustable Auth, depending on 
 the payment gateway. The SaleResponse has a boolean isSale flag that 
 indicates whether the sale is final, or will be finalized during closeout.</p>
 
@@ -365,7 +365,8 @@ indicates whether the sale is final, or will be finalized during closeout.</p>
                       <div class="abstract">
                         <p>Called in response to an Auth() request. <strong>Note:</strong> An Auth transaction may come 
 back as a final Sale, depending on the payment gateway. The AuthResponse has 
-a boolean isAuth flag that indicates whether the Payment can still be tip-adjusted.</p>
+a boolean isAuth flag that indicates whether the Payment can still be 
+tip-adjusted.</p>
 
                       </div>
                       <div class="declaration">
@@ -415,7 +416,8 @@ a boolean isAuth flag that indicates whether the Payment can still be tip-adjust
 in the PreAuthResponse indicates whether CapturePreAuth() can be called 
 for the returned Payment. If the isPreAuth flag is false and the isAuth flag is 
 true, then the payment gateway coerced the PreAuth() request to an Auth. 
-The payment will need to be voided or it will be automatically captured at closeout.</p>
+The payment will need to be voided or it will be automatically captured at 
+closeout.</p>
 
                       </div>
                       <div class="declaration">
@@ -1138,7 +1140,8 @@ responding.</p>
 and requires confirmation. A Challenge is triggered by a potential 
 duplicate Payment (DUPLICATE_CHALLENGE) or an offline Payment 
 (OFFLINE_CHALLENGE). The device sends a ConfirmPaymentRequest() 
-asking the merchant to reply by sending either an AcceptPayment() or RejectPayment() call.
+asking the merchant to reply by sending either an AcceptPayment() or 
+RejectPayment() call.
 <strong>Note:</strong> Duplicate Payment Challenges are raised when multiple Payments 
 are made with the same card type and last four digits within the same hour. 
 For this reason, we recommend that you do not programmatically call 
@@ -1339,7 +1342,8 @@ called if disablePrinting = true on the Sale(), Auth(), or PreAuth() request.</p
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Called when a user requests a paper receipt for a Payment Refund. Will only be 
-called if disablePrinting = true on the Sale(), Auth(), PreAuth() or     ManualRefund() request.</p>
+called if disablePrinting = true on the Sale(), Auth(), PreAuth() or<br>
+ManualRefund() request.</p>
 
                       </div>
                       <div class="declaration">

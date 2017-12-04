@@ -293,10 +293,9 @@
 
                 </div>
               </div>
-            <p>ICloverConnector is the interface to the Clover Remote Pay iOS API.</p>
+            <p>The CloverConnector API serves as the interface for connecting to a Clover device. </p>
 
-<p>This document defines the interface used to interact with Remote Pay
-adapters.</p>
+<p>This document defines the available methods.</p>
 
           </section>
           <section class="section task-group-section">
@@ -564,8 +563,10 @@ adapters.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Initializes the connection and starts communication with the Clover device.
-This method is called after the connector has been created and listeners have been added to it.
-It must be called before any other method (other than those that add or remove listeners).</p>
+This method is called after the connector has been created and listeners have been 
+added to it.
+It must be called before any other method (other than those that add or remove 
+listeners).</p>
 
                       </div>
                       <div class="declaration">
@@ -592,7 +593,7 @@ It must be called before any other method (other than those that add or remove l
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Requests a Sale transaction (i.e. purchase).</p>
+                        <p>Requests a Sale transaction (purchase).</p>
 
                       </div>
                       <div class="declaration">
@@ -615,7 +616,8 @@ It must be called before any other method (other than those that add or remove l
                               </td>
                               <td>
                                 <div>
-                                  <p>A SaleRequest object containing basic information for the transaction.</p>
+                                  <p>A SaleRequest object containing basic information for the 
+transaction.</p>
                                 </div>
                               </td>
                             </tr>
@@ -686,10 +688,11 @@ TipAdjustAuth() call until the batch Closeout is processed.
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Initiates a PreAuth transaction (a pre-authorization for a certain amount). This transaction
-lets the merchant know whether the account associated with a card has sufficient funds,
-without actually charging the card. When the merchant is ready to charge a final amount,
-the POS will call CapturePreAuth() to complete the Payment.
+                        <p>Initiates a PreAuth transaction (a pre-authorization for a certain amount). This 
+transaction lets the merchant know whether the account associated with a card has 
+sufficient funds, without actually charging the card. When the merchant is ready 
+to charge a final amount, the POS will call CapturePreAuth() to complete the 
+Payment.
 <strong>Note:</strong> The MerchantInfo.SupportsPreAuths boolean must be set to true.</p>
 
                       </div>
@@ -736,9 +739,9 @@ the POS will call CapturePreAuth() to complete the Payment.
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Marks a PreAuth Payment for capture by a Closeout process. After a PreAuth is captured,
-it is effectively the same as an Auth Payment. <strong>Note:</strong> Should only be called
-if the request&rsquo;s PaymentID is from a PreAuthResponse.</p>
+                        <p>Marks a PreAuth Payment for capture by a Closeout process. After a PreAuth is 
+captured, it is effectively the same as an Auth Payment. <strong>Note:</strong> Should only be 
+called if the request&rsquo;s PaymentID is from a PreAuthResponse.</p>
 
                       </div>
                       <div class="declaration">
@@ -786,7 +789,8 @@ if the request&rsquo;s PaymentID is from a PreAuthResponse.</p>
                       <div class="abstract">
                         <p>Adjusts the tip for a previous Auth transaction. This call can be made until
 the Auth Payment has been finalized by a Closeout.
-<strong>Note:</strong> Should only be called if the request&rsquo;s PaymentID is from an AuthResponse.</p>
+<strong>Note:</strong> Should only be called if the request&rsquo;s PaymentID is from an 
+AuthResponse.</p>
 
                       </div>
                       <div class="declaration">
@@ -949,7 +953,8 @@ that is not associated with a previous Payment).</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>A ManualRefundRequest object with the request details.</p>
+                                  <p>A ManualRefundRequest object with the request 
+details.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1048,14 +1053,15 @@ instead.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Displays the customer-facing receipt options (print, email, etc.) for a Payment on the Clover device.</p>
+                        <p>Displays the customer-facing receipt options (print, email, etc.) for a Payment on 
+the Clover device.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">displayPaymentReceiptOptions</span><span class="p">(</span><span class="nv">orderId</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">paymentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span>  <span class="nf">displayPaymentReceiptOptions</span><span class="p">(</span><span class="nv">orderId</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">paymentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
                       </div>
@@ -1203,8 +1209,9 @@ the device passed to onVerifySignatureRequest().</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Asks the Clover device to capture card information and request a payment token
-from the payment gateway. The payment token can be used for future Sale and Auth requests
-in place of the card details. The merchant account must be configured to allow payment tokens.
+from the payment gateway. The payment token can be used for future Sale and Auth 
+requests in place of the card details. The merchant account must be configured to 
+allow payment tokens.
 <strong>Note:</strong> The MerchantInfo.SupportsVaultCards boolean must be set to true.</p>
 
                       </div>
@@ -1228,10 +1235,10 @@ in place of the card details. The merchant account must be configured to allow p
                               </td>
                               <td>
                                 <div>
-                                  <p>The request details, including the card entry methods allowed to
-capture the payment token. If the card entry methods are null, the default values
-(CARD_ENTRY_METHOD_MAG_STRIPE, CARD_ENTRY_METHOD_ICC_CONTACT, and CARD_ENTRY_METHOD_NFC_CONTACTLESS)
-will be used.</p>
+                                  <p>The request details, including the card entry 
+methods allowed to capture the payment token. If the card entry methods are null, 
+the default values (CARD_ENTRY_METHOD_MAG_STRIPE, CARD_ENTRY_METHOD_ICC_CONTACT, 
+and CARD_ENTRY_METHOD_NFC_CONTACTLESS) will be used.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1255,7 +1262,7 @@ will be used.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Prints custom messages in plain text through the Clover Mini&rsquo;s built-in printer.
-Deprecated. Use print() instead.</p>
+Deprecated.</p>
 
                       </div>
                       <div class="declaration">
@@ -1283,7 +1290,7 @@ Deprecated. Use print() instead.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Prints an image on paper receipts through the Clover Mini&rsquo;s built-in printer.
-Deprecated. Use print() instead.</p>
+Deprecated.</p>
 
                       </div>
                       <div class="declaration">
@@ -1311,7 +1318,7 @@ Deprecated. Use print() instead.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Prints an image from the web on paper receipts through the Clover device&rsquo;s 
-built-in printer. Deprecated. Use print() instead.</p>
+built-in printer. Deprecated.</p>
 
                       </div>
                       <div class="declaration">
@@ -1547,7 +1554,8 @@ the cash drawer is being opened, and an optional device identifier.</p>
                       <div class="abstract">
                         <p>Opens the cash drawer connected to the Clover device. Deprecated.</p>
 
-<p>@available(*, deprecated: 1.4.0, message: <q>use openCashDrawer(_ request: OpenCashDrawerRequest) instead</q>)</p>
+<p>@available(*, deprecated: 1.4.0, message: <q>use openCashDrawer(_ request: 
+OpenCashDrawerRequest) instead</q>)</p>
 
                       </div>
                       <div class="declaration">
@@ -1674,8 +1682,8 @@ the cash drawer is being opened, and an optional device identifier.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Displays an Order and associated lineItems on the Clover device. Will replace an Order
-that is already displayed on the device screen.</p>
+                        <p>Displays an Order and associated lineItems on the Clover device. Will replace an 
+Order that is already displayed on the device screen.</p>
 
                       </div>
                       <div class="declaration">
@@ -1767,10 +1775,10 @@ that is already displayed on the device screen.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Sends a request to reset the Clover device back to the welcome screen. Can be used when
-the device is in an unknown or invalid state from the perspective of the POS.
-<strong>Note:</strong> This request could cause the POS to miss a transaction or other information.
-Use cautiously as a last resort.</p>
+                        <p>Sends a request to reset the Clover device back to the welcome screen. Can be used 
+when the device is in an unknown or invalid state from the perspective of the POS.
+<strong>Note:</strong> This request could cause the POS to miss a transaction or other 
+information. Use cautiously as a last resort.</p>
 
                       </div>
                       <div class="declaration">
@@ -1797,7 +1805,7 @@ Use cautiously as a last resort.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Sends a keystroke to the Clover device that invokes an input option (e.g., OK, 
+                        <p>Sends a keystroke to the Clover device that invokes an input option (OK, 
 CANCEL, DONE, etc.) on the customer&rsquo;s behalf.
 InputOptions are on the CloverDeviceEvent passed to onDeviceActivityStart().</p>
 
@@ -2249,7 +2257,7 @@ queried.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Prints an image on paper receipts through the Clover Mini&rsquo;s built-in printer.
-Deprecated. Use print() instead.</p>
+Deprecated.</p>
 
                       </div>
                       <div class="declaration">
