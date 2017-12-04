@@ -3,10 +3,9 @@ import Foundation
 //import CloverSDKRemotepay
 
 /*
- *  Interface to the Clover Remote Pay iOS API.
+ *  The CloverConnector API serves as the interface for connecting to a Clover device. 
  *
- *  Defines the interface used to interact with Remote Pay
- *  adapters.
+ *  This document defines the available methods for receiving messages from the device.
  */
 public protocol ICloverConnectorListener : AnyObject {
     
@@ -16,7 +15,7 @@ public protocol ICloverConnectorListener : AnyObject {
     /// ResultCode and a Success boolean. A successful Sale transaction will also have 
     /// the Payment object, which can be for the full or partial amount of the Sale 
     /// request. 
-    /// **Note:** A Sale transaction my come back as a tip-adjustable Auth, depending on 
+    /// **Note:** A Sale transaction may come back as a tip-adjustable Auth, depending on 
     /// the payment gateway. The SaleResponse has a boolean isSale flag that 
     /// indicates whether the sale is final, or will be finalized during closeout.
     /// - Parameter response: The response to the transaction request.
@@ -24,7 +23,8 @@ public protocol ICloverConnectorListener : AnyObject {
 
     /// Called in response to an Auth() request. **Note:** An Auth transaction may come 
     /// back as a final Sale, depending on the payment gateway. The AuthResponse has 
-    /// a boolean isAuth flag that indicates whether the Payment can still be tip-adjusted.
+    /// a boolean isAuth flag that indicates whether the Payment can still be 
+    /// tip-adjusted.
     /// - Parameter authResponse: The response to the transaction request.
     func  onAuthResponse ( _ authResponse:AuthResponse ) -> Void 
     
@@ -32,7 +32,8 @@ public protocol ICloverConnectorListener : AnyObject {
     /// in the PreAuthResponse indicates whether CapturePreAuth() can be called 
     /// for the returned Payment. If the isPreAuth flag is false and the isAuth flag is 
     /// true, then the payment gateway coerced the PreAuth() request to an Auth. 
-    /// The payment will need to be voided or it will be automatically captured at closeout.
+    /// The payment will need to be voided or it will be automatically captured at 
+    /// closeout.
     /// - Parameter preAuthResponse: The response to the transaction request.
     func  onPreAuthResponse ( _ preAuthResponse:PreAuthResponse ) -> Void
     
@@ -136,7 +137,8 @@ public protocol ICloverConnectorListener : AnyObject {
     /// and requires confirmation. A Challenge is triggered by a potential 
     /// duplicate Payment (DUPLICATE_CHALLENGE) or an offline Payment 
     /// (OFFLINE_CHALLENGE). The device sends a ConfirmPaymentRequest() 
-    /// asking the merchant to reply by sending either an AcceptPayment() or RejectPayment() call.
+    /// asking the merchant to reply by sending either an AcceptPayment() or 
+    /// RejectPayment() call.
     /// **Note:** Duplicate Payment Challenges are raised when multiple Payments 
     /// are made with the same card type and last four digits within the same hour. 
     /// For this reason, we recommend that you do not programmatically call 
@@ -178,7 +180,8 @@ public protocol ICloverConnectorListener : AnyObject {
     func onPrintPaymentMerchantCopyReceipt(_ printPaymentMerchantCopyReceiptMessage:PrintPaymentMerchantCopyReceiptMessage) -> Void
     
     /// Called when a user requests a paper receipt for a Payment Refund. Will only be 
-    /// called if disablePrinting = true on the Sale(), Auth(), PreAuth() or     ManualRefund() request.
+    /// called if disablePrinting = true on the Sale(), Auth(), PreAuth() or     
+    /// ManualRefund() request.
     /// - Parameter printRefundPaymentReceiptMessage The message.
     func onPrintRefundPaymentReceipt(_ printRefundPaymentReceiptMessage:PrintRefundPaymentReceiptMessage) -> Void
     

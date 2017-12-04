@@ -1,10 +1,10 @@
 import Foundation
 
 ///
-///  ICloverConnector is the interface to the Clover Remote Pay iOS API.
+///  The CloverConnector API serves as the interface for connecting to a Clover device. 
 ///
-///  It defines the interface used to interact with Remote Pay
-///  adapters.
+///  This document defines the available methods.
+///
 ///
 public protocol ICloverConnector : AnyObject {
     
@@ -29,13 +29,16 @@ public protocol ICloverConnector : AnyObject {
     func removeCloverConnectorListener(_ cloverConnectorListener:ICloverConnectorListener) -> Void
     
     /// Initializes the connection and starts communication with the Clover device.
-    /// This method is called after the connector has been created and listeners have been added to it.
-    /// It must be called before any other method (other than those that add or remove listeners).
+    /// This method is called after the connector has been created and listeners have been 
+    /// added to it.
+    /// It must be called before any other method (other than those that add or remove 
+    /// listeners).
     func initializeConnection() -> Void
 
-    /// Requests a Sale transaction (i.e. purchase).
+    /// Requests a Sale transaction (purchase).
     ///
-    /// - Parameter saleRequest: A SaleRequest object containing basic information for the transaction.
+    /// - Parameter saleRequest: A SaleRequest object containing basic information for the 
+    /// transaction.
     func  sale ( _ saleRequest:SaleRequest ) -> Void
 
     /// Requests an Auth transaction. The tip for an Auth can be adjusted through the
@@ -44,24 +47,25 @@ public protocol ICloverConnector : AnyObject {
     /// - Parameter authRequest: The request details.
     func  auth ( _ authRequest:AuthRequest ) -> Void
 
-    /// Initiates a PreAuth transaction (a pre-authorization for a certain amount). This transaction
-    /// lets the merchant know whether the account associated with a card has sufficient funds,
-    /// without actually charging the card. When the merchant is ready to charge a final amount,
-    /// the POS will call CapturePreAuth() to complete the Payment.
+    /// Initiates a PreAuth transaction (a pre-authorization for a certain amount). This 
+    /// transaction lets the merchant know whether the account associated with a card has 
+    /// sufficient funds, without actually charging the card. When the merchant is ready 
+    /// to charge a final amount, the POS will call CapturePreAuth() to complete the 
+    /// Payment.
     /// **Note:** The MerchantInfo.SupportsPreAuths boolean must be set to true.
     /// - Parameter preAuthRequest: The request details.
     func  preAuth ( _ preAuthRequest:PreAuthRequest ) -> Void
-    
 
-    /// Marks a PreAuth Payment for capture by a Closeout process. After a PreAuth is captured,
-    /// it is effectively the same as an Auth Payment. **Note:** Should only be called
-    /// if the request's PaymentID is from a PreAuthResponse.
+    /// Marks a PreAuth Payment for capture by a Closeout process. After a PreAuth is 
+    /// captured, it is effectively the same as an Auth Payment. **Note:** Should only be 
+    /// called if the request's PaymentID is from a PreAuthResponse.
     /// - Parameter capturePreAuthRequest: The request details.
     func  capturePreAuth ( _ capturePreAuthRequest:CapturePreAuthRequest ) -> Void
 
     /// Adjusts the tip for a previous Auth transaction. This call can be made until
     /// the Auth Payment has been finalized by a Closeout.
-    /// **Note:** Should only be called if the request's PaymentID is from an AuthResponse.
+    /// **Note:** Should only be called if the request's PaymentID is from an 
+    /// AuthResponse.
     /// - Parameter authTipAdjustRequest: The request details.
     func  tipAdjustAuth ( _ authTipAdjustRequest:TipAdjustAuthRequest ) -> Void
 
@@ -78,11 +82,12 @@ public protocol ICloverConnector : AnyObject {
 
     /// Initiates a Manual Refund transaction (a “Refund” or credit
     /// that is not associated with a previous Payment).
-    /// - Parameter manualRefundRequest: A ManualRefundRequest object with the request details.
+    /// - Parameter manualRefundRequest: A ManualRefundRequest object with the request 
+    /// details.
     func  manualRefund ( _ manualRefundRequest:ManualRefundRequest ) -> Void
     
     ///
-    /// Sends a "cancel" button press to the Clover device.
+    /// Sends a "cancel" button press to the Clover device. Deprecated.
     /// Use resetDevice() or invokeInputOption() with the screen appropriate options 
     /// instead.
     @available(*, deprecated)
@@ -95,12 +100,13 @@ public protocol ICloverConnector : AnyObject {
     /// - Parameter closeoutRequest: The request details.
     func  closeout ( _ closeoutRequest:CloseoutRequest ) -> Void
 
-    /// Displays the customer-facing receipt options (print, email, etc.) for a Payment on the Clover device.
+    /// Displays the customer-facing receipt options (print, email, etc.) for a Payment on 
+    /// the Clover device.
     ///
     /// - Parameters:
     ///   - orderId: The ID of the Order associated with the receipt.
     ///   - paymentId: The ID of the Payment associated with the receipt.
-    func displayPaymentReceiptOptions(orderId:String, paymentId: String) -> Void
+    func  displayPaymentReceiptOptions(orderId:String, paymentId: String) -> Void
 
     /// If a signature is captured during a transaction, this method accepts the signature
     /// as entered.
@@ -115,29 +121,30 @@ public protocol ICloverConnector : AnyObject {
     func  rejectSignature ( _ signatureVerifyRequest:VerifySignatureRequest ) -> Void
 
     /// Asks the Clover device to capture card information and request a payment token
-    /// from the payment gateway. The payment token can be used for future Sale and Auth requests
-    /// in place of the card details. The merchant account must be configured to allow payment tokens.
+    /// from the payment gateway. The payment token can be used for future Sale and Auth 
+    /// requests in place of the card details. The merchant account must be configured to 
+    /// allow payment tokens.
     /// **Note:** The MerchantInfo.SupportsVaultCards boolean must be set to true.
     ///
-    /// - Parameter vaultCardRequest: The request details, including the card entry methods allowed to
-    /// capture the payment token. If the card entry methods are null, the default values
-    /// (CARD_ENTRY_METHOD_MAG_STRIPE, CARD_ENTRY_METHOD_ICC_CONTACT, and CARD_ENTRY_METHOD_NFC_CONTACTLESS)
-    /// will be used.
+    /// - Parameter vaultCardRequest: The request details, including the card entry 
+    /// methods allowed to capture the payment token. If the card entry methods are null, 
+    /// the default values (CARD_ENTRY_METHOD_MAG_STRIPE, CARD_ENTRY_METHOD_ICC_CONTACT, 
+    /// and CARD_ENTRY_METHOD_NFC_CONTACTLESS) will be used.
     func  vaultCard ( _ vaultCardRequest:VaultCardRequest ) -> Void
     
     ///
     /// Prints custom messages in plain text through the Clover Mini's built-in printer.
-    ///
+    /// Deprecated.
     @available(*, deprecated: 1.4.0, message: "use print(_ request:PrintRequest) instead")
     func  printText ( _ lines:[String] ) -> Void
     
     /// Prints an image on paper receipts through the Clover Mini's built-in printer.
-    ///
+    /// Deprecated.
     @available(*, deprecated: 1.4.0, message: "use print(_ request:PrintRequest) instead")
     func  printImage ( _ image:ImageClass ) -> Void
     
     /// Prints an image from the web on paper receipts through the Clover device's 
-    /// built-in printer.
+    /// built-in printer. Deprecated.
     /// - Parameter url: The URL for the image to print.
     @available(*, deprecated: 1.4.0, message: "use print(_ request:PrintRequest) instead")
     func printImageFromURL(_ url:String) -> Void
@@ -169,7 +176,8 @@ public protocol ICloverConnector : AnyObject {
     ///
     /// Opens the cash drawer connected to the Clover device. Deprecated.
     ///
-    /// @available(*, deprecated: 1.4.0, message: "use openCashDrawer(_ request: OpenCashDrawerRequest) instead")
+    /// @available(*, deprecated: 1.4.0, message: "use openCashDrawer(_ request: 
+    /// OpenCashDrawerRequest) instead")
     func  openCashDrawer (reason: String) -> Void
     
     /// Displays a string-based message on the Clover device's screen.
@@ -187,8 +195,8 @@ public protocol ICloverConnector : AnyObject {
     ///
     func  showThankYouScreen () -> Void   
     
-    /// Displays an Order and associated lineItems on the Clover device. Will replace an Order
-    /// that is already displayed on the device screen.
+    /// Displays an Order and associated lineItems on the Clover device. Will replace an 
+    /// Order that is already displayed on the device screen.
     /// - Parameter order: The Order to display.
     func  showDisplayOrder ( _ order:DisplayOrder ) -> Void  
     
@@ -197,13 +205,13 @@ public protocol ICloverConnector : AnyObject {
     /// - Parameter order: The Order to remove.
     func  removeDisplayOrder ( _ order:DisplayOrder ) -> Void
     
-    /// Sends a request to reset the Clover device back to the welcome screen. Can be used when
-    /// the device is in an unknown or invalid state from the perspective of the POS.
-    /// **Note:** This request could cause the POS to miss a transaction or other information.
-    /// Use cautiously as a last resort.
+    /// Sends a request to reset the Clover device back to the welcome screen. Can be used 
+    /// when the device is in an unknown or invalid state from the perspective of the POS.
+    /// **Note:** This request could cause the POS to miss a transaction or other 
+    /// information. Use cautiously as a last resort.
     func  resetDevice ( ) -> Void
     
-    /// Sends a keystroke to the Clover device that invokes an input option (e.g., OK, 
+    /// Sends a keystroke to the Clover device that invokes an input option (OK, 
     /// CANCEL, DONE, etc.) on the customer's behalf.
     /// InputOptions are on the CloverDeviceEvent passed to onDeviceActivityStart().
     /// - Parameter inputOption: The input option to invoke.
@@ -233,12 +241,10 @@ public protocol ICloverConnector : AnyObject {
     ///
     func retrievePendingPayments() -> Void
     
-    /**
-     * Disposes the connection to the Clover device. After this is called, the
-     * connection to the device is severed, and the CloverConnector object is
-     * no longer usable. Instantiate a new
-     * CloverConnector object in order to call initializeConnection().
-     */
+    /// Disposes the connection to the Clover device. After this is called, the
+    /// connection to the device is severed, and the CloverConnector object is
+    /// no longer usable. Instantiate a new
+    /// CloverConnector object in order to call initializeConnection().
     func dispose() -> Void
     
     /// Starts a Custom Activity on the Clover device.
