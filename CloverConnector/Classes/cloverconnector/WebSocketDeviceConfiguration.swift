@@ -30,11 +30,7 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
 
     public var maxCharInMessage:Int = 50000
     
-    public var remoteSourceSDK:String {
-        get {
-            return "com.cloverconnector.ios.ws:1.3.1-RC2"
-        }
-    }
+    public private(set) var remoteSourceSDK:String = "com.cloverconnector.ios.ws"
     
     deinit {
         debugPrint("deinit WebSocketDeviceConfiguration")
@@ -47,6 +43,11 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
         self.posSerialNumber = posSerial
         self.pairingAuthToken = pairingAuthToken
         self.pairingConfig = pairingDeviceConfiguration
+        
+        
+        if let version = NSBundle.allFrameworks().filter({$0.bundleIdentifier != nil && $0.bundleIdentifier!.hasSuffix("CloverConnector")}).first?.infoDictionary?["CFBundleShortVersionString"] as? String {
+            remoteSourceSDK = "com.cloverconnector.ios.ws:" + version
+        }
     }
     
     public func getTransport() -> CloverTransport? {

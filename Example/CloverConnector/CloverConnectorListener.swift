@@ -25,7 +25,9 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     private var ready:Bool = false
     private var suppressConnectionErrors = false //since connection errors could conceivably occur every few seconds, use this to suppress them after the first has been shown
     public var getPrintersCallback: ((response:RetrievePrintersResponse) -> Void)? //used in the MiscVC to allow the user to select which printer to test on. See: onRetrievePrintersResponse below
-    public var getPrintJobStatusCallback: ((response:PrintJobStatusResponse) -> Void)? //used in the MiscVC to allow the UI to respond to print status. See: onPrintJobStatusResponse below
+    
+    /// Dict used in the PrintTestVC to allow the UI to respond to print status. It is the responsibility of the caller to clean up its closure once done. See: onPrintJobStatusResponse below.
+    public var printJobStatusDict: [String : (PrintJobStatusResponse) -> (Void)] = [:]
     
     public init(cloverConnector:ICloverConnector){
         self.cloverConnector = cloverConnector;
@@ -56,7 +58,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
         })
     }
     
-    private func showMessage(_ message:String, duration:Int = 3, completion: (()->Void)? = {}) {
+    func showMessage(_ message:String, duration:Int = 3, completion: (()->Void)? = {}) {
 
         dispatch_async(dispatch_get_main_queue()){
             let alertView:UIAlertView = UIAlertView(title: nil, message: message, delegate: nil, cancelButtonTitle: nil)
@@ -648,6 +650,12 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     }
     
     public func onRetrievePrinters(_ retrievePrintersResponse: RetrievePrintersResponse) {
+        guard retrievePrintersResponse.success == true else {
+            showMessage("Error retrieving printers")
+            self.getPrintersCallback?(response: retrievePrintersResponse)
+            return
+        }
+        
         if let printers = retrievePrintersResponse.printers, let printerName = printers.first?.name {
             var message = String("Retrieved printer: " + printerName)
         
@@ -656,19 +664,26 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
             }
             
             showMessage(message)
-            self.getPrintersCallback?(response: retrievePrintersResponse)
         }
+        
+        self.getPrintersCallback?(response: retrievePrintersResponse)
     }
     
     public func onPrintJobStatusResponse(_ printJobStatusResponse:PrintJobStatusResponse) {
-        if let jobId = printJobStatusResponse.printRequestId {
-            let message = "Print job: " + jobId + "   status: " + printJobStatusResponse.status.rawValue
-            showMessage(message)
-        } else {
-            showMessage("Print job status: " + printJobStatusResponse.status.rawValue)
+        dispatch_async(dispatch_get_main_queue()) { 
+            if let printRequestId = printJobStatusResponse.printRequestId, let callback = self.printJobStatusDict[printRequestId] { //check that we have a callback for this specific printRequestId
+                callback(printJobStatusResponse)
+            
+                return //since user has provided their own callback to handle this, don't also continue below to fire the default behavior
+            }
+            
+            if let jobId = printJobStatusResponse.printRequestId {
+                let message = "Print job: " + jobId + "   status: " + printJobStatusResponse.status.rawValue
+                self.showMessage(message)
+            } else {
+                self.showMessage("Print job status: " + printJobStatusResponse.status.rawValue)
+            }
         }
-        
-        self.getPrintJobStatusCallback?(response: printJobStatusResponse)
     }
     
     private func formatCurrency(_ amount:Int?) -> String {

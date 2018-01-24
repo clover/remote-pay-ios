@@ -200,32 +200,37 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
         }
     }
     
+    //store a human readable copy of the order for use in sending to the CloverDevice
     var currentDisplayOrder:DisplayOrder = DisplayOrder()
-    var itemsToDi = NSMutableDictionary()
     
     // POSOrderListener
     func itemAdded(_ item:POSLineItem) {
+        guard let itemName = item.item.name, let formattedItemPrice = CurrencyUtils.IntToFormat(item.item.price) else { return }
         
-        let displayLineItem = DisplayLineItem(id: String(arc4random()), name:item.item.name!, price: String(CurrencyUtils.IntToFormat(item.item.price)!), quantity: String(item.quantity))
+        let displayLineItem = DisplayLineItem(id: item.item.id, name:itemName, price: formattedItemPrice, quantity: String(item.quantity))
         currentDisplayOrder.lineItems.append(displayLineItem)
-        itemsToDi.setObject(displayLineItem, forKey: item.item.id as NSCopying)
 
         updateTotals()
 
         (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.showDisplayOrder(currentDisplayOrder)
     }
     func itemRemoved(_ item:POSLineItem) {
+        if let index = currentDisplayOrder.lineItems.indexOf({ $0.id == item.item.id }) {
+            currentDisplayOrder.lineItems.removeAtIndex(index)
+        }
+        
         updateTotals()
         (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.showDisplayOrder(currentDisplayOrder)
     }
     func itemModified(_ item:POSLineItem) {
-        if let displayLineItem = itemsToDi.objectForKey(item.item.id) as? DisplayLineItem {
+        if let index = currentDisplayOrder.lineItems.indexOf({ $0.id == item.item.id }) {
+            let displayLineItem = currentDisplayOrder.lineItems[index]
             displayLineItem.quantity = String(item.quantity)
             displayLineItem.name = item.item.name
             displayLineItem.price = String(CurrencyUtils.IntToFormat(item.item.price)!)
         }
-        updateTotals()
         
+        updateTotals()
         (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.showDisplayOrder(currentDisplayOrder)
 
     }
@@ -248,7 +253,6 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
         (UIApplication.sharedApplication().delegate as! AppDelegate).cloverConnector?.removeDisplayOrder(currentDisplayOrder)
         currentDisplayOrder = DisplayOrder()
         currentDisplayOrder.id = String(arc4random())
-        itemsToDi.removeAllObjects() // cleanup
         dispatch_async(dispatch_get_main_queue()) { [unowned self] in
             self.currentOrderListItems.reloadData()
         }

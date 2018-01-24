@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import ObjectMapper
 
-public class PrintJobStatusResponse: NSObject {
+public class PrintJobStatusResponse: BaseResponse {
     public private(set) var printRequestId: String?
     public private(set) var status: PrintJobStatus
     
@@ -16,6 +17,8 @@ public class PrintJobStatusResponse: NSObject {
         
         guard let status = status else {
             self.status = .ERROR
+            super.init()
+            self.success = false //we expect a status from the server, so consider the query a failure if we don't have it
             return
         }
         
@@ -36,6 +39,14 @@ public class PrintJobStatusResponse: NSObject {
         default:
             self.status = .ERROR
         }
+        
+        super.init()
+        self.success = true //the request is considered successful if we got a status
+    }
+    
+    required public init?(_ map: Map) { //shouldn't init through here, so default to failure if we do
+        self.status = .ERROR
+        super.init(success: false, result: .FAIL)
     }
 }
 

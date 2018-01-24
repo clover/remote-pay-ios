@@ -1,69 +1,41 @@
-# remote-pay-ios
+![Clover logo](https://www.clover.com/assets/images/public-site/press/clover_primary_gray_rgb.png)
+
+# Clover SDK for iOS Integration (Swift 2.3)
 
 A Swift 2.3 implementation of the CloverConnector to enable iOS and MacOS to communicate with a tethered Clover Mini.
 
-## Version 1.4
-NOTE: Full support of version 1.4 features requires remote-pay version 138 or higher.
+## Version
 
-NOTE: To use the Swift 2.3 compatible version of this library, you will need to point your Podfile at the 1.4.0-swift2.3 branch as listed below in the code sample.
+Current version: 1.4.1
 
-- New Print API
-    - please migrate all print requests to the new API utilizing the PrintRequest object:
-        - `print(request: PrintRequest)`
-    - printing via type-specific functions is deprecated and will be removed in a future release:
-        - `printText(lines: [String])`
-        - `printImage(image: UIImage)`
-        - `printImageFromURL(image: String)`
-- New API to open cash drawers
-    - please migrate all cash drawer requests to the new API utilizing the OpenCashDrawerRequest object:
-        - `openCashDrawer(request: OpenCashDrawerRequest)`
-    - opening of cash drawers with a reason string is deprecated and will be removed in a future release:
-        - `openCashDrawer(reason: String)`
-- Query available printers
-    - `retrievePrinters(request: RetrievePrintersRequest)`
-    - `onRetrievePrintersResponse(retrievePrintersResponse: RetrievePrintersResponse)`
-- Query the status of a print job
-    - `retrievePrintJobStatus(request: PrintJobStatusRequest)`
-    - `onPrintJobStatusResponse(printJobStatusResponse: PrintJobStatusResponse)`
-- Added support for large image printing utilizing message fragmenting
-- Creation of an instance of the CloverConnector should now go through the `CloverConnectorFactory` (see example below)
-- Support MacOS based apps
+NOTE: Full support for version 1.4 of the SDK requires version 143 or higher of the Remote Pay app.
 
-## Version 1.3.1
-- additional onDeviceError callback for connection errors
-- Fixed a few memory leaks with respect to WebSocket connections and Swift String interpolation
-- Device status queries to determine that state of the device and payments processed by the device
-- retrievePayment/onRetrievePaymentResponse - query and receive the status of a payment on the device by its external id
-- retrieveDeviceStatus/onRetrieveDeviceStatusResponse - query and receive the status of the device
-- resetDevice now calls back to onResetDeviceResponse with the current status
-- Custom activity support for the Mini
-- startCustomActivity/onCustomActivityResponse - start a custom activity on the Clover device and receive a callback when it is done
-- sendMessageToActivity/onMessageFromActivity - send and receive messages to a custom activity running on the Clover device
+NOTE: This Swift 2.3 version of the Clover SDK will be deprecated in the near future with only limited support.  Please consider upgrading to the Swift 4 version.
 
 ### Dependencies
-- ObjectMapper - provides JSON serialization/deserialization
-- SwiftyJSON - provides simple JSON parsing
-- Starscream - provides websocket client capabilities
+- ObjectMapper - Provides JSON serialization and deserialization.
+- SwiftyJSON - Provides simple JSON parsing.
+- Starscream - provides websocket client capabilities. NOTE: we have forked this and made some small tweaks that improve large-file handling, so be sure to point to our fork (example below).
 
 ## Building the example app
-- download and install xcode 8.2.1 or 7.3.1 (swift 2.3 support)
-- install cocoapods
-    - run `sudo gem install cocoapods`
-- clone/download the CloverConnector repo
-- `cd remote-pay-ios/Example`
-- run `pod install`
-- should create a Pods directory populated with the Pods specified in the podspec
-- should create a workspace file that includes the project, plus a pods project
-- run `pod install` a second time
-- should update the Pods directory with the installed Pods' dependencies
-- open the CloverConnector.xcworkspace file
-- change the Bundle identifier for the CloverConnector > CloverConnector_Example target
-- change the signing Team for the CloverConnector > CloverConnector_Example target
+- Download and install xcode 8.2.1 or 7.3.1 (swift 2.3 support)
+- Install CocoaPods
+- Run `sudo gem install cocoapods`
+- Clone/download the CloverConnector repository
+- cd into `remote-pay-ios/Example`
+- Run `pod install`
+- This should create a Pods directory populated with the Pods specified in the Podspec
+- It should also create a workspace file that includes the project, plus a pods project
+- Run `pod install` a second time
+- This should update the Pods directory with the installed Pods' dependencies
+- Open the `CloverConnector.xcworkspace` file
+- Change the Bundle identifier for the CloverConnector > CloverConnector_Example target
+- Change the signing Team for the CloverConnector > CloverConnector_Example target
 
 ## Using CloverConnector in your project
 - Update your Podspec to include the 1.1.4-Clover branch of Starscream, 1.4 branch of CloverConnector, and the Swift 2.3 post_install script
 - pod 'Starscream', :git => 'https://github.com/detour1234/Starscream.git', :branch => '1.1.4-Clover'
-- pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :branch => '1.4.0-swift2.3'
+- pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :branch => '1.4.1-swift2.3'
 - Add the post_install script (see example) to set the Swift version of the pods to 2.3
 - Set the 'Use Legacy Swift Language Version' flag in the build settings for your project
 - Example cocoapod (http://cocoapods.org/) `Podfile` snippet
@@ -185,3 +157,13 @@ override func onDeviceActivityEnd(deviceEvent:CloverDeviceEvent){}
 }
 
 ```
+
+## Additional Resources
+
+- [Release Notes](https://github.com/clover/remote-pay-ios/releases)
+- [Tutorial for the iOS SDK](https://docs.clover.com/build/getting-started-with-clover-connector/?sdk=ios)
+- [API Documentation](https://clover.github.io/remote-pay-ios/1.4.1/docs/index.html)
+- [Clover Developer Community](https://community.clover.com/index.html)
+
+## License
+Copyright © 2017 Clover Network, Inc. All rights reserved.
