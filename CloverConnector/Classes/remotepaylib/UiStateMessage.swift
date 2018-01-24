@@ -10,6 +10,7 @@ import Foundation
 import ObjectMapper
 
 public enum UiState :String{
+    // payment flow
     case START = "START"
     case FAILED = "FAILED"
     case FATAL = "FATAL"
@@ -41,6 +42,8 @@ public enum UiState :String{
     case PACKET_EXCEPTION = "PACKET_EXCEPTION"
     case CONFIRM_DUPLICATE_CHECK = "CONFIRM_DUPLICATE_CHECK"
     case FORCE_ACCEPTANCE = "FORCE_ACCEPTANCE"
+    
+    // verify CVM flow
     case VERIFY_SIGNATURE_ON_PAPER = "VERIFY_SIGNATURE_ON_PAPER"
     case VERIFY_SIGNATURE_ON_PAPER_CONFIRM_VOID = "VERIFY_SIGNATURE_ON_PAPER_CONFIRM_VOID"
     case VERIFY_SIGNATURE_ON_SCREEN = "VERIFY_SIGNATURE_ON_SCREEN"
@@ -50,12 +53,26 @@ public enum UiState :String{
     case RETURN_TO_MERCHANT = "RETURN_TO_MERCHANT"
     case SIGNATURE_REJECT = "SIGNATURE_REJECT"
     case ADD_SIGNATURE_CANCEL_CONFIRM = "ADD_SIGNATURE_CANCEL_CONFIRM"
+    
+    // add tip flow
     case ADD_TIP = "ADD_TIP"
+    
+    // receipt options flow
     case RECEIPT_OPTIONS = "RECEIPT_OPTIONS"
+
+    // tender handling flow
     case HANDLE_TENDER = "HANDLE_TENDER"
+    // for DCPOS language selection
     case SELECT_LANGUAGE = "SELECT_LANGUAGE"
+    // for DCPOS final approved screen
     case APPROVED = "APPROVED"
+    
+    // offline payments
     case OFFLINE_PAYMENT_CONFIRM = "OFFLINE_PAYMENT_CONFIRM"
+    // custom activity, optionally called from custom activity
+    case CUSTOM_ACTIVITY = "CUSTOM_ACTIVITY"
+    // starting custom activity, called from RTKA
+    case STARTING_CUSTOM_ACTIVITY = "STARTING_CUSTOM_ACTIVITY"
     
     public enum UiDirection:String {
         case ENTER = "ENTER"

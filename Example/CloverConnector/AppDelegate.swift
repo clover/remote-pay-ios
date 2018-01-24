@@ -70,8 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
         
         var endpoint = url
         if let components = URLComponents(string: url), let _ = components.url { //Make sure the URL is valid, and break into URL components
-            self.token = components.queryItems?.first(where: { $0.name == "authenticationToken"})?.value //we can skip the pairing code if we already have an auth token
-            
+            if let token = components.queryItems?.first(where: { $0.name == "authenticationToken"})?.value {
+                self.token = token //we can skip the pairing code if we already have an auth token
+            }
+
             endpoint = components.scheme ?? "wss"
             endpoint += "://"
             endpoint += components.host ?? ""

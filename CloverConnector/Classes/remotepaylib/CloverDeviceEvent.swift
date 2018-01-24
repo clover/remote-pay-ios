@@ -11,62 +11,64 @@ import ObjectMapper
 
 public class CloverDeviceEvent:NSObject, Mappable {
 
-    public enum DeviceEventState {
+    public enum DeviceEventState:String {
         // payment flow
-        case start
-        case failed
-        case fatal
-        case try_AGAIN
-        case input_ERROR
-        case pin_BYPASS_CONFIRM
-        case canceled
-        case timed_OUT
-        case declined
-        case voided
-        case configurnig
-        case processing
-        case remove_CARD
-        case processing_GO_ONLINE
-        case processing_CREDIT
-        case processing_SWIPE
-        case select_APPLICATION
-        case pin_PAD
-        case manual_CARD_NUMBER
-        case manual_CARD_CVV
-        case manual_CARD_CVV_UNREADABLE
-        case manual_CARD_EXPIRATION
-        case select_ACCOUNT
-        case cashback_CONFIRM
-        case cashback_SELECT
-        case contactless_TAP_REQUIRED
-        case voice_REFERRAL_RESULT
-        case confirm_PARTIAL_AUTH
-        case packet_EXCEPTION
-        case confirm_DUPLICATE_CHECK
+        case START = "START"
+        case FAILED = "FAILED"
+        case FATAL = "FATAL"
+        case TRY_AGAIN = "TRY_AGAIN"
+        case INPUT_ERROR = "INPUT_ERROR"
+        case PIN_BYPASS_CONFIRM = "PIN_BYPASS_CONFIRM"
+        case CANCELED = "CANCELED"
+        case TIMED_OUT = "TIMED_OUT"
+        case DECLINED = "DECLINED"
+        case VOIDED = "VOIDED"
+        case CONFIGURING = "CONFIGURING"
+        case PROCESSING = "PROCESSING"
+        case REMOVE_CARD = "REMOVE_CARD"
+        case PROCESSING_GO_ONLINE = "PROCESSING_GO_ONLINE"
+        case PROCESSING_CREDIT = "PROCESSING_CREDIT"
+        case PROCESSING_SWIPE = "PROCESSING_SWIPE"
+        case SELECT_APPLICATION = "SELECT_APPLICATION"
+        case PIN_PAD = "PIN_PAD"
+        case MANUAL_CARD_NUMBER = "MANUAL_CARD_NUMBER"
+        case MANUAL_CARD_CVV = "MANUAL_CARD_CVV"
+        case MANUAL_CARD_CVV_UNREADABLE = "MANUAL_CARD_CVV_UNREADABLE"
+        case MANUAL_CARD_EXPIRATION = "MANUAL_CARD_EXPIRATION"
+        case SELECT_ACCOUNT = "SELECT_ACCOUNT"
+        case CASHBACK_CONFIRM = "CASHBACK_CONFIRM"
+        case CASHBACK_SELECT = "CASHBACK_SELECT"
+        case CONTACTLESS_TAP_REQUIRED = "CONTACTLESS_TAP_REQUIRED"
+        case VOICE_REFERRAL_RESULT = "VOICE_REFERRAL_RESULT"
+        case CONFIRM_PARTIAL_AUTH = "CONFIRM_PARTIAL_AUTH"
+        case PACKET_EXCEPTION = "PACKET_EXCEPTION"
+        case CONFIRM_DUPLICATE_CHECK = "CONFIRM_DUPLICATE_CHECK"
 
         // verify CVM flow
-        case verify_SIGNATURE_ON_PAPER
-        case verify_SIGNATURE_ON_PAPER_CONFIRM_VOID
-        case verify_SIGNATURE_ON_SCREEN
-        case verify_SIGNATURE_ON_SCREEN_CONFIRM_VOID
-        case add_SIGNATURE
-        case signature_ON_SCREEN_FALLBACK
-        case return_TO_MERCHANT
-        case signature_REJECT
-        case add_SIGNATURE_CANCEL_CONFIRM
-
+        case VERIFY_SIGNATURE_ON_PAPER = "VERIFY_SIGNATURE_ON_PAPER"
+        case VERIFY_SIGNATURE_ON_PAPER_CONFIRM_VOID = "VERIFY_SIGNATURE_ON_PAPER_CONFIRM_VOID"
+        case VERIFY_SIGNATURE_ON_SCREEN = "VERIFY_SIGNATURE_ON_SCREEN"
+        case VERIFY_SIGNATURE_ON_SCREEN_CONFIRM_VOID = "VERIFY_SIGNATURE_ON_SCREEN_CONFIRM_VOID"
+        case ADD_SIGNATURE = "ADD_SIGNATURE"
+        case SIGNATURE_ON_SCREEN_FALLBACK = "SIGNATURE_ON_SCREEN_FALLBACK"
+        case RETURN_TO_MERCHANT = "RETURN_TO_MERCHANT"
+        case SIGNATURE_REJECT = "SIGNATURE_REJECT"
+        case ADD_SIGNATURE_CANCEL_CONFIRM = "ADD_SIGNATURE_CANCEL_CONFIRM"
+        
         // add tip flow
-        case add_TIP
-
+        case ADD_TIP = "ADD_TIP"
+        
         // receipt options flow
-        case receipt_OPTIONS
-
+        case RECEIPT_OPTIONS = "RECEIPT_OPTIONS"
+        
         // tender handling flow
-        case handle_TENDER
+        case HANDLE_TENDER = "HANDLE_TENDER"
+        
+        // starting custom activity, called from RTKA
+        case STARTING_CUSTOM_ACTIVITY = "STARTING_CUSTOM_ACTIVITY"
     }
     
-//    public var eventState:DeviceEventState?
-    public var eventState:String?
+    public var eventState:DeviceEventState?
     public var code:Int?
     public var message:String?
     public var inputOptions:[InputOption]?
@@ -79,7 +81,7 @@ public class CloverDeviceEvent:NSObject, Mappable {
         super.init()
     }
     
-    public init(eventState:String?, message:String?, inputOptions:[InputOption]? = nil) {
+    public init(eventState:DeviceEventState?, message:String?, inputOptions:[InputOption]? = nil) {
         self.eventState = eventState
         self.message = message
         self.inputOptions = inputOptions

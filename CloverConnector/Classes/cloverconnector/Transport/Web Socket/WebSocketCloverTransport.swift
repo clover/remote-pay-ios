@@ -330,7 +330,7 @@ class WebSocketCloverTransport: CloverTransport {
     @discardableResult
     override func sendMessage(_ message: String) -> Int {
 //        debugPrint("Sending raw message: " + message)
-        debugPrint("Sending raw message: " + String(message.characters.count))
+        debugPrint("Sending raw message: " + String(message.count))
         if let socket = socket {
             socket.write(string: message)
         }

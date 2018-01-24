@@ -40,6 +40,8 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
 
     //MARK: Cleanup
     public func dispose() {
+        broadcaster.notifyOnDisconnect() //must notify listeners of disconnect before the listeners are removed
+        
         broadcaster.listeners.removeAllObjects()
         device?.dispose()
         device = nil
@@ -86,17 +88,10 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     //MARK: TransactionRequest
     public func sale(_ saleRequest: SaleRequest) {
         if let _ = checkDevice(from: #function) {
-            if let _ = deviceObserver?.lastRequest {
-                // not using FinishCancel because that will clear the last request
-                let response = SaleResponse(success: false, result: .CANCEL)
-                response.reason = "Device busy"
-                response.message = "The Mini appears to be busy. If not, call resetDevice()"
-                broadcaster.notifyOnSaleResponse(response)
-                return
-            } else if saleRequest.amount <= 0 {
+            if saleRequest.amount <= 0 {
                 deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In Sale : SaleRequest - the request amount cannot be zero. ", requestInfo: TxStartRequestMessage.SALE_REQUEST)
                 return
-            } else if saleRequest.externalId.characters.count == 0 || saleRequest.externalId.characters.count > 32 {
+            } else if saleRequest.externalId.count == 0 || saleRequest.externalId.count > 32 {
                 deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In Sale : SaleRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.SALE_REQUEST)
                 return
             } else {
@@ -118,16 +113,10 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     
     public func auth(_ authRequest: AuthRequest) {
         if let _ = checkDevice(from: #function) {
-            if let _ = deviceObserver?.lastRequest {
-                // not using FinishCancel because that will clear the last request
-                let response = AuthResponse(success: false, result: .CANCEL)
-                response.reason = "Device busy"
-                response.message = "The Mini appears to be busy. If not, resetDevice() must be called"
-                broadcaster.notifyOnAuthResponse(response)
-            } else if authRequest.amount <= 0 {
+            if authRequest.amount <= 0 {
                 deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In Auth : AuthRequest - the request amount cannot be zero. ", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
                 return
-            } else if authRequest.externalId.characters.count == 0 || authRequest.externalId.characters.count > 32 {
+            } else if authRequest.externalId.count == 0 || authRequest.externalId.count > 32 {
                 deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In Auth : AuthRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
                 return
             } else {
@@ -171,7 +160,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             if preAuthRequest.amount <= 0 {
                 deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In PreAuth : PreAuthRequest - the request amount cannot be zero. ", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
                 return
-            } else if preAuthRequest.externalId.characters.count == 0 || preAuthRequest.externalId.characters.count > 32 {
+            } else if preAuthRequest.externalId.count == 0 || preAuthRequest.externalId.count > 32 {
                 deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In PreAuth : PreAuthRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
                 return
             } else {
@@ -351,7 +340,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             if manualRefundRequest.amount <= 0 {
                 deviceObserver?.onFinishCancel(false, result: ResultCode.FAIL, reason: "Invalid argument", message: "The amount must be greater than 0", requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
                 return
-            } else if manualRefundRequest.externalId.characters.count == 0 || manualRefundRequest.externalId.characters.count > 32 {
+            } else if manualRefundRequest.externalId.count == 0 || manualRefundRequest.externalId.count > 32 {
                 deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In PreAuth : ManualRefundRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
                 return
             }
@@ -575,7 +564,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
          */
         
         if let regex = try? NSRegularExpression(pattern: "\\(([^\\)]+)\\)", options: .caseInsensitive) {
-            let sanitizedFunctionName = regex.stringByReplacingMatches(in: funcName, options: .withTransparentBounds, range: NSMakeRange(0, funcName.characters.count), withTemplate: "")
+            let sanitizedFunctionName = regex.stringByReplacingMatches(in: funcName, options: .withTransparentBounds, range: NSMakeRange(0, funcName.count), withTemplate: "")
             return sanitizedFunctionName
         }
         
@@ -1021,10 +1010,14 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
         }
     
         func onUiState(_ uiState: UiState, uiText: String, uiDirection: UiState.UiDirection, inputOptions: [InputOption]?) {
+            guard let eventState = CloverDeviceEvent.DeviceEventState(rawValue:uiState.rawValue) else {
+                debugPrint("Unsupported UI event type: \(uiState)")
+                return
+            }
             if uiDirection == UiState.UiDirection.ENTER {
-                cloverConnector.broadcaster.notifyOnDeviceActivityStart(CloverDeviceEvent(eventState: uiState.rawValue, message: uiText, inputOptions: inputOptions))
+                cloverConnector.broadcaster.notifyOnDeviceActivityStart(CloverDeviceEvent(eventState: eventState, message: uiText, inputOptions: inputOptions))
             } else if uiDirection == UiState.UiDirection.EXIT {
-                cloverConnector.broadcaster.notifyOnDeviceActivityEnd(CloverDeviceEvent(eventState: uiState.rawValue, message: uiText))
+                cloverConnector.broadcaster.notifyOnDeviceActivityEnd(CloverDeviceEvent(eventState: eventState, message: uiText))
             }
         }
         
@@ -1096,11 +1089,6 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
         func onMessageFromActivity(_ action:String, payload p:String?) {
             let messageFromActivity = MessageFromActivity(action:action, payload:p)
             cloverConnector.broadcaster.notifyOnMessageFromActivity(messageFromActivity)
-        }
-        
-        func onResetDeviceResponse(_ result:ResultCode, reason: String?, state:ExternalDeviceState) {
-            let deviceResponse = ResetDeviceResponse(result: result, state: state)
-            cloverConnector.broadcaster.notifyOnResetDeviceResponse(deviceResponse)
         }
         
         func onRetrievePaymentResponse(_ result: ResultStatus, reason: String?, queryStatus qs: QueryStatus, payment: CLVModels.Payments.Payment?, externalPaymentId epi:String?) {

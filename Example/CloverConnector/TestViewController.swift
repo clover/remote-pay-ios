@@ -162,7 +162,7 @@ public class TestViewController: UIViewController, UITableViewDelegate, UITableV
         var loadData:Data?
         cases.removeAllObjects()
         testResultsTable.reloadData()
-        if testLoadURL.text?.characters.count == 0 {
+        if testLoadURL.text?.count == 0 {
             if let path = Bundle.main.path( forResource: "test1", ofType: "json") {
                 if let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
                     let datastring = String(data: data, encoding: String.Encoding.utf8) {
@@ -360,7 +360,7 @@ class ResponseCloverConnector : DefaultCloverConnectorListener {
     }
     
     override func onDeviceActivityStart(_ deviceEvent: CloverDeviceEvent) {
-        if let io = self.ioMap[deviceEvent.eventState ?? ""] {
+        if let io = self.ioMap[deviceEvent.eventState?.rawValue ?? ""] {
             cloverConnector?.invokeInputOption(io)
         }
     }
@@ -569,7 +569,7 @@ class Case {
                 return Mapper<CLVModels.Payments.VaultedCard>().map(JSONString: vcStr)
             }
         } else if var vcVarMarker = payload[JSON_KEYS.VAULTED_CARD].string,
-            vcVarMarker.characters.removeFirst() == "$" {
+            vcVarMarker.removeFirst() == "$" {
             return self.caseRunner?.storedValues[vcVarMarker] as? CLVModels.Payments.VaultedCard
         }
         return nil

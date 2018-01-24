@@ -29,6 +29,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.endpointTextField.delegate = self
+        
         if let savedEndpoint = UserDefaults.standard.string(forKey: WS_ENDPOINT) {
             endpointTextField.text = savedEndpoint
         }
@@ -159,7 +161,7 @@ extension ViewController: AVCaptureMetadataOutputObjectsDelegate {
                     cleanedString = components?.url?.absoluteString
                 }
                 
-                if components?.url?.absoluteString.characters.last == "?" {
+                if components?.url?.absoluteString.last == "?" {
                     if var string = components?.url?.absoluteString {
                         string.removeLast()
                         cleanedString = string
@@ -169,6 +171,14 @@ extension ViewController: AVCaptureMetadataOutputObjectsDelegate {
                 self?.endpointTextField.text = cleanedString
             }
         }
+    }
+}
+
+extension ViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.connect(false)
+        self.view.endEditing(true)
+        return true
     }
 }
 

@@ -21,18 +21,22 @@ class PrintTestViewController: UIViewController {
     
     var selectedIndexPath: IndexPath?
     var selectedPrinter: CLVModels.Printer.Printer? {
-        get {
-            if let index = self.printerTableView.indexPathForSelectedRow?.row {
-                return self.printers?[index]
-            }
-            
-            return nil
+        if let index = self.printerTableView.indexPathForSelectedRow?.row {
+            return self.printers?.optionalElement(index)
         }
+        
+        return nil
     }
     
     var appDelegate: AppDelegate? {
         get {
             return UIApplication.shared.delegate as? AppDelegate
+        }
+    }
+    
+    var uniquePrintId: String {
+        get {
+            return "\(arc4random())"
         }
     }
     
@@ -68,24 +72,10 @@ class PrintTestViewController: UIViewController {
                 self?.printerTableView.reloadData()
             }
         }
-        
-        //setup a way to respond to a print job finishing, as a way to cleanup
-        appDelegate?.cloverConnectorListener?.getPrintJobStatusCallback = { [weak self] (response:PrintJobStatusResponse) -> Void in
-            DispatchQueue.main.async {
-                if response.status == .IN_QUEUE || response.status == .PRINTING {
-                    return
-                } else {
-                    //printing finished, cleanup
-                    self?.spinner.stopAnimating()
-                    UIApplication.shared.isIdleTimerDisabled = false
-                }
-            }
-        }
     }
     
     //MARK: Printing
     @IBAction func printText(_ sender: UIButton) {
-        let printRequestID = "testTextPrintJob"
         let textArray = [
             "Congratulations!",
             "Today is your day.",
@@ -99,11 +89,12 @@ class PrintTestViewController: UIViewController {
             "And YOU are the one who'll decide where to go."
         ]
         
-        if let request = PrintRequest(text: textArray, printRequestId: printRequestID, printDeviceId: self.selectedPrinter?.id),
-            let appDelegate = self.appDelegate {
-            appDelegate.cloverConnector?.print(request)
-            spinner.startAnimating()
+        guard let request = PrintRequest(text: textArray, printRequestId: self.uniquePrintId, printDeviceId: self.selectedPrinter?.id) else {
+            debugPrint("Unsuccessfully created text PrintRequest. Was text provided to the request object?")
+            return
         }
+        
+        self.issuePrintJob(request)
     }
     
     @IBAction func printImage(_ sender: UIButton) {
@@ -116,22 +107,17 @@ class PrintTestViewController: UIViewController {
     }
     
     @IBAction func printURL(_ sender: UIButton) {
-        let printRequestID = "testURLPrintJob"
         guard let validURL = verifyUrl(urlString: urlTF.text) else { return }
-        let request = PrintRequest(imageURL: validURL, printRequestId: printRequestID, printDeviceId: self.selectedPrinter?.id)
         
-        if let appDelegate = self.appDelegate {
-            appDelegate.cloverConnector?.print(request)
-            spinner.startAnimating()
-            UIApplication.shared.isIdleTimerDisabled = true
-        }
+        let request = PrintRequest(imageURL: validURL, printRequestId: self.uniquePrintId, printDeviceId: self.selectedPrinter?.id)
+        self.issuePrintJob(request)
     }
     
     func retrievePrinters(completion: ((_ response:RetrievePrintersResponse) -> Void)?) {
         let request = RetrievePrintersRequest(printerCategory: nil)
         appDelegate?.cloverConnector?.retrievePrinters(request)
         
-        //connector listener holds the callback that's passed here, so we can chain together a printer selection with an action
+        //connector listener holds the callback that's passed here, so we can populate the tableView with the discovered printers
         appDelegate?.cloverConnectorListener?.getPrintersCallback = completion
     }
     
@@ -147,6 +133,45 @@ class PrintTestViewController: UIViewController {
     @IBAction func closeButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    /// Private wrapper around print call that issues the request, configures the app and UI for printing, and sets up a callback for status
+    ///
+    /// - Parameter request: PrintRequest object containing the information needed to begin a print job
+    private func issuePrintJob(_ request: PrintRequest) {
+        if let appDelegate = self.appDelegate {
+            //kick off the print request
+            appDelegate.cloverConnector?.print(request)
+            
+            //the rest of this scope works to monitor the print job. This can only be done if a printRequestID exists
+            guard let printRequestId = request.printRequestId else { return }
+            
+            //setup the UI for async waiting on the print job
+            spinner.startAnimating()
+            UIApplication.shared.isIdleTimerDisabled = true
+            
+            self.queryPrintStatus(printRequestId)
+        }
+    }
+    
+    private func queryPrintStatus(_ printRequestId: String) {
+        //this closure is kept on the listener, catches the first status update for this printRequestId (after it hits the Mini's printer spool), and then polls until the print job is done
+        self.appDelegate?.cloverConnectorListener?.printJobStatusDict[printRequestId] = { [weak self] (response:PrintJobStatusResponse) -> Void in
+            DispatchQueue.main.async {
+                if response.status == .IN_QUEUE || response.status == .PRINTING { //since we're not done, perform another query after a short delay
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        let request = PrintJobStatusRequest(printRequestId)
+                        self?.appDelegate?.cloverConnector?.retrievePrintJobStatus(request)
+                    })
+                } else {
+                    self?.spinner.stopAnimating()
+                    UIApplication.shared.isIdleTimerDisabled = false
+                    self?.appDelegate?.cloverConnectorListener?.printJobStatusDict.removeValue(forKey: printRequestId)
+                }
+                
+                self?.appDelegate?.cloverConnectorListener?.showMessage("Print Job: " + printRequestId + "   Status: " + response.status.rawValue)
+            }
+        }
+    }
 }
 
 extension PrintTestViewController: UITableViewDataSource, UITableViewDelegate {
@@ -159,7 +184,7 @@ extension PrintTestViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let printer = printers?[indexPath.row] else {
+        guard let printer = printers?.optionalElement(indexPath.row) else {
             debugPrint("Tried to display printer that didn't exist. Off-by-one error?")
             return UITableViewCell()
         }
@@ -188,32 +213,23 @@ extension PrintTestViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension PrintTestViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            self.spinner.startAnimating()
-            UIApplication.shared.isIdleTimerDisabled = true
-            
-            //dispatch off of main for the re-size operation, which is relatively heavy
-            DispatchQueue.global().async { [weak self] in
-                guard let image = self?.resizeImage(image: pickedImage) else {
-                    DispatchQueue.main.async { [weak self] in
-                        self?.spinner.stopAnimating()
-                        UIApplication.shared.isIdleTimerDisabled = false
-                    }
-
-                    return
-                }
-                
-                //dispatch back to main because we have to call the app delegate
-                DispatchQueue.main.async { [weak self] in
-                    let request = PrintRequest(image: image, printRequestId: "testImagePrintJob", printDeviceId: self?.selectedPrinter?.id)
-                    self?.appDelegate?.cloverConnector?.print(request)
-                }
-            }
-        } else {
-            debugPrint("Error loading image")
+        defer {
+            dismiss(animated: true, completion: nil)
         }
         
-        dismiss(animated: true, completion: nil)
+        guard let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            debugPrint("Error loading image")
+            return
+        }
+        
+        self.spinner.startAnimating()
+        UIApplication.shared.isIdleTimerDisabled = true
+        
+
+        self.resizeImage(image: pickedImage) { [weak self] (resizedImage) in
+            let request = PrintRequest(image: resizedImage, printRequestId: self?.uniquePrintId, printDeviceId: self?.selectedPrinter?.id)
+            self?.issuePrintJob(request)
+        }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -221,25 +237,54 @@ extension PrintTestViewController: UIImagePickerControllerDelegate, UINavigation
     }
     
     /// Resizes an image to fit within CloverConnector.MAX_PAYLOAD_SIZE
-    func resizeImage(image:UIImage) -> UIImage {
+    func resizeImage(image:UIImage, completion: ((_ image: UIImage) -> Void)?) {
         var scaledImage = image
-        guard var scaledData = UIImagePNGRepresentation(image) else { return image }
-        guard let cloverConnector = (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector else { return image }
-        debugPrint("Start Size: " + String(describing: scaledImage.size))
-        while scaledData.count > cloverConnector.MAX_PAYLOAD_SIZE {
-            var scale = sqrt((CGFloat(cloverConnector.MAX_PAYLOAD_SIZE) / CGFloat(scaledData.count)))
-            scale = scale > 0.9 ? 0.9 : scale
-            debugPrint("Scaling " + String(describing: scale) + "%")
-            let newSize = CGSize(width: scaledImage.size.width * scale, height: scaledImage.size.height * scale)
-            UIGraphicsBeginImageContextWithOptions(CGSize(width: newSize.width, height: newSize.height), true, 1.0)
-            scaledImage.draw(in: CGRect(origin: CGPoint(x: 0, y: 0), size: newSize))
-            guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else { return scaledImage }
-            scaledImage = newImage
-            guard let newData = UIImagePNGRepresentation(scaledImage) else { return scaledImage }
-            scaledData = newData
-            UIGraphicsEndImageContext()
+        guard var scaledData = UIImagePNGRepresentation(image) else {
+            completion?(image)
+            return
         }
-        debugPrint("Final Size: " + String(describing: scaledImage.size))
-        return scaledImage
+        
+        guard let cloverConnector = appDelegate?.cloverConnector else {
+            completion?(image)
+            return
+        }
+        
+        debugPrint("Start Size: " + String(describing: scaledImage.size))
+        
+        //throw onto a background queue because of how heavy the resize could be
+        DispatchQueue.global().async {
+            while scaledData.count > cloverConnector.MAX_PAYLOAD_SIZE {
+                var scale = sqrt((CGFloat(cloverConnector.MAX_PAYLOAD_SIZE) / CGFloat(scaledData.count)))
+                scale = scale > 0.9 ? 0.9 : scale
+                debugPrint("Scaling " + String(describing: scale) + "%")
+                let newSize = CGSize(width: scaledImage.size.width * scale, height: scaledImage.size.height * scale)
+                UIGraphicsBeginImageContextWithOptions(CGSize(width: newSize.width, height: newSize.height), true, 1.0)
+                scaledImage.draw(in: CGRect(origin: CGPoint(x: 0, y: 0), size: newSize))
+                guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else {
+                    DispatchQueue.main.async { completion?(scaledImage) }
+                    return
+                }
+                scaledImage = newImage
+                guard let newData = UIImagePNGRepresentation(scaledImage) else {
+                    DispatchQueue.main.async { completion?(scaledImage) }
+                    return
+                }
+                
+                scaledData = newData
+                UIGraphicsEndImageContext()
+            }
+            
+            DispatchQueue.main.async {
+                debugPrint("Final Size: " + String(describing: scaledImage.size))
+                completion?(scaledImage)
+            }
+        }
     }
 }
+
+fileprivate extension Array {
+    func optionalElement(_ i: Index) -> Element? {
+        return indices.contains(i) ? self[i] : nil
+    }
+}
+

@@ -416,8 +416,20 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             self.doPrintText(request.text, printRequestId: request.printRequestId, printDeviceId: request.printDeviceId)
         } else if let image = request.images.first {   //...but currently only support one image...
             self.doPrintImage(image, printRequestId: request.printRequestId, printDeviceId: request.printDeviceId)
-        } else if let imageURLString = request.imageURLS.first?.absoluteString {   //...and one image URL
-            self.doPrintImage(imageURLString, printRequestId: request.printRequestId, printDeviceId: request.printDeviceId)
+        } else if let imageURL = request.imageURLS.first {   //...and one image URL
+            self.download(imageURL: imageURL, completion: { [weak self] (image) in
+                guard let downloadedImage = image else {
+                    debugPrint("Printing failed, couldn't download image: " + imageURL.absoluteString)
+                    
+                    let response = PrintJobStatusResponseMessage()
+                    response.printRequestId = request.printRequestId
+                    response.status = PrintJobStatus.ERROR.rawValue
+                    self?.notifyRetrievePrintJobStatus(response)
+                    return
+                }
+                
+                self?.doPrintImage(downloadedImage, printRequestId: request.printRequestId, printDeviceId: request.printDeviceId)
+            })
         } else {
             //if we got here, it's because the printRequest either had nothing on it, or has a new, unhandled content type
             debugPrint("In doPrint: PrintRequest had no content or had an unhandled content type")
@@ -660,91 +672,66 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     }
     
     @discardableResult
-    func sendCommandMessage(payload msgJSON:String, method:Method, version:Int = 1, attachment:String? = nil, attachmentEncoding:String? = nil, attachmentData:Data? = nil, attachmentUrl:String? = nil) -> String? {
+    func sendCommandMessage(payload msgJSON:String, method:Method, version:Int = 1, attachmentData:Data? = nil) -> String? {
             let rm:RemoteMessage = RemoteMessage()
             rm.method = method
             rm.type = RemoteMessageType.COMMAND
             rm.payload = msgJSON
-            rm.attachment = attachment
-            rm.attachmentEncoding = attachmentEncoding
-            
-        return sendRemoteMessage(rm, version: version, attachmentData: attachmentData, attachmentUrl: attachmentUrl, attachmentEncoding: attachmentEncoding)
+        
+        return sendRemoteMessage(rm, version: version, attachmentData: attachmentData)
     }
     
-    func sendRemoteMessage(_ remoteMsg:RemoteMessage, version:Int = 1, attachmentData: Data? = nil, attachmentUrl: String? = nil, attachmentEncoding: String? = nil) -> String? {
+    /// Sends a Remote Message on the Web Socket
+    ///
+    /// - Parameters:
+    ///   - remoteMsg: RemoteMessage object to send.  The attachment string of this object will be ignored.
+    ///   - version: Version of the message object
+    ///   - attachmentData: Attachment data to send.
+    /// - Returns: Remote Message Id of the transmitted message, or nil if the message is not sent.
+    func sendRemoteMessage(_ remoteMsg:RemoteMessage, version:Int = 1, attachmentData: Data? = nil) -> String? {
         guard let cloverConnector = cloverConnector else { return nil }
         remoteMsg.packageName = self.packageName
         remoteMsg.remoteApplicationID = config.remoteApplicationID
         remoteMsg.remoteSourceSDK = config.remoteSourceSDK
         remoteMsg.id = String(id)
         remoteMsg.version = version
+        remoteMsg.attachment = nil
+        remoteMsg.attachmentEncoding = nil
+        remoteMsg.attachmentUri = nil
         
         if remoteMsg.version > 1 { // we CAN send fragments
-            // there are 3 paths...
-            // 1. The attachment is already a string, so set change the Encoding from "BASE64" to "BASE64.ATTACHMENT" (or we could decode it, and then encode the chunks), or if the Encoding is nil, just write it...e.g. the attachment might be a large text snippet and not encoded
-            // 2. The attachmentData is binary, so we encode as "BASE64.FRAGMENT"
-            // 3. The attachmentUrl is provided, so we read and encode as "BASE64.FRAGMENT"
-            
-            
-            
-            let hasAttachmentURI = attachmentUrl != nil
             let hasAttachmentData = attachmentData != nil
-            let payloadTooLarge = ((remoteMsg.attachment?.characters.count ?? 0) + (remoteMsg.payload?.characters.count ?? 0)) > maxMessageSizeInChars
-            let shouldFrag = hasAttachmentURI || hasAttachmentData || payloadTooLarge
+            let payloadTooLarge = (remoteMsg.payload?.count ?? 0) > maxMessageSizeInChars
+            let shouldFrag = hasAttachmentData || payloadTooLarge
+
+            
             if shouldFrag { // we NEED to fragment
                 
                 // if the payload size exceeds the max, then fail immediately
-                // note that this is not exact - data in a String will be a different length than the same data in Data thanks to the JSON conversion and multiple escaping done on messages, but there's enough pad in the max payload to account for this.
-                if (remoteMsg.attachment != nil && remoteMsg.attachment!.characters.count > cloverConnector.MAX_PAYLOAD_SIZE) || // passed in a formatted string, check for length (this isn't actually used anywhere...)
-                    (attachmentData != nil && attachmentData!.count > cloverConnector.MAX_PAYLOAD_SIZE) {                       // passed in a data chunk, check for length
+                if (attachmentData != nil && attachmentData!.count > cloverConnector.MAX_PAYLOAD_SIZE) {
                     debugPrint("Error sending message - payload size is greater than the maximum allowed")
                     return nil
                 }
 
-                // let's fragment the payload...
                 var fragmentIndex = 0
 
+                // Fragment the Payload
                 var payloadStr = remoteMsg.payload ?? ""
-                while payloadStr.characters.count > 0 {
+                while payloadStr.count > 0 {
                     // FRAGMENT Payload
-                    let range = (payloadStr.startIndex ..< payloadStr.characters.index(payloadStr.startIndex, offsetBy: maxMessageSizeInChars < payloadStr.characters.count ? maxMessageSizeInChars : payloadStr.characters.count))
+                    let range = (payloadStr.startIndex ..< payloadStr.index(payloadStr.startIndex, offsetBy: maxMessageSizeInChars < payloadStr.count ? maxMessageSizeInChars : payloadStr.count))
                     
                     let fPayload = String(payloadStr[range])
                     //            debugPrint(fragment)
                     
                     payloadStr.removeSubrange(range)
                     
-                    
-                    sendMessageFragment(remoteMessage:remoteMsg, payloadFragment: fPayload, attachmentFragment: nil, fragmentIndex: fragmentIndex, isLastMessage: payloadStr.characters.count == 0 && remoteMsg.attachment?.characters.count ?? 0 == 0 && remoteMsg.attachmentUri?.characters.count ?? 0 == 0 && attachmentData == nil)
+                    sendMessageFragment(remoteMessage:remoteMsg, payloadFragment: fPayload, attachmentFragment: nil, fragmentIndex: fragmentIndex, isLastMessage: payloadStr.count == 0 && remoteMsg.attachment?.count ?? 0 == 0 && remoteMsg.attachmentUri?.count ?? 0 == 0 && attachmentData == nil)
                     fragmentIndex += 1
                 }
-
                 
-                // now let's fragment the attachment or attachmentData
-                if var attach = remoteMsg.attachment {
-
-                    if remoteMsg.attachmentEncoding == "BASE64" {
-                        // TODO: decode, chunk and then encode or
-                        // set encoding to BASE64.ATTACHMENT
-                        // in this case, change the encoding and chunk as-is
-                        remoteMsg.attachmentEncoding = "BASE64.ATTACHMENT" // must reconstruct the entire attachment before decoding
-                        while attach.characters.count > 0 {
-                            // FRAGMENT Attachment
-                            let range = (attach.startIndex ..< attach.characters.index(attach.startIndex, offsetBy: maxMessageSizeInChars < attach.characters.count ? maxMessageSizeInChars : attach.characters.count))
-                            
-                            let aPayload = String(attach[range])
-                            
-                            attach.removeSubrange(range)
-                            
-                            
-                            sendMessageFragment(remoteMessage:remoteMsg, payloadFragment: nil, attachmentFragment: aPayload, fragmentIndex: fragmentIndex, isLastMessage: attach.characters.count == 0)
-                            fragmentIndex += 1
-                        }
-                        
-                    } else {
-                        // TODO: chunk as-as
-                    }
-                } else if let data = attachmentData {
+                // Fragment the attachment
+                if let data = attachmentData { // Data Attachment, convert to Base64 and send
                     var start = 0
                     let count = data.count
                     
@@ -753,16 +740,12 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                             let chunkData = data.subdata(in: start..<start+min(maxMessageSizeInChars, count-start))
                             start = start+maxMessageSizeInChars
                             
-                            // FRAGMENT Payload
                             let fAttachment = chunkData.base64EncodedString(options: .lineLength64Characters)
                             sendMessageFragment(remoteMessage:remoteMsg, payloadFragment: nil, attachmentFragment: fAttachment, fragmentIndex: fragmentIndex, isLastMessage: start > count)
                             fragmentIndex += 1
                         }
                     }
-                    
                 }
-
-                
             } else {
                 // we DON'T need to fragment
                 if let remoteMsg = Mapper().toJSONString(remoteMsg, prettyPrint: false) {
@@ -775,7 +758,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             
         } else {
             // we cannot send fragments, v1 or attachments
-            if remoteMsg.attachment != nil || attachmentData != nil || attachmentUrl != nil {
+            if remoteMsg.attachment != nil || attachmentData != nil {
                 Swift.debugPrint("Version 1 of remote message doesn't support attachments", stderr)
             }
 
@@ -808,8 +791,6 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             fRemoteMessage.attachment = fAttachment
             fRemoteMessage.fragmentIndex = index
             fRemoteMessage.lastFragment = lastFragment
-            //                fRemoteMessage.fragmentTotal = payloadFragments + attachmentFragments
-            //
             
             if let remoteMsg = Mapper().toJSONString(fRemoteMessage, prettyPrint: false) {
                 Swift.debugPrint("Sending Fragment " + String(index) + (lastFragment ? " <last>" : ""))
@@ -1170,5 +1151,26 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                 listener.onMessageFromActivity(response.action, payload: response.payload)
             })
         }
+    }
+}
+
+extension DefaultCloverDevice {
+    func download(imageURL: URL, completion: @escaping (ImageClass?)->()) {
+        let session = URLSession(configuration: .default)
+        let downloadTask = session.dataTask(with: imageURL) { (data, response, error) in
+            guard error == nil else {
+                debugPrint("Image download failed: " + error!.localizedDescription)
+                completion(nil)
+                return
+            }
+            
+            if let imageData = data, let image = ImageClass(data: imageData) {
+                completion(image)
+            } else {
+                completion(nil)
+            }
+        }
+        
+        downloadTask.resume() //kick off the download
     }
 }

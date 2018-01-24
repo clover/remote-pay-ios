@@ -11,6 +11,7 @@ import UIKit
 import CloverConnector
 
 public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAlertViewDelegate {
+    
     weak var cloverConnector:ICloverConnector?
     
     /// View Controller being displayed, used to present alert view controllers
@@ -23,7 +24,9 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     fileprivate var ready:Bool = false
     fileprivate var suppressConnectionErrors = false //since connection errors could conceivably occur every few seconds, use this to suppress them after the first has been shown
     public var getPrintersCallback: ((_ response:RetrievePrintersResponse) -> Void)? //used in the MiscVC to allow the user to select which printer to test on. See: onRetrievePrintersResponse below
-    public var getPrintJobStatusCallback: ((_ response:PrintJobStatusResponse) -> Void)? //used in the MiscVC to allow the UI to respond to print status. See: onPrintJobStatusResponse below
+    
+    /// Dict used in the PrintTestVC to allow the UI to respond to print status. It is the responsibility of the caller to clean up its closure once done. See: onPrintJobStatusResponse below.
+    public var printJobStatusDict = [String : (PrintJobStatusResponse) -> Void]()
     
     public init(cloverConnector:ICloverConnector){
         self.cloverConnector = cloverConnector;
@@ -41,7 +44,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     /// - Parameter duration: The duration to display the message in seconds.  Defaults to 3 seconds, must be > 0 seconds
     /// - Parameter afterShow: A closure to run following the successful display of the message
     /// - Parameter afterDismiss: A closer to run following the successful dismiss of the message
-    fileprivate func showMessage(_ message:String, duration:Double = 3, afterShow: (()->Void)? = nil, afterDismiss: (()->Void)? = nil) {
+    func showMessage(_ message:String, duration:Double = 3, afterShow: (()->Void)? = nil, afterDismiss: (()->Void)? = nil) {
         guard duration > 0 else { return }
         print("MESSAGE ====> \(message)")
         showMessageWithOptions(message: message, dismissAfter: duration, inputOptions: nil, completion: afterShow, afterDismiss: afterDismiss)
@@ -499,26 +502,9 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     }
     
     
-    /*
-     * called when the device is initially connected
-     */
-    public func  onConnected () -> Void {}
-    
-    
-    /*
-     * called when the device is ready to communicate
-     */
-    public func  onReady (_ merchantInfo: MerchantInfo) -> Void {}
-    
-    
-    /*
-     * called when the device is disconnected, or not responding
-     */
-    public func  onDisconnected () -> Void {}
-    
     public func onDeviceActivityEnd(_ deviceEvent: CloverDeviceEvent) {
         DispatchQueue.main.async{ [weak self] in
-            debugPrint("END -> " + (deviceEvent.eventState ?? "UNK") + ":" + (deviceEvent.message ?? ""))
+            debugPrint("END -> " + (deviceEvent.eventState?.rawValue ?? "UNK") + ":" + (deviceEvent.message ?? ""))
             if let alertController = self?.viewController?.presentedViewController as? UIAlertController {
                 if alertController.message == deviceEvent.message { // this check is because the events aren't guaranteed to be in order. could be START(A), START(B), END(A), END(B)
                     alertController.dismiss(animated: false, completion: nil)
@@ -532,7 +518,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     
     public func onDeviceActivityStart(_ deviceEvent: CloverDeviceEvent) {
         DispatchQueue.main.async{ [weak self] in
-            debugPrint("START -> " + (deviceEvent.eventState ?? "UNK") + ":" + (deviceEvent.message ?? ""))
+            debugPrint("START -> " + (deviceEvent.eventState?.rawValue ?? "UNK") + ":" + (deviceEvent.message ?? ""))
             self?.showMessageWithEvent(deviceEvent: deviceEvent)
         }
     }
@@ -672,22 +658,34 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     }
     
     public func onRetrievePrintersResponse(_ retrievePrintersResponse: RetrievePrintersResponse) {
+        guard retrievePrintersResponse.success == true else {
+            showMessage("Error retrieving printers")
+            self.getPrintersCallback?(retrievePrintersResponse)
+            return
+        }
+        
         if let printers = retrievePrintersResponse.printers, let printerName = printers.first?.name {
             let message = "Retrieved printer: \(printerName) \(printers.count > 1 ? " and \(printers.count - 1) others" : "")"
             showMessage(message)
-            self.getPrintersCallback?(retrievePrintersResponse)
         }
+        
+        self.getPrintersCallback?(retrievePrintersResponse)
     }
     
     public func onPrintJobStatusResponse(_ printJobStatusResponse:PrintJobStatusResponse) {
-        if let jobId = printJobStatusResponse.printRequestId {
-            let message = "Print job: " + jobId + "   status: " + printJobStatusResponse.status.rawValue
-            showMessage(message)
-        } else {
-            showMessage("Print job status: " + printJobStatusResponse.status.rawValue)
+        DispatchQueue.main.async {
+            if let printRequestId = printJobStatusResponse.printRequestId, let callback = self.printJobStatusDict[printRequestId] { //check that we have a callback for this specific printRequestId
+                callback(printJobStatusResponse)
+                return //since user has provided their own callback to handle this, don't also continue below to fire the default behavior
+            }
+            
+            if let jobId = printJobStatusResponse.printRequestId {
+                let message = "Print job: " + jobId + "   status: " + printJobStatusResponse.status.rawValue
+                self.showMessage(message)
+            } else {
+                self.showMessage("Print job status: " + printJobStatusResponse.status.rawValue)
+            }
         }
-        
-        self.getPrintJobStatusCallback?(printJobStatusResponse)
     }
     
     fileprivate func formatCurrency(_ amount:Int?) -> String {

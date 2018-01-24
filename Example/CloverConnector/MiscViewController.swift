@@ -63,12 +63,12 @@ class MiscViewController : UIViewController, UINavigationControllerDelegate {
         appDelegate?.cloverConnector?.sendMessageToActivity(mta)
     }
     
-    @IBAction func currentStatusClicked(sender: UIButton) {
+    @IBAction func currentStatusClicked(_ sender: UIButton) {
         let dsr = RetrieveDeviceStatusRequest(sendLastMessage: sendMsgWithStatusSwitch.isOn)
         appDelegate?.cloverConnector?.retrieveDeviceStatus(dsr)
     }
     
-    @IBAction func queryPayment(sender: UIButton) {
+    @IBAction func queryPayment(_ sender: UIButton) {
         guard let epi = externalPaymentId.text else {
             debugPrint("Invalid external Id")
             return

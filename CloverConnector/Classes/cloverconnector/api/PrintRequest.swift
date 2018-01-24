@@ -5,11 +5,14 @@
 import Foundation
 
 public class PrintRequest: NSObject {
-   //Private data source for the print request. These should not be modifiable externally, because for now we want to enforce the encompassed print data via constructors
-    public fileprivate(set) var images = [ImageClass]()
-    public fileprivate(set) var imageURLS = [URL]()
-    public fileprivate(set) var text = [String]()
+    //Private data source for the print request. These should not be modifiable externally, because for now we want to enforce the encompassed print data via constructors
+    internal fileprivate(set) var images = [ImageClass]()
+    internal fileprivate(set) var imageURLS = [URL]()
+    internal fileprivate(set) var text = [String]()
+    
+    /// Optional identifier to give to the print job, so it can later be queried
     public var printRequestId: String?
+    /// Optional identifier to speciy which printer to use
     public var printDeviceId: String?
     
 

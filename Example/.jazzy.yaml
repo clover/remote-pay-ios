@@ -3,11 +3,11 @@ theme: fullwidth
 podspec: ../CloverConnector.podspec
 module: CloverConnector
 theme: apple
-output: ../1.4.0/docs
+output: ../1.4.1/docs
 clean: true
 github-url: https://github.com/clover/remote-pay-ios
 swift-version: 4.0
-copyright: 'Copyright © 2017 Clover Network, Inc. All rights reserved.'
+copyright: 'Copyright © 2018 Clover Network, Inc. All rights reserved.'
 custom_categories:
    - name: API
      children:
