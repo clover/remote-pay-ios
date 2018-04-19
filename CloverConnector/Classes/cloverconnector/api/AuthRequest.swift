@@ -46,6 +46,7 @@ public class AuthRequest:TransactionRequest {
     
     /// :nodoc:
     public override func mapping(map:Map) {
+        super.mapping(map: map)
         disableCashback <- map["disableCashback"]
         tippableAmount <- map["tippableAmount"]
         taxAmount <- map["taxAmount"]

@@ -1,5 +1,5 @@
 //
-//  Copyright © 2017 Clover Network, Inc. All rights reserved.
+//  Copyright © 2018 Clover Network, Inc. All rights reserved.
 //
 
 /// :nodoc:
@@ -8,6 +8,7 @@ public enum TransactionType:String {
   case PAYMENT = "PAYMENT"
   case CREDIT = "CREDIT"
   case DATA = "DATA"
+    case CAPTURE_PREAUTH = "CAPTURE_PREAUTH"
 }
 
 

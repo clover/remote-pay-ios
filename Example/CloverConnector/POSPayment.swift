@@ -3,7 +3,7 @@
 //  ExamplePOS
 //
 //  
-//  Copyright © 2017 Clover Network, Inc. All rights reserved.
+//  Copyright © 2018 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation
@@ -16,10 +16,15 @@ public class POSPayment:POSExchange {
     public var cashbackAmount:Int?
     public var externalPaymentId:String?
     
-    public init(paymentId:String, externalPaymentId:String?, orderId:String, employeeId:String, amount:Int, tipAmount:Int, cashbackAmount:Int) {
+    public var last4:String?
+    public var name:String?
+    
+    public init(paymentId:String, externalPaymentId:String?, orderId:String, employeeId:String, amount:Int, tipAmount:Int, cashbackAmount:Int, last4:String?, name:String?) {
         self.externalPaymentId = externalPaymentId
         self.tipAmount = tipAmount
         self.cashbackAmount = cashbackAmount
+        self.last4 = last4
+        self.name = name
         super.init(orderId: orderId, paymentId: paymentId, employeeId: employeeId, amount: amount)
     }
     

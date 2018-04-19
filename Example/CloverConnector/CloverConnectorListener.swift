@@ -3,7 +3,7 @@
 //  CloverConnector
 //
 //  
-//  Copyright © 2017 Clover Network, Inc. All rights reserved.
+//  Copyright © 2018 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation
@@ -29,7 +29,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     public var printJobStatusDict = [String : (PrintJobStatusResponse) -> Void]()
     
     public init(cloverConnector:ICloverConnector){
-        self.cloverConnector = cloverConnector;
+        self.cloverConnector = cloverConnector
     }
     
     fileprivate var store:POSStore? {
@@ -134,7 +134,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                         let paymentAmount = payment.amount {
                         let tipAmount = payment.tipAmount ?? 0
                         let cashback = payment.cashbackAmount ?? 0
-                        let posPayment:POSPayment = POSPayment(paymentId: paymentId, externalPaymentId: payment.externalPaymentId, orderId: orderId, employeeId: "DFLTEMPLYEE", amount: paymentAmount, tipAmount: tipAmount, cashbackAmount: cashback)
+                        let posPayment:POSPayment = POSPayment(paymentId: paymentId, externalPaymentId: payment.externalPaymentId, orderId: orderId, employeeId: "DFLTEMPLYEE", amount: paymentAmount, tipAmount: tipAmount, cashbackAmount: cashback, last4: payment.cardTransaction?.last4, name: payment.cardTransaction?.cardholderName)
                         
                         posPayment.status = response.isSale ? PaymentStatus.PAID : (response.isAuth ? PaymentStatus.AUTHORIZED : (response.isPreAuth ? PaymentStatus.PREAUTHORIZED : PaymentStatus.UNKNOWN))
                         
@@ -200,7 +200,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                         let paymentAmount = payment.amount {
                         let tipAmount = payment.tipAmount ?? 0
                         let cashback = payment.cashbackAmount ?? 0
-                        let posPayment:POSPayment = POSPayment(paymentId: paymentId, externalPaymentId: payment.externalPaymentId, orderId: orderId, employeeId: "DFLTEMPLYEE", amount: paymentAmount, tipAmount: tipAmount, cashbackAmount: cashback)
+                        let posPayment:POSPayment = POSPayment(paymentId: paymentId, externalPaymentId: payment.externalPaymentId, orderId: orderId, employeeId: "DFLTEMPLYEE", amount: paymentAmount, tipAmount: tipAmount, cashbackAmount: cashback, last4: payment.cardTransaction?.last4, name: payment.cardTransaction?.cardholderName)
                         
                         posPayment.status = authResponse.isSale ? PaymentStatus.PAID : (authResponse.isAuth ? PaymentStatus.AUTHORIZED : (authResponse.isPreAuth ? PaymentStatus.PREAUTHORIZED : PaymentStatus.UNKNOWN))
                         
@@ -264,7 +264,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                         let paymentId = payment.id,
                         let orderId = payment.order?.id,
                         let paymentAmount = payment.amount {
-                        let posPayment:POSPayment = POSPayment(paymentId: paymentId, externalPaymentId: payment.externalPaymentId, orderId: orderId, employeeId: "DFLTEMPLYEE", amount: paymentAmount, tipAmount: payment.tipAmount ?? 0, cashbackAmount: payment.cashbackAmount ?? 0)
+                        let posPayment:POSPayment = POSPayment(paymentId: paymentId, externalPaymentId: payment.externalPaymentId, orderId: orderId, employeeId: "DFLTEMPLYEE", amount: paymentAmount, tipAmount: payment.tipAmount ?? 0, cashbackAmount: payment.cashbackAmount ?? 0, last4: payment.cardTransaction?.last4, name: payment.cardTransaction?.cardholderName)
                         
                         if preAuthResponse.isSale || preAuthResponse.isAuth {
                             store.addPaymentToOrder(posPayment, order: order)

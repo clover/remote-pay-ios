@@ -3,7 +3,7 @@
 //  CloverConnector
 //
 //  
-//  Copyright © 2017 Clover Network, Inc. All rights reserved.
+//  Copyright © 2018 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation
@@ -40,12 +40,12 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
 
     //MARK: Cleanup
     public func dispose() {
-        broadcaster.notifyOnDisconnect() //must notify listeners of disconnect before the listeners are removed
-        
-        broadcaster.listeners.removeAllObjects()
+        broadcaster.clearAll()
         device?.dispose()
         device = nil
         deviceObserver = nil
+        
+        isReady = false
     }
     
     deinit {
@@ -183,19 +183,47 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
         }
     }
     
-    public func capturePreAuth(_ capturePreAuthRequest: CapturePreAuthRequest) {
+    public func capturePreAuth(_ request: CapturePreAuthRequest) {
         if let device = checkDevice(from: #function) {
-            let tipAmount = capturePreAuthRequest.tipAmount ?? 0
-            
-            if capturePreAuthRequest.amount < 0 {
-                deviceObserver?.onCapturePreAuthResponse(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In capturePreAuth : The amount must be greater than 0")
-            } else if tipAmount < 0 {
-                deviceObserver?.onCapturePreAuthResponse(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In capturePreAuth : The tipAmount must be greater than 0")
-            } else if !merchantInfo.supportsPreAuths {
-                deviceObserver?.onCapturePreAuthResponse(false, result:ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message: "In capturePreAuth : CapturePreAuth support is not enabled for the payment gateway")
+            if request.amount <= 0 {
+                deviceObserver?.onCapturePreAuthResponse(false, result: .FAIL, reason: "Request validation error", message: "In PreAuth : CapturePreAuthRequest - the request amount cannot be zero.")
+                return
+            }
+            if let externalId = request.externalId {
+                if externalId.count == 0 || externalId.count > 32 {
+                    deviceObserver?.onCapturePreAuthResponse(false, result: .FAIL, reason: "Invalid argument.", message: "In PreAuth : CapturePreAuthRequest - The externalId is invalid. The min length is 1 and the max length is 32.")
+                    return
+                }
+            } else {
+                deviceObserver?.onCapturePreAuthResponse(false, result: .FAIL, reason: "Invalid argument", message: "In PreAuth: CapturePreAuthRequest - externalId is required to process a pre-auth")
+            }
+            if !merchantInfo.supportsPreAuths {
+                deviceObserver?.onCapturePreAuthResponse(false, result: .UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"In PreAuth : CapturePreAuthRequest - PreAuth support is not enabled for the payment gateway.")
+                return
             }
             
-            device.doCaptureAuth(capturePreAuthRequest.paymentId, amount: capturePreAuthRequest.amount, tipAmount: tipAmount)
+            if request.version == 1 { // V1 message for backward compatibility testing
+                device.doCaptureAuth(request.paymentId, amount: request.amount, tipAmount: request.tipAmount ?? 0)
+            } else { // V2 message includes CVM support
+                let builder = PayIntent.Builder(amount: request.amount, paymentId: request.paymentId)
+                builder.transactionType = TransactionType.CAPTURE_PREAUTH
+                builder.tipAmount = request.tipAmount
+                builder.externalPaymentId = request.externalId
+                
+                let tx = CLVModels.Payments.TransactionSettings()
+                tx.tipMode = request.tipMode
+                tx.autoAcceptSignature = request.autoAcceptsSignature
+                if let disablePrinting = request.disablePrinting {
+                    tx.cloverShouldHandleReceipts = !disablePrinting
+                }
+                tx.signatureEntryLocation = request.signatureEntryLocation
+                tx.disableReceiptSelection = request.disableReceiptSelection
+                tx.signatureThreshold = request.signatureThreshold
+                tx.tippableAmount = request.tippableAmount
+                builder.transactionSettings = tx
+                
+                device.doCaptureAuth(payIntent: builder.build(), order: nil, requestInfo: nil)
+            }
         } else {
             deviceObserver?.onCapturePreAuthResponse(false, result: ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.")
         }
@@ -240,6 +268,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             tx.disableDuplicateCheck = request.disableDuplicateChecking
             tx.disableReceiptSelection = request.disableReceiptSelection
             tx.signatureEntryLocation = request.signatureEntryLocation
+            tx.signatureThreshold = request.signatureThreshold
             if let dp = request.disablePrinting {
                 tx.cloverShouldHandleReceipts = !dp
             }
@@ -270,7 +299,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                 tx.forceOfflinePayment = sr.forceOfflinePayment
             } else if let ar = request as? AuthRequest {
                 builder.taxAmount = ar.taxAmount
-                builder.tippableAmount = ar.tippableAmount
+                tx.tippableAmount = ar.tippableAmount
                 builder.tipAmount = nil
                 if let disableCashback = ar.disableCashback {
                     builder.isDisableCashBack = disableCashback
@@ -591,13 +620,9 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             cloverConnector.broadcaster.notifyOnTipAdjustAuthResponse(taar)
         }
         
-        func onCapturePreAuthResponse(_ status: ResultStatus, reason: String, paymentId: String?, amount: Int?, tipAmount: Int?) {
-            var success:Bool = false;
-            switch(status) {
-            case .SUCCESS: success = true; break
-            default: success = false
-            }
-            onCapturePreAuthResponse(success, result: success ? ResultCode.SUCCESS : ResultCode.FAIL, reason: nil, message: nil, paymentId: paymentId, amount: amount, tipAmount: tipAmount)
+        func onCapturePreAuthResponse(_ status: ResultStatus, reason: String?, paymentId: String?, amount: Int?, tipAmount: Int?) {
+            let success = status == .SUCCESS
+            onCapturePreAuthResponse(success, result: success ? ResultCode.SUCCESS : ResultCode.FAIL, reason: reason, message: nil, paymentId: paymentId, amount: amount, tipAmount: tipAmount)
         }
         func onCapturePreAuthResponse(_ success:Bool, result: ResultCode, reason: String?, message: String?, paymentId: String?=nil, amount: Int?=nil, tipAmount: Int?=nil) {
             let cpar = CapturePreAuthResponse(success: success, result: result, paymentId: paymentId, amount: amount, tipAmount: tipAmount)
@@ -1082,6 +1107,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
         func onReadCardResponse(_ status: ResultStatus, reason: String, cardData: CardData?) {
             let rcdr = ReadCardDataResponse(success: status == .SUCCESS, result: status == .SUCCESS ? ResultCode.SUCCESS : ResultCode.CANCEL)
             rcdr.cardData = cardData
+            rcdr.reason = reason
             
             cloverConnector.broadcaster.notifyOnReadCardResponse(rcdr);
         }

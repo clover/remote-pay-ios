@@ -16,7 +16,6 @@
 		7E41B1FB1E5386A60065AF21 /* ManualRefundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B1FA1E5386A60065AF21 /* ManualRefundViewController.swift */; };
 		7E41B1FD1E5386E40065AF21 /* PreAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B1FC1E5386E40065AF21 /* PreAuthViewController.swift */; };
 		7E41B1FF1E5387200065AF21 /* VaultCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B1FE1E5387200065AF21 /* VaultCardViewController.swift */; };
-		7E84F8FD1E60A3F8003A70B2 /* test1.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E84F8FC1E60A3F8003A70B2 /* test1.json */; };
 		7E84F8FF1E60AD35003A70B2 /* UITestTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E84F8FE1E60AD35003A70B2 /* UITestTableCell.swift */; };
 		7EC6DF141D90472D00D852EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EC6DEF61D90472D00D852EF /* Assets.xcassets */; };
 		7EC6DF151D90472D00D852EF /* AvailableItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC6DEF71D90472D00D852EF /* AvailableItemCollectionViewCell.swift */; };
@@ -50,12 +49,6 @@
 		7EEB720D1EAFFA81008E641D /* SimpleTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB720C1EAFFA81008E641D /* SimpleTestViewController.swift */; };
 		A49F5B4A199432BBE7EAF0C4 /* Pods_CloverConnector_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BF16A62156B0D50E349B58 /* Pods_CloverConnector_Tests.framework */; };
 		DA6BFE5D963C68DE0967E1A7 /* Pods_CloverConnector_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95D7B135DBBE64C88249EB84 /* Pods_CloverConnector_Example.framework */; };
-		E33CF77A1F97F02C00C41BF8 /* Test_cloverconnector_DefaultCloverConnectorV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33CF7791F97F02C00C41BF8 /* Test_cloverconnector_DefaultCloverConnectorV2.swift */; };
-		E33CF7801F98128B00C41BF8 /* TestDeviceConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33CF77F1F98125200C41BF8 /* TestDeviceConfiguration.swift */; };
-		E33CF7811F98128D00C41BF8 /* TestCloverTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33CF77E1F98125200C41BF8 /* TestCloverTransport.swift */; };
-		E33CF7841F9814D700C41BF8 /* Test_remotepaylib_TerminalMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33CF7831F9814D700C41BF8 /* Test_remotepaylib_TerminalMessage.swift */; };
-		E33CF7851F98150C00C41BF8 /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33CF7821F9814CA00C41BF8 /* TestSupport.swift */; };
-		E3E4094A1F97B6A000DC7F10 /* Test_cloverconnector_WebSocketDeviceConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E409491F97B6A000DC7F10 /* Test_cloverconnector_WebSocketDeviceConfiguration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -145,12 +138,6 @@
 		96C5AB5C4427777EBE65CA2A /* Pods-CloverConnector_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloverConnector_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-CloverConnector_Example/Pods-CloverConnector_Example.release.xcconfig"; sourceTree = "<group>"; };
 		CDC378D57D87133CA0103944 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		DA004E9F68C5A4678FD062F7 /* Pods-CloverConnector_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloverConnector_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CloverConnector_Tests/Pods-CloverConnector_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		E33CF7791F97F02C00C41BF8 /* Test_cloverconnector_DefaultCloverConnectorV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_cloverconnector_DefaultCloverConnectorV2.swift; sourceTree = "<group>"; };
-		E33CF77E1F98125200C41BF8 /* TestCloverTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCloverTransport.swift; sourceTree = "<group>"; };
-		E33CF77F1F98125200C41BF8 /* TestDeviceConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDeviceConfiguration.swift; sourceTree = "<group>"; };
-		E33CF7821F9814CA00C41BF8 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
-		E33CF7831F9814D700C41BF8 /* Test_remotepaylib_TerminalMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_remotepaylib_TerminalMessage.swift; sourceTree = "<group>"; };
-		E3E409491F97B6A000DC7F10 /* Test_cloverconnector_WebSocketDeviceConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_cloverconnector_WebSocketDeviceConfiguration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,7 +176,6 @@
 			children = (
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example Source */,
-				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				42927818D15CB42408EC2EA3 /* Pods */,
 				D58C6D7C6B2E8CE364280580 /* Frameworks */,
@@ -239,25 +225,6 @@
 				7E84F8FC1E60A3F8003A70B2 /* test1.json */,
 				7E22E3701E38723700E61A11 /* clover_cacerts.p12 */,
 				607FACD41AFB9204008FA782 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		607FACE81AFB9204008FA782 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				607FACE91AFB9204008FA782 /* Supporting Files */,
-				E33CF7861F98EFEF00C41BF8 /* cloverconnector */,
-				E33CF7871F98F03900C41BF8 /* remotepaylib */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		607FACE91AFB9204008FA782 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				E33CF77D1F98125200C41BF8 /* TestStub */,
-				E33CF7821F9814CA00C41BF8 /* TestSupport.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -331,32 +298,6 @@
 				60BF16A62156B0D50E349B58 /* Pods_CloverConnector_Tests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		E33CF77D1F98125200C41BF8 /* TestStub */ = {
-			isa = PBXGroup;
-			children = (
-				E33CF77E1F98125200C41BF8 /* TestCloverTransport.swift */,
-				E33CF77F1F98125200C41BF8 /* TestDeviceConfiguration.swift */,
-			);
-			path = TestStub;
-			sourceTree = "<group>";
-		};
-		E33CF7861F98EFEF00C41BF8 /* cloverconnector */ = {
-			isa = PBXGroup;
-			children = (
-				E33CF7791F97F02C00C41BF8 /* Test_cloverconnector_DefaultCloverConnectorV2.swift */,
-				E3E409491F97B6A000DC7F10 /* Test_cloverconnector_WebSocketDeviceConfiguration.swift */,
-			);
-			name = cloverconnector;
-			sourceTree = "<group>";
-		};
-		E33CF7871F98F03900C41BF8 /* remotepaylib */ = {
-			isa = PBXGroup;
-			children = (
-				E33CF7831F9814D700C41BF8 /* Test_remotepaylib_TerminalMessage.swift */,
-			);
-			name = remotepaylib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -453,7 +394,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E84F8FD1E60A3F8003A70B2 /* test1.json in Resources */,
 				7EC6DF181D90472D00D852EF /* Main.storyboard in Resources */,
 				7EC6DF161D90472D00D852EF /* AvailableItems.xib in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
@@ -626,12 +566,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E33CF7811F98128D00C41BF8 /* TestCloverTransport.swift in Sources */,
-				E33CF7841F9814D700C41BF8 /* Test_remotepaylib_TerminalMessage.swift in Sources */,
-				E3E4094A1F97B6A000DC7F10 /* Test_cloverconnector_WebSocketDeviceConfiguration.swift in Sources */,
-				E33CF7851F98150C00C41BF8 /* TestSupport.swift in Sources */,
-				E33CF7801F98128B00C41BF8 /* TestDeviceConfiguration.swift in Sources */,
-				E33CF77A1F97F02C00C41BF8 /* Test_cloverconnector_DefaultCloverConnectorV2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -826,6 +760,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -846,6 +781,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
