@@ -3,7 +3,7 @@
 //  CloverConnector
 //
 //  
-//  Copyright © 2017 Clover Network, Inc. All rights reserved.
+//  Copyright © 2018 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation
@@ -109,10 +109,6 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                             case Method.CLOSEOUT_RESPONSE:
                                 if let crm = Mapper<CloseoutResponseMessage>().map(JSONString: payload) {
                                     notifyListenerCloseoutResponse(crm)
-                                }
-                            case Method.CAPTURE_PREAUTH:
-                                if let cparm = Mapper<CapturePreAuthResponseMessage>().map(JSONString: payload) {
-                                    notifyListenersPreAuthCaptured(cparm)
                                 }
                             case Method.TIP_ADJUST_RESPONSE:
                                 if let tarm = Mapper<TipAdjustResponseMessage>().map(JSONString: payload) {
@@ -269,6 +265,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                                 if let rdrm = Mapper<ResetDeviceResponseMessage>().map(JSONString: payload) {
                                     notifyDeviceResetResponse(rdrm)
                                 }
+                            case Method.CAPTURE_PREAUTH: break
                         }
                         
                     }
@@ -305,8 +302,18 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         
     }
     
+    override func doCaptureAuth(payIntent:PayIntent, order:CLVModels.Order.Order?, requestInfo ri:String?) {
+        let msg = CapturePreAuthRequestMessageV2()
+        msg.payIntent = payIntent
+        msg.order = order
+        msg.requestInfo = ri
+        
+        if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
+            sendCommandMessage(payload: msgJSON, method: msg.method)
+        }
+    }
     override func doCaptureAuth(_ paymentID: String, amount: Int, tipAmount: Int) {
-        let msg = CapturePreAuthRequestMessage()
+        let msg = CapturePreAuthRequestMessageV1()
         msg.amount = amount
         msg.paymentId = paymentID
         msg.tipAmount = tipAmount
@@ -898,12 +905,11 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     func notifyListenersPreAuthCaptured(_ preAuthMessage:CapturePreAuthResponseMessage) {
         guard let status = preAuthMessage.status,
-            let reason = preAuthMessage.reason,
             let paymentId = preAuthMessage.paymentId,
             let amount = preAuthMessage.amount else { return }
         for listener in deviceObservers {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
-                listener.onCapturePreAuthResponse(status, reason: reason, paymentId: paymentId, amount: amount, tipAmount: preAuthMessage.tipAmount ?? 0)
+                listener.onCapturePreAuthResponse(status, reason: preAuthMessage.reason, paymentId: paymentId, amount: amount, tipAmount: preAuthMessage.tipAmount ?? 0)
             })
         }
     }
@@ -951,7 +957,6 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     func notifyListenersVerifySignatureRequest(_ svr:VerifySignatureRequest) {
         if let payment = svr.payment {
-//            doSignatureVerified(payment, verified: true)
             for listener in deviceObservers {
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
                     listener.onVerifySignature(payment, signature: svr.signature)
@@ -990,13 +995,12 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     func notifyListenersCapturePreAuthResponse(_ response:CapturePreAuthResponseMessage) {
         guard let status = response.status,
-            let reason = response.reason,
             let paymentId = response.paymentId,
             let amount = response.amount,
             let tipAmount = response.tipAmount else { return }
         for listener in deviceObservers {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
-                listener.onCapturePreAuthResponse(status, reason: reason, paymentId: paymentId, amount: amount, tipAmount: tipAmount)
+                listener.onCapturePreAuthResponse(status, reason: response.reason, paymentId: paymentId, amount: amount, tipAmount: tipAmount)
             })
         }
     }

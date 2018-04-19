@@ -16,7 +16,7 @@ public class RetrievePrintersRequest: NSObject {
     }
 }
 
-public enum PrintCategory {
+public enum PrintCategory: String {
     case order
     case receipt
 }

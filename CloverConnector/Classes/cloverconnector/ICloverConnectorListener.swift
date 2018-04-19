@@ -111,7 +111,7 @@ public protocol ICloverConnectorListener : AnyObject {
     func  onDeviceReady (_ merchantInfo: MerchantInfo) -> Void
     
     /// Called when the Clover device is disconnected from the CloverConnector or not 
-    /// responding.
+    /// responding. Not called when the CloverConnector is manually disconnected via 'dispose()'
     func  onDeviceDisconnected () -> Void
     
     /// Called when the Clover device encounters a Challenge at the payment gateway 

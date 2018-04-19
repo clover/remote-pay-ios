@@ -3,176 +3,202 @@
 //  CloverConnector
 //
 //  
-//  Copyright © 2017 Clover Network, Inc. All rights reserved.
+//  Copyright © 2018 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation
-//import CloverSDKRemotepay
 
 
 public class CloverConnectorBroadcaster {
-    var listeners = NSMutableArray()
     
+    // Array of the ICloverConnectorListeners that will each be notified upon request
+    private var listeners = [ICloverConnectorListener]()
+    
+    // The DispatchQueue that each notification will take place on.  Used to make the listeners array thread safe.
+    private var dispatchQueue = DispatchQueue(label: "com.clover.cloverconnectorbroadcaster.\(UUID().uuidString)")
+    
+    // Adds a listener to be notified
     public func addObject(_ listener:ICloverConnectorListener) {
-        if listeners.index(of: listener) != -1 {
-            listeners.add(listener)
+        dispatchQueue.async { [weak self] in
+            if self?.listeners.index(where: {$0 === listener}) == nil {
+                self?.listeners.append(listener)
+            }
         }
     }
     
+    // Removes all listeners
+    public func clearAll() {
+        dispatchQueue.async { [weak self] in
+            self?.listeners.removeAll()
+        }
+    }
+    
+    // Removes a single listener
     public func removeObject(_ listener:ICloverConnectorListener) {
-        listeners.remove(listener)
+        dispatchQueue.async { [weak self] in
+            if let index = self?.listeners.index(where: {$0 === listener}) {
+                self?.listeners.remove(at: index)
+            }
+        }
     }
     
     public func notifyOnTipAdded(_ tip:Int) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onTipAdded(TipAddedMessage(tip))
             }
         }
     }
     
     public func notifyOnPaymentRefundResponse(_ refundPaymentResponse:RefundPaymentResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onRefundPaymentResponse(refundPaymentResponse)
             }
         }
     }
     
     public func notifyOnCloseoutResponse(_ closeoutResponse:CloseoutResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onCloseoutResponse(closeoutResponse)
             }
         }
     }
     
     public func notifyOnDeviceActivityStart(_ deviceEvent:CloverDeviceEvent) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onDeviceActivityStart(deviceEvent)
             }
         }
     }
     
     public func notifyOnDeviceActivityEnd(_ deviceEvent:CloverDeviceEvent) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onDeviceActivityEnd(deviceEvent)
             }
         }
-        
     }
     
     public func notifyOnDeviceError(_ deviceError:CloverDeviceErrorEvent) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onDeviceError(deviceError);
             }
         }
     }
     
     public func notifyOnSaleResponse(_ response:SaleResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener
-            {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onSaleResponse(response)
             }
         }
     }
     
     public func notifyOnAuthResponse(_ response:AuthResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onAuthResponse(response)
             }
         }
     }
     
     public func notifyOnManualRefundResponse(_ response:ManualRefundResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onManualRefundResponse(response)
             }
         }
     }
     
     public func notifyOnVerifySignatureRequest(_ request:VerifySignatureRequest) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onVerifySignatureRequest(request)
             }
         }
     }
     
     public func notifyOnConfirmPayment(_ request:ConfirmPaymentRequest) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onConfirmPaymentRequest(request)
             }
         }
     }
     
     public func notifyOnVoidPaymentResponse(_ response:VoidPaymentResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onVoidPaymentResponse(response)
             }
         }
     }
     
     public func notifyOnConnect() {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onDeviceConnected()
             }
         }
     }
     
     public func notifyOnDisconnect() {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onDeviceDisconnected()
             }
         }
     }
     
     public func notifyOnReady(_ merchantInfo:MerchantInfo) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onDeviceReady(merchantInfo)
             }
         }
     }
     
     public func notifyOnTipAdjustAuthResponse(_ response:TipAdjustAuthResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onTipAdjustAuthResponse(response);
             }
         }
     }
     
-//    public func notifyOnTxState(txState:TxState) {
-    public func notifyOnTxState(_ txState:Any) {
-//        for listener in listeners {
-//            if let listener = listener as? ICloverConnectorListener {
-//                listener.onTransactionState(txState)
-//            }
-//        }
-    }
-    
     public func notifyOnVaultCardRespose(_ ccr:VaultCardResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onVaultCardResponse(ccr)
             }
         }
     }
     
     public func notifyOnPreAuthResponse(_ response:PreAuthResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onPreAuthResponse(response)
             }
         }
@@ -180,36 +206,37 @@ public class CloverConnectorBroadcaster {
     
 
     
-//    public func notifyOnCapturePreAuth(response:CaptureAuthResponse) {
     public func notifyOnCapturePreAuth(_ response:CapturePreAuthResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onCapturePreAuthResponse(response)
-
             }
         }
     }
     
     public func notifyOnPendingPaymentsResponse(_ response:RetrievePendingPaymentsResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onRetrievePendingPaymentsResponse(response)
-                
             }
         }
     }
     
     public func notifyPrintCredit(_ response:PrintManualRefundReceiptMessage) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onPrintManualRefundReceipt(response)
             }
         }
     }
     
     public func notifyPrintCreditDecline(_ response:PrintManualRefundDeclineReceiptMessage) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onPrintManualRefundDeclineReceipt(response)
             }
         }
@@ -217,99 +244,110 @@ public class CloverConnectorBroadcaster {
     
     
     public func notifyOnPrintMerchantReceipt(_ response: PrintPaymentMerchantCopyReceiptMessage) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onPrintPaymentMerchantCopyReceipt(response)
             }
         }
     }
     
     public func notifyOnPrintPaymentReceipt(_ response: PrintPaymentReceiptMessage) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onPrintPaymentReceipt(response)
             }
         }
     }
     
     public func notifyOnPrintPaymentDeclineReceipt(_ response: PrintPaymentDeclineReceiptMessage) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onPrintPaymentDeclineReceipt(response)
             }
         }
     }
     
     public func notifyOnPrintPaymentRefund(_ response: PrintRefundPaymentReceiptMessage) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onPrintRefundPaymentReceipt(response)
             }
         }
     }
     
     public func notifyOnReadCardResponse(_ response: ReadCardDataResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onReadCardDataResponse(response)
             }
         }
     }
     
     public func notifyOnCustomActivityResponse(_ response: CustomActivityResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onCustomActivityResponse(response)
             }
         }
     }
     
     public func notifyOnMessageFromActivity(_ message:MessageFromActivity) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onMessageFromActivity(message)
             }
         }
     }
     
     public func notifyOnResetDeviceResponse(_ response:ResetDeviceResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onResetDeviceResponse(response)
             }
         }
     }
     
     public func notifyOnRetrievePrintersResponse(_ response:RetrievePrintersResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onRetrievePrintersResponse(response)
             }
         }
     }
     
     public func notifyOnPrintJobStatusResponse(_ response:PrintJobStatusResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onPrintJobStatusResponse(response)
             }
         }
     }
 
     public func notifyOnRetrievePayment(_ response:RetrievePaymentResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onRetrievePaymentResponse(response)
             }
         }
     }
     
     public func notifyOnDeviceStatusResponse(_ response:RetrieveDeviceStatusResponse) {
-        for listener in listeners {
-            if let listener = listener as? ICloverConnectorListener {
+        dispatchQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
+            for listener in strongSelf.listeners {
                 listener.onRetrieveDeviceStatusResponse(response)
             }
         }
     }
-    
 }

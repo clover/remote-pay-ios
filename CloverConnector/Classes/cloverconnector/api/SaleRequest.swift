@@ -55,6 +55,7 @@ public class SaleRequest:TransactionRequest {
 
     /// :nodoc:
     public override func mapping(map:Map) {
+        super.mapping(map: map)
         tippableAmount <- map["tippableAmount"]
         tipAmount <- map["tipAmount"]
         taxAmount <- map["taxAmount"]

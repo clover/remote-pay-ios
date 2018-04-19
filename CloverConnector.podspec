@@ -1,13 +1,11 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CloverConnector'
-  s.version          = '1.4.1'
+  s.version = '1.4.2'
   s.summary          = 'Provides an api for communicating with a Clover Mini as a customer facing payment device.'
 
   s.description      = <<-DESC
 CloverConnector provides an interface to communicate with a tethered Clover device to enable integration with Clover's customer facing payment device capabilities.
-
-New features in 1.4 largely focused around expanding printing capabilities. The 1.4 release is also the first to support Swift 4.0.
 
 ICloverConnector
 - *sale* - method to collect a final sale payment
@@ -24,10 +22,13 @@ ICloverConnector
 - *acceptSignature* - method to accept a signature when the Clover device sends a `verifySignatureRequest`
 - *rejectSignature* - method to reject a signature when the Clover device sends a `verifySignatureRequest`
 - *vaultCard* - reads a card and retrieves a multi-pay token
+- *print* - print the contents of the passed-in `PrintRequest` object
 - *printText* - prints simple text *deprecated*
 - *printImage* - prints the passed in image *deprecated*
 - *printImageFromURL* - print an image references in the url *deprecated*
-- *openCashDrawer* - opens a cash drawer attached to the Clover device *deprecated*
+- *retrievePrinters* - request to retreive available printers
+- *retrievePrintJobStatus* - request the status of a given print job
+- *openCashDrawer* - opens a cash drawer attached to the Clover device with a passed in `OpenCashDrawerRequest` object
 - *showMessage* - displays a simple message on the Clover device
 - *showWelcomeScreen* - displays the welcome screen on the Clover device
 - *showThankYouScreen* - displays the thank you screen on the Clover device
@@ -44,11 +45,6 @@ ICloverConnector
 - *retrieveDeviceStatus* - query the status of the device, callback on onRetrieveDeviceStatus
 - *startCustomActivity* - send a request to start a custom activity on the Clover device
 - *sendMessageToActivity* - send a message to a custom activity running on the Clover device
-- __NEW__
-- *print* - print the contents of the passed-in `PrintRequest` object
-- *openCashDrawer* - opens a cash drawer attached to the Clover device with a passed in `OpenCashDrawerRequest` object
-- *retrievePrinters* - request to retreive available printers
-- *retrievePrintJobStatus* - request the status of a given print job
 
 ICloverConnectorListener
 - *onSaleResponse* - called at the completion of a sale request with either a payment or a cancel state
@@ -69,7 +65,6 @@ ICloverConnectorListener
 - *onMessageFromActivity* - called if the custom activity wants to send a message back to the POS, prior to finishing
 - *onRetrievePaymentResponse* - called at the completion of a retrievePayment request
 - *onRetrieveDeviceStatusResponse* - called at the completion of a retrieveDeviceStatus request
-- __NEW__
 - *onRetrievePrintersResponse* - called at the completion of a retrievePrinters request
 - *onPrintJobStatusResponse* - called at the completion of a retrievePrintJobStatus
 
@@ -82,7 +77,7 @@ DESC
   s.author           = { 'Clover' => 'semi-integrations@clover.com' }
   s.source           = { :git => 'https://github.com/clover/remote-pay-ios.git', :tag => s.version.to_s }
 
-  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0' }
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.1' }
 
   s.ios.deployment_target = '9.0'
   s.osx.deployment_target = '10.10'

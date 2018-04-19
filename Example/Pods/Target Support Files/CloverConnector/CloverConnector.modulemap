@@ -1,0 +1,6 @@
+framework module CloverConnector {
+  umbrella header "CloverConnector-umbrella.h"
+
+  export *
+  module * { export * }
+}

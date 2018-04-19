@@ -3,7 +3,7 @@
 //  CloverConnector
 //
 //  
-//  Copyright © 2017 Clover Network, Inc. All rights reserved.
+//  Copyright © 2018 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation
@@ -61,6 +61,8 @@ class CloverDevice {
     func doKeyPress(_ keyPress:KeyPress) {}
     
     func doVoidPayment(_ payment:CLVModels.Payments.Payment, reason:String) {}
+    
+    func doCaptureAuth(payIntent:PayIntent, order:CLVModels.Order.Order?, requestInfo ri:String?) {}
     
     func doCaptureAuth(_ paymentID:String, amount:Int, tipAmount:Int) {}
     

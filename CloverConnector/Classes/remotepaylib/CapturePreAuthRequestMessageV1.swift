@@ -3,13 +3,13 @@
 //  CloverSDKRemotepay
 //
 //  
-//  Copyright © 2017 Clover Network, Inc. All rights reserved.
+//  Copyright © 2018 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation
 import ObjectMapper
 
-public class CapturePreAuthRequestMessage:Message {
+public class CapturePreAuthRequestMessageV1:Message {
     
     public var paymentId:String?
     public var amount:Int?
