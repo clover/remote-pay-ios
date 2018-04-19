@@ -19,7 +19,7 @@ target 'CloverConnector_Example' do
           targets = installer.pods_project.targets.select { |target| target.name == targetName }
           target = targets[0]
           target.build_configurations.each do |config|
-              config.build_settings['SWIFT_VERSION'] = '4.0'
+              config.build_settings['SWIFT_VERSION'] = '4.1'
           end
       end
   end
