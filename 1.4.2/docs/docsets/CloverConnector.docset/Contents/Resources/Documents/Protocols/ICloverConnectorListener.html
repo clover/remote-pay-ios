@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ICloverConnectorListener Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/ICloverConnectorListener" class="dashAnchor"></a>
+    <a title="ICloverConnectorListener Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">CloverConnector Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">CloverConnector Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        ICloverConnectorListener Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../API.html">API</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ICloverConnector.html">ICloverConnector</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloverConnectorFactory.html">CloverConnectorFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ICloverConnectorListener.html">ICloverConnectorListener</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WebSocketDeviceConfiguration.html">WebSocketDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Payment.html">Payment</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/SaleRequest.html">SaleRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SaleRequest/TipMode.html">– TipMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SaleResponse.html">SaleResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AuthRequest.html">AuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AuthResponse.html">AuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PreAuthRequest.html">PreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PreAuthResponse.html">PreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ManualRefundRequest.html">ManualRefundRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ManualRefundResponse.html">ManualRefundResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TipAdjustAuthRequest.html">TipAdjustAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TipAdjustAuthResponse.html">TipAdjustAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CapturePreAuthRequest.html">CapturePreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CapturePreAuthResponse.html">CapturePreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VoidPaymentRequest.html">VoidPaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VoidPaymentResponse.html">VoidPaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePaymentRequest.html">RetrievePaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePaymentResponse.html">RetrievePaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloseoutRequest.html">CloseoutRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloseoutResponse.html">CloseoutResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ReadCardDataRequest.html">ReadCardDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ReadCardDataResponse.html">ReadCardDataResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VaultCardRequest.html">VaultCardRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VaultCardResponse.html">VaultCardResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Signature.html">Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Signature/Stroke.html">– Stroke</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Device.html">Device</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/MerchantInfo.html">MerchantInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeviceInfo.html">DeviceInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayOrder.html">DisplayOrder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayLineItem.html">DisplayLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayDiscount.html">DisplayDiscount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayPayment.html">DisplayPayment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentReceiptMessage.html">PrintPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentMerchantCopyReceiptMessage.html">PrintPaymentMerchantCopyReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintRefundPaymentReceiptMessage.html">PrintRefundPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentDeclineReceiptMessage.html">PrintPaymentDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintManualRefundReceiptMessage.html">PrintManualRefundReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintManualRefundDeclineReceiptMessage.html">PrintManualRefundDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrieveDeviceStatusRequest.html">RetrieveDeviceStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrieveDeviceStatusResponse.html">RetrieveDeviceStatusResponse</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Custom Activities.html">Custom Activities</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/CustomActivityRequest.html">CustomActivityRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CustomActivityResponse.html">CustomActivityResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageToActivity">MessageToActivity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageFromActivity">MessageFromActivity</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Pairing.html">Pairing</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/PairingDeviceConfiguration.html">PairingDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BaseActivityMessage.html">BaseActivityMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BaseResponse.html">BaseResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels.html">CLVModels</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Customers.html">– Customers</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Order.html">– Order</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Payments.html">– Payments</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OpenCashDrawerRequest.html">OpenCashDrawerRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PaymentResponse.html">PaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintJobStatusRequest.html">PrintJobStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintJobStatusResponse.html">PrintJobStatusResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintRequest.html">PrintRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ResetDeviceResponse.html">ResetDeviceResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ResultStatusEnum.html">ResultStatusEnum</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePendingPaymentsResponse.html">RetrievePendingPaymentsResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePrintersRequest.html">RetrievePrintersRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePrintersResponse.html">RetrievePrintersResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ShowPaymentReceiptOptionsRequest.html">ShowPaymentReceiptOptionsRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TransactionRequest.html">TransactionRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ErrorCode.html">ErrorCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/PrintCategory.html">PrintCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/PrintJobStatus.html">PrintJobStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/QueryStatus.html">QueryStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ResultCode.html">ResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/VoidReason.html">VoidReason</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>ICloverConnectorListener</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnectorListener</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                </div>
+              </div>
+            
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP14onSaleResponseyAA0fG0CF"></a>
+                    <a name="//apple_ref/swift/Method/onSaleResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP14onSaleResponseyAA0fG0CF">onSaleResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called at the completion of a Sale() request. The SaleResponse contains a 
+ResultCode and a Success boolean. A successful Sale transaction will also have 
+the payment object, which can be for the full or partial amount of the Sale 
+request. 
+<strong>Note:</strong> A Sale transaction may come back as a tip-adjustable Auth, depending on 
+the payment gateway. The SaleResponse has a boolean isSale flag that 
+indicates whether the sale is final, or will be finalized during closeout.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onSaleResponse</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">response</span><span class="p">:</span><span class="kt"><a href="../Classes/SaleResponse.html">SaleResponse</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>response</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the transaction request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP14onAuthResponseyAA0fG0CF"></a>
+                    <a name="//apple_ref/swift/Method/onAuthResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP14onAuthResponseyAA0fG0CF">onAuthResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to an Auth() request. <strong>Note:</strong> An Auth transaction may come 
+back as a final Sale, depending on the payment gateway. The AuthResponse has 
+a boolean isAuth flag that indicates whether the Payment can still be<br>
+tip-adjusted.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onAuthResponse</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">authResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/AuthResponse.html">AuthResponse</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>authResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the transaction request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP17onPreAuthResponseyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onPreAuthResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP17onPreAuthResponseyAA0fgH0CF">onPreAuthResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a PreAuth() request. <strong>Note:</strong> The boolean isPreAuth flag 
+in the PreAuthResponse indicates whether CapturePreAuth() can be called 
+for the returned Payment. If the isPreAuth flag is false and the isAuth flag is 
+true, then the payment gateway coerced the PreAuth() request to an Auth. 
+The payment will need to be voided or it will be automatically captured at 
+closeout.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onPreAuthResponse</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">preAuthResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/PreAuthResponse.html">PreAuthResponse</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>preAuthResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the transaction request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP24onCapturePreAuthResponseyAA0fghI0CF"></a>
+                    <a name="//apple_ref/swift/Method/onCapturePreAuthResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP24onCapturePreAuthResponseyAA0fghI0CF">onCapturePreAuthResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a CapturePreAuth() request. 
+Contains the new Amount and TipAmount if successful.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onCapturePreAuthResponse</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">capturePreAuthResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/CapturePreAuthResponse.html">CapturePreAuthResponse</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>capturePreAuthResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the transaction request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP23onTipAdjustAuthResponseyAA0fghI0CF"></a>
+                    <a name="//apple_ref/swift/Method/onTipAdjustAuthResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP23onTipAdjustAuthResponseyAA0fghI0CF">onTipAdjustAuthResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a tip adjustment for an Auth transaction. 
+Contains the tipAmount if successful.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onTipAdjustAuthResponse</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">tipAdjustAuthResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/TipAdjustAuthResponse.html">TipAdjustAuthResponse</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tipAdjustAuthResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the transaction request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP21onVoidPaymentResponseyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onVoidPaymentResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP21onVoidPaymentResponseyAA0fgH0CF">onVoidPaymentResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a voidPayment() request. Contains a 
+<a href="https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html">ResultCode</a>
+and a Success boolean. If successful, the response will also contain the
+paymentId for the voided Payment.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onVoidPaymentResponse</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">voidPaymentResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/VoidPaymentResponse.html">VoidPaymentResponse</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>voidPaymentResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the transaction request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP23onRefundPaymentResponseyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onRefundPaymentResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP23onRefundPaymentResponseyAA0fgH0CF">onRefundPaymentResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a RefundPayment() request. Contains a 
+<a href="https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html">ResultCode</a>
+and a Success boolean. The response to a successful transaction will contain the 
+Refund. The Refund includes the original paymentId as a reference.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onRefundPaymentResponse</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">refundPaymentResponse</span><span class="p">:</span><span class="kt">RefundPaymentResponse</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>refundPaymentResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the transaction request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP22onManualRefundResponseyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onManualRefundResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP22onManualRefundResponseyAA0fgH0CF">onManualRefundResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a manualRefund() request. Contains a 
+<a href="https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html">ResultCode</a> 
+and a Success boolean. If successful, the ManualRefundResponse will have 
+a Credit object associated with the relevant Payment information.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onManualRefundResponse</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">manualRefundResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/ManualRefundResponse.html">ManualRefundResponse</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>manualRefundResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the transaction request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP18onCloseoutResponseyAA0fG0CF"></a>
+                    <a name="//apple_ref/swift/Method/onCloseoutResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP18onCloseoutResponseyAA0fG0CF">onCloseoutResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a Closeout() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onCloseoutResponse</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">closeoutResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/CloseoutResponse.html">CloseoutResponse</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>closeoutResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the transaction request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP24onVerifySignatureRequestyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onVerifySignatureRequest(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP24onVerifySignatureRequestyAA0fgH0CF">onVerifySignatureRequest(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when the Clover device requests verification for a user&rsquo;s on-screen 
+signature. The Payment and Signature will be passed in.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onVerifySignatureRequest</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">signatureVerifyRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>signatureVerifyRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The verification request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP19onVaultCardResponseyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onVaultCardResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP19onVaultCardResponseyAA0fgH0CF">onVaultCardResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a vaultCard() request. Contains a 
+<a href="https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html">ResultCode</a> 
+and a Success boolean. If successful, the response will contain a VaultedCard 
+object with a token value that&rsquo;s unique for the card and merchant. The token
+can be used for future Sale() and Auth() requests.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onVaultCardResponse</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">vaultCardResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/VaultCardResponse.html">VaultCardResponse</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>vaultCardResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP21onDeviceActivityStartyAA0aF5EventCF"></a>
+                    <a name="//apple_ref/swift/Method/onDeviceActivityStart(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP21onDeviceActivityStartyAA0aF5EventCF">onDeviceActivityStart(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when the Clover device transitions to a new screen or activity. 
+The CloverDeviceEvent passed in will contain an event type, a description, 
+and a list of available InputOptions.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onDeviceActivityStart</span><span class="p">(</span> <span class="n">_</span> <span class="nv">deviceEvent</span><span class="p">:</span> <span class="kt">CloverDeviceEvent</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>deviceEvent</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The device event.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP19onDeviceActivityEndyAA0aF5EventCF"></a>
+                    <a name="//apple_ref/swift/Method/onDeviceActivityEnd(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP19onDeviceActivityEndyAA0aF5EventCF">onDeviceActivityEnd(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when the Clover device transitions away from a screen or activity. 
+The CloverDeviceEvent passed in will contain an event type and description. 
+<strong>Note:</strong> The start and end events are not guaranteed to process in order. 
+The event type should be used to make sure these events are paired.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onDeviceActivityEnd</span><span class="p">(</span> <span class="n">_</span> <span class="nv">deviceEvent</span><span class="p">:</span> <span class="kt">CloverDeviceEvent</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>deviceEvent</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The device event.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP13onDeviceErroryAA0afG5EventCF"></a>
+                    <a name="//apple_ref/swift/Method/onDeviceError(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP13onDeviceErroryAA0afG5EventCF">onDeviceError(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when an error occurs while trying to send messages to the Clover 
+device.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onDeviceError</span><span class="p">(</span> <span class="n">_</span> <span class="nv">deviceErrorEvent</span><span class="p">:</span> <span class="kt">CloverDeviceErrorEvent</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>deviceErrorEvent</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The device error event.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP17onDeviceConnectedyyF"></a>
+                    <a name="//apple_ref/swift/Method/onDeviceConnected()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP17onDeviceConnectedyyF">onDeviceConnected()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when the Clover device is initially connected, but not ready to 
+communicate.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onDeviceConnected</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP13onDeviceReadyyAA12MerchantInfoCF"></a>
+                    <a name="//apple_ref/swift/Method/onDeviceReady(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP13onDeviceReadyyAA12MerchantInfoCF">onDeviceReady(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when the Clover device is ready to communicate and respond to requests.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onDeviceReady</span> <span class="p">(</span><span class="n">_</span> <span class="nv">merchantInfo</span><span class="p">:</span> <span class="kt"><a href="../Classes/MerchantInfo.html">MerchantInfo</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>merchantInfo</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The merchant information to associate with the device.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP20onDeviceDisconnectedyyF"></a>
+                    <a name="//apple_ref/swift/Method/onDeviceDisconnected()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP20onDeviceDisconnectedyyF">onDeviceDisconnected()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when the Clover device is disconnected from the CloverConnector or not 
+responding. Not called when the CloverConnector is manually disconnected via &lsquo;dispose()&rsquo;</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">onDeviceDisconnected</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP23onConfirmPaymentRequestyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onConfirmPaymentRequest(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP23onConfirmPaymentRequestyAA0fgH0CF">onConfirmPaymentRequest(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when the Clover device encounters a Challenge at the payment gateway 
+and requires confirmation. A Challenge is triggered by a potential 
+duplicate Payment (DUPLICATE_CHALLENGE) or an offline Payment 
+(OFFLINE_CHALLENGE). The device sends a ConfirmPaymentRequest() 
+asking the merchant to reply by sending either an AcceptPayment() or 
+RejectPayment() call.</p>
+
+<p>Note that duplicate Payment Challenges are raised when multiple Payments 
+are made with the same card type and last four digits within the same hour. 
+For this reason, we recommend that you do not programmatically call 
+CloverConnector.RejectPayment() on all instances of DUPLICATE_CHALLENGE. 
+For more information, see <a href="https://docs.clover.com/build/working-with-challenges/">Working with 
+Challenges</a>. </p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onConfirmPaymentRequest</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span><span class="kt">ConfirmPaymentRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request for confirmation.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP10onTipAddedyAA0fG7MessageCF"></a>
+                    <a name="//apple_ref/swift/Method/onTipAdded(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP10onTipAddedyAA0fG7MessageCF">onTipAdded(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when a customer selects a tip amount on the Clover device&rsquo;s screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onTipAdded</span><span class="p">(</span><span class="n">_</span> <span class="nv">message</span><span class="p">:</span><span class="kt">TipAddedMessage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>message</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The TipAddedMessage.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP26onPrintManualRefundReceiptyAA0fghI7MessageCF"></a>
+                    <a name="//apple_ref/swift/Method/onPrintManualRefundReceipt(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP26onPrintManualRefundReceiptyAA0fghI7MessageCF">onPrintManualRefundReceipt(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when a user requests a paper receipt for a Manual Refund. Will only be 
+called if disablePrinting = true on the ManualRefund() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onPrintManualRefundReceipt</span><span class="p">(</span><span class="n">_</span> <span class="nv">printManualRefundReceiptMessage</span><span class="p">:</span><span class="kt"><a href="../Classes/PrintManualRefundReceiptMessage.html">PrintManualRefundReceiptMessage</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>printManualRefundReceiptMessage</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A callback that asks the POS to print a receipt for a ManualRefund. Contains a Credit object.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP33onPrintManualRefundDeclineReceiptyAA0fghiJ7MessageCF"></a>
+                    <a name="//apple_ref/swift/Method/onPrintManualRefundDeclineReceipt(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP33onPrintManualRefundDeclineReceiptyAA0fghiJ7MessageCF">onPrintManualRefundDeclineReceipt(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when a user requests a paper receipt for a declined Manual Refund. Will 
+only be called if disablePrinting = true on the ManualRefund() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onPrintManualRefundDeclineReceipt</span><span class="p">(</span><span class="n">_</span> <span class="nv">printManualRefundDeclineReceiptMessage</span><span class="p">:</span><span class="kt"><a href="../Classes/PrintManualRefundDeclineReceiptMessage.html">PrintManualRefundDeclineReceiptMessage</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>printManualRefundDeclineReceiptMessage</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The PrintManualRefundDeclineReceiptMessage.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP21onPrintPaymentReceiptyAA0fgH7MessageCF"></a>
+                    <a name="//apple_ref/swift/Method/onPrintPaymentReceipt(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP21onPrintPaymentReceiptyAA0fgH7MessageCF">onPrintPaymentReceipt(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when a user requests a paper receipt for a Payment. Will only be called if
+disablePrinting = true on the Sale(), Auth(), or PreAuth() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onPrintPaymentReceipt</span><span class="p">(</span><span class="n">_</span> <span class="nv">printPaymentReceiptMessage</span><span class="p">:</span><span class="kt"><a href="../Classes/PrintPaymentReceiptMessage.html">PrintPaymentReceiptMessage</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>printPaymentReceiptMessage</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The message.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP28onPrintPaymentDeclineReceiptyAA0fghI7MessageCF"></a>
+                    <a name="//apple_ref/swift/Method/onPrintPaymentDeclineReceipt(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP28onPrintPaymentDeclineReceiptyAA0fghI7MessageCF">onPrintPaymentDeclineReceipt(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when a user requests a paper receipt for a declined Payment.  Will only be 
+called if disablePrinting = true on the Sale(), Auth(), or PreAuth() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onPrintPaymentDeclineReceipt</span><span class="p">(</span><span class="n">_</span> <span class="nv">printPaymentDeclineReceiptMessage</span><span class="p">:</span><span class="kt"><a href="../Classes/PrintPaymentDeclineReceiptMessage.html">PrintPaymentDeclineReceiptMessage</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>printPaymentDeclineReceiptMessage</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The message.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP33onPrintPaymentMerchantCopyReceiptyAA0fghiJ7MessageCF"></a>
+                    <a name="//apple_ref/swift/Method/onPrintPaymentMerchantCopyReceipt(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP33onPrintPaymentMerchantCopyReceiptyAA0fghiJ7MessageCF">onPrintPaymentMerchantCopyReceipt(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when a user requests a merchant copy of a Payment receipt. Will only be 
+called if disablePrinting = true on the Sale(), Auth(), or PreAuth() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onPrintPaymentMerchantCopyReceipt</span><span class="p">(</span><span class="n">_</span> <span class="nv">printPaymentMerchantCopyReceiptMessage</span><span class="p">:</span><span class="kt"><a href="../Classes/PrintPaymentMerchantCopyReceiptMessage.html">PrintPaymentMerchantCopyReceiptMessage</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>printPaymentMerchantCopyReceiptMessage</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The message.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP27onPrintRefundPaymentReceiptyAA0fghI7MessageCF"></a>
+                    <a name="//apple_ref/swift/Method/onPrintRefundPaymentReceipt(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP27onPrintRefundPaymentReceiptyAA0fghI7MessageCF">onPrintRefundPaymentReceipt(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when a user requests a paper receipt for a Payment Refund. Will only be 
+called if disablePrinting = true on the Sale(), Auth(), PreAuth() or 
+ManualRefund() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onPrintRefundPaymentReceipt</span><span class="p">(</span><span class="n">_</span> <span class="nv">printRefundPaymentReceiptMessage</span><span class="p">:</span><span class="kt"><a href="../Classes/PrintRefundPaymentReceiptMessage.html">PrintRefundPaymentReceiptMessage</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>printRefundPaymentReceiptMessage</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The message.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP26onRetrievePrintersResponseyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onRetrievePrintersResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP26onRetrievePrintersResponseyAA0fgH0CF">onRetrievePrintersResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a retrievePrinters() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onRetrievePrintersResponse</span><span class="p">(</span><span class="n">_</span> <span class="nv">retrievePrintersResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/RetrievePrintersResponse.html">RetrievePrintersResponse</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>retrievePrintersResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP24onPrintJobStatusResponseyAA0fghI0CF"></a>
+                    <a name="//apple_ref/swift/Method/onPrintJobStatusResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP24onPrintJobStatusResponseyAA0fghI0CF">onPrintJobStatusResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a retrievePrintJobStatus() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onPrintJobStatusResponse</span><span class="p">(</span><span class="n">_</span> <span class="nv">printJobStatusResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/PrintJobStatusResponse.html">PrintJobStatusResponse</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>printJobStatusResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP33onRetrievePendingPaymentsResponseyAA0fghI0CF"></a>
+                    <a name="//apple_ref/swift/Method/onRetrievePendingPaymentsResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP33onRetrievePendingPaymentsResponseyAA0fghI0CF">onRetrievePendingPaymentsResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a retrievePendingPayment() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onRetrievePendingPaymentsResponse</span><span class="p">(</span><span class="n">_</span> <span class="nv">retrievePendingPaymentResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/RetrievePendingPaymentsResponse.html">RetrievePendingPaymentsResponse</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>retrievePendingPaymentResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP22onReadCardDataResponseyAA0fghI0CF"></a>
+                    <a name="//apple_ref/swift/Method/onReadCardDataResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP22onReadCardDataResponseyAA0fghI0CF">onReadCardDataResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a readCardData() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onReadCardDataResponse</span><span class="p">(</span><span class="n">_</span> <span class="nv">readCardDataResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/ReadCardDataResponse.html">ReadCardDataResponse</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>readCardDataResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP24onCustomActivityResponseyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onCustomActivityResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP24onCustomActivityResponseyAA0fgH0CF">onCustomActivityResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when a Custom Activity finishes normally.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onCustomActivityResponse</span><span class="p">(</span><span class="n">_</span> <span class="nv">customActivityResponse</span><span class="p">:</span><span class="kt"><a href="../Classes/CustomActivityResponse.html">CustomActivityResponse</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>customActivityResponse</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The CustomActivityResponse.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP21onResetDeviceResponseyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onResetDeviceResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP21onResetDeviceResponseyAA0fgH0CF">onResetDeviceResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a ResetDevice() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onResetDeviceResponse</span><span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span><span class="kt"><a href="../Classes/ResetDeviceResponse.html">ResetDeviceResponse</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>response</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP21onMessageFromActivityyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onMessageFromActivity(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP21onMessageFromActivityyAA0fgH0CF">onMessageFromActivity(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when a Custom Activity sends a message to the POS.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onMessageFromActivity</span><span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span><span class="kt"><a href="../Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageFromActivity">MessageFromActivity</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>response</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The message.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP25onRetrievePaymentResponseyAA0fgH0CF"></a>
+                    <a name="//apple_ref/swift/Method/onRetrievePaymentResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP25onRetrievePaymentResponseyAA0fgH0CF">onRetrievePaymentResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a RetrievePayment() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onRetrievePaymentResponse</span><span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span><span class="kt"><a href="../Classes/RetrievePaymentResponse.html">RetrievePaymentResponse</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>response</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB8ListenerP30onRetrieveDeviceStatusResponseyAA0fghI0CF"></a>
+                    <a name="//apple_ref/swift/Method/onRetrieveDeviceStatusResponse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB8ListenerP30onRetrieveDeviceStatusResponseyAA0fghI0CF">onRetrieveDeviceStatusResponse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called in response to a RetrieveDeviceStatus() request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">onRetrieveDeviceStatusResponse</span><span class="p">(</span><span class="n">_</span> <span class="nv">response</span><span class="p">:</span> <span class="kt"><a href="../Classes/RetrieveDeviceStatusResponse.html">RetrieveDeviceStatusResponse</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>response</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The response to the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2018 Clover Network, Inc. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

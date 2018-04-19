@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ICloverConnector Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/ICloverConnector" class="dashAnchor"></a>
+    <a title="ICloverConnector Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">CloverConnector Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">CloverConnector Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        ICloverConnector Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../API.html">API</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ICloverConnector.html">ICloverConnector</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloverConnectorFactory.html">CloverConnectorFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ICloverConnectorListener.html">ICloverConnectorListener</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WebSocketDeviceConfiguration.html">WebSocketDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Payment.html">Payment</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/SaleRequest.html">SaleRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SaleRequest/TipMode.html">– TipMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SaleResponse.html">SaleResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AuthRequest.html">AuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AuthResponse.html">AuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PreAuthRequest.html">PreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PreAuthResponse.html">PreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ManualRefundRequest.html">ManualRefundRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ManualRefundResponse.html">ManualRefundResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TipAdjustAuthRequest.html">TipAdjustAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TipAdjustAuthResponse.html">TipAdjustAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CapturePreAuthRequest.html">CapturePreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CapturePreAuthResponse.html">CapturePreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VoidPaymentRequest.html">VoidPaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VoidPaymentResponse.html">VoidPaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePaymentRequest.html">RetrievePaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePaymentResponse.html">RetrievePaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloseoutRequest.html">CloseoutRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloseoutResponse.html">CloseoutResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ReadCardDataRequest.html">ReadCardDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ReadCardDataResponse.html">ReadCardDataResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VaultCardRequest.html">VaultCardRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VaultCardResponse.html">VaultCardResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Signature.html">Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Signature/Stroke.html">– Stroke</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Device.html">Device</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/MerchantInfo.html">MerchantInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeviceInfo.html">DeviceInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayOrder.html">DisplayOrder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayLineItem.html">DisplayLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayDiscount.html">DisplayDiscount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayPayment.html">DisplayPayment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentReceiptMessage.html">PrintPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentMerchantCopyReceiptMessage.html">PrintPaymentMerchantCopyReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintRefundPaymentReceiptMessage.html">PrintRefundPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentDeclineReceiptMessage.html">PrintPaymentDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintManualRefundReceiptMessage.html">PrintManualRefundReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintManualRefundDeclineReceiptMessage.html">PrintManualRefundDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrieveDeviceStatusRequest.html">RetrieveDeviceStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrieveDeviceStatusResponse.html">RetrieveDeviceStatusResponse</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Custom Activities.html">Custom Activities</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/CustomActivityRequest.html">CustomActivityRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CustomActivityResponse.html">CustomActivityResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageToActivity">MessageToActivity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageFromActivity">MessageFromActivity</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Pairing.html">Pairing</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/PairingDeviceConfiguration.html">PairingDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BaseActivityMessage.html">BaseActivityMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BaseResponse.html">BaseResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels.html">CLVModels</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Customers.html">– Customers</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Order.html">– Order</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Payments.html">– Payments</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OpenCashDrawerRequest.html">OpenCashDrawerRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PaymentResponse.html">PaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintJobStatusRequest.html">PrintJobStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintJobStatusResponse.html">PrintJobStatusResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintRequest.html">PrintRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ResetDeviceResponse.html">ResetDeviceResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ResultStatusEnum.html">ResultStatusEnum</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePendingPaymentsResponse.html">RetrievePendingPaymentsResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePrintersRequest.html">RetrievePrintersRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePrintersResponse.html">RetrievePrintersResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ShowPaymentReceiptOptionsRequest.html">ShowPaymentReceiptOptionsRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TransactionRequest.html">TransactionRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ErrorCode.html">ErrorCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/PrintCategory.html">PrintCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/PrintJobStatus.html">PrintJobStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/QueryStatus.html">QueryStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ResultCode.html">ResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/VoidReason.html">VoidReason</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>ICloverConnector</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ICloverConnector</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>The CloverConnector API serves as the interface for connecting to a Clover device.</p>
+
+<p>This document defines the available methods.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P28CARD_ENTRY_METHOD_MAG_STRIPESiv"></a>
+                    <a name="//apple_ref/swift/Property/CARD_ENTRY_METHOD_MAG_STRIPE" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P28CARD_ENTRY_METHOD_MAG_STRIPESiv">CARD_ENTRY_METHOD_MAG_STRIPE</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">CARD_ENTRY_METHOD_MAG_STRIPE</span><span class="p">:</span><span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P29CARD_ENTRY_METHOD_ICC_CONTACTSiv"></a>
+                    <a name="//apple_ref/swift/Property/CARD_ENTRY_METHOD_ICC_CONTACT" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P29CARD_ENTRY_METHOD_ICC_CONTACTSiv">CARD_ENTRY_METHOD_ICC_CONTACT</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">CARD_ENTRY_METHOD_ICC_CONTACT</span><span class="p">:</span><span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P33CARD_ENTRY_METHOD_NFC_CONTACTLESSSiv"></a>
+                    <a name="//apple_ref/swift/Property/CARD_ENTRY_METHOD_NFC_CONTACTLESS" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P33CARD_ENTRY_METHOD_NFC_CONTACTLESSSiv">CARD_ENTRY_METHOD_NFC_CONTACTLESS</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">CARD_ENTRY_METHOD_NFC_CONTACTLESS</span><span class="p">:</span><span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P24CARD_ENTRY_METHOD_MANUALSiv"></a>
+                    <a name="//apple_ref/swift/Property/CARD_ENTRY_METHOD_MANUAL" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P24CARD_ENTRY_METHOD_MANUALSiv">CARD_ENTRY_METHOD_MANUAL</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">CARD_ENTRY_METHOD_MANUAL</span><span class="p">:</span><span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P26CARD_ENTRY_METHODS_DEFAULTSiv"></a>
+                    <a name="//apple_ref/swift/Property/CARD_ENTRY_METHODS_DEFAULT" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P26CARD_ENTRY_METHODS_DEFAULTSiv">CARD_ENTRY_METHODS_DEFAULT</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">CARD_ENTRY_METHODS_DEFAULT</span><span class="p">:</span><span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P16MAX_PAYLOAD_SIZESiv"></a>
+                    <a name="//apple_ref/swift/Property/MAX_PAYLOAD_SIZE" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P16MAX_PAYLOAD_SIZESiv">MAX_PAYLOAD_SIZE</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">MAX_PAYLOAD_SIZE</span><span class="p">:</span><span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P03addaB8ListeneryAA0cbE0_pF"></a>
+                    <a name="//apple_ref/swift/Method/addCloverConnectorListener(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P03addaB8ListeneryAA0cbE0_pF">addCloverConnectorListener(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds a Clover Connector listener.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">addCloverConnectorListener</span><span class="p">(</span><span class="n">_</span> <span class="nv">cloverConnectorListener</span><span class="p">:</span><span class="kt"><a href="../Protocols/ICloverConnectorListener.html">ICloverConnectorListener</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cloverConnectorListener</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The connection listener.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P06removeaB8ListeneryAA0cbE0_pF"></a>
+                    <a name="//apple_ref/swift/Method/removeCloverConnectorListener(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P06removeaB8ListeneryAA0cbE0_pF">removeCloverConnectorListener(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes a Clover Connector listener.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">removeCloverConnectorListener</span><span class="p">(</span><span class="n">_</span> <span class="nv">cloverConnectorListener</span><span class="p">:</span><span class="kt"><a href="../Protocols/ICloverConnectorListener.html">ICloverConnectorListener</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cloverConnectorListener</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The connection listener.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P20initializeConnectionyyF"></a>
+                    <a name="//apple_ref/swift/Method/initializeConnection()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P20initializeConnectionyyF">initializeConnection()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes the connection and starts communication with the Clover device.
+This is called after the connector is created and listeners have been added to it.
+initializeConnection() must be called before calling any other method,
+other than those that add or remove listeners.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">initializeConnection</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P4saleyAA11SaleRequestCF"></a>
+                    <a name="//apple_ref/swift/Method/sale(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P4saleyAA11SaleRequestCF">sale(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Requests a Sale transaction (purchase).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">sale</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">saleRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/SaleRequest.html">SaleRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>saleRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A SaleRequest object containing basic information for the
+transaction.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P4authyAA11AuthRequestCF"></a>
+                    <a name="//apple_ref/swift/Method/auth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P4authyAA11AuthRequestCF">auth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Requests an Auth transaction. The tip for an Auth can be adjusted through the
+TipAdjustAuth() call until the batch Closeout is processed.
+<strong>Note:</strong> The MerchantInfo.SupportsAuths boolean must be set to true.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">auth</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">authRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/AuthRequest.html">AuthRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>authRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P7preAuthyAA03PreE7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/preAuth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P7preAuthyAA03PreE7RequestCF">preAuth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initiates a PreAuth transaction (a pre-authorization for a certain amount). This 
+transaction lets the merchant know whether the account associated with a card has 
+sufficient funds, without actually charging the card. When the merchant is ready 
+to charge a final amount, the POS will call CapturePreAuth() to complete the 
+Payment.
+<strong>Note:</strong> The MerchantInfo.SupportsPreAuths boolean must be set to true.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">preAuth</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">preAuthRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/PreAuthRequest.html">PreAuthRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>preAuthRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P14capturePreAuthyAA07CaptureeF7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/capturePreAuth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P14capturePreAuthyAA07CaptureeF7RequestCF">capturePreAuth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Marks a PreAuth Payment for capture by a Closeout process. After a PreAuth is 
+captured, it is effectively the same as an Auth Payment. <strong>Note:</strong> Should only be 
+called if the request&rsquo;s PaymentID is from a PreAuthResponse.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">capturePreAuth</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">capturePreAuthRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/CapturePreAuthRequest.html">CapturePreAuthRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>capturePreAuthRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P13tipAdjustAuthyAA03TipeF7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/tipAdjustAuth(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P13tipAdjustAuthyAA03TipeF7RequestCF">tipAdjustAuth(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adjusts the tip for a previous Auth transaction. This call can be made until
+the Auth Payment has been finalized by a Closeout.
+<strong>Note:</strong> Should only be called if the request&rsquo;s PaymentID is from an 
+AuthResponse.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">tipAdjustAuth</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">authTipAdjustRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/TipAdjustAuthRequest.html">TipAdjustAuthRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>authTipAdjustRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P11voidPaymentyAA04VoidE7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/voidPayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P11voidPaymentyAA04VoidE7RequestCF">voidPayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Voids a transaction.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">voidPayment</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">voidPaymentRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/VoidPaymentRequest.html">VoidPaymentRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>voidPaymentRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A VoidRequest object containing basic information needed to void the transaction.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P13refundPaymentyAA06RefundE7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/refundPayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P13refundPaymentyAA06RefundE7RequestCF">refundPayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Refunds the full or partial amount of a Payment.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">refundPayment</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">refundPaymentRequest</span><span class="p">:</span><span class="kt">RefundPaymentRequest</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>refundPaymentRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P12manualRefundyAA06ManualE7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/manualRefund(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P12manualRefundyAA06ManualE7RequestCF">manualRefund(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initiates a Manual Refund transaction (a “Refund” or credit
+that is not associated with a previous Payment).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">manualRefund</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">manualRefundRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/ManualRefundRequest.html">ManualRefundRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>manualRefundRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A ManualRefundRequest object with the request 
+details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P6cancelyyF"></a>
+                    <a name="//apple_ref/swift/Method/cancel()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P6cancelyyF">cancel()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sends a <q>cancel</q> button press to the Clover device.</p>
+
+<p>Use resetDevice() or invokeInputOption() instead.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">cancel</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P8closeoutyAA15CloseoutRequestCF"></a>
+                    <a name="//apple_ref/swift/Method/closeout(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P8closeoutyAA15CloseoutRequestCF">closeout(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sends a request to the Clover server to close out all transactions.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">closeout</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">closeoutRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/CloseoutRequest.html">CloseoutRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>closeoutRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The request details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P28displayPaymentReceiptOptionsySS7orderId_SS07paymentI0tF"></a>
+                    <a name="//apple_ref/swift/Method/displayPaymentReceiptOptions(orderId:paymentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P28displayPaymentReceiptOptionsySS7orderId_SS07paymentI0tF">displayPaymentReceiptOptions(orderId:paymentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Displays the customer-facing receipt options (print, email, etc.) for a Payment on 
+the Clover device.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">displayPaymentReceiptOptions</span><span class="p">(</span><span class="nv">orderId</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">paymentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>orderId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ID of the Order associated with the receipt.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>paymentId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ID of the Payment associated with the receipt.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P15acceptSignatureyAA06VerifyE7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/acceptSignature(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P15acceptSignatureyAA06VerifyE7RequestCF">acceptSignature(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If a signature is captured during a transaction, this method accepts the signature
+as entered.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">acceptSignature</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">signatureVerifyRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>signatureVerifyRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The accepted VerifySignatureRequest the device passed to onVerifySignatureRequest().</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P15rejectSignatureyAA06VerifyE7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/rejectSignature(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P15rejectSignatureyAA06VerifyE7RequestCF">rejectSignature(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If a signature is captured during a transaction, this method rejects the signature
+as entered.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">rejectSignature</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">signatureVerifyRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>signatureVerifyRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The rejected VerifySignatureRequest() the device passed to onVerifySignatureRequest().</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P9vaultCardyAA05VaultE7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/vaultCard(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P9vaultCardyAA05VaultE7RequestCF">vaultCard(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Asks the Clover device to capture card information and request a payment token
+from the payment gateway. The payment token can be used for future Sale and Auth 
+requests in place of the card details. The merchant account must be configured to 
+allow payment tokens.
+<strong>Note:</strong> The MerchantInfo.SupportsVaultCards boolean must be set to true.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">vaultCard</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">vaultCardRequest</span><span class="p">:</span><span class="kt"><a href="../Classes/VaultCardRequest.html">VaultCardRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>vaultCardRequest</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The VaultCardRequest details, including the card 
+entry methods allowed to capture the payment token. If the card entry methods are 
+null, the default values (CARD_ENTRY_METHOD_MAG_STRIPE, 
+CARD_ENTRY_METHOD_ICC_CONTACT, and CARD_ENTRY_METHOD_NFC_CONTACTLESS)
+will be used.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P9printTextySaySSGF"></a>
+                    <a name="//apple_ref/swift/Method/printText(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P9printTextySaySSGF">printText(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Prints custom messages in plain text through the Clover Mini&rsquo;s built-in printer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">printText</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">lines</span><span class="p">:[</span><span class="kt">String</span><span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P10printImageySo7UIImageCF"></a>
+                    <a name="//apple_ref/swift/Method/printImage(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P10printImageySo7UIImageCF">printImage(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Prints an image on paper receipts through the Clover Mini&rsquo;s built-in printer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">printImage</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">image</span><span class="p">:</span><span class="kt">ImageClass</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P17printImageFromURLySSF"></a>
+                    <a name="//apple_ref/swift/Method/printImageFromURL(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P17printImageFromURLySSF">printImageFromURL(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Prints an image from the web on paper receipts through the Clover device&rsquo;s 
+built-in printer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">printImageFromURL</span><span class="p">(</span><span class="n">_</span> <span class="nv">url</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The URL for the image to print.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P5printyAA12PrintRequestCF"></a>
+                    <a name="//apple_ref/swift/Method/print(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P5printyAA12PrintRequestCF">print(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sends a print request using the PrintRequest object. 
+Used to print text, images, and images from a URL using the specified printer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">print</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span><span class="kt"><a href="../Classes/PrintRequest.html">PrintRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The PrintRequest details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P16retrievePrintersyAA08RetrieveE7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/retrievePrinters(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P16retrievePrintersyAA08RetrieveE7RequestCF">retrievePrinters(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Queries available printers attached to the Clover device.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">retrievePrinters</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span><span class="kt"><a href="../Classes/RetrievePrintersRequest.html">RetrievePrintersRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The RetrievePrintersRequest details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P22retrievePrintJobStatusyAA0efG7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/retrievePrintJobStatus(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P22retrievePrintJobStatusyAA0efG7RequestCF">retrievePrintJobStatus(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Queries the status of a print job.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">retrievePrintJobStatus</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span><span class="kt"><a href="../Classes/PrintJobStatusRequest.html">PrintJobStatusRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A PrintJobStatusRequest object containing the request 
+details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P14openCashDraweryAA04OpeneF7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/openCashDrawer(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P14openCashDraweryAA04OpeneF7RequestCF">openCashDrawer(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Opens the first cash drawer found connected to the Clover device.
+The reason for opening the cash drawer must be set on OpenCashDrawerRequest.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">openCashDrawer</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span> <span class="kt"><a href="../Classes/OpenCashDrawerRequest.html">OpenCashDrawerRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The OpenCashDrawerRequest object defining the reason
+the cash drawer is being opened, and an optional device identifier.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P14openCashDrawerySS6reason_tF"></a>
+                    <a name="//apple_ref/swift/Method/openCashDrawer(reason:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P14openCashDrawerySS6reason_tF">openCashDrawer(reason:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Opens the cash drawer connected to the Clover device. Deprecated.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">openCashDrawer</span> <span class="p">(</span><span class="nv">reason</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P11showMessageySSF"></a>
+                    <a name="//apple_ref/swift/Method/showMessage(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P11showMessageySSF">showMessage(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Displays a string-based message on the Clover device&rsquo;s screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">showMessage</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">message</span><span class="p">:</span><span class="kt">String</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>message</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The string message to display.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P17showWelcomeScreenyyF"></a>
+                    <a name="//apple_ref/swift/Method/showWelcomeScreen()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P17showWelcomeScreenyyF">showWelcomeScreen()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Displays the welcome screen on the Clover device.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">showWelcomeScreen</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P18showThankYouScreenyyF"></a>
+                    <a name="//apple_ref/swift/Method/showThankYouScreen()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P18showThankYouScreenyyF">showThankYouScreen()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Displays the thank you screen on the Clover device.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">showThankYouScreen</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P16showDisplayOrderyAA0eF0CF"></a>
+                    <a name="//apple_ref/swift/Method/showDisplayOrder(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P16showDisplayOrderyAA0eF0CF">showDisplayOrder(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Displays an Order and associated lineItems on the Clover device. Will replace an 
+Order that is already displayed on the device screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">showDisplayOrder</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">order</span><span class="p">:</span><span class="kt"><a href="../Classes/DisplayOrder.html">DisplayOrder</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>order</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Order to display.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P18removeDisplayOrderyAA0eF0CF"></a>
+                    <a name="//apple_ref/swift/Method/removeDisplayOrder(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P18removeDisplayOrderyAA0eF0CF">removeDisplayOrder(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes the DisplayOrder object from the Clover device&rsquo;s screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">removeDisplayOrder</span> <span class="p">(</span> <span class="n">_</span> <span class="nv">order</span><span class="p">:</span><span class="kt"><a href="../Classes/DisplayOrder.html">DisplayOrder</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>order</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Order to remove.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P11resetDeviceyyF"></a>
+                    <a name="//apple_ref/swift/Method/resetDevice()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P11resetDeviceyyF">resetDevice()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sends a request to reset the Clover device back to the welcome screen. Can be used 
+when the device is in an unknown or invalid state from the perspective of the POS.
+<strong>Note:</strong> This request could cause the POS to miss a transaction or other 
+information. Use cautiously as a last resort.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span>  <span class="nf">resetDevice</span> <span class="p">(</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P17invokeInputOptionyAA0eF0CF"></a>
+                    <a name="//apple_ref/swift/Method/invokeInputOption(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P17invokeInputOptionyAA0eF0CF">invokeInputOption(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sends a keystroke to the Clover device that invokes an input option (OK, 
+CANCEL, DONE, etc.) on the customer&rsquo;s behalf.
+InputOptions are on the CloverDeviceEvent passed to onDeviceActivityStart().</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">invokeInputOption</span><span class="p">(</span> <span class="n">_</span> <span class="nv">inputOption</span><span class="p">:</span><span class="kt">InputOption</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>inputOption</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The input option to invoke.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P12readCardDatayAA04ReadeF7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/readCardData(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P12readCardDatayAA04ReadeF7RequestCF">readCardData(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Requests card information (specifically Track 1 and Track 2 card data).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">readCardData</span><span class="p">(</span> <span class="n">_</span> <span class="nv">request</span><span class="p">:</span><span class="kt"><a href="../Classes/ReadCardDataRequest.html">ReadCardDataRequest</a></span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ReadCardDataRequest details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P13acceptPaymentyAA9CLVModelsC8PaymentsC0E0CF"></a>
+                    <a name="//apple_ref/swift/Method/acceptPayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P13acceptPaymentyAA9CLVModelsC8PaymentsC0E0CF">acceptPayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If Payment confirmation is required during a transaction due to a Challenge,
+ this method accepts the Payment. A Challenge may be triggered
+ by a potential duplicate Payment or an offline Payment.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">acceptPayment</span><span class="p">(</span> <span class="n">_</span> <span class="nv">payment</span><span class="p">:</span><span class="kt"><a href="../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Payments</span><span class="o">.</span><span class="kt">Payment</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>payment</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Payment to accept.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P13rejectPaymentyAA9CLVModelsC8PaymentsC0E0C_AA9ChallengeC9challengetF"></a>
+                    <a name="//apple_ref/swift/Method/rejectPayment(_:challenge:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P13rejectPaymentyAA9CLVModelsC8PaymentsC0E0C_AA9ChallengeC9challengetF">rejectPayment(_:challenge:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If Payment confirmation is required during a transaction due to a Challenge,
+ this method rejects the Payment. A Challenge may be triggered
+ by a potential duplicate Payment or an offline Payment.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">rejectPayment</span><span class="p">(</span> <span class="n">_</span> <span class="nv">payment</span><span class="p">:</span><span class="kt"><a href="../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Payments</span><span class="o">.</span><span class="kt">Payment</span><span class="p">,</span> <span class="nv">challenge</span><span class="p">:</span><span class="kt">Challenge</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>payment</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Payment to reject.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>challenge</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Challenge that resulted in Payment rejection.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P23retrievePendingPaymentsyyF"></a>
+                    <a name="//apple_ref/swift/Method/retrievePendingPayments()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P23retrievePendingPaymentsyyF">retrievePendingPayments()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves a list of unprocessed Payments that were taken offline
+ and are pending submission to the server.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">retrievePendingPayments</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P7disposeyyF"></a>
+                    <a name="//apple_ref/swift/Method/dispose()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P7disposeyyF">dispose()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Disposes the connection to the Clover device. After this is called, the
+connection to the device is severed, and the CloverConnector object is no longer 
+usable. Instantiate a new CloverConnector object in order to call 
+initializeConnection().</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">dispose</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P19startCustomActivityyAA0eF7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/startCustomActivity(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P19startCustomActivityyAA0eF7RequestCF">startCustomActivity(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Starts a Custom Activity on the Clover device.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">startCustomActivity</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span><span class="kt"><a href="../Classes/CustomActivityRequest.html">CustomActivityRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The CustomActivityRequest details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P21sendMessageToActivityyAA0efG0CF"></a>
+                    <a name="//apple_ref/swift/Method/sendMessageToActivity(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P21sendMessageToActivityyAA0efG0CF">sendMessageToActivity(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sends a message to a Custom Activity running on a Clover device.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">sendMessageToActivity</span><span class="p">(</span><span class="n">_</span> <span class="nv">request</span><span class="p">:</span><span class="kt"><a href="../Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageToActivity">MessageToActivity</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The MessageToActivity request with the message to send to the 
+Custom Activity.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P20retrieveDeviceStatusyAA08RetrieveeF7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/retrieveDeviceStatus(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P20retrieveDeviceStatusyAA08RetrieveeF7RequestCF">retrieveDeviceStatus(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sends a message requesting the current status of the Clover device.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">retrieveDeviceStatus</span><span class="p">(</span><span class="n">_</span> <span class="nv">_request</span><span class="p">:</span> <span class="kt"><a href="../Classes/RetrieveDeviceStatusRequest.html">RetrieveDeviceStatusRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The RetrieveDeviceStatusRequest details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector07ICloverB0P15retrievePaymentyAA08RetrieveE7RequestCF"></a>
+                    <a name="//apple_ref/swift/Method/retrievePayment(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector07ICloverB0P15retrievePaymentyAA08RetrieveE7RequestCF">retrievePayment(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Requests the Payment information corresponding to the externalPaymentId 
+passed in.
+Only valid for Payments made in the past 24 hours on the Clover device queried.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">retrievePayment</span><span class="p">(</span><span class="n">_</span> <span class="nv">_request</span><span class="p">:</span> <span class="kt"><a href="../Classes/RetrievePaymentRequest.html">RetrievePaymentRequest</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>request</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The RetrievePaymentRequest details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2018 Clover Network, Inc. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
