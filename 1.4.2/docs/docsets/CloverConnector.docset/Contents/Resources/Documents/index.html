@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CloverConnector  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="CloverConnector  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">CloverConnector Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">CloverConnector Reference</a>
+        <img id="carat" src="img/carat.png" />
+        CloverConnector  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="API.html">API</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/ICloverConnector.html">ICloverConnector</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CloverConnectorFactory.html">CloverConnectorFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ICloverConnectorListener.html">ICloverConnectorListener</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/WebSocketDeviceConfiguration.html">WebSocketDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Payment.html">Payment</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/SaleRequest.html">SaleRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/SaleRequest/TipMode.html">– TipMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/SaleResponse.html">SaleResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/AuthRequest.html">AuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/AuthResponse.html">AuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PreAuthRequest.html">PreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PreAuthResponse.html">PreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ManualRefundRequest.html">ManualRefundRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ManualRefundResponse.html">ManualRefundResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/TipAdjustAuthRequest.html">TipAdjustAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/TipAdjustAuthResponse.html">TipAdjustAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CapturePreAuthRequest.html">CapturePreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CapturePreAuthResponse.html">CapturePreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/VoidPaymentRequest.html">VoidPaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/VoidPaymentResponse.html">VoidPaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/RetrievePaymentRequest.html">RetrievePaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/RetrievePaymentResponse.html">RetrievePaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CloseoutRequest.html">CloseoutRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CloseoutResponse.html">CloseoutResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ReadCardDataRequest.html">ReadCardDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ReadCardDataResponse.html">ReadCardDataResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/VaultCardRequest.html">VaultCardRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/VaultCardResponse.html">VaultCardResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/VerifySignatureRequest.html">VerifySignatureRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Signature.html">Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Signature/Stroke.html">– Stroke</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Device.html">Device</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/MerchantInfo.html">MerchantInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DeviceInfo.html">DeviceInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DisplayOrder.html">DisplayOrder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DisplayLineItem.html">DisplayLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DisplayDiscount.html">DisplayDiscount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DisplayPayment.html">DisplayPayment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PrintPaymentReceiptMessage.html">PrintPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PrintPaymentMerchantCopyReceiptMessage.html">PrintPaymentMerchantCopyReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PrintRefundPaymentReceiptMessage.html">PrintRefundPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PrintPaymentDeclineReceiptMessage.html">PrintPaymentDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PrintManualRefundReceiptMessage.html">PrintManualRefundReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PrintManualRefundDeclineReceiptMessage.html">PrintManualRefundDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/RetrieveDeviceStatusRequest.html">RetrieveDeviceStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/RetrieveDeviceStatusResponse.html">RetrieveDeviceStatusResponse</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Custom Activities.html">Custom Activities</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/CustomActivityRequest.html">CustomActivityRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CustomActivityResponse.html">CustomActivityResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageToActivity">MessageToActivity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageFromActivity">MessageFromActivity</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Pairing.html">Pairing</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/PairingDeviceConfiguration.html">PairingDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/BaseActivityMessage.html">BaseActivityMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/BaseResponse.html">BaseResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CLVModels.html">CLVModels</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CLVModels/Customers.html">– Customers</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CLVModels/Order.html">– Order</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CLVModels/Payments.html">– Payments</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/OpenCashDrawerRequest.html">OpenCashDrawerRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PaymentResponse.html">PaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PrintJobStatusRequest.html">PrintJobStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PrintJobStatusResponse.html">PrintJobStatusResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PrintRequest.html">PrintRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ResetDeviceResponse.html">ResetDeviceResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ResultStatusEnum.html">ResultStatusEnum</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/RetrievePendingPaymentsResponse.html">RetrievePendingPaymentsResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/RetrievePrintersRequest.html">RetrievePrintersRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/RetrievePrintersResponse.html">RetrievePrintersResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ShowPaymentReceiptOptionsRequest.html">ShowPaymentReceiptOptionsRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/TransactionRequest.html">TransactionRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/ErrorCode.html">ErrorCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/PrintCategory.html">PrintCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/PrintJobStatus.html">PrintJobStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/QueryStatus.html">QueryStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/ResultCode.html">ResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/VoidReason.html">VoidReason</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <h1 id='cloverconnector' class='heading'>CloverConnector</h1>
+<h3 id='provides-an-api-for-communicating-with-a-clover-mini-as-a-customer-facing-payment-device' class='heading'>Provides an api for communicating with a Clover Mini as a customer facing payment device.</h3>
+
+<p>CloverConnector provides an interface to communicate with a tethered Clover device to enable integration with Clover&rsquo;s customer facing payment device capabilities.</p>
+
+<p>ICloverConnector</p>
+
+<ul>
+<li><em>sale</em> - method to collect a final sale payment</li>
+<li><em>auth</em> - method to collect a payment that can be tip adjusted</li>
+<li><em>preAuth</em> - method to collect a payment that will not be eligible to be final until a capturePreAuth is processed on this payment</li>
+<li><em>tipAdjustAuth</em> - method to adjust the tip amount on a payment collected from an auth, or a payment that has been captured via capturePreAuth</li>
+<li><em>capturePreAuth</em> - method to make a preAuth payment eligible to be tip adjusted or finalized</li>
+<li><em>voidPayment</em> - queues a request to void a payment</li>
+<li><em>refundPayment</em> - refund a payment or partially refund a final payment</li>
+<li><em>manualRefund</em> - provide a manual refund a.k.a. naked credit</li>
+<li><em>cancel</em> - sends a cancel command to exit activities that support the cancel option</li>
+<li><em>closeout</em> - posts a closeout request to the server to closeout open payments</li>
+<li><em>displayPaymentReceiptOptions</em> - display the receipt selection screen</li>
+<li><em>acceptSignature</em> - method to accept a signature when the Clover device sends a <code>verifySignatureRequest</code></li>
+<li><em>rejectSignature</em> - method to reject a signature when the Clover device sends a <code>verifySignatureRequest</code></li>
+<li><em>vaultCard</em> - reads a card and retrieves a multi-pay token</li>
+<li><em>print</em> - print the contents of the passed-in <code><a href="Classes/PrintRequest.html">PrintRequest</a></code> object</li>
+<li><em>printText</em> - prints simple text <em>deprecated</em></li>
+<li><em>printImage</em> - prints the passed in image <em>deprecated</em></li>
+<li><em>printImageFromURL</em> - print an image references in the url <em>deprecated</em></li>
+<li><em>retrievePrinters</em> - request to retreive available printers</li>
+<li><em>retrievePrintJobStatus</em> - request the status of a given print job</li>
+<li><em>openCashDrawer</em> - opens a cash drawer attached to the Clover device with a passed in <code><a href="Classes/OpenCashDrawerRequest.html">OpenCashDrawerRequest</a></code> object</li>
+<li><em>showMessage</em> - displays a simple message on the Clover device</li>
+<li><em>showWelcomeScreen</em> - displays the welcome screen on the Clover device</li>
+<li><em>showThankYouScreen</em> - displays the thank you screen on the Clover device</li>
+<li><em>showDisplayOrder</em> - displays the DisplayOrder passed in on the Clover device</li>
+<li><em>removeDisplayOrder</em> - clears the DisplayOrder from the DisplayOrder screen</li>
+<li><em>resetDevice</em> - requests the device exit whatever activity has been started and returns the device to Welcome. Note: Any payment in process will be voided</li>
+<li><em>invokeInputOption</em> - sends an input option to the device, which may act on behalf of the customer. Input options are passed to the POS via the onDeviceActivityStart callback</li>
+<li><em>readCardData</em> - reads a card and calls back with the card data. Financial cards will be returned encrypted</li>
+<li><em>acceptPayment</em> - method to accept a payment when the Clover device sends a <code>confirmPaymentRequest</code></li>
+<li><em>rejectPayment</em> - method to reject a payment when the Clover device sends a <code>confirmPaymentRequest</code></li>
+<li><em>retrievePendingPayments</em> - requests the device send any payments taken offline that haven&rsquo;t been processed by the server</li>
+<li><em>dispose</em> - cleans up the CloverConnector and disconnects from the Clover Mini</li>
+<li><em>retrievePayment</em> - query the device for the status of a payment on the device by its external id, callback on on</li>
+<li><em>retrieveDeviceStatus</em> - query the status of the device, callback on onRetrieveDeviceStatus</li>
+<li><em>startCustomActivity</em> - send a request to start a custom activity on the Clover device</li>
+<li><em>sendMessageToActivity</em> - send a message to a custom activity running on the Clover device</li>
+</ul>
+
+<p>ICloverConnectorListener</p>
+
+<ul>
+<li><em>onSaleResponse</em> - called at the completion of a sale request with either a payment or a cancel state</li>
+<li><em>onAuthResponse</em> - called at the completion of an auth request with either a payment or a cancel state</li>
+<li><em>onPreAuthResponse</em> - called at the completion of a preAuth request with either a payment or a cancel state</li>
+<li><em>onTipAdjustAuthResponse</em> - called at the completion ofo a tipAdjustAuth request</li>
+<li><em>onCapturePreAuthResponse</em> - called at the completion of a capturePreAuth request</li>
+<li><em>onRefundPaymentResponse</em> - called at the completion of a refund payment request</li>
+<li><em>onManualRefundResponse</em> - called at the completion of a manual refund request</li>
+<li><em>onVoidPaymentResponse</em> - called at the completion of a void payment request</li>
+<li><em>onCloseoutResponse</em> - called at the completion of a closeout request</li>
+<li><em>confirmPaymentRequest</em> - called if the Clover device needs confirmation of a payment (duplicate verification, offline verification)</li>
+<li><em>verifySignatureRequest</em> - called if the Clover device needs acceptance of a signature</li>
+<li><em>onRetrievePendingPaymentsResponse</em> - called in response to a retrieve pending payments request. Returns a list of payments not yet submitted to the server</li>
+<li><em>onReadCardDataResponse</em> - called at the completion of a read card data request. Data may come back encrypted depending on the card type and bin</li>
+<li><em>onCustomActivityResponse</em> - called at the completion of a custom activity</li>
+<li><em>onResetDeviceResponse</em> - called at the completion of a resetDevice request</li>
+<li><em>onMessageFromActivity</em> - called if the custom activity wants to send a message back to the POS, prior to finishing</li>
+<li><em>onRetrievePaymentResponse</em> - called at the completion of a retrievePayment request</li>
+<li><em>onRetrieveDeviceStatusResponse</em> - called at the completion of a retrieveDeviceStatus request</li>
+<li><em>onRetrievePrintersResponse</em> - called at the completion of a retrievePrinters request</li>
+<li><em>onPrintJobStatusResponse</em> - called at the completion of a retrievePrintJobStatus</li>
+</ul>
+<h3 id='installation' class='heading'>Installation</h3>
+<pre class="highlight ruby"><code><span class="n">pod</span> <span class="s1">'CloverConnector'</span>
+</code></pre>
+<h3 id='authors' class='heading'>Authors</h3>
+
+<p>Clover</p>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2018 Clover Network, Inc. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
