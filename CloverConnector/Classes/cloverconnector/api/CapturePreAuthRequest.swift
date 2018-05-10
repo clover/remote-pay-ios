@@ -9,7 +9,7 @@ import ObjectMapper
  */
 public class CapturePreAuthRequest : NSObject, Mappable {
 
-    public var version = 2
+    public var version = 1
     
     /**
      * Total amount paid

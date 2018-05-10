@@ -10,7 +10,10 @@
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
+		7229D7AA2074084F00FE4247 /* TestRunExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7229D7A92074084F00FE4247 /* TestRunExporter.swift */; };
+		722D0AC620800B07003057D4 /* LSTRContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722D0AC520800B07003057D4 /* LSTRContext.swift */; };
 		72A845A71F6B382300BDF1B9 /* PrintTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A845A61F6B382300BDF1B9 /* PrintTestViewController.swift */; };
+		72B6BD6A20810F8F009B0382 /* LSTRConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 72B6BD6920810F8F009B0382 /* LSTRConfig.cfg */; };
 		7E12A34A1E6E011F00EF7458 /* TestDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12A3491E6E011F00EF7458 /* TestDetailsViewController.swift */; };
 		7E22E3711E38723700E61A11 /* clover_cacerts.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 7E22E3701E38723700E61A11 /* clover_cacerts.p12 */; };
 		7E41B1FB1E5386A60065AF21 /* ManualRefundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41B1FA1E5386A60065AF21 /* ManualRefundViewController.swift */; };
@@ -49,6 +52,28 @@
 		7EEB720D1EAFFA81008E641D /* SimpleTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB720C1EAFFA81008E641D /* SimpleTestViewController.swift */; };
 		A49F5B4A199432BBE7EAF0C4 /* Pods_CloverConnector_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BF16A62156B0D50E349B58 /* Pods_CloverConnector_Tests.framework */; };
 		DA6BFE5D963C68DE0967E1A7 /* Pods_CloverConnector_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95D7B135DBBE64C88249EB84 /* Pods_CloverConnector_Example.framework */; };
+		E36B30AF2049D9FC00D63BC3 /* Test_remotepaylib_TerminalMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30AE2049D9FC00D63BC3 /* Test_remotepaylib_TerminalMessage.swift */; };
+		E36B30B32049DA2000D63BC3 /* CloverConnectorLstrNester.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30B22049DA2000D63BC3 /* CloverConnectorLstrNester.swift */; };
+		E36B30C52049DA2700D63BC3 /* DecodeableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30B52049DA2700D63BC3 /* DecodeableCollection.swift */; };
+		E36B30C62049DA2700D63BC3 /* CloverConnectorTestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30B62049DA2700D63BC3 /* CloverConnectorTestManager.swift */; };
+		E36B30C72049DA2700D63BC3 /* LSTRSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30B72049DA2700D63BC3 /* LSTRSupport.swift */; };
+		E36B30C82049DA2700D63BC3 /* StderrOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30B82049DA2700D63BC3 /* StderrOutputStream.swift */; };
+		E36B30C92049DA2700D63BC3 /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30BA2049DA2700D63BC3 /* TestError.swift */; };
+		E36B30CA2049DA2700D63BC3 /* TestCaseResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30BB2049DA2700D63BC3 /* TestCaseResult.swift */; };
+		E36B30CB2049DA2700D63BC3 /* Assert.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30BC2049DA2700D63BC3 /* Assert.swift */; };
+		E36B30CC2049DA2700D63BC3 /* TestAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30BD2049DA2700D63BC3 /* TestAction.swift */; };
+		E36B30CD2049DA2700D63BC3 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30BE2049DA2700D63BC3 /* Request.swift */; };
+		E36B30CE2049DA2700D63BC3 /* Conclusion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30BF2049DA2700D63BC3 /* Conclusion.swift */; };
+		E36B30CF2049DA2700D63BC3 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30C02049DA2700D63BC3 /* TestCase.swift */; };
+		E36B30D02049DA2700D63BC3 /* TestActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30C12049DA2700D63BC3 /* TestActionResult.swift */; };
+		E36B30D12049DA2700D63BC3 /* TestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30C22049DA2700D63BC3 /* TestExecutor.swift */; };
+		E36B30D22049DA2700D63BC3 /* TestCloverConnectorListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30C32049DA2700D63BC3 /* TestCloverConnectorListener.swift */; };
+		E36B30D32049DA2700D63BC3 /* TestConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30C42049DA2700D63BC3 /* TestConnector.swift */; };
+		E36B30D62049DA4200D63BC3 /* Test_cloverconnector_DefaultCloverConnectorV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30D42049DA4200D63BC3 /* Test_cloverconnector_DefaultCloverConnectorV2.swift */; };
+		E36B30D72049DA4200D63BC3 /* Test_cloverconnector_WebSocketDeviceConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30D52049DA4200D63BC3 /* Test_cloverconnector_WebSocketDeviceConfiguration.swift */; };
+		E36B30DB2049DA5000D63BC3 /* TestCloverTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30D92049DA5000D63BC3 /* TestCloverTransport.swift */; };
+		E36B30DC2049DA5000D63BC3 /* TestDeviceConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30DA2049DA5000D63BC3 /* TestDeviceConfiguration.swift */; };
+		E36B30DF2049DD8600D63BC3 /* XCTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36B30DE2049DD8600D63BC3 /* XCTestSupport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,7 +120,10 @@
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* CloverConnector_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CloverConnector_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60BF16A62156B0D50E349B58 /* Pods_CloverConnector_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CloverConnector_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7229D7A92074084F00FE4247 /* TestRunExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRunExporter.swift; sourceTree = "<group>"; };
+		722D0AC520800B07003057D4 /* LSTRContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSTRContext.swift; sourceTree = "<group>"; };
 		72A845A61F6B382300BDF1B9 /* PrintTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintTestViewController.swift; sourceTree = "<group>"; };
+		72B6BD6920810F8F009B0382 /* LSTRConfig.cfg */ = {isa = PBXFileReference; lastKnownFileType = text; path = LSTRConfig.cfg; sourceTree = "<group>"; };
 		7E12A3491E6E011F00EF7458 /* TestDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDetailsViewController.swift; sourceTree = "<group>"; };
 		7E22E3701E38723700E61A11 /* clover_cacerts.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = clover_cacerts.p12; sourceTree = "<group>"; };
 		7E41B1FA1E5386A60065AF21 /* ManualRefundViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManualRefundViewController.swift; sourceTree = "<group>"; };
@@ -138,6 +166,28 @@
 		96C5AB5C4427777EBE65CA2A /* Pods-CloverConnector_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloverConnector_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-CloverConnector_Example/Pods-CloverConnector_Example.release.xcconfig"; sourceTree = "<group>"; };
 		CDC378D57D87133CA0103944 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		DA004E9F68C5A4678FD062F7 /* Pods-CloverConnector_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloverConnector_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CloverConnector_Tests/Pods-CloverConnector_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		E36B30AE2049D9FC00D63BC3 /* Test_remotepaylib_TerminalMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Test_remotepaylib_TerminalMessage.swift; path = ../../Tests/XCTest/Test_remotepaylib_TerminalMessage.swift; sourceTree = "<group>"; };
+		E36B30B22049DA2000D63BC3 /* CloverConnectorLstrNester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloverConnectorLstrNester.swift; path = ../../Tests/XCTest/CloverConnectorLstrNester.swift; sourceTree = "<group>"; };
+		E36B30B52049DA2700D63BC3 /* DecodeableCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodeableCollection.swift; sourceTree = "<group>"; };
+		E36B30B62049DA2700D63BC3 /* CloverConnectorTestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloverConnectorTestManager.swift; sourceTree = "<group>"; };
+		E36B30B72049DA2700D63BC3 /* LSTRSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSTRSupport.swift; sourceTree = "<group>"; };
+		E36B30B82049DA2700D63BC3 /* StderrOutputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StderrOutputStream.swift; sourceTree = "<group>"; };
+		E36B30BA2049DA2700D63BC3 /* TestError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
+		E36B30BB2049DA2700D63BC3 /* TestCaseResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCaseResult.swift; sourceTree = "<group>"; };
+		E36B30BC2049DA2700D63BC3 /* Assert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assert.swift; sourceTree = "<group>"; };
+		E36B30BD2049DA2700D63BC3 /* TestAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAction.swift; sourceTree = "<group>"; };
+		E36B30BE2049DA2700D63BC3 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		E36B30BF2049DA2700D63BC3 /* Conclusion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conclusion.swift; sourceTree = "<group>"; };
+		E36B30C02049DA2700D63BC3 /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
+		E36B30C12049DA2700D63BC3 /* TestActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestActionResult.swift; sourceTree = "<group>"; };
+		E36B30C22049DA2700D63BC3 /* TestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestExecutor.swift; sourceTree = "<group>"; };
+		E36B30C32049DA2700D63BC3 /* TestCloverConnectorListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCloverConnectorListener.swift; sourceTree = "<group>"; };
+		E36B30C42049DA2700D63BC3 /* TestConnector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestConnector.swift; sourceTree = "<group>"; };
+		E36B30D42049DA4200D63BC3 /* Test_cloverconnector_DefaultCloverConnectorV2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Test_cloverconnector_DefaultCloverConnectorV2.swift; path = ../../Tests/XCTest/Test_cloverconnector_DefaultCloverConnectorV2.swift; sourceTree = "<group>"; };
+		E36B30D52049DA4200D63BC3 /* Test_cloverconnector_WebSocketDeviceConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Test_cloverconnector_WebSocketDeviceConfiguration.swift; path = ../../Tests/XCTest/Test_cloverconnector_WebSocketDeviceConfiguration.swift; sourceTree = "<group>"; };
+		E36B30D92049DA5000D63BC3 /* TestCloverTransport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCloverTransport.swift; sourceTree = "<group>"; };
+		E36B30DA2049DA5000D63BC3 /* TestDeviceConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDeviceConfiguration.swift; sourceTree = "<group>"; };
+		E36B30DE2049DD8600D63BC3 /* XCTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = XCTestSupport.swift; path = ../XCTestSupport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +226,7 @@
 			children = (
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example Source */,
+				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				42927818D15CB42408EC2EA3 /* Pods */,
 				D58C6D7C6B2E8CE364280580 /* Frameworks */,
@@ -229,6 +280,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		607FACE81AFB9204008FA782 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E36B30DD2049DD1200D63BC3 /* XCTests */,
+				72B7694A1FFEE7FE00472091 /* Leester Kneester */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +297,15 @@
 				95BC0FEE39357F88F82B8092 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		72B7694A1FFEE7FE00472091 /* Leester Kneester */ = {
+			isa = PBXGroup;
+			children = (
+				E36B30B22049DA2000D63BC3 /* CloverConnectorLstrNester.swift */,
+				E36B30B42049DA2700D63BC3 /* LSTR */,
+			);
+			name = "Leester Kneester";
 			sourceTree = "<group>";
 		};
 		7E2E68AE1EFBE45F002BD030 /* ui */ = {
@@ -298,6 +367,78 @@
 				60BF16A62156B0D50E349B58 /* Pods_CloverConnector_Tests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E33CF7861F98EFEF00C41BF8 /* cloverconnector */ = {
+			isa = PBXGroup;
+			children = (
+				E36B30D42049DA4200D63BC3 /* Test_cloverconnector_DefaultCloverConnectorV2.swift */,
+				E36B30D52049DA4200D63BC3 /* Test_cloverconnector_WebSocketDeviceConfiguration.swift */,
+			);
+			name = cloverconnector;
+			sourceTree = "<group>";
+		};
+		E33CF7871F98F03900C41BF8 /* remotepaylib */ = {
+			isa = PBXGroup;
+			children = (
+				E36B30AE2049D9FC00D63BC3 /* Test_remotepaylib_TerminalMessage.swift */,
+			);
+			name = remotepaylib;
+			sourceTree = "<group>";
+		};
+		E36B30B42049DA2700D63BC3 /* LSTR */ = {
+			isa = PBXGroup;
+			children = (
+				72B6BD6920810F8F009B0382 /* LSTRConfig.cfg */,
+				722D0AC520800B07003057D4 /* LSTRContext.swift */,
+				E36B30C22049DA2700D63BC3 /* TestExecutor.swift */,
+				E36B30B62049DA2700D63BC3 /* CloverConnectorTestManager.swift */,
+				E36B30C32049DA2700D63BC3 /* TestCloverConnectorListener.swift */,
+				E36B30C42049DA2700D63BC3 /* TestConnector.swift */,
+				7229D7A92074084F00FE4247 /* TestRunExporter.swift */,
+				E36B30B52049DA2700D63BC3 /* DecodeableCollection.swift */,
+				E36B30B72049DA2700D63BC3 /* LSTRSupport.swift */,
+				E36B30B82049DA2700D63BC3 /* StderrOutputStream.swift */,
+				E36B30B92049DA2700D63BC3 /* Models */,
+			);
+			name = LSTR;
+			path = ../../Tests/LSTR;
+			sourceTree = "<group>";
+		};
+		E36B30B92049DA2700D63BC3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E36B30BA2049DA2700D63BC3 /* TestError.swift */,
+				E36B30BB2049DA2700D63BC3 /* TestCaseResult.swift */,
+				E36B30BC2049DA2700D63BC3 /* Assert.swift */,
+				E36B30BD2049DA2700D63BC3 /* TestAction.swift */,
+				E36B30BE2049DA2700D63BC3 /* Request.swift */,
+				E36B30BF2049DA2700D63BC3 /* Conclusion.swift */,
+				E36B30C02049DA2700D63BC3 /* TestCase.swift */,
+				E36B30C12049DA2700D63BC3 /* TestActionResult.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E36B30D82049DA5000D63BC3 /* TestStub */ = {
+			isa = PBXGroup;
+			children = (
+				E36B30D92049DA5000D63BC3 /* TestCloverTransport.swift */,
+				E36B30DA2049DA5000D63BC3 /* TestDeviceConfiguration.swift */,
+				E36B30DE2049DD8600D63BC3 /* XCTestSupport.swift */,
+			);
+			name = TestStub;
+			path = ../../Tests/XCTest/TestStub;
+			sourceTree = "<group>";
+		};
+		E36B30DD2049DD1200D63BC3 /* XCTests */ = {
+			isa = PBXGroup;
+			children = (
+				E33CF7861F98EFEF00C41BF8 /* cloverconnector */,
+				E33CF7871F98F03900C41BF8 /* remotepaylib */,
+				E36B30D82049DA5000D63BC3 /* TestStub */,
+			);
+			name = XCTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -407,6 +548,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72B6BD6A20810F8F009B0382 /* LSTRConfig.cfg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +708,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E36B30B32049DA2000D63BC3 /* CloverConnectorLstrNester.swift in Sources */,
+				E36B30CB2049DA2700D63BC3 /* Assert.swift in Sources */,
+				E36B30CD2049DA2700D63BC3 /* Request.swift in Sources */,
+				E36B30CE2049DA2700D63BC3 /* Conclusion.swift in Sources */,
+				E36B30C82049DA2700D63BC3 /* StderrOutputStream.swift in Sources */,
+				E36B30D12049DA2700D63BC3 /* TestExecutor.swift in Sources */,
+				7229D7AA2074084F00FE4247 /* TestRunExporter.swift in Sources */,
+				E36B30DC2049DA5000D63BC3 /* TestDeviceConfiguration.swift in Sources */,
+				E36B30C92049DA2700D63BC3 /* TestError.swift in Sources */,
+				E36B30CF2049DA2700D63BC3 /* TestCase.swift in Sources */,
+				E36B30DF2049DD8600D63BC3 /* XCTestSupport.swift in Sources */,
+				E36B30C62049DA2700D63BC3 /* CloverConnectorTestManager.swift in Sources */,
+				E36B30DB2049DA5000D63BC3 /* TestCloverTransport.swift in Sources */,
+				E36B30D22049DA2700D63BC3 /* TestCloverConnectorListener.swift in Sources */,
+				E36B30AF2049D9FC00D63BC3 /* Test_remotepaylib_TerminalMessage.swift in Sources */,
+				E36B30C52049DA2700D63BC3 /* DecodeableCollection.swift in Sources */,
+				E36B30CC2049DA2700D63BC3 /* TestAction.swift in Sources */,
+				E36B30CA2049DA2700D63BC3 /* TestCaseResult.swift in Sources */,
+				E36B30D02049DA2700D63BC3 /* TestActionResult.swift in Sources */,
+				E36B30D62049DA4200D63BC3 /* Test_cloverconnector_DefaultCloverConnectorV2.swift in Sources */,
+				E36B30D32049DA2700D63BC3 /* TestConnector.swift in Sources */,
+				E36B30D72049DA4200D63BC3 /* Test_cloverconnector_WebSocketDeviceConfiguration.swift in Sources */,
+				722D0AC620800B07003057D4 /* LSTRContext.swift in Sources */,
+				E36B30C72049DA2700D63BC3 /* LSTRSupport.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

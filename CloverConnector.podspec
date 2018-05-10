@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CloverConnector'
-  s.version = '1.4.2'
+  s.version = '1.4.3'
   s.summary          = 'Provides an api for communicating with a Clover Mini as a customer facing payment device.'
 
   s.description      = <<-DESC
