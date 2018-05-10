@@ -329,6 +329,7 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
                             payment.amount = paymentAmount
                             strongSelf.showMessage("Sale successful processing using Pre Authorization")
                             store.newOrder()
+                            strongSelf.cloverConnector?.showWelcomeScreen()
                         }
                         break;
                     }

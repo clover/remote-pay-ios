@@ -99,27 +99,6 @@ public class PreAuthViewController:UIViewController, UITableViewDelegate, UITabl
                 guard let cpar = self?.generateCPAR(payment: preAuthPayment) else { return }
                 cloverConnector.capturePreAuth(cpar)
             }))
-            alert.addAction(UIAlertAction(title: "Pay for Current Order (Override - No Tip)", style: .default, handler: { [weak self] action in
-                guard let cpar = self?.generateCPAR(payment: preAuthPayment) else { return }
-                cpar.tipMode = CLVModels.Payments.TipMode.NO_TIP
-                cloverConnector.capturePreAuth(cpar)
-            }))
-            alert.addAction(UIAlertAction(title: "Pay for Current Order (Override - Tip Before)", style: .default, handler: { [weak self] action in
-                guard let cpar = self?.generateCPAR(payment: preAuthPayment) else { return }
-                cpar.tipMode = CLVModels.Payments.TipMode.ON_SCREEN_BEFORE_PAYMENT
-                cloverConnector.capturePreAuth(cpar)
-            }))
-            alert.addAction(UIAlertAction(title: "Pay for Current Order (Override - 1$ Preset)", style: .default, handler: { [weak self] action in
-                guard let cpar = self?.generateCPAR(payment: preAuthPayment) else { return }
-                cpar.tipMode = CLVModels.Payments.TipMode.TIP_PROVIDED
-                cpar.tipAmount = 100
-                cloverConnector.capturePreAuth(cpar)
-            }))
-            alert.addAction(UIAlertAction(title: "Issue deprecated V1 capture (test)", style: .default, handler: { [weak self] action in
-                guard let cpar = self?.generateCPAR(payment: preAuthPayment) else { return }
-                cpar.version = 1
-                cloverConnector.capturePreAuth(cpar)
-            }))
             alert.addAction(UIAlertAction(title: "Delete PreAuth", style: .destructive, handler: { action in
                 store.removePreAuth(preAuthPayment)
             }))
@@ -138,7 +117,7 @@ public class PreAuthViewController:UIViewController, UITableViewDelegate, UITabl
         guard let store = (UIApplication.shared.delegate as? AppDelegate)?.store,
             let currentOrder = store.currentOrder else { return nil }
         let car = CapturePreAuthRequest(amount: currentOrder.getTotal(), paymentId: payment.paymentId)
-        car.externalId = payment.externalPaymentId // TODO - ERIC - is this required?  In my code I had it required, but Glenn's does not.
+        car.externalId = payment.externalPaymentId
         car.tipAmount = currentOrder.getTipAmount()
         car.tippableAmount = currentOrder.getTippableAmount()
         car.tipMode = store.transactionSettings.tipMode
