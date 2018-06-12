@@ -163,7 +163,7 @@ class ConnectionManager : DefaultCloverConnectorListener, PairingDeviceConfigura
 
 - [Release Notes](https://github.com/clover/remote-pay-ios/releases)
 - [Tutorial for the iOS SDK](https://docs.clover.com/build/getting-started-with-clover-connector/?sdk=ios)
-- [API Documentation](https://clover.github.io/remote-pay-ios/1.4.5/docs/index.html)
+- [API Documentation](https://clover.github.io/remote-pay-ios/1.4.2/docs/index.html)
 - [Clover Developer Community](https://community.clover.com/index.html)
 
 ## License 
