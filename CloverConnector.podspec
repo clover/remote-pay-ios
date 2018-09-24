@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CloverConnector'
-  s.version = '1.4.3'
+  s.version          = '1.4.4'
   s.summary          = 'Provides an api for communicating with a Clover Mini as a customer facing payment device.'
 
   s.description      = <<-DESC
@@ -88,7 +88,7 @@ DESC
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'Foundation'
-  s.dependency 'ObjectMapper', '3.0.0'
+  s.dependency 'ObjectMapper', '3.3.0'
   s.dependency 'Starscream', '2.1.1'
   s.dependency 'SwiftyJSON', '3.1.4'
 end
