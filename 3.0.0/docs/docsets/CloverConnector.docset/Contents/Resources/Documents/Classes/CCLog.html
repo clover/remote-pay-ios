@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CCLog Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/CCLog" class="dashAnchor"></a>
+    <a title="CCLog Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">CloverConnector Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">CloverConnector Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        CCLog Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../API.html">API</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ICloverConnector.html">ICloverConnector</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloverConnectorFactory.html">CloverConnectorFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ICloverConnectorListener.html">ICloverConnectorListener</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/WebSocketDeviceConfiguration.html">WebSocketDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Payment.html">Payment</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/SaleRequest.html">SaleRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SaleRequest/TipMode.html">– TipMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SaleResponse.html">SaleResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AuthRequest.html">AuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AuthResponse.html">AuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PreAuthRequest.html">PreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PreAuthResponse.html">PreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ManualRefundRequest.html">ManualRefundRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ManualRefundResponse.html">ManualRefundResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TipAdjustAuthRequest.html">TipAdjustAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TipAdjustAuthResponse.html">TipAdjustAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CapturePreAuthRequest.html">CapturePreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CapturePreAuthResponse.html">CapturePreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VoidPaymentRequest.html">VoidPaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VoidPaymentResponse.html">VoidPaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VoidPaymentRefundResponse.html">VoidPaymentRefundResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePaymentRequest.html">RetrievePaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePaymentResponse.html">RetrievePaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloseoutRequest.html">CloseoutRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloseoutResponse.html">CloseoutResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ReadCardDataRequest.html">ReadCardDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ReadCardDataResponse.html">ReadCardDataResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VaultCardRequest.html">VaultCardRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VaultCardResponse.html">VaultCardResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Signature.html">Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Signature/Stroke.html">– Stroke</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Device.html">Device</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/MerchantInfo.html">MerchantInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeviceInfo.html">DeviceInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayOrder.html">DisplayOrder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayLineItem.html">DisplayLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayDiscount.html">DisplayDiscount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DisplayPayment.html">DisplayPayment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentReceiptMessage.html">PrintPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentMerchantCopyReceiptMessage.html">PrintPaymentMerchantCopyReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintRefundPaymentReceiptMessage.html">PrintRefundPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintPaymentDeclineReceiptMessage.html">PrintPaymentDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintManualRefundReceiptMessage.html">PrintManualRefundReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintManualRefundDeclineReceiptMessage.html">PrintManualRefundDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrieveDeviceStatusRequest.html">RetrieveDeviceStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrieveDeviceStatusResponse.html">RetrieveDeviceStatusResponse</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Custom Activities.html">Custom Activities</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/CustomActivityRequest.html">CustomActivityRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CustomActivityResponse.html">CustomActivityResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageToActivity">MessageToActivity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageFromActivity">MessageFromActivity</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Pairing.html">Pairing</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/PairingDeviceConfiguration.html">PairingDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BaseActivityMessage.html">BaseActivityMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BaseResponse.html">BaseResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BaseTransactionRequest.html">BaseTransactionRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CCLog.html">CCLog</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels.html">CLVModels</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Customers.html">– Customers</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Loyalty.html">– Loyalty</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Order.html">– Order</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CLVModels/Payments.html">– Payments</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CloverDeviceLogMessage.html">CloverDeviceLogMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CustomerProvidedDataEvent.html">CustomerProvidedDataEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OpenCashDrawerRequest.html">OpenCashDrawerRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PaymentResponse.html">PaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintJobStatusRequest.html">PrintJobStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintJobStatusResponse.html">PrintJobStatusResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PrintRequest.html">PrintRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RegisterForCustomerProvidedDataRequest.html">RegisterForCustomerProvidedDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ResetDeviceResponse.html">ResetDeviceResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ResultStatusEnum.html">ResultStatusEnum</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePendingPaymentsResponse.html">RetrievePendingPaymentsResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePrintersRequest.html">RetrievePrintersRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RetrievePrintersResponse.html">RetrievePrintersResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SetCustomerInfoRequest.html">SetCustomerInfoRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ShowPaymentReceiptOptionsRequest.html">ShowPaymentReceiptOptionsRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TransactionRequest.html">TransactionRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/VoidPaymentRefundRequest.html">VoidPaymentRefundRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ErrorCode.html">ErrorCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/PrintCategory.html">PrintCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/PrintJobStatus.html">PrintJobStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/QueryStatus.html">QueryStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ResultCode.html">ResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/VoidReason.html">VoidReason</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/ImageClass">ImageClass</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:15CloverConnector10ImageClassa">ImageClass</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>CCLog</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CCLog</span></code></pre>
+
+                </div>
+              </div>
+            <p>The Log class provides generic logging functionality with overridable closures to be used for redirecting log output.</p>
+
+<p>The logger provides closures for overriding various behaviors:
+  Logging proceeds through the following path: CCLog.x &ndash;&gt; xPrint &ndash;&gt; xFormatter &ndash;&gt; defaultLogPrint
+     - CCLog.x :          - Log entry point for all logging.  Static, cannot be overriden.
+     - xPrint  :          - Calls the formatter to obtain the log format, then defaultLogPrint on the
+                            proper queue to perform the logging.
+                          - Debug (.d, dPrint) and Test (.t, tPrint) calls are compiler flagged out using
+                            the DEBUG flag
+                          - This is a static var containing a closure.  Assign your own closure at runtime
+                            to override the default behavior, for example if you want the debug or test
+                            log statements to occur without the DEBUG flag set.
+                          - If you do override, please ensure that you spin off your logging onto the
+                            dispatchQueue (note the lowercase&hellip;) for optimal performance.
+                            defaultLogPrint will correct the queue if you forget, but this will involve
+                            an extra call.
+     - xFormatter:        - Processes the provided inputs into the formatted string for output on screen.
+                          - This is a static var containing a closure.  Assign your own closure at
+                            runtime to override the default behavior, for example to remove the [TEST] or
+                            DEBUG formatting.
+     - defaultLogPrint:   - Final log function, which iterates through the user assigned log handlers and
+                            finally prints to console.  Static, cannot be overriden.
+     - addLogHandler:     - Log handlers are called every time a CCLog.x call is made (inside defaultLogPrint).
+                          - Called from the dispatchQueue (lowercase&hellip;) queue.
+                          - Returns an integer which can be used to remove the log handler in the future
+                            (for example once your ViewController closes).  Contains weak references to
+                            the handlers, but if you don&rsquo;t tell us to remove the handler it will still
+                            cost cycles to iterate over the no longer valid handlers.
+     - removeLogHandler:  - Removes a log handler using the integer index returned from addLogHandler
+     - timeStampEnabled:  - When true, a timestamp will be added to the beginning of every statement (default false)
+     - dateFormatter:     - The formatter used to provide the time stamp for timeStampEnabled.
+                          - Set the format at runtime to change the time stamp format.
+     - verbosePrinting:   - When true, logs are printed in full
+                          - When false, logs are truncated to the maxPrintingLength (default)
+     - maxPrintingLength: - The maximum length of logs printed when verbsePrinting is false</p>
+
+<p>By default, Debug and Test level logs do nothing unless the DEBUG compiler flag is set.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC16timestampEnabledSbvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/timestampEnabled" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC16timestampEnabledSbvpZ">timestampEnabled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>true: a timestamp will be added to the beggining of the log statments.  Defaults to false.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">timestampEnabled</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC15verbosePrintingSbvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/verbosePrinting" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC15verbosePrintingSbvpZ">verbosePrinting</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>false: log statements are truncated to the length specified in maxPrintingLength
+true:  log statements are not truncated</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">verbosePrinting</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC17maxPrintingLengthSivpZ"></a>
+                    <a name="//apple_ref/swift/Variable/maxPrintingLength" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC17maxPrintingLengthSivpZ">maxPrintingLength</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>when verbosePrinting is set to false, all log statements will be truncated to this length</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">maxPrintingLength</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC13dateFormatterSo06NSDateE0CvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/dateFormatter" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC13dateFormatterSo06NSDateE0CvpZ">dateFormatter</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>the DateFormatter used to print the timestamp on log statements.  Default format is <q>yyyy-MM-dd HH:mm:ss.SSS</q>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">dateFormatter</span><span class="p">:</span> <span class="kt">DateFormatter</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC1d_4args4line4fileySS_s7CVarArg_pdSiSStFZ"></a>
+                    <a name="//apple_ref/swift/Method/d(_:args:line:file:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC1d_4args4line4fileySS_s7CVarArg_pdSiSStFZ">d(_:args:line:file:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Debug level print statement
+Calls dPrint with the arguments provided</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">d</span><span class="p">(</span><span class="n">_</span> <span class="nv">format</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">args</span><span class="p">:</span> <span class="kt">CVarArg</span><span class="o">...</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC1t_4args4line4fileySS_s7CVarArg_pdSiSStFZ"></a>
+                    <a name="//apple_ref/swift/Method/t(_:args:line:file:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC1t_4args4line4fileySS_s7CVarArg_pdSiSStFZ">t(_:args:line:file:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Test level print statement
+Calls tPrint with the arguments provided</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">t</span><span class="p">(</span><span class="n">_</span> <span class="nv">format</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">args</span><span class="p">:</span> <span class="kt">CVarArg</span><span class="o">...</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC1w_4args4line4fileySS_s7CVarArg_pdSiSStFZ"></a>
+                    <a name="//apple_ref/swift/Method/w(_:args:line:file:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC1w_4args4line4fileySS_s7CVarArg_pdSiSStFZ">w(_:args:line:file:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Warning level print statement
+Calls wPrint with the arguments provided</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">w</span><span class="p">(</span><span class="n">_</span> <span class="nv">format</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">args</span><span class="p">:</span> <span class="kt">CVarArg</span><span class="o">...</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC1s_4args4line4fileySS_s7CVarArg_pdSiSStFZ"></a>
+                    <a name="//apple_ref/swift/Method/s(_:args:line:file:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC1s_4args4line4fileySS_s7CVarArg_pdSiSStFZ">s(_:args:line:file:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Serious level print statement
+Calls sPrint with the arguments provided</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">s</span><span class="p">(</span><span class="n">_</span> <span class="nv">format</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">args</span><span class="p">:</span> <span class="kt">CVarArg</span><span class="o">...</span><span class="p">,</span> <span class="nv">line</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">,</span> <span class="nv">file</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC6dPrintyySS_Says7CVarArg_pGSiSStcvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/dPrint" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC6dPrintyySS_Says7CVarArg_pGSiSStcvpZ">dPrint</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Override point for debug level print statements
+Calls dFormatter to obtain the formatted string
+Calls defaultLogPrint on the dispatchQueue
+By default does not run unless the DEBUG compiler flag is set</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">dPrint</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="p">[</span><span class="kt">CVarArg</span><span class="p">],</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC6tPrintyySS_Says7CVarArg_pGSiSStcvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/tPrint" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC6tPrintyySS_Says7CVarArg_pGSiSStcvpZ">tPrint</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Override point for test level print statements
+Calls tFormatter to obtain the formatted string
+Calls defaultLogPrint on the dispatchQueue
+By default does not run unless the DEBUG compiler flag is set</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">tPrint</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="p">[</span><span class="kt">CVarArg</span><span class="p">],</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC6wPrintyySS_Says7CVarArg_pGSiSStcvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/wPrint" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC6wPrintyySS_Says7CVarArg_pGSiSStcvpZ">wPrint</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Override point for warning level print statements
+Calls wFormatter to obtain the formatted string
+Calls defaultLogPrint on the dispatchQueue</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">wPrint</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="p">[</span><span class="kt">CVarArg</span><span class="p">],</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC6sPrintyySS_Says7CVarArg_pGSiSStcvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/sPrint" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC6sPrintyySS_Says7CVarArg_pGSiSStcvpZ">sPrint</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Override point for serious level print statements
+Calls sFormatter to obtain the formatted string
+Calls defaultLogPrint on the dispatchQueue</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">sPrint</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="p">[</span><span class="kt">CVarArg</span><span class="p">],</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC10dFormatteryS2S_Says7CVarArg_pGSiSStcvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/dFormatter" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC10dFormatteryS2S_Says7CVarArg_pGSiSStcvpZ">dFormatter</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Override point for debug level print statement formatting
+Without overriding, prints with the format  <q>LineNumber : FileName     DEBUG    <print></q></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">dFormatter</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="p">[</span><span class="kt">CVarArg</span><span class="p">],</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC10tFormatteryS2S_Says7CVarArg_pGSiSStcvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/tFormatter" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC10tFormatteryS2S_Says7CVarArg_pGSiSStcvpZ">tFormatter</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Override point for test level print statement formatting
+Without overriding, prints with the format  <q>LineNumber : FileName     [TEST]    <print></q></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">tFormatter</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="p">[</span><span class="kt">CVarArg</span><span class="p">],</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC10wFormatteryS2S_Says7CVarArg_pGSiSStcvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/wFormatter" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC10wFormatteryS2S_Says7CVarArg_pGSiSStcvpZ">wFormatter</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Override point for warning level print statement formatting
+Without overriding, prints with the format  <q>LineNumber : FileName     ! WARNING !    <print></q></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">wFormatter</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="p">[</span><span class="kt">CVarArg</span><span class="p">],</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC10sFormatteryS2S_Says7CVarArg_pGSiSStcvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/sFormatter" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC10sFormatteryS2S_Says7CVarArg_pGSiSStcvpZ">sFormatter</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Override point for severe level print statement formatting
+Without overriding, prints with the format  <q>LineNumber : FileName    !! SEVERE !!   <print></q></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">sFormatter</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="p">[</span><span class="kt">CVarArg</span><span class="p">],</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC13dispatchQueueSo03OS_D6_queueCvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/dispatchQueue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC13dispatchQueueSo03OS_D6_queueCvpZ">dispatchQueue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">dispatchQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC15defaultLogPrint_7respawnySS_SbtFZ"></a>
+                    <a name="//apple_ref/swift/Method/defaultLogPrint(_:respawn:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC15defaultLogPrint_7respawnySS_SbtFZ">defaultLogPrint(_:respawn:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>the default logger - always call this last if you override xPrint.
+always call on the dispatchQueue thread.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">defaultLogPrint</span><span class="p">(</span><span class="n">_</span> <span class="nv">string</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">respawn</span><span class="p">:</span><span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC13addLogHandler7handlerSiySSc_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/addLogHandler(handler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC13addLogHandler7handlerSiySSc_tFZ">addLogHandler(handler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add a custom log handler to receive callbacks whenever a Log.x statement is posted.
+Returns the index value for use in removing your handler at a later time
+Log handlers will be called from a background thread</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">addLogHandler</span><span class="p">(</span><span class="nv">handler</span><span class="p">:</span><span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">string</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector5CCLogC16removeLogHandler12handlerIndexySi_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/removeLogHandler(handlerIndex:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector5CCLogC16removeLogHandler12handlerIndexySi_tFZ">removeLogHandler(handlerIndex:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes a log handler from the system.
+Pass in the index value you received when you called addLogHandler.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">removeLogHandler</span><span class="p">(</span><span class="nv">handlerIndex</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2018 Clover Network, Inc. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
