@@ -205,4 +205,21 @@ public class Message : NSObject, Mappable {
         }, toJSON: { (value: RemoteMessageType?) -> String? in
             return value?.rawValue
     })
+    
+    static let dataProviderConfigTransform = TransformOf<DataProviderConfig, String>(fromJSON: { (value: String?) -> DataProviderConfig? in
+        if let val = value,
+            let pi = Mapper<DataProviderConfig>().map(JSONString: val) {
+            return pi
+        }
+        return nil
+    }, toJSON: { (obj: DataProviderConfig?) -> String? in
+        if obj != nil {
+            if let val = obj,
+                let value = Mapper().toJSONString(val, prettyPrint:false) {
+                return String(value)
+            }
+        }
+        return nil
+    })
+    
 }

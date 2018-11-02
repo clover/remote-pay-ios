@@ -49,7 +49,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     }
     
     deinit {
-        debugPrint("deinit CloverConnector")
+        CCLog.d("deinit CloverConnector")
     }
     
     //MARK: Setup
@@ -103,9 +103,8 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                 }
             }
 
-            let tos = saleRequest.disableTipOnScreen ?? false
             saleRequest.tipAmount = saleRequest.tipAmount ?? 0 // force to zero if it isn't passed in
-            saleAuth(saleRequest, suppressTipScreen: tos, requestInfo: TxStartRequestMessage.SALE_REQUEST)
+            saleAuth(saleRequest, requestInfo: TxStartRequestMessage.SALE_REQUEST)
         } else {
             deviceObserver?.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In sale : The device is not connected.", requestInfo: TxStartRequestMessage.SALE_REQUEST)
         }
@@ -133,7 +132,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                 }
             }
             
-            saleAuth(authRequest, suppressTipScreen: true,requestInfo:TxStartRequestMessage.AUTH_REQUEST)
+            saleAuth(authRequest, requestInfo:TxStartRequestMessage.AUTH_REQUEST)
         } else {
             deviceObserver?.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In auth : The device is not connected.", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
         }
@@ -177,7 +176,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                 }
             }
             
-            saleAuth(preAuthRequest, suppressTipScreen: true, requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
+            saleAuth(preAuthRequest, requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
         } else {
             deviceObserver?.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST);
         }
@@ -234,10 +233,8 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
      *
      * @param request
      */
-    fileprivate func saleAuth(_ request:TransactionRequest, suppressTipScreen:Bool, requestInfo:String?) {
+    fileprivate func saleAuth(_ request:BaseTransactionRequest, requestInfo:String?) {
         if let device = checkDevice(from: #function) {
-            var tos = suppressTipScreen
-
             deviceObserver?.lastRequest = request;
             
             let builder = PayIntent.Builder(amount: request.amount, externalId: request.externalId);
@@ -261,14 +258,17 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             // tx settings
             let tx = CLVModels.Payments.TransactionSettings()
             builder.transactionSettings = tx
-            
             tx.cardEntryMethods = request.cardEntryMethods
             tx.autoAcceptPaymentConfirmations = request.autoAcceptPaymentConfirmations
-            tx.autoAcceptSignature = request.autoAcceptSignature
             tx.disableDuplicateCheck = request.disableDuplicateChecking
             tx.disableReceiptSelection = request.disableReceiptSelection
-            tx.signatureEntryLocation = request.signatureEntryLocation
-            tx.signatureThreshold = request.signatureThreshold
+            
+            if let transactionRequest = request as? TransactionRequest {
+                tx.autoAcceptSignature = transactionRequest.autoAcceptSignature
+                tx.signatureEntryLocation = transactionRequest.signatureEntryLocation
+                tx.signatureThreshold = transactionRequest.signatureThreshold
+            }
+            
             if let dp = request.disablePrinting {
                 tx.cloverShouldHandleReceipts = !dp
             }
@@ -288,13 +288,13 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                 if let _ = sr.approveOfflinePaymentWithoutPrompt {
                     builder.approveOfflinePaymentWithoutPrompt = sr.approveOfflinePaymentWithoutPrompt
                 }
-                if let disableTipOnScreen = sr.disableTipOnScreen {
-                    tos = disableTipOnScreen
-                }
             
+                // Prefer the 'tipMode' setting, but fall back to the disableTipsOnScreen (legacy) setting if provided.
+                // This matches Android behavior. Ref: SSDK-151
                 if let tm = sr.tipMode {
                     tx.tipMode = CLVModels.Payments.TipMode(rawValue: tm.rawValue)
                 }
+                
                 tx.disableCashBack = sr.disableCashback
                 tx.forceOfflinePayment = sr.forceOfflinePayment
             } else if let ar = request as? AuthRequest {
@@ -314,10 +314,10 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                 tx.tipMode = CLVModels.Payments.TipMode.ON_PAPER
                 tx.forceOfflinePayment = ar.forceOfflinePayment
             } else if request is PreAuthRequest {
-                // do nothing extra for now...
+                tx.tipMode = .NO_TIP
             }
             
-            device.doTxStart(builder.build(), order: nil, suppressTipScreen: tos, requestInfo:requestInfo) //
+            device.doTxStart(builder.build(), order: nil, requestInfo:requestInfo) //
         }
     }
 
@@ -352,7 +352,12 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                 return
             } else {
                 //TODO: check for null orderId, paymentId, (amount or fullRefund)
-                device.doPaymentRefund(refundPaymentRequest.orderId, paymentId: refundPaymentRequest.paymentId, amount: refundPaymentRequest.amount ?? 0, fullRefund: refundPaymentRequest.fullRefund)
+                device.doPaymentRefund(refundPaymentRequest.orderId,
+                                       paymentId: refundPaymentRequest.paymentId,
+                                       amount: refundPaymentRequest.amount ?? 0,
+                                       fullRefund: refundPaymentRequest.fullRefund,
+                                       disablePrinting: refundPaymentRequest.disablePrinting,
+                                       disableReceiptSelection: refundPaymentRequest.disableReceiptSelection)
             }
         } else {
             let prr = RefundPaymentResponse(success:false, result:ResultCode.FAIL, reason: "Device connection error", message: "In RefundPayment : RefundPaymentRequest device is not connected.")
@@ -360,6 +365,15 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             deviceObserver?.onFinishCancel(TxStartRequestMessage.REFUND_REQUEST)
             return
         }
+    }
+    
+    public func voidPaymentRefund(_ request: VoidPaymentRefundRequest) {
+        guard let device = checkDevice(from: #function) else {
+            deviceObserver?.onPaymentRefundVoidResponse(request.refundId, status: .ERROR, reason: "Device connection error", message: "In voidPaymentRefund(): the device is not connected")
+            return
+        }
+        
+        device.doVoidPaymentRefund(request.refundId, orderId: request.orderId, disablePrinting: request.disablePrinting, disableReceiptSelection: request.disableReceiptSelection)
     }
     
     public func manualRefund(_ manualRefundRequest: ManualRefundRequest) {
@@ -395,12 +409,13 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                     tx.disableDuplicateCheck = manualRefundRequest.disableDuplicateChecking
                     tx.disableReceiptSelection = manualRefundRequest.disableReceiptSelection
                     tx.signatureEntryLocation = manualRefundRequest.signatureEntryLocation
+                    tx.tipMode = .NO_TIP
                     
                     if let dp = manualRefundRequest.disablePrinting {
                         tx.cloverShouldHandleReceipts = !dp
                     }
                     
-                    device.doTxStart(builder.build(), order: nil, suppressTipScreen: true, requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
+                    device.doTxStart(builder.build(), order: nil, requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
                 }
             }
         } else {
@@ -418,7 +433,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             payment.employee = CLVModels.Base.Reference()
             payment.employee?.id = ""
             
-            device.doVoidPayment(payment, reason: request.voidReason.rawValue)
+            device.doVoidPayment(payment, reason: request.voidReason.rawValue, disablePrinting: request.disablePrinting, disableReceiptSelection: request.disableReceiptSelection)
         } else {
             deviceObserver?.onPaymentVoided(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In voidPayment : The device is not connected.")
         }
@@ -448,16 +463,8 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
         checkDevice(from: #function)?.doTerminalMessage(message)
     }
     
-    public func printText(_ lines: [String]) {
-        checkDevice(from: #function)?.doPrintText(lines, printRequestId: nil, printDeviceId: nil)
-    }
-    
-    public func printImageFromURL(_ url:String) {
-        checkDevice(from: #function)?.doPrintImage(url, printRequestId: nil, printDeviceId: nil)
-    }
-
-    public func printImage(_ image: ImageClass) {
-        checkDevice(from: #function)?.doPrintImage(image, printRequestId: nil, printDeviceId: nil)
+    public func sendDebugLog(_ message: String) {
+        checkDevice(from: #function)?.doSendDebugLog(message)
     }
     
     public func print(_ request: PrintRequest) {
@@ -470,15 +477,6 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     
     public func retrievePrintJobStatus(_ request: PrintJobStatusRequest) {
         checkDevice(from: #function)?.doRetrievePrintJobStatus(request)
-    }
-    
-    public func cancel() {
-        checkDevice(from: #function)?.doKeyPress(KeyPress.esc)
-    }
-    
-    @available(*, deprecated: 1.4.0, message: "use openCashDrawer(_ request: OpenCashDrawerRequest) instead")
-    public func openCashDrawer(reason:String) {
-        checkDevice(from: #function)?.doOpenCashDrawer(reason, deviceId: nil)
     }
     
     public func openCashDrawer(_ request: OpenCashDrawerRequest) {
@@ -560,6 +558,17 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     
     public func retrieveDeviceStatus(_ request: RetrieveDeviceStatusRequest) {
         checkDevice(from: #function)?.doRetrieveDeviceStatus(request.sendLastMessage)
+    }
+    
+    func registerForCustomerProvidedData(_ request: RegisterForCustomerProvidedDataRequest) {
+        let configurations = request.configurations.map( {
+            CLVModels.Loyalty.LoyaltyDataConfig(configuration: $0.configuration, type: $0.type)
+        })
+        checkDevice(from: #function)?.doRegisterForCustomerProvidedData(configurations)
+    }
+    
+    func setCustomerInfo(_ request: SetCustomerInfoRequest?) {
+        checkDevice(from: #function)?.doSetCustomerInfo(request?.customerInfo)
     }
     
     /// Helper function to check for the presence and readiness of the CloverDevice. Handles errors for a nil or not-ready device, or returns the valid, ready device.
@@ -649,7 +658,17 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             cloverConnector.isReady = discoveryResponseMessage.ready ?? false
             if cloverConnector.isReady {
                 cloverConnector.merchantInfo = MerchantInfo(id: discoveryResponseMessage.merchantId, mid: discoveryResponseMessage.merchantMId, name: discoveryResponseMessage.merchantName, deviceName: discoveryResponseMessage.name, deviceSerialNumber: discoveryResponseMessage.serial, deviceModel: discoveryResponseMessage.model)
-                
+                if let supportsAuth = discoveryResponseMessage.supportsAuth {
+                    cloverConnector.merchantInfo.supportsAuths = supportsAuth
+                }
+                if let supportsPreAuth = discoveryResponseMessage.supportsPreAuth {
+                    cloverConnector.merchantInfo.supportsPreAuths = supportsPreAuth
+                }
+                if let supportsVaultCard = discoveryResponseMessage.supportsVaultCard {
+                    cloverConnector.merchantInfo.supportsVaultCards = supportsVaultCard
+                }
+                device.supportsAcks = discoveryResponseMessage.supportsAcknowledgement
+                device.supportsVoidPaymentResponse = discoveryResponseMessage.supportsVoidPaymentResponse
                 self.cloverConnector.broadcaster.notifyOnReady(cloverConnector.merchantInfo)
             } else {
                 self.cloverConnector.broadcaster.notifyOnConnect();
@@ -670,8 +689,22 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             cloverConnector.broadcaster.notifyOnVoidPaymentResponse(response);
         }
         
-        func onPaymentVoidedResponse(_ payment: CLVModels.Payments.Payment, voidReason: VoidReason) {
-            onPaymentVoided(true, result: ResultCode.SUCCESS, reason:nil, message:nil, payment:payment, voidReason: voidReason)
+        func onPaymentRefundVoidResponse(_ refundId: String, status: ResultCode, reason: String?, message: String?) {
+            cloverConnector.device?.doShowWelcomeScreen()
+            
+            let response = VoidPaymentRefundResponse(success: status == .SUCCESS, result: status, refundId: refundId, reason: reason, message: message)
+            cloverConnector.broadcaster.notifyOnPaymentRefundVoidResponse(response)
+        }
+        
+        func onPaymentVoided(_ payment: CLVModels.Payments.Payment, voidReason:VoidReason?, result:ResultStatus, reason:String?, message:String?) {
+            let success = result == .SUCCESS
+            onPaymentVoided(
+                success,
+                result: success ? .SUCCESS : .FAIL,
+                reason:reason ?? result.rawValue,
+                message:message ?? "No extended information provided.",
+                payment:payment,
+                voidReason: voidReason)
         }
         
         fileprivate func onVaultCardResponse(_ success:Bool, result:ResultCode, reason:String?, message:String?, vaultedCard:CLVModels.Payments.VaultedCard?=nil) {
@@ -835,7 +868,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                     cloverConnector.broadcaster.notifyOnPreAuthResponse(response);
                     break
                 default:
-                    debugPrint("finish ok with invalid requestInfo: " + ri, __stderrp)
+                    CCLog.d("finish ok with invalid requestInfo: " + ri)
                     processOldFinishOk(payment, signature: signature)
                     break
                 }
@@ -865,7 +898,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                     // this could be a problem, or this is from a re-issue receipt screen
                 }
             } else {
-                debugPrint("We have a finishOK without a last request", __stderrp)
+                CCLog.w("We have a finishOK without a last request")
             }
         }
         
@@ -1036,7 +1069,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     
         func onUiState(_ uiState: UiState, uiText: String, uiDirection: UiState.UiDirection, inputOptions: [InputOption]?) {
             guard let eventState = CloverDeviceEvent.DeviceEventState(rawValue:uiState.rawValue) else {
-                debugPrint("Unsupported UI event type: \(uiState)")
+                CCLog.d("Unsupported UI event type: \(uiState)")
                 return
             }
             if uiDirection == UiState.UiDirection.ENTER {
@@ -1148,7 +1181,15 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             cloverConnector.broadcaster.notifyOnResetDeviceResponse(response)
         }
         
-
+        func onCustomerProvidedDataMessage(_ result: ResultStatus, eventId: String?, config: CLVModels.Loyalty.LoyaltyDataConfig?, data: String?) {
+            let event = CustomerProvidedDataEvent(
+                success: result == .SUCCESS ? true : false,
+                result: result == .SUCCESS ? ResultCode.SUCCESS : ResultCode.CANCEL,
+                eventId: eventId,
+                config: DataProviderConfig(type: config?.type, configuration: config?.configuration),
+                data: data)
+            cloverConnector.broadcaster.notifyOnCustomerProvidedDataEvent(event)
+        }
         
         func onTxStartResponse(_ result: TxStartResponseResult, externalId: String) {
             let success = result == TxStartResponseResult.SUCCESS ? true : false

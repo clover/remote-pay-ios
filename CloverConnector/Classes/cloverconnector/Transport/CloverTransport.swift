@@ -27,6 +27,8 @@ public class CloverTransport : NSObject {
     
     func onDeviceReady(_ drm:DiscoveryResponseMessage) {
         ready = true
+        lastDiscoveryResponseMessage = drm
+        
         for obs in observers {
             obs.onDeviceReady(self)
         }

@@ -68,6 +68,10 @@ open class DefaultCloverConnectorListener : NSObject, ICloverConnectorListener {
      */
     open func onRefundPaymentResponse(_ refundPaymentResponse: RefundPaymentResponse) -> Void {}
     
+    /*
+     * Response to a payment refund being voided.
+     */
+    open func onVoidPaymentRefundResponse(_ response: VoidPaymentRefundResponse) -> Void {}
     
     /*
      * Response to an amount being refunded.
@@ -153,6 +157,8 @@ open class DefaultCloverConnectorListener : NSObject, ICloverConnectorListener {
     
     open func onResetDeviceResponse(_ response: ResetDeviceResponse) {}
 
+    open func onCustomerProvidedDataEvent(_ event: CustomerProvidedDataEvent) {}
+    
     open func onRetrievePaymentResponse(_ response: RetrievePaymentResponse) {}
     
     open func onRetrievePrintersResponse(_ response: RetrievePrintersResponse) {}

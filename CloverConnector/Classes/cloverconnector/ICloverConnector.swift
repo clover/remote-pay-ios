@@ -76,17 +76,16 @@ public protocol ICloverConnector : AnyObject {
     /// - Parameter refundPaymentRequest: The request details.
     func  refundPayment ( _ refundPaymentRequest:RefundPaymentRequest ) -> Void
     
+    /// Void a payment refund
+    ///
+    /// - Parameter request: The details of the void payment refund
+    func voidPaymentRefund(_ request: VoidPaymentRefundRequest) -> Void
+    
     /// Initiates a Manual Refund transaction (a “Refund” or credit
     /// that is not associated with a previous Payment).
     /// - Parameter manualRefundRequest: A ManualRefundRequest object with the request 
     /// details.
     func  manualRefund ( _ manualRefundRequest:ManualRefundRequest ) -> Void
-    
-    /// Sends a "cancel" button press to the Clover device.
-    ///
-    /// Use resetDevice() or invokeInputOption() instead.
-    @available(*, deprecated)
-    func  cancel () -> Void
     
     /// Sends a request to the Clover server to close out all transactions.
     ///
@@ -121,25 +120,6 @@ public protocol ICloverConnector : AnyObject {
     /// will be used.
     func  vaultCard ( _ vaultCardRequest:VaultCardRequest ) -> Void
     
-    ///
-    /// Prints custom messages in plain text through the Clover Mini's built-in printer.
-    ///
-    @available(*, deprecated: 1.4.0, message: "use print(_ request:PrintRequest) instead")
-    func  printText ( _ lines:[String] ) -> Void
-    
-    ///
-    /// Prints an image on paper receipts through the Clover Mini's built-in printer.
-    ///
-    @available(*, deprecated: 1.4.0, message: "use print(_ request:PrintRequest) instead")
-    func  printImage ( _ image:ImageClass ) -> Void
-    
-    /// Prints an image from the web on paper receipts through the Clover device's 
-    /// built-in printer.
-    /// 
-    /// - Parameter url: The URL for the image to print.
-    @available(*, deprecated: 1.4.0, message: "use print(_ request:PrintRequest) instead")
-    func printImageFromURL(_ url:String) -> Void
-    
     /// Sends a print request using the PrintRequest object. 
     /// Used to print text, images, and images from a URL using the specified printer.
     /// - Parameter request: The PrintRequest details.
@@ -163,15 +143,14 @@ public protocol ICloverConnector : AnyObject {
     func  openCashDrawer(_ request: OpenCashDrawerRequest) -> Void
     
     ///
-    /// Opens the cash drawer connected to the Clover device. Deprecated.
-    ///
-    @available(*, deprecated: 1.4.0, message: "use openCashDrawer(_ request: OpenCashDrawerRequest) instead")
-    func  openCashDrawer (reason: String) -> Void
-    
-    ///
     /// Displays a string-based message on the Clover device's screen.
     /// - Parameter message: The string message to display.
     func  showMessage ( _ message:String ) -> Void  
+    
+    ///
+    /// Sends request to the clover device to send the log to the clover server
+    /// - Parameter message: The message to send
+    func sendDebugLog(_ message:String ) -> Void
     
     ///
     /// Displays the welcome screen on the Clover device.
@@ -256,5 +235,14 @@ public protocol ICloverConnector : AnyObject {
     /// Only valid for Payments made in the past 24 hours on the Clover device queried.
     /// - Parameter request: The RetrievePaymentRequest details.
     func retrievePayment(_ _request: RetrievePaymentRequest) -> Void
+    
+    /// Requests that callbacks be provided whenever customer provided data is accrued via the Loyalty API.
+    /// Provides a list of acceptable data types that the Loyalty API may request from the customer.
+    func registerForCustomerProvidedData(_ _request: RegisterForCustomerProvidedDataRequest) -> Void
+
+    /// Provides customer information back to the Clover device.
+    /// Typically this will be called upon receipt of a customer provided data message, with
+    /// the results of a lookup into a customer database.
+    func setCustomerInfo(_ _request: SetCustomerInfoRequest?) -> Void
     
 }

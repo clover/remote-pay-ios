@@ -216,8 +216,6 @@ extension CLVModels {
       public var metereds: [CLVModels.Apps.AppMetered]?
       /// USB devices with which this app will communicate
       public var usbDevices: [CLVModels.Apps.AppUsbDevice]?
-      /// DEPRECATED: This is now derived directly from billingStartTime (if future -> in trial; if past -> not in trial).  So it is now unnecessary.  Please update client code to not use it.
-      public var isMerchantInTrial: Bool?
       /// The merchant's current subscription for this app
       public var currentSubscription: CLVModels.Apps.AppSubscription?
       /// The app's web hook
@@ -298,7 +296,6 @@ extension CLVModels {
         aCoder.encode(availableMetereds, forKey: "availableMetereds")
         aCoder.encode(metereds, forKey: "metereds")
         aCoder.encode(usbDevices, forKey: "usbDevices")
-        aCoder.encode(isMerchantInTrial, forKey: "isMerchantInTrial")
         aCoder.encode(currentSubscription, forKey: "currentSubscription")
         aCoder.encode(webhook, forKey: "webhook")
         aCoder.encode(androidVersions, forKey: "androidVersions")
@@ -373,7 +370,6 @@ extension CLVModels {
         availableMetereds = aDecoder.decodeObject(forKey: "availableMetereds") as? [CLVModels.Apps.AppMetered]
         metereds = aDecoder.decodeObject(forKey: "metereds") as? [CLVModels.Apps.AppMetered]
         usbDevices = aDecoder.decodeObject(forKey: "usbDevices") as? [CLVModels.Apps.AppUsbDevice]
-        isMerchantInTrial = aDecoder.decodeObject(forKey: "isMerchantInTrial") as? Bool
         currentSubscription = aDecoder.decodeObject(forKey: "currentSubscription") as? CLVModels.Apps.AppSubscription
         webhook = aDecoder.decodeObject(forKey: "webhook") as? CLVModels.Apps.WebHook
         androidVersions = aDecoder.decodeObject(forKey: "androidVersions") as? [CLVModels.Apps.AndroidVersion]
@@ -448,7 +444,6 @@ extension CLVModels {
         availableMetereds <- map["availableMetereds.elements"]
         metereds <- map["metereds.elements"]
         usbDevices <- map["usbDevices.elements"]
-        isMerchantInTrial <- map["isMerchantInTrial"]
         currentSubscription <- map["currentSubscription"]
         webhook <- map["webhook"]
         androidVersions <- map["androidVersions.elements"]
@@ -520,10 +515,6 @@ extension CLVModels {
       public var id: String?
       /// The name of the bundle
       public var name: String?
-      /// DEPRECATED: Instead use per country pricing in bundleCountries
-      public var price: Int?
-      /// DEPRECATED: Instead use per country pricing in bundleCountries
-      public var pricePerDevice: Int?
       public var includedApps: [CLVModels.Apps.App]?
       /// Bundle country options for this app bundle
       public var bundleCountries: [CLVModels.Apps.AppBundleCountry]?
@@ -531,8 +522,6 @@ extension CLVModels {
       public func encode(with aCoder: NSCoder) {
         aCoder.encode(id, forKey: "id")
         aCoder.encode(name, forKey: "name")
-        aCoder.encode(price, forKey: "price")
-        aCoder.encode(pricePerDevice, forKey: "pricePerDevice")
         aCoder.encode(includedApps, forKey: "includedApps")
         aCoder.encode(bundleCountries, forKey: "bundleCountries")
       }
@@ -540,8 +529,6 @@ extension CLVModels {
       required public init(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObject(forKey: "id") as? String
         name = aDecoder.decodeObject(forKey: "name") as? String
-        price = aDecoder.decodeObject(forKey: "price") as? Int
-        pricePerDevice = aDecoder.decodeObject(forKey: "pricePerDevice") as? Int
         includedApps = aDecoder.decodeObject(forKey: "includedApps") as? [CLVModels.Apps.App]
         bundleCountries = aDecoder.decodeObject(forKey: "bundleCountries") as? [CLVModels.Apps.AppBundleCountry]
       }
@@ -555,8 +542,6 @@ extension CLVModels {
       public func mapping(map:Map) {
         id <- map["id"]
         name <- map["name"]
-        price <- map["price"]
-        pricePerDevice <- map["pricePerDevice"]
         includedApps <- map["includedApps.elements"]
         bundleCountries <- map["bundleCountries.elements"]
       }
@@ -650,12 +635,6 @@ extension CLVModels {
     @objc(_TtCCC15CloverConnector9CLVModels4Apps10AppMetered)public class AppMetered: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
-      /// DEPRECATED: App metered amount. Instead use per country pricing in meteredCountries
-      public var amount: Int?
-      /// DEPRECATED: App metered action. Instead use per country pricing in meteredCountries
-      public var action: String?
-      /// DEPRECATED: App metered active status. Instead use per country pricing in meteredCountries
-      public var active: Bool?
       /// Metered country options for this app metered
       public var meteredCountries: [CLVModels.Apps.AppMeteredCountry]?
       /// Reference to the app this metered belongs to
@@ -665,9 +644,6 @@ extension CLVModels {
       
       public func encode(with aCoder: NSCoder) {
         aCoder.encode(id, forKey: "id")
-        aCoder.encode(amount, forKey: "amount")
-        aCoder.encode(action, forKey: "action")
-        aCoder.encode(active, forKey: "active")
         aCoder.encode(meteredCountries, forKey: "meteredCountries")
         aCoder.encode(app, forKey: "app")
         aCoder.encode(label, forKey: "label")
@@ -675,9 +651,6 @@ extension CLVModels {
       
       required public init(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObject(forKey: "id") as? String
-        amount = aDecoder.decodeObject(forKey: "amount") as? Int
-        action = aDecoder.decodeObject(forKey: "action") as? String
-        active = aDecoder.decodeObject(forKey: "active") as? Bool
         meteredCountries = aDecoder.decodeObject(forKey: "meteredCountries") as? [CLVModels.Apps.AppMeteredCountry]
         app = aDecoder.decodeObject(forKey: "app") as? CLVModels.Apps.App
         label = aDecoder.decodeObject(forKey: "label") as? String
@@ -691,9 +664,6 @@ extension CLVModels {
       
       public func mapping(map:Map) {
         id <- map["id"]
-        amount <- map["amount"]
-        action <- map["action"]
-        active <- map["active"]
         meteredCountries <- map["meteredCountries.elements"]
         app <- map["app"]
         label <- map["label"]
@@ -795,14 +765,6 @@ extension CLVModels {
     @objc(_TtCCC15CloverConnector9CLVModels4Apps15AppSubscription)public class AppSubscription: NSObject, NSCoding, Mappable {
       /// Unique identifier
       public var id: String?
-      /// DEPRECATED: App subscription name.  Per country pricing in subscriptionCountries.
-      public var name: String?
-      /// DEPRECATED: The cost of the subscription.  Per country pricing in subscriptionCountries.
-      public var amount: Int?
-      /// DEPRECATED: App subscription name.  Per country pricing in subscriptionCountries.
-      public var description_: String?
-      /// DEPRECATED: App subscription active status.  Per country pricing in subscriptionCountries.
-      public var active: Bool?
       /// Subscription country options for this app subscription
       public var subscriptionCountries: [CLVModels.Apps.AppSubscriptionCountry]?
       /// Reference to app this subscription belongs to
@@ -812,22 +774,12 @@ extension CLVModels {
       
       public func encode(with aCoder: NSCoder) {
         aCoder.encode(id, forKey: "id")
-        aCoder.encode(name, forKey: "name")
-        aCoder.encode(amount, forKey: "amount")
-        aCoder.encode(description_, forKey: "description_")
-        aCoder.encode(active, forKey: "active")
-        aCoder.encode(subscriptionCountries, forKey: "subscriptionCountries")
         aCoder.encode(app, forKey: "app")
         aCoder.encode(label, forKey: "label")
       }
       
       required public init(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObject(forKey: "id") as? String
-        name = aDecoder.decodeObject(forKey: "name") as? String
-        amount = aDecoder.decodeObject(forKey: "amount") as? Int
-        description_ = aDecoder.decodeObject(forKey: "description_") as? String
-        active = aDecoder.decodeObject(forKey: "active") as? Bool
-        subscriptionCountries = aDecoder.decodeObject(forKey: "subscriptionCountries") as? [CLVModels.Apps.AppSubscriptionCountry]
         app = aDecoder.decodeObject(forKey: "app") as? CLVModels.Apps.App
         label = aDecoder.decodeObject(forKey: "label") as? String
       }
@@ -840,11 +792,6 @@ extension CLVModels {
       
       public func mapping(map:Map) {
         id <- map["id"]
-        name <- map["name"]
-        amount <- map["amount"]
-        description_ <- map["description"]
-        active <- map["active"]
-        subscriptionCountries <- map["subscriptionCountries.elements"]
         app <- map["app"]
         label <- map["label"]
       }

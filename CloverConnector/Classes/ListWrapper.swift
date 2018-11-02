@@ -33,7 +33,7 @@ public class ListWrapper<T:Mappable> : Mappable {
                 }
             }
         } else {
-            debugPrint("Expected an array, but got something else: " + String(describing: items));
+            CCLog.d("Expected an array, but got something else: " + String(describing: items));
         }
     }
     
@@ -91,7 +91,7 @@ public class StringListWrapper {
             }
             
         } else {
-            debugPrint("Expected an array, but got something else: " + String(describing: items));
+            CCLog.d("Expected an array, but got something else: " + String(describing: items));
         }
     }
     

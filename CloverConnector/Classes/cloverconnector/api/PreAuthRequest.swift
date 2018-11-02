@@ -6,7 +6,7 @@ import ObjectMapper
 /**
  options for a pre-authorization request
  */
-public class PreAuthRequest:TransactionRequest {
+public class PreAuthRequest: BaseTransactionRequest {
 
     /// :nodoc:
     public override var type:TransactionType {

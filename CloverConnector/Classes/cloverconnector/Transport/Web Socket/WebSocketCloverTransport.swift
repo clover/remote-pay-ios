@@ -38,7 +38,7 @@ class WebSocketCloverTransport: CloverTransport {
     let df = DateFormatter()
 
     deinit {
-        debugPrint("deinit WebSocketCloverTransport")
+        CCLog.d("deinit WebSocketCloverTransport")
     }
 
     
@@ -71,7 +71,7 @@ class WebSocketCloverTransport: CloverTransport {
             
             initialize(ep)
         } else {
-            debugPrint("endpoint is nil", __stderrp)
+            CCLog.w("endpoint is nil")
         }
     }
     
@@ -90,7 +90,7 @@ class WebSocketCloverTransport: CloverTransport {
             socket.onConnect = { [weak self] in
                 guard let processQueue = self?.processQueue else { return }
                 processQueue.async(execute: { [weak self] in
-                    debugPrint("websocket is connected")
+                    CCLog.d("websocket is connected")
                     pairing = true
                     
                     self?.schedulePing()
@@ -100,37 +100,37 @@ class WebSocketCloverTransport: CloverTransport {
             socket.onDisconnect = { [weak self] error in
                 guard let processQueue = self?.processQueue else { return }
                 processQueue.async(execute: { [weak self] in
-                    guard let strongSelf = self else {
-                        debugPrint("onDisconnect called on orphaned socket")
+                    guard let self = self else {
+                        CCLog.d("onDisconnect called on orphaned socket")
                         return
                     }
                     
                     if let error = error {
-                        debugPrint("websocket is disconnected: " + error.localizedDescription)
+                        CCLog.d("websocket is disconnected: " + error.localizedDescription)
                         
-                        for obs in strongSelf.observers {
-                            obs.onDeviceError(.CONNECTION_ERROR, int: error.code, cause: error, message: error.localizedDescription)
+                        for obs in self.observers {
+                            obs.onDeviceError(.CONNECTION_ERROR, int: (error as NSError).code, cause: error, message: error.localizedDescription)
                         }
                     } else {
-                        debugPrint("websocket is disconnected")
+                        CCLog.d("websocket is disconnected")
                     }
                     
-                    for obs in strongSelf.observers {
-                        obs.onDeviceDisconnected(strongSelf)
+                    for obs in self.observers {
+                        obs.onDeviceDisconnected(self)
                     }
                     
-                    strongSelf.disconnectTimer?.invalidate()
-                    strongSelf.reportDisconnectTimer?.invalidate()
+                    self.disconnectTimer?.invalidate()
+                    self.reportDisconnectTimer?.invalidate()
                     
-                    strongSelf.socket = nil
+                    self.socket = nil
                     
-                    if strongSelf.disposed {
+                    if self.disposed {
                         return
                     }
                     
-                    let delayTime = DispatchTime.now() + Double(Int64(Double(strongSelf.reconnectDelay) * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+                    let delayTime = DispatchTime.now() + Double(Int64(Double(self.reconnectDelay) * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
                     DispatchQueue.global(qos: DispatchQoS.QoSClass.default).asyncAfter(deadline: delayTime, execute: {
-                        strongSelf.initialize(endpoint)
+                        self.initialize(endpoint)
                     })
                 })
             }
@@ -138,52 +138,52 @@ class WebSocketCloverTransport: CloverTransport {
             socket.onText = { [weak self] (text: String) in
                 guard let processQueue = self?.processQueue else { return }
                 processQueue.async(execute: { [weak self] in
-                    guard let strongSelf = self else {
-                        debugPrint("onText called on orphaned socket")
+                    guard let self = self else {
+                        CCLog.d("onText called on orphaned socket")
                         return
                     }
                     
-                    debugPrint("websocket onText: " + text)
-                    strongSelf.resetPong()
+                    CCLog.d("websocket onText: " + text)
+                    self.resetPong()
                     if (pairing) {
                         let parser:Mapper<PairingResponseMessage> = Mapper<PairingResponseMessage>()
                         let remoteMessage = parser.map(JSONString: text)
                         if(remoteMessage?.method == PairingCode.PAIRING_CODE && remoteMessage?.payload != nil) {
                             if let pcm:PairingCodeMessage = Mapper<PairingCodeMessage>().map(JSONString: remoteMessage!.payload!), let code = pcm.pairingCode {
-                                debugPrint("Got pairing code: " + code)
-                                strongSelf.pairingConfig.onPairingCode(code)
+                                CCLog.d("Got pairing code: " + code)
+                                self.pairingConfig.onPairingCode(code)
                             } else {
-                                debugPrint("Error getting pairing code from: " + text, stderr)
+                                CCLog.w("Error getting pairing code from: " + text)
                             }
                             
                         } else if (remoteMessage?.method == PairingCode.PAIRING_RESPONSE && remoteMessage?.payload != nil) {
                             if let pr:PairingResponse = Mapper<PairingResponse>().map(JSONString: remoteMessage!.payload!), let authToken = pr.authenticationToken {
                                 if pr.pairingState == PairingCode.INITIAL || pr.pairingState == PairingCode.PAIRED {
                                     pairing = false;
-                                    strongSelf.pairingAuthToken = authToken
-                                    debugPrint("pairing successful " + authToken)
-                                    strongSelf.pairingConfig.onPairingSuccess(authToken)
+                                    self.pairingAuthToken = authToken
+                                    CCLog.d("pairing successful " + authToken)
+                                    self.pairingConfig.onPairingSuccess(authToken)
                                     
-                                    for obs in strongSelf.observers {
-                                        obs.onDeviceReady(strongSelf)
+                                    for obs in self.observers {
+                                        obs.onDeviceReady(self)
                                     }
                                 } else if pr.pairingState == PairingCode.FAILED {
                                     pairing = true
-                                    debugPrint("pairing failed")
-                                    strongSelf.pairingAuthToken = nil
+                                    CCLog.d("pairing failed")
+                                    self.pairingAuthToken = nil
                                     //self.sendPairingRequest() // fail causes a disconnect, so this is taken care of in reconnect
                                 }
                             }
                         } else {
                             if(remoteMessage?.method != "ACK" && remoteMessage?.method != "UI_STATE") {
-                                debugPrint("Error parsing message: " + text, stderr)
+                                CCLog.w("Error parsing message: " + text)
                             } else {
                                 // we expect ACK and UI_STATE messages while pairing
                             }
                         }
                     } else {
                         DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
-                            for obs in strongSelf.observers {
+                            for obs in self.observers {
                                 obs.onMessage(text)
                             }
                         }
@@ -194,23 +194,23 @@ class WebSocketCloverTransport: CloverTransport {
             socket.onData = { [weak self] (data: Data) in
                 guard let processQueue = self?.processQueue else { return }
                 processQueue.async(execute: { 
-                    debugPrint("got some data: " + String(describing: data)) // don't expect this
+                    CCLog.d("got some data: " + String(describing: data)) // don't expect this
                 })
             }
             socket.onPong = { [weak self] (Void) in
                 guard let processQueue = self?.processQueue else { return }
                 processQueue.async(execute: { [weak self] in
 
-//                debugPrint(". " + self.df.stringFromDate(NSDate()))
+//                Log.d(". " + self.df.stringFromDate(NSDate()))
                     self?.resetPong()
                 })
             }
             // This only works in newer versions of Starscream
             socket.disableSSLCertValidation = disableSSLValidation
             if(disableSSLValidation) {
-                debugPrint("SSL Validation is turned off!")
+                CCLog.d("SSL Validation is turned off!")
             }
-            debugPrint("trying to connect")
+            CCLog.d("trying to connect")
             socket.connect(pongTimeout)
         }
     }
@@ -218,54 +218,54 @@ class WebSocketCloverTransport: CloverTransport {
     
     func sendPairingRequest() {
         processQueue.async(execute: { [weak self] in
-            guard let strongSelf = self else { return }
+            guard let self = self else { return }
 
-            let pairingRequest = PairingRequest(name: strongSelf.name, serialNumber: strongSelf.serialNumber, token: strongSelf.pairingAuthToken)
+            let pairingRequest = PairingRequest(name: self.name, serialNumber: self.serialNumber, token: self.pairingAuthToken)
             let pairingRequestMessage = PairingRequestMessage(request: pairingRequest)
             pairingRequestMessage.method = PairingCode.PAIRING_REQUEST
             if let pairingRequestString = Mapper().toJSONString(pairingRequestMessage)
             {
-                strongSelf.sendMessage(pairingRequestString)
+                self.sendMessage(pairingRequestString)
             } else {
-                debugPrint("Error send pairing request!")
+                CCLog.d("Error send pairing request!")
             }
         })
     }
     
     fileprivate func resetPong() {
         processQueue.async(execute: { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.disconnectTimer?.invalidate()
-            strongSelf.reportDisconnectTimer?.invalidate()
-            if strongSelf.reportedDisconnect {
+            guard let self = self else { return }
+            self.disconnectTimer?.invalidate()
+            self.reportDisconnectTimer?.invalidate()
+            if self.reportedDisconnect {
                 DispatchQueue.main.async {
-                    for obs in strongSelf.observers {
-                        obs.onDeviceReady(strongSelf)
+                    for obs in self.observers {
+                        obs.onDeviceReady(self)
                     }
                 }
             }
-            strongSelf.reportedDisconnect = false
-            strongSelf.schedulePing()
+            self.reportedDisconnect = false
+            self.schedulePing()
         })
     }
     
     fileprivate func schedulePing() {
         processQueue.async(execute: { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.reportedDisconnect = false
+            guard let self = self else { return }
+            self.reportedDisconnect = false
             DispatchQueue.main.async { [weak self] in
-                guard let strongSelf = self else { return }
-                strongSelf.pingTimer?.invalidate()
-                strongSelf.pingTimer = Timer.scheduledTimer(timeInterval: Double(strongSelf.pingFrequency), target: strongSelf, selector: #selector(strongSelf.sendPing), userInfo: nil, repeats: false)
+                guard let self = self else { return }
+                self.pingTimer?.invalidate()
+                self.pingTimer = Timer.scheduledTimer(timeInterval: Double(self.pingFrequency), target: self, selector: #selector(self.sendPing), userInfo: nil, repeats: false)
             }
         })
     }
     @objc fileprivate func sendPing() {
         processQueue.async(execute: { [weak self] in
-            guard let strongSelf = self else { return }
-            if let socket = strongSelf.socket {
-                strongSelf.scheduleDisconnect()
-//                debugPrint("sending PING " + strongSelf.df.stringFromDate(NSDate()))
+            guard let self = self else { return }
+            if let socket = self.socket {
+                self.scheduleDisconnect()
+//                Log.d("sending PING " + self.df.stringFromDate(NSDate()))
                 socket.write(ping: Data())
             }
         })
@@ -273,42 +273,42 @@ class WebSocketCloverTransport: CloverTransport {
     
     fileprivate func scheduleDisconnect() {
         processQueue.async(execute: { [weak self] in
-            guard let strongSelf = self else { return }
+            guard let self = self else { return }
 
             // if requested to be told of disconnect before we force a disconnect
-            if strongSelf.reportConnectionProblemAfter < strongSelf.pongTimeout {
+            if self.reportConnectionProblemAfter < self.pongTimeout {
                 DispatchQueue.main.async { [weak self] in
-                    guard let strongSelf = self else { return }
-                    strongSelf.reportDisconnectTimer?.invalidate()
-                    strongSelf.reportDisconnectTimer = Timer.scheduledTimer(timeInterval: Double(strongSelf.reportConnectionProblemAfter), target: strongSelf, selector: #selector(strongSelf.reportDisconnect), userInfo: nil, repeats: false)
+                    guard let self = self else { return }
+                    self.reportDisconnectTimer?.invalidate()
+                    self.reportDisconnectTimer = Timer.scheduledTimer(timeInterval: Double(self.reportConnectionProblemAfter), target: self, selector: #selector(self.reportDisconnect), userInfo: nil, repeats: false)
                 }
             }
         
-            strongSelf.disconnectTimer?.invalidate()
-            strongSelf.disconnectTimer = Timer.scheduledTimer(timeInterval: Double(strongSelf.pongTimeout), target: strongSelf, selector: #selector(strongSelf.disconnectMissedPong), userInfo: nil, repeats: false)
+            self.disconnectTimer?.invalidate()
+            self.disconnectTimer = Timer.scheduledTimer(timeInterval: Double(self.pongTimeout), target: self, selector: #selector(self.disconnectMissedPong), userInfo: nil, repeats: false)
         })
     }
     @objc fileprivate func reportDisconnect() {
         processQueue.async(execute: { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.reportedDisconnect = true
+            guard let self = self else { return }
+            self.reportedDisconnect = true
             DispatchQueue.main.async {
-                for obs in strongSelf.observers {
-                    obs.onDeviceConnected(strongSelf)
+                for obs in self.observers {
+                    obs.onDeviceConnected(self)
                 }
             }
         })
     }
     @objc fileprivate func disconnectMissedPong() {
         processQueue.async(execute: { [weak self] in
-            guard let strongSelf = self else { return }
+            guard let self = self else { return }
 
-            if let ws = strongSelf.socket,
-                let _ = strongSelf.endpoint {
-                debugPrint("forcing disconnect " + strongSelf.df.string(from: Date()))
+            if let ws = self.socket,
+                let _ = self.endpoint {
+                CCLog.d("forcing disconnect " + self.df.string(from: Date()))
                 ws.disconnect(forceTimeout: 0)
             } else {
-                strongSelf.dispose()
+                self.dispose()
                 // should we initialize here? how do we get in this state without messing up the state of the Transport?
             }
         })
@@ -329,8 +329,7 @@ class WebSocketCloverTransport: CloverTransport {
     
     @discardableResult
     override func sendMessage(_ message: String) -> Int {
-//        debugPrint("Sending raw message: " + message)
-        debugPrint("Sending raw message: " + String(message.count))
+        CCLog.d("Sending raw message: " + message)
         if let socket = socket {
             socket.write(string: message)
         }

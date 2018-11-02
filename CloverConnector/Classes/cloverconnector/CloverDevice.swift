@@ -11,7 +11,7 @@ import Foundation
     import UIKit
     public typealias ImageClass = UIImage
     func ImagePNGRepresentation(_ image: ImageClass) -> Data? {
-        return UIImagePNGRepresentation(image)
+        return image.pngData()
     }
 #else
     import AppKit
@@ -34,6 +34,9 @@ class CloverDevice {
     var transport:CloverTransport
     var packageName:String? = nil
     
+    var supportsAcks:Bool?
+    var supportsVoidPaymentResponse:Bool?
+    
     init (packageName:String, transport:CloverTransport) {
         self.transport = transport
         self.packageName = packageName
@@ -49,19 +52,21 @@ class CloverDevice {
     }
     
     deinit {
-        debugPrint("deinit CloverDevice")
+        CCLog.d("deinit CloverDevice")
     }
     
     func initialize() {}
     
     func doDiscoveryRequest() {}
     
-    func doTxStart(_ payIntent:PayIntent, order:CLVModels.Order.Order?, suppressTipScreen:Bool, requestInfo:String?) {}
+    func doTxStart(_ payIntent:PayIntent, order:CLVModels.Order.Order?, requestInfo:String?) {}
     
     func doKeyPress(_ keyPress:KeyPress) {}
     
-    func doVoidPayment(_ payment:CLVModels.Payments.Payment, reason:String) {}
+    func doVoidPayment(_ payment:CLVModels.Payments.Payment, reason:String, disablePrinting:Bool?, disableReceiptSelection:Bool?) {}
     
+    func doVoidPaymentRefund(_ refundId: String, orderId: String?, disablePrinting: Bool?, disableReceiptSelection: Bool?) {}
+
     func doCaptureAuth(payIntent:PayIntent, order:CLVModels.Order.Order?, requestInfo ri:String?) {}
     
     func doCaptureAuth(_ paymentID:String, amount:Int, tipAmount:Int) {}
@@ -72,7 +77,9 @@ class CloverDevice {
     
     func doTerminalMessage(_ text:String) {}
     
-    func doPaymentRefund(_ orderId:String, paymentId:String, amount:Int, fullRefund:Bool) {} // manual refunds are handled via doTxStart
+    func doSendDebugLog(_ message:String) {}
+    
+    func doPaymentRefund(_ orderId:String, paymentId:String, amount:Int, fullRefund:Bool, disablePrinting:Bool?, disableReceiptSelection:Bool?) {} // manual refunds are handled via doTxStart
     
     func doTipAdjustAuth(_ orderId:String, paymentId:String, amount:Int) {}
     
@@ -122,4 +129,7 @@ class CloverDevice {
     
     func doRetrieveDeviceStatus(_ sendLast:Bool) {}
     
+    func doRegisterForCustomerProvidedData(_ configurations:[CLVModels.Loyalty.LoyaltyDataConfig]) {}
+    
+    func doSetCustomerInfo(_ customerInfo:CLVModels.Customers.CustomerInfo?) {}
 }

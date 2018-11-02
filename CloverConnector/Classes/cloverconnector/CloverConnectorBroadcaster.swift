@@ -44,8 +44,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnTipAdded(_ tip:Int) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onTipAdded(TipAddedMessage(tip))
             }
         }
@@ -53,17 +53,26 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnPaymentRefundResponse(_ refundPaymentResponse:RefundPaymentResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onRefundPaymentResponse(refundPaymentResponse)
+            }
+        }
+    }
+    
+    public func notifyOnPaymentRefundVoidResponse(_ voidPaymentRefundResponse: VoidPaymentRefundResponse) {
+        dispatchQueue.async { [weak self] in
+            guard let self = self else { return }
+            for listener in self.listeners {
+                listener.onVoidPaymentRefundResponse(voidPaymentRefundResponse)
             }
         }
     }
     
     public func notifyOnCloseoutResponse(_ closeoutResponse:CloseoutResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onCloseoutResponse(closeoutResponse)
             }
         }
@@ -71,8 +80,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnDeviceActivityStart(_ deviceEvent:CloverDeviceEvent) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onDeviceActivityStart(deviceEvent)
             }
         }
@@ -80,8 +89,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnDeviceActivityEnd(_ deviceEvent:CloverDeviceEvent) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onDeviceActivityEnd(deviceEvent)
             }
         }
@@ -89,8 +98,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnDeviceError(_ deviceError:CloverDeviceErrorEvent) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onDeviceError(deviceError);
             }
         }
@@ -98,8 +107,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnSaleResponse(_ response:SaleResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onSaleResponse(response)
             }
         }
@@ -107,8 +116,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnAuthResponse(_ response:AuthResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onAuthResponse(response)
             }
         }
@@ -116,8 +125,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnManualRefundResponse(_ response:ManualRefundResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onManualRefundResponse(response)
             }
         }
@@ -125,8 +134,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnVerifySignatureRequest(_ request:VerifySignatureRequest) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onVerifySignatureRequest(request)
             }
         }
@@ -134,8 +143,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnConfirmPayment(_ request:ConfirmPaymentRequest) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onConfirmPaymentRequest(request)
             }
         }
@@ -143,8 +152,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnVoidPaymentResponse(_ response:VoidPaymentResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onVoidPaymentResponse(response)
             }
         }
@@ -152,8 +161,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnConnect() {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onDeviceConnected()
             }
         }
@@ -161,8 +170,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnDisconnect() {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onDeviceDisconnected()
             }
         }
@@ -170,8 +179,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnReady(_ merchantInfo:MerchantInfo) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onDeviceReady(merchantInfo)
             }
         }
@@ -179,8 +188,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnTipAdjustAuthResponse(_ response:TipAdjustAuthResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onTipAdjustAuthResponse(response);
             }
         }
@@ -188,8 +197,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnVaultCardRespose(_ ccr:VaultCardResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onVaultCardResponse(ccr)
             }
         }
@@ -197,8 +206,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnPreAuthResponse(_ response:PreAuthResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onPreAuthResponse(response)
             }
         }
@@ -208,8 +217,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnCapturePreAuth(_ response:CapturePreAuthResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onCapturePreAuthResponse(response)
             }
         }
@@ -217,8 +226,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnPendingPaymentsResponse(_ response:RetrievePendingPaymentsResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onRetrievePendingPaymentsResponse(response)
             }
         }
@@ -226,8 +235,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyPrintCredit(_ response:PrintManualRefundReceiptMessage) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onPrintManualRefundReceipt(response)
             }
         }
@@ -235,8 +244,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyPrintCreditDecline(_ response:PrintManualRefundDeclineReceiptMessage) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onPrintManualRefundDeclineReceipt(response)
             }
         }
@@ -245,8 +254,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnPrintMerchantReceipt(_ response: PrintPaymentMerchantCopyReceiptMessage) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onPrintPaymentMerchantCopyReceipt(response)
             }
         }
@@ -254,8 +263,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnPrintPaymentReceipt(_ response: PrintPaymentReceiptMessage) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onPrintPaymentReceipt(response)
             }
         }
@@ -263,8 +272,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnPrintPaymentDeclineReceipt(_ response: PrintPaymentDeclineReceiptMessage) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onPrintPaymentDeclineReceipt(response)
             }
         }
@@ -272,8 +281,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnPrintPaymentRefund(_ response: PrintRefundPaymentReceiptMessage) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onPrintRefundPaymentReceipt(response)
             }
         }
@@ -281,8 +290,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnReadCardResponse(_ response: ReadCardDataResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onReadCardDataResponse(response)
             }
         }
@@ -290,8 +299,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnCustomActivityResponse(_ response: CustomActivityResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onCustomActivityResponse(response)
             }
         }
@@ -299,8 +308,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnMessageFromActivity(_ message:MessageFromActivity) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onMessageFromActivity(message)
             }
         }
@@ -308,17 +317,26 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnResetDeviceResponse(_ response:ResetDeviceResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onResetDeviceResponse(response)
+            }
+        }
+    }
+    
+    public func notifyOnCustomerProvidedDataEvent(_ event:CustomerProvidedDataEvent) {
+        dispatchQueue.async { [weak self] in
+            guard let self = self else { return }
+            for listener in self.listeners {
+                listener.onCustomerProvidedDataEvent(event)
             }
         }
     }
     
     public func notifyOnRetrievePrintersResponse(_ response:RetrievePrintersResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onRetrievePrintersResponse(response)
             }
         }
@@ -326,8 +344,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnPrintJobStatusResponse(_ response:PrintJobStatusResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onPrintJobStatusResponse(response)
             }
         }
@@ -335,8 +353,8 @@ public class CloverConnectorBroadcaster {
 
     public func notifyOnRetrievePayment(_ response:RetrievePaymentResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onRetrievePaymentResponse(response)
             }
         }
@@ -344,8 +362,8 @@ public class CloverConnectorBroadcaster {
     
     public func notifyOnDeviceStatusResponse(_ response:RetrieveDeviceStatusResponse) {
         dispatchQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            for listener in strongSelf.listeners {
+            guard let self = self else { return }
+            for listener in self.listeners {
                 listener.onRetrieveDeviceStatusResponse(response)
             }
         }

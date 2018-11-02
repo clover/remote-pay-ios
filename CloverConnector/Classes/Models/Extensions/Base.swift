@@ -203,8 +203,6 @@ extension CLVModels {
       public var name: String?
       /// If this service charge is enabled
       public var enabled: Bool?
-      /// DEPRECATED
-      public var percentage: Int?
       /// Percent to charge times 10000, e.g. 12.5% will be 125000
       public var percentageDecimal: Int?
       
@@ -213,7 +211,6 @@ extension CLVModels {
         aCoder.encode(orderRef, forKey: "orderRef")
         aCoder.encode(name, forKey: "name")
         aCoder.encode(enabled, forKey: "enabled")
-        aCoder.encode(percentage, forKey: "percentage")
         aCoder.encode(percentageDecimal, forKey: "percentageDecimal")
       }
       
@@ -222,7 +219,6 @@ extension CLVModels {
         orderRef = aDecoder.decodeObject(forKey: "orderRef") as? CLVModels.Order.Order
         name = aDecoder.decodeObject(forKey: "name") as? String
         enabled = aDecoder.decodeObject(forKey: "enabled") as? Bool
-        percentage = aDecoder.decodeObject(forKey: "percentage") as? Int
         percentageDecimal = aDecoder.decodeObject(forKey: "percentageDecimal") as? Int
       }
       
@@ -237,7 +233,6 @@ extension CLVModels {
         orderRef <- map["orderRef"]
         name <- map["name"]
         enabled <- map["enabled"]
-        percentage <- map["percentage"]
         percentageDecimal <- map["percentageDecimal"]
       }
     }

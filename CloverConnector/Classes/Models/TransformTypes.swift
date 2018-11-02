@@ -31,3 +31,55 @@ public class CLVDateTransform: TransformType {
   }
 }
 
+public class CLVTransforms {
+    public class Customer {
+        static let customer = TransformOf<CLVModels.Customers.Customer, String>(fromJSON: { (value: String?) -> CLVModels.Customers.Customer? in
+            if let val = value,
+                let pi = Mapper<CLVModels.Customers.Customer>().map(JSONString: val) {
+                return pi
+            }
+            return nil
+        }, toJSON: { (obj: CLVModels.Customers.Customer?) -> String? in
+            if obj != nil {
+                if let val = obj,
+                    let value = Mapper().toJSONString(val, prettyPrint:false) {
+                    return String(value)
+                }
+            }
+            return nil
+        })
+        static let customerInfo = TransformOf<CLVModels.Customers.CustomerInfo, String>(fromJSON: { (value: String?) -> CLVModels.Customers.CustomerInfo? in
+            if let val = value,
+                let pi = Mapper<CLVModels.Customers.CustomerInfo>().map(JSONString: val) {
+                return pi
+            }
+            return nil
+        }, toJSON: { (obj: CLVModels.Customers.CustomerInfo?) -> String? in
+            if obj != nil {
+                if let val = obj,
+                    let value = Mapper().toJSONString(val, prettyPrint:false) {
+                    return String(value)
+                }
+            }
+            return nil
+        })
+    }
+
+    public class Loyalty {
+        static let loyaltyDataConfig = TransformOf<CLVModels.Loyalty.LoyaltyDataConfig, String>(fromJSON: { (value: String?) -> CLVModels.Loyalty.LoyaltyDataConfig? in
+            if let val = value,
+                let pi = Mapper<CLVModels.Loyalty.LoyaltyDataConfig>().map(JSONString: val) {
+                return pi
+            }
+            return nil
+        }, toJSON: { (obj: CLVModels.Loyalty.LoyaltyDataConfig?) -> String? in
+            if obj != nil {
+                if let val = obj,
+                    let value = Mapper().toJSONString(val, prettyPrint:false) {
+                    return String(value)
+                }
+            }
+            return nil
+        })
+    }
+}

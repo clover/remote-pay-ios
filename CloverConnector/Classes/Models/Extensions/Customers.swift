@@ -131,6 +131,21 @@ extension CLVModels {
       public var emailAddresses: [CLVModels.Customers.EmailAddress]?
       public var phoneNumbers: [CLVModels.Customers.PhoneNumber]?
       public var cards: [CLVModels.Customers.Card]?
+        
+        public init(id:String?=nil,orderRef:CLVModels.Order.Order?=nil, firstName:String?=nil,lastName:String?=nil,marketingAllowed:Bool?=nil,customerSince:Int?=nil,orders:[CLVModels.Order.Order]?=nil,addresses:[CLVModels.Customers.Address]?=nil,emailAddresses:[CLVModels.Customers.EmailAddress]?=nil,phoneNumbers:[CLVModels.Customers.PhoneNumber]?=nil,cards:[CLVModels.Customers.Card]?=nil) {
+            super.init()
+            self.id = id
+            self.orderRef = orderRef
+            self.firstName = firstName
+            self.lastName = lastName
+            self.marketingAllowed = marketingAllowed
+            self.customerSince = customerSince
+            self.orders = orders
+            self.addresses = addresses
+            self.emailAddresses = emailAddresses
+            self.phoneNumbers = phoneNumbers
+            self.cards = cards
+        }
       
       public func encode(with aCoder: NSCoder) {
         aCoder.encode(id, forKey: "id")
@@ -181,7 +196,33 @@ extension CLVModels {
       }
     }
     
-    
+    public class CustomerInfo:Mappable {
+        public var customer:Customer?
+        public var displayString:String?
+        public var externalId:String?
+        public var externalSystemName:String?
+        public var extras:[String:String]?
+        
+        public init(customer:CLVModels.Customers.Customer?=nil,displayString:String?=nil,externalId:String?=nil,externalSystemName:String?=nil,extras:[String:String]?=nil) {
+            self.customer = customer
+            self.displayString = displayString
+            self.externalId = externalId
+            self.externalSystemName = externalSystemName
+            self.extras = extras
+        }
+        
+        public required init?(map:Map) {
+            
+        }
+        
+        public func mapping(map:Map) {
+            customer <- map["customer"]
+            displayString <- map["displayString"]
+            externalId <- map["externalId"]
+            externalSystemName <- map["externalSystemName"]
+            extras <- map["extras"]
+        }
+    }
     
     @objc(_TtCCC15CloverConnector9CLVModels9Customers12EmailAddress)public class EmailAddress: NSObject, NSCoding, Mappable {
       public var id: String?

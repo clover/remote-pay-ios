@@ -184,8 +184,6 @@ extension CLVModels {
       public var cost: Int?
       /// True if this item should be counted as revenue, for example gift cards and donations would not
       public var isRevenue: Bool?
-      /// DEPRECATED: use itemStock instead
-      public var stockCount: Int?
       public var taxRates: [CLVModels.Inventory.TaxRate]?
       public var modifierGroups: [CLVModels.Inventory.ModifierGroup]?
       /// Categories associated with this item
@@ -210,7 +208,6 @@ extension CLVModels {
         aCoder.encode(unitName, forKey: "unitName")
         aCoder.encode(cost, forKey: "cost")
         aCoder.encode(isRevenue, forKey: "isRevenue")
-        aCoder.encode(stockCount, forKey: "stockCount")
         aCoder.encode(taxRates, forKey: "taxRates")
         aCoder.encode(modifierGroups, forKey: "modifierGroups")
         aCoder.encode(categories, forKey: "categories")
@@ -235,7 +232,6 @@ extension CLVModels {
         unitName = aDecoder.decodeObject(forKey: "unitName") as? String
         cost = aDecoder.decodeObject(forKey: "cost") as? Int
         isRevenue = aDecoder.decodeObject(forKey: "isRevenue") as? Bool
-        stockCount = aDecoder.decodeObject(forKey: "stockCount") as? Int
         taxRates = aDecoder.decodeObject(forKey: "taxRates") as? [CLVModels.Inventory.TaxRate]
         modifierGroups = aDecoder.decodeObject(forKey: "modifierGroups") as? [CLVModels.Inventory.ModifierGroup]
         categories = aDecoder.decodeObject(forKey: "categories") as? [CLVModels.Inventory.Category]
@@ -264,7 +260,6 @@ extension CLVModels {
         unitName <- map["unitName"]
         cost <- map["cost"]
         isRevenue <- map["isRevenue"]
-        stockCount <- map["stockCount"]
         taxRates <- map["taxRates.elements"]
         modifierGroups <- map["modifierGroups.elements"]
         categories <- map["categories.elements"]
@@ -348,20 +343,16 @@ extension CLVModels {
     @objc(_TtCCC15CloverConnector9CLVModels9Inventory9ItemStock)public class ItemStock: NSObject, NSCoding, Mappable {
       /// Reference to an item
       public var item: CLVModels.Inventory.Item?
-      /// DEPRECATED: use quantity instead
-      public var stockCount: Int?
       /// Current count of this item in stock
       public var quantity: Double?
       
       public func encode(with aCoder: NSCoder) {
         aCoder.encode(item, forKey: "item")
-        aCoder.encode(stockCount, forKey: "stockCount")
         aCoder.encode(quantity, forKey: "quantity")
       }
       
       required public init(coder aDecoder: NSCoder) {
         item = aDecoder.decodeObject(forKey: "item") as? CLVModels.Inventory.Item
-        stockCount = aDecoder.decodeObject(forKey: "stockCount") as? Int
         quantity = aDecoder.decodeObject(forKey: "quantity") as? Double
       }
       
@@ -373,7 +364,6 @@ extension CLVModels {
       
       public func mapping(map:Map) {
         item <- map["item"]
-        stockCount <- map["stockCount"]
         quantity <- map["quantity"]
       }
     }

@@ -14,6 +14,8 @@ public class RefundRequestMessage : Message {
     public var paymentId:String?
     public var amount:Int?
     public var fullRefund:Bool?
+    public var disableCloverPrinting: Bool = false
+    public var disableReceiptSelection: Bool = false
     
     public init(orderId:String, paymentId:String, amount:Int?, fullRefund:Bool?) {
         super.init(method: .REFUND_REQUEST)
@@ -32,5 +34,7 @@ public class RefundRequestMessage : Message {
         paymentId <- map["paymentId"]
         amount <- map["amount"]
         fullRefund <- map["fullRefund"]
+        disableCloverPrinting <- map["disableCloverPrinting"]
+        disableReceiptSelection <- map["disableReceiptSelection"]
     }
 }

@@ -32,7 +32,7 @@ public class WebSocketDeviceConfiguration : NSObject, CloverDeviceConfiguration 
     public private(set) var remoteSourceSDK:String = "com.cloverconnector.ios.ws"
     
     deinit {
-        debugPrint("deinit WebSocketDeviceConfiguration")
+        CCLog.d("deinit WebSocketDeviceConfiguration")
     }
     
     public init(endpoint:String, remoteApplicationID:String, posName:String, posSerial:String, pairingAuthToken:String?, pairingDeviceConfiguration:PairingDeviceConfiguration) {

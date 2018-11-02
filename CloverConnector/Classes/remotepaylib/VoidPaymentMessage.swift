@@ -13,7 +13,8 @@ import ObjectMapper
 public class VoidPaymentMessage : Message {
     public var payment:CLVModels.Payments.Payment?
     public var voidReason:VoidReason?
-    
+    public var disableCloverPrinting: Bool?
+    public var disableReceiptSelection: Bool?
     
     public init() {
         super.init(method: .VOID_PAYMENT)
@@ -27,5 +28,7 @@ public class VoidPaymentMessage : Message {
         super.mapping(map: map)
         payment <- (map["payment"], Message.paymentTransform)
         voidReason <- map["voidReason"]
+        disableCloverPrinting <- map["disableCloverPrinting"]
+        disableReceiptSelection <- map["disableReceiptSelection"]
     }
 }

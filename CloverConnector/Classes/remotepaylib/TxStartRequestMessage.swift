@@ -31,7 +31,7 @@ public class TxStartRequestMessage : Message {
         self.version = 2
     }
     
-    public required convenience init(payIntent:PayIntent, order:CLVModels.Order.Order, suppressOnScreenTips:Bool, requestInfo ri:String?) {
+    public required convenience init(payIntent:PayIntent, order:CLVModels.Order.Order, suppressOnScreenTips:Bool?, requestInfo ri:String?) {
         self.init()
         self.version = 2
         self.payIntent = payIntent

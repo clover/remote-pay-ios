@@ -34,7 +34,9 @@ protocol CloverDeviceObserver:AnyObject {
     
     func onVerifySignature(_ payment:CLVModels.Payments.Payment, signature:Signature?)
     
-    func onPaymentVoidedResponse(_ payment:CLVModels.Payments.Payment, voidReason:VoidReason)
+    func onPaymentVoided(_ payment: CLVModels.Payments.Payment, voidReason:VoidReason?, result:ResultStatus, reason:String?, message:String?)
+    
+    func onPaymentRefundVoidResponse(_ refundId: String, status: ResultCode, reason: String?, message: String?)
     
     func onKeyPressed(_ keyPress:KeyPress)
     
@@ -85,6 +87,8 @@ protocol CloverDeviceObserver:AnyObject {
     func onRetrievePrintersResponse(_ printers:[CLVModels.Printer.Printer]?)
     func onRetrievePrintJobStatus(_ printRequestId:String?, status:String?)
     func onResetDeviceResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState)
+    
+    func onCustomerProvidedDataMessage(_ result:ResultStatus, eventId:String?, config:CLVModels.Loyalty.LoyaltyDataConfig?, data:String?)
 }
 
 public class DefaultCloverDeviceObserver : CloverDeviceObserver {
@@ -108,7 +112,9 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     
     func onVerifySignature(_ payment:CLVModels.Payments.Payment, signature:Signature?){}
     
-    func onPaymentVoidedResponse(_ payment:CLVModels.Payments.Payment, voidReason:VoidReason){}
+    func onPaymentVoided(_ payment: CLVModels.Payments.Payment, voidReason:VoidReason?, result:ResultStatus, reason:String?, message:String?){}
+    
+    func onPaymentRefundVoidResponse(_ refundId: String, status: ResultCode, reason: String?, message: String?) {}
     
     func onKeyPressed(_ keyPress:KeyPress){}
     
@@ -154,4 +160,7 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     func onRetrievePrintersResponse(_ printers:[CLVModels.Printer.Printer]?) {}
     func onRetrievePrintJobStatus(_ printRequestId:String?, status:String?) {}
     func onResetDeviceResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState){}
+    
+    func onCustomerProvidedDataMessage(_ result:ResultStatus, eventId:String?, config:CLVModels.Loyalty.LoyaltyDataConfig?, data:String?) {}
+    
 }

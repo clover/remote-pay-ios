@@ -1276,6 +1276,50 @@ extension CLVModels {
       }
     }
     
+    @objc(CloverConnectorModelsExtensionsPaymentsAdditionalCharges) public class AdditionalCharges: NSObject, NSCoding, Mappable {
+        public var elements:[AdditionalCharge]?
+        public func encode(with aCoder: NSCoder) {
+            aCoder.encode(elements, forKey: "elements")
+        }
+        public required init?(coder aDecoder: NSCoder) {
+            elements = aDecoder.decodeObject(forKey: "elements") as? [AdditionalCharge]
+        }
+        public required init?(map: Map) {
+            
+        }
+        public func mapping(map: Map) {
+            elements <- map["elements"]
+        }
+    }
+    
+    @objc(CloverConnectorModelsExtensionsPaymentsAdditionalCharge) public class AdditionalCharge: NSObject, NSCoding, Mappable {
+        public var amount:Int?
+        public var type:String?
+        public var id:String?
+        
+        public func encode(with aCoder: NSCoder) {
+            aCoder.encode(amount, forKey: "amount")
+            aCoder.encode(type, forKey: "type")
+            aCoder.encode(id, forKey: "id")
+        }
+        
+        public required init?(coder aDecoder: NSCoder) {
+            amount = aDecoder.decodeObject(forKey: "amount") as? Int
+            type = aDecoder.decodeObject(forKey: "type") as? String
+            id = aDecoder.decodeObject(forKey: "id") as? String
+        }
+        
+        public required init?(map: Map) {
+            
+        }
+        
+        public func mapping(map: Map) {
+            amount <- map["amount"]
+            type <- map["type"]
+            id <- map["id"]
+        }
+    }
+    
     
     
     @objc(_TtCCC15CloverConnector9CLVModels8Payments7Payment)public class Payment: NSObject, NSCoding, Mappable {
@@ -1352,6 +1396,9 @@ extension CLVModels {
         /// Tracking information for the app that created this payment.
         public var appTracking: CLVModels.Apps.AppTracking?
         
+        /// Additional charges associated with this transaction (Canada INTERAC)
+        public var additionalCharges: CLVModels.Payments.AdditionalCharges?
+        
         public func encode(with aCoder: NSCoder) {
             aCoder.encode(id, forKey: "id")
             aCoder.encode(order, forKey: "order")
@@ -1380,6 +1427,7 @@ extension CLVModels {
             aCoder.encode(transactionSettings, forKey: "transactionSettings")
             aCoder.encode(germanInfo, forKey: "germanInfo")
             aCoder.encode(appTracking, forKey: "appTracking")
+            aCoder.encode(additionalCharges, forKey: "additionalCharges")
         }
         
         required public init(coder aDecoder: NSCoder) {
@@ -1414,6 +1462,7 @@ extension CLVModels {
             transactionSettings = aDecoder.decodeObject(forKey: "transactionSettings") as? CLVModels.Payments.TransactionSettings
             germanInfo = aDecoder.decodeObject(forKey: "germanInfo") as? CLVModels.Payments.GermanInfo
             appTracking = aDecoder.decodeObject(forKey: "appTracking") as? CLVModels.Apps.AppTracking
+            additionalCharges = aDecoder.decodeObject(forKey: "additionalCharges") as? AdditionalCharges
         }
         
         override public init() {}
@@ -1450,6 +1499,7 @@ extension CLVModels {
             transactionSettings <- map["transactionSettings"]
             germanInfo <- map["germanInfo"]
             appTracking <- map["appTracking"]
+            additionalCharges <- map["additionalCharges"]
         }
     }
     

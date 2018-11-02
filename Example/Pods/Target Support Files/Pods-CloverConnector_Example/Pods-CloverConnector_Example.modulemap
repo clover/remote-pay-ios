@@ -1,6 +1,0 @@
-framework module Pods_CloverConnector_Example {
-  umbrella header "Pods-CloverConnector_Example-umbrella.h"
-
-  export *
-  module * { export * }
-}

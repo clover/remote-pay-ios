@@ -16,8 +16,6 @@ public class PayIntent:Mappable {
 
     public fileprivate(set) var action:String?
     public fileprivate(set) var amount = 0
-    @available(*, deprecated, message: "use TransactionSettings")
-    public fileprivate(set) var tippableAmount:Int?
     public fileprivate(set) var tipAmount:Int?
     public fileprivate(set) var taxAmount:Int?
     public fileprivate(set) var orderId:String?
@@ -61,7 +59,6 @@ public class PayIntent:Mappable {
 
         action <- map["action"]
         amount <- map["amount"]
-        tippableAmount <- map["tippableAmount"]
         tipAmount <- map["tipAmount"]
         taxAmount <- map["taxAmount"]
         orderId <- map["orderId"]
@@ -94,8 +91,6 @@ public class PayIntent:Mappable {
     public class Builder {
         public var action:String?
         public var amount:Int = 0
-        @available(*, deprecated, message: "use TransactionSettings")
-        public var tippableAmount:Int?
         public var tipAmount:Int?
         public var taxAmount:Int?
         public var orderId:String?
@@ -138,7 +133,6 @@ public class PayIntent:Mappable {
             let payIntent = PayIntent()
             payIntent.action = self.action
             payIntent.amount = self.amount
-            payIntent.tippableAmount = self.tippableAmount
             payIntent.tipAmount = self.tipAmount
             payIntent.taxAmount = self.taxAmount
             payIntent.orderId = self.orderId

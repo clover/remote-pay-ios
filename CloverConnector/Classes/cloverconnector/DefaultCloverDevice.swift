@@ -27,13 +27,13 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     fileprivate var config:CloverDeviceConfiguration
     
     deinit {
-        debugPrint("deinit DefaultCloverDevice")
+        CCLog.d("deinit DefaultCloverDevice")
     }
     
     init?(config:CloverDeviceConfiguration) {
         self.config = config
         if config.getMaxMessageCharacters() < 1000 {
-            print("Message size is too small, reverting to 1000", stderr);
+            CCLog.d("Message size is too small, reverting to 1000");
         }
         maxMessageSizeInChars = max(1000, config.getMaxMessageCharacters()) // prevent an accidentally small message size
         if let transport = config.getTransport() {
@@ -58,7 +58,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             sendCommandMessage(payload: msgJSON, method: msg.method)
         } else {
             // couldn't create JSON
-            debugPrint("Couldn't create DiscoveryRequest message ", stderr)
+            CCLog.s("Couldn't create DiscoveryRequest message ")
         }
     }
     
@@ -79,7 +79,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         
         let remoteMessage = RemoteMessage()
         remoteMessage.type = .PONG
-        debugPrint("Sending Pong")
+        CCLog.d("Sending Pong")
         
         if let _ = Mapper().toJSONString(remoteMessage, prettyPrint: false) {
             let _ = sendRemoteMessage(remoteMessage);
@@ -88,7 +88,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     func onMessage(_ message:String) {
         // parse message and call correct CloverDeviceObserver
-        // debugPrint("Message received: " + message)
+        // Log.d("Message received: " + message)
         if let remotemessage = parser.map(JSONString: message) {
             if remotemessage.type == .PING {
                 sendPong(remotemessage)
@@ -148,8 +148,14 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                                     notifyListenersVerifySignatureRequest(svr)
                                 }
                             case Method.PAYMENT_VOIDED:
-                                if let pvm = Mapper<PaymentVoidedMessage>().map(JSONString: payload) {
-                                    notifyListenersPaymentVoided(pvm)
+                                // This message is not part of the current payment flow.  See SEMI-579.
+//                                if let pvm = Mapper<PaymentVoidedMessage>().map(JSONString: payload) {
+//                                    notifyListenersPaymentVoided(pvm)
+//                                }
+                                break
+                            case Method.VOID_PAYMENT_RESPONSE:
+                                if let vpr = Mapper<VoidPaymentResponseMessage>().map(JSONString: payload) {
+                                    notifyListenersPaymentVoidResponse(vpr)
                                 }
                             case Method.CASHBACK_SELECTED:
                                 if let cbsm = Mapper<CashbackSelectedMessage>().map(JSONString: payload) {
@@ -266,6 +272,13 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                                     notifyDeviceResetResponse(rdrm)
                                 }
                             case Method.CAPTURE_PREAUTH: break
+                            case Method.CLOVER_DEVICE_LOG_REQUEST: break
+                            case Method.REGISTER_FOR_CUST_DATA: break
+                            case Method.CUSTOMER_PROVIDED_DATA_MESSAGE:
+                                if let message = Mapper<CustomerProvidedDataMessage>().map(JSONString: payload) {
+                                    notifyCustomerProvidedDataMessage(message)
+                                }
+                            case Method.CUSTOMER_INFO_MESSAGE: break
                         }
                         
                     }
@@ -293,7 +306,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                 }
             }catch {
                 
-                debugPrint("error")
+                CCLog.d("error")
                 //Access error here
             }
             
@@ -302,16 +315,6 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         
     }
     
-    override func doCaptureAuth(payIntent:PayIntent, order:CLVModels.Order.Order?, requestInfo ri:String?) {
-        let msg = CapturePreAuthRequestMessageV2()
-        msg.payIntent = payIntent
-        msg.order = order
-        msg.requestInfo = ri
-        
-        if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
-            sendCommandMessage(payload: msgJSON, method: msg.method)
-        }
-    }
     override func doCaptureAuth(_ paymentID: String, amount: Int, tipAmount: Int) {
         let msg = CapturePreAuthRequestMessageV1()
         msg.amount = amount
@@ -355,10 +358,21 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    override func doVoidPayment(_ payment: CLVModels.Payments.Payment, reason: String) {
+    override func doVoidPayment(_ payment: CLVModels.Payments.Payment, reason: String, disablePrinting: Bool?, disableReceiptSelection: Bool?) {
         let msg = VoidPaymentMessage()
+        if supportsVoidPaymentResponse == true {  // Sending VoidPaymentMessage as a V2 results in the response message being sent back
+            msg.version = 3
+        }
         msg.payment = payment
         msg.voidReason = VoidReason(rawValue: reason)
+        
+        if let disablePrinting = disablePrinting {
+            msg.disableCloverPrinting = disablePrinting
+        }
+        
+        if let disableReceiptSelection = disableReceiptSelection {
+            msg.disableReceiptSelection = disableReceiptSelection
+        }
         
         class TempDevObs : DefaultCloverDeviceObserver {
             var ackID:String
@@ -378,19 +392,44 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                         observers.remove(at: index)
                     }
                     for observer in observers {
-                        observer.onPaymentVoidedResponse(payment, voidReason: reason)
+                        observer.onPaymentVoided(payment, voidReason: reason, result: ResultStatus.SUCCESS, reason: nil, message: nil)
                     }
                 }
             }
         }
         
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
-            
             if let voidPacketMsgId = sendCommandMessage(payload: msgJSON, method:msg.method),
-                let reason = VoidReason(rawValue: reason) {
-                deviceObservers.append(TempDevObs(voidPacketMsgId, deviceObservers, payment, reason))
+                    let reason = VoidReason(rawValue: reason) {
+                if supportsVoidPaymentResponse != true {    // If the attached device doesn't support void payment responses, then we'll need to manage the void response ourselves.
+                    if supportsAcks == true {               // The attached device supports acks, so add the device observer so we send the response when we get the ack back
+                        deviceObservers.append(TempDevObs(voidPacketMsgId, deviceObservers, payment, reason))
+                    } else {                                // The attached device doesn't support acks or void payment responses, so send the response back immediately.
+                        for observer in deviceObservers {
+                            observer.onPaymentVoided(payment, voidReason: reason, result: ResultStatus.SUCCESS, reason: nil, message: nil)
+                        }
+                    }
+                }
             }
         }
+    }
+    
+    override func doVoidPaymentRefund(_ refundId: String, orderId: String?, disablePrinting: Bool?, disableReceiptSelection: Bool?) {
+        let msg = VoidPaymentRefundRequest(refundId: refundId, employeeId: nil, orderId: orderId, disablePrinting: disablePrinting, disableReceiptSelection: disableReceiptSelection)
+
+        //error out and send directly back to observer with a "not implemented" warning
+        for observer in deviceObservers {
+            observer.onPaymentRefundVoidResponse(refundId, status: .UNSUPPORTED, reason: "Unsupported", message: "The VoidPaymentRefund request is currently unsupported. Will be added in a future release")
+        }
+        
+        /*
+         TODO: turn this on in a future SDK version 3.x
+         Currently don't have an internal "Message" subclass. Will need one at the point that we send this on to Remote-Pay
+         */
+        
+//        if let msgJSON = Mapper().toJSONString(msg) {
+//            sendCommandMessage(payload: msgJSON, method: Method.VOID_PAYMENT_REFUND)
+//        }
     }
     
     override func doVaultCard(_ cardEntryMethods: Int) {
@@ -426,7 +465,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         } else if let imageURL = request.imageURLS.first {   //...and one image URL
             self.download(imageURL: imageURL, completion: { [weak self] (image) in
                 guard let downloadedImage = image else {
-                    debugPrint("Printing failed, couldn't download image: " + imageURL.absoluteString)
+                    CCLog.d("Printing failed, couldn't download image: " + imageURL.absoluteString)
                     
                     let response = PrintJobStatusResponseMessage()
                     response.printRequestId = request.printRequestId
@@ -439,7 +478,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             })
         } else {
             //if we got here, it's because the printRequest either had nothing on it, or has a new, unhandled content type
-            debugPrint("In doPrint: PrintRequest had no content or had an unhandled content type")
+            CCLog.d("In doPrint: PrintRequest had no content or had an unhandled content type")
         }
     }
     
@@ -492,17 +531,25 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    override func doPaymentRefund(_ orderId: String, paymentId: String, amount: Int, fullRefund: Bool) {
+    override func doPaymentRefund(_ orderId: String, paymentId: String, amount: Int, fullRefund: Bool, disablePrinting: Bool?, disableReceiptSelection: Bool?) {
         let msg:RefundRequestMessage = RefundRequestMessage(orderId: orderId, paymentId:paymentId, amount:amount, fullRefund:fullRefund)
         msg.orderId = orderId
         msg.paymentId = paymentId
         msg.amount = amount
         msg.fullRefund = fullRefund
+        msg.version = 2
         
-        if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
-            sendCommandMessage(payload: msgJSON, method: msg.method);
+        if let disablePrinting = disablePrinting {
+            msg.disableCloverPrinting = disablePrinting
         }
         
+        if let disableReceiptSelection = disableReceiptSelection {
+            msg.disableReceiptSelection = disableReceiptSelection
+        }
+        
+        if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
+            sendCommandMessage(payload: msgJSON, method: msg.method, version: 2)
+        }
     }
     
     override func doAcceptPayment(_ payment: CLVModels.Payments.Payment) {
@@ -542,11 +589,17 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    override func doTxStart(_ payIntent: PayIntent, order: CLVModels.Order.Order?, suppressTipScreen: Bool, requestInfo:String?) {
+    override func doSendDebugLog(_ message: String) {
+        let msg = CloverDeviceLogMessage(message: message)
+        if let msgJSON = Mapper().toJSONString(msg) {
+            sendCommandMessage(payload: msgJSON, method: msg.method)
+        }
+    }
+    
+    override func doTxStart(_ payIntent: PayIntent, order: CLVModels.Order.Order?, requestInfo:String?) {
         let msg:TxStartRequestMessage = TxStartRequestMessage()
         msg.payIntent = payIntent
         msg.order = order
-        msg.suppressOnScreenTips = suppressTipScreen
         msg.requestInfo = requestInfo
         
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint:false) {
@@ -597,7 +650,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                 if let msgJSON = Mapper().toJSONString(ipm, prettyPrint:false) {
                     DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: { [weak self] in
                         if self?.sendCommandMessage(payload: msgJSON, method:ipm.method, version: 2, attachmentData: imageData) == nil {
-                            debugPrint("Error sending image")
+                            CCLog.d("Error sending image")
                         }
                     })
                 }
@@ -608,7 +661,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                     ipm.png = [UInt8](base64.utf8)
                     if let msgJSON = Mapper().toJSONString(ipm, prettyPrint:false) {
                         if self?.sendCommandMessage(payload: msgJSON, method:ipm.method) == nil {
-                            debugPrint("Error sending image")
+                            CCLog.d("Error sending image")
                         }
                     }
                 })
@@ -678,6 +731,21 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
+    override func doRegisterForCustomerProvidedData(_ configurations:[CLVModels.Loyalty.LoyaltyDataConfig]) {
+       let message = RegisterForCustomerProvidedDataMessage(configurations: configurations)
+        if let msgJSON = Mapper().toJSONString(message) {
+            sendCommandMessage(payload: msgJSON, method: message.method)
+        }
+    }
+    
+    override func doSetCustomerInfo(_ customerInfo:CLVModels.Customers.CustomerInfo?) {
+        let message = CustomerInfoMessage(customer: customerInfo)
+        if let msgJSON = Mapper().toJSONString(message) {
+            sendCommandMessage(payload: msgJSON, method: message.method)
+        }
+    }
+
+    
     @discardableResult
     func sendCommandMessage(payload msgJSON:String, method:Method, version:Int = 1, attachmentData:Data? = nil) -> String? {
             let rm:RemoteMessage = RemoteMessage()
@@ -716,7 +784,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                 
                 // if the payload size exceeds the max, then fail immediately
                 if (attachmentData != nil && attachmentData!.count > cloverConnector.MAX_PAYLOAD_SIZE) {
-                    debugPrint("Error sending message - payload size is greater than the maximum allowed")
+                    CCLog.d("Error sending message - payload size is greater than the maximum allowed")
                     return nil
                 }
 
@@ -729,7 +797,6 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                     let range = (payloadStr.startIndex ..< payloadStr.index(payloadStr.startIndex, offsetBy: maxMessageSizeInChars < payloadStr.count ? maxMessageSizeInChars : payloadStr.count))
                     
                     let fPayload = String(payloadStr[range])
-                    //            debugPrint(fragment)
                     
                     payloadStr.removeSubrange(range)
                     
@@ -756,24 +823,24 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             } else {
                 // we DON'T need to fragment
                 if let remoteMsg = Mapper().toJSONString(remoteMsg, prettyPrint: false) {
-                    Swift.debugPrint(remoteMsg)
+                    CCLog.d(remoteMsg)
                     self.transport.sendMessage(remoteMsg)
                 } else {
-                    Swift.debugPrint("Couldn't send message. Couldn't serialize", stderr)
+                    CCLog.w("Couldn't send message. Couldn't serialize")
                 }
             }
             
         } else {
             // we cannot send fragments, v1 or attachments
             if remoteMsg.attachment != nil || attachmentData != nil {
-                Swift.debugPrint("Version 1 of remote message doesn't support attachments", stderr)
+                CCLog.w("Version 1 of remote message doesn't support attachments")
             }
 
             if let remoteMsg = Mapper().toJSONString(remoteMsg, prettyPrint: false) {
-                Swift.debugPrint(remoteMsg)
+                CCLog.d(remoteMsg)
                 self.transport.sendMessage(remoteMsg)
             } else {
-                Swift.debugPrint("Couldn't send message. Couldn't serialize", stderr)
+                CCLog.w("Couldn't send message. Couldn't serialize")
             }
         }
         
@@ -800,10 +867,10 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             fRemoteMessage.lastFragment = lastFragment
             
             if let remoteMsg = Mapper().toJSONString(fRemoteMessage, prettyPrint: false) {
-                Swift.debugPrint("Sending Fragment " + String(index) + (lastFragment ? " <last>" : ""))
+                CCLog.d("Sending Fragment " + String(index) + (lastFragment ? " <last>" : ""))
                 self.transport.sendMessage(remoteMsg)
             } else {
-                Swift.debugPrint("Couldn't send message. Couldn't serialize", stderr)
+                CCLog.w("Couldn't send message. Couldn't serialize")
             }
         }
     
@@ -965,12 +1032,16 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    func notifyListenersPaymentVoided(_ response:PaymentVoidedMessage) {
-        guard let payment = response.payment,
-            let voidReason = response.voidReason else { return }
+    // Called when a VoidPaymentResponseMessage is received
+    func notifyListenersPaymentVoidResponse(_ response: VoidPaymentResponseMessage) {
+        
+        guard let payment = response.payment, let status = response.status else {
+            return
+        }
+        
         for listener in deviceObservers {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
-                listener.onPaymentVoidedResponse(payment, voidReason: voidReason)
+                listener.onPaymentVoided(payment, voidReason: response.voidReason, result: status, reason: response.reason, message: response.message)
             })
         }
     }
@@ -1141,6 +1212,14 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
+    func notifyCustomerProvidedDataMessage(_ message:CustomerProvidedDataMessage) {
+        for listener in deviceObservers {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                listener.onCustomerProvidedDataMessage(message.result, eventId: message.eventId, config: message.config, data: message.data)
+            }
+        }
+    }
+    
     func notifyRetrievePaymentResponse(_ response:RetrievePaymentResponseMessage) {
         for listener in deviceObservers {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
@@ -1163,7 +1242,7 @@ extension DefaultCloverDevice {
         let session = URLSession(configuration: .default)
         let downloadTask = session.dataTask(with: imageURL) { (data, response, error) in
             guard error == nil else {
-                debugPrint("Image download failed: " + error!.localizedDescription)
+                CCLog.d("Image download failed: " + error!.localizedDescription)
                 completion(nil)
                 return
             }

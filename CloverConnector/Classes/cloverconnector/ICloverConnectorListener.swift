@@ -47,21 +47,28 @@ public protocol ICloverConnectorListener : AnyObject {
     func  onTipAdjustAuthResponse ( _ tipAdjustAuthResponse:TipAdjustAuthResponse ) -> Void 
     
     /// Called in response to a voidPayment() request. Contains a 
-    /// [ResultCode](https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html)
+    /// [ResultCode](https://clover.github.io/remote-pay-ios/3.0.0/docs/Enums/ResultCode.html)
     /// and a Success boolean. If successful, the response will also contain the
     /// paymentId for the voided Payment.
     /// - Parameter voidPaymentResponse: The response to the transaction request.
     func  onVoidPaymentResponse ( _ voidPaymentResponse:VoidPaymentResponse ) -> Void
     
     /// Called in response to a RefundPayment() request. Contains a 
-    /// [ResultCode](https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html)
+    /// [ResultCode](https://clover.github.io/remote-pay-ios/3.0.0/docs/Enums/ResultCode.html)
     /// and a Success boolean. The response to a successful transaction will contain the 
     /// Refund. The Refund includes the original paymentId as a reference.
     /// - Parameter refundPaymentResponse: The response to the transaction request.
     func  onRefundPaymentResponse ( _ refundPaymentResponse:RefundPaymentResponse ) -> Void
     
+    /// Called in response to a voidPaymentRefund() request. Contains a
+    /// [ResultCode](https://clover.github.io/remote-pay-ios/3.0.0/docs/Enums/ResultCode.html)
+    /// and a Success boolean. The response to a successful transaction will contain the
+    /// Refund. The Refund includes the original paymentId as a reference.
+    /// - Parameter VoidPaymentRefundResponse: The response to the transaction request.
+    func onVoidPaymentRefundResponse(_ response: VoidPaymentRefundResponse) -> Void
+    
     /// Called in response to a manualRefund() request. Contains a 
-    /// [ResultCode](https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html) 
+    /// [ResultCode](https://clover.github.io/remote-pay-ios/3.0.0/docs/Enums/ResultCode.html)
     /// and a Success boolean. If successful, the ManualRefundResponse will have 
     /// a Credit object associated with the relevant Payment information.
     /// - Parameter manualRefundResponse: The response to the transaction request.
@@ -77,7 +84,7 @@ public protocol ICloverConnectorListener : AnyObject {
     func  onVerifySignatureRequest ( _ signatureVerifyRequest:VerifySignatureRequest ) -> Void
     
     /// Called in response to a vaultCard() request. Contains a 
-    /// [ResultCode](https://clover.github.io/remote-pay-ios/1.4.0/docs/Enums/ResultCode.html) 
+    /// [ResultCode](https://clover.github.io/remote-pay-ios/3.0.0/docs/Enums/ResultCode.html) 
     /// and a Success boolean. If successful, the response will contain a VaultedCard 
     /// object with a token value that's unique for the card and merchant. The token
     /// can be used for future Sale() and Auth() requests.
@@ -190,6 +197,10 @@ public protocol ICloverConnectorListener : AnyObject {
     /// Called in response to a ResetDevice() request.
     /// - Parameter response: The response to the request.
     func onResetDeviceResponse(_ response:ResetDeviceResponse) -> Void
+    
+    /// Called whenever customer provided data is accrued via the Loyalty API.
+    /// Call the registerForCustomerProvidedData to request that this message be called.
+    func onCustomerProvidedDataEvent(_ event:CustomerProvidedDataEvent) -> Void
     
     /// Called when a Custom Activity sends a message to the POS.
     /// - Parameter response: The message.

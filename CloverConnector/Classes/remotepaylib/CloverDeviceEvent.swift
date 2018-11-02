@@ -11,61 +11,70 @@ import ObjectMapper
 
 public class CloverDeviceEvent:NSObject, Mappable {
 
-    public enum DeviceEventState:String {
+    public enum DeviceEventState: String {
         // payment flow
-        case START = "START"
-        case FAILED = "FAILED"
-        case FATAL = "FATAL"
-        case TRY_AGAIN = "TRY_AGAIN"
-        case INPUT_ERROR = "INPUT_ERROR"
-        case PIN_BYPASS_CONFIRM = "PIN_BYPASS_CONFIRM"
-        case CANCELED = "CANCELED"
-        case TIMED_OUT = "TIMED_OUT"
-        case DECLINED = "DECLINED"
-        case VOIDED = "VOIDED"
-        case CONFIGURING = "CONFIGURING"
-        case PROCESSING = "PROCESSING"
-        case REMOVE_CARD = "REMOVE_CARD"
-        case PROCESSING_GO_ONLINE = "PROCESSING_GO_ONLINE"
-        case PROCESSING_CREDIT = "PROCESSING_CREDIT"
-        case PROCESSING_SWIPE = "PROCESSING_SWIPE"
-        case SELECT_APPLICATION = "SELECT_APPLICATION"
-        case PIN_PAD = "PIN_PAD"
-        case MANUAL_CARD_NUMBER = "MANUAL_CARD_NUMBER"
-        case MANUAL_CARD_CVV = "MANUAL_CARD_CVV"
-        case MANUAL_CARD_CVV_UNREADABLE = "MANUAL_CARD_CVV_UNREADABLE"
-        case MANUAL_CARD_EXPIRATION = "MANUAL_CARD_EXPIRATION"
-        case SELECT_ACCOUNT = "SELECT_ACCOUNT"
-        case CASHBACK_CONFIRM = "CASHBACK_CONFIRM"
-        case CASHBACK_SELECT = "CASHBACK_SELECT"
-        case CONTACTLESS_TAP_REQUIRED = "CONTACTLESS_TAP_REQUIRED"
-        case VOICE_REFERRAL_RESULT = "VOICE_REFERRAL_RESULT"
-        case CONFIRM_PARTIAL_AUTH = "CONFIRM_PARTIAL_AUTH"
-        case PACKET_EXCEPTION = "PACKET_EXCEPTION"
-        case CONFIRM_DUPLICATE_CHECK = "CONFIRM_DUPLICATE_CHECK"
+        case START
+        case FAILED
+        case FATAL
+        case TRY_AGAIN
+        case INPUT_ERROR
+        case PIN_BYPASS_CONFIRM
+        case CANCELED
+        case TIMED_OUT
+        case DECLINED
+        case VOIDED
+        case CONFIGURING
+        case PROCESSING
+        case REMOVE_CARD
+        case PROCESSING_GO_ONLINE
+        case PROCESSING_CREDIT
+        case PROCESSING_SWIPE
+        case SELECT_APPLICATION
+        case PIN_PAD
+        case MANUAL_CARD_NUMBER
+        case MANUAL_CARD_CVV
+        case MANUAL_CARD_CVV_UNREADABLE
+        case MANUAL_CARD_EXPIRATION
+        case SELECT_ACCOUNT
+        case CASHBACK_CONFIRM
+        case CASHBACK_SELECT
+        case CONTACTLESS_TAP_REQUIRED
+        case VOICE_REFERRAL_RESULT
+        case CONFIRM_PARTIAL_AUTH
+        case PACKET_EXCEPTION
+        case CONFIRM_DUPLICATE_CHECK
 
         // verify CVM flow
-        case VERIFY_SIGNATURE_ON_PAPER = "VERIFY_SIGNATURE_ON_PAPER"
-        case VERIFY_SIGNATURE_ON_PAPER_CONFIRM_VOID = "VERIFY_SIGNATURE_ON_PAPER_CONFIRM_VOID"
-        case VERIFY_SIGNATURE_ON_SCREEN = "VERIFY_SIGNATURE_ON_SCREEN"
-        case VERIFY_SIGNATURE_ON_SCREEN_CONFIRM_VOID = "VERIFY_SIGNATURE_ON_SCREEN_CONFIRM_VOID"
-        case ADD_SIGNATURE = "ADD_SIGNATURE"
-        case SIGNATURE_ON_SCREEN_FALLBACK = "SIGNATURE_ON_SCREEN_FALLBACK"
-        case RETURN_TO_MERCHANT = "RETURN_TO_MERCHANT"
-        case SIGNATURE_REJECT = "SIGNATURE_REJECT"
-        case ADD_SIGNATURE_CANCEL_CONFIRM = "ADD_SIGNATURE_CANCEL_CONFIRM"
+        case VERIFY_SIGNATURE_ON_PAPER
+        case VERIFY_SIGNATURE_ON_PAPER_CONFIRM_VOID
+        case VERIFY_SIGNATURE_ON_SCREEN
+        case VERIFY_SIGNATURE_ON_SCREEN_CONFIRM_VOID
+        case ADD_SIGNATURE
+        case SIGNATURE_ON_SCREEN_FALLBACK
+        case RETURN_TO_MERCHANT
+        case SIGNATURE_REJECT
+        case ADD_SIGNATURE_CANCEL_CONFIRM
         
         // add tip flow
-        case ADD_TIP = "ADD_TIP"
+        case ADD_TIP
         
         // receipt options flow
-        case RECEIPT_OPTIONS = "RECEIPT_OPTIONS"
+        case RECEIPT_OPTIONS
         
         // tender handling flow
-        case HANDLE_TENDER = "HANDLE_TENDER"
+        case HANDLE_TENDER
         
         // starting custom activity, called from RTKA
-        case STARTING_CUSTOM_ACTIVITY = "STARTING_CUSTOM_ACTIVITY"
+        case STARTING_CUSTOM_ACTIVITY
+        case CUSTOM_ACTIVITY
+        
+        //Canada-specific
+        case SELECT_WITHDRAW_FROM_ACCOUNT
+        case VERIFY_SURCHARGES
+        case VOID_CONFIRM
+        
+        //Catch-all
+        case UNKNOWN
     }
     
     public var eventState:DeviceEventState?
