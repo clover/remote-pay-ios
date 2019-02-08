@@ -271,6 +271,11 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                                 if let rdrm = Mapper<ResetDeviceResponseMessage>().map(JSONString: payload) {
                                     notifyDeviceResetResponse(rdrm)
                                 }
+                            case Method.SHOW_RECEIPT_OPTIONS: break
+                            case Method.SHOW_RECEIPT_OPTIONS_RESPONSE:
+                                if let sprom = Mapper<ShowReceiptOptionsResponseMessage>().map(JSONString: payload) {
+                                    notifyDisplayReceiptOptionsResponse(sprom)
+                            }
                             case Method.CAPTURE_PREAUTH: break
                             case Method.CLOVER_DEVICE_LOG_REQUEST: break
                             case Method.REGISTER_FOR_CUST_DATA: break
@@ -334,6 +339,20 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
             sendCommandMessage(payload: msgJSON, method:msg.method)
+        }
+    }
+    
+    override func doShowReceiptScreen(orderId: String?, paymentId: String?, refundId: String?, creditId: String?, disablePrinting: Bool?) {
+        let msg = ShowReceiptOptionsMessage()
+        msg.orderId = orderId
+        msg.paymentId = paymentId
+        msg.refundId = refundId
+        msg.creditId = creditId
+        msg.disableCloverPrinting = disablePrinting
+        msg.version = 2
+        
+        if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
+            sendCommandMessage(payload: msgJSON, method: msg.method)
         }
     }
     
@@ -531,7 +550,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    override func doPaymentRefund(_ orderId: String, paymentId: String, amount: Int, fullRefund: Bool, disablePrinting: Bool?, disableReceiptSelection: Bool?) {
+    override func doPaymentRefund(_ orderId: String, paymentId: String, amount: Int, fullRefund: Bool?, disablePrinting: Bool?, disableReceiptSelection: Bool?) {
         let msg:RefundRequestMessage = RefundRequestMessage(orderId: orderId, paymentId:paymentId, amount:amount, fullRefund:fullRefund)
         msg.orderId = orderId
         msg.paymentId = paymentId
@@ -823,7 +842,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             } else {
                 // we DON'T need to fragment
                 if let remoteMsg = Mapper().toJSONString(remoteMsg, prettyPrint: false) {
-                    CCLog.d(remoteMsg)
+//                    CCLog.d(remoteMsg)
                     self.transport.sendMessage(remoteMsg)
                 } else {
                     CCLog.w("Couldn't send message. Couldn't serialize")
@@ -837,7 +856,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             }
 
             if let remoteMsg = Mapper().toJSONString(remoteMsg, prettyPrint: false) {
-                CCLog.d(remoteMsg)
+//                CCLog.d(remoteMsg)
                 self.transport.sendMessage(remoteMsg)
             } else {
                 CCLog.w("Couldn't send message. Couldn't serialize")
@@ -867,7 +886,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             fRemoteMessage.lastFragment = lastFragment
             
             if let remoteMsg = Mapper().toJSONString(fRemoteMessage, prettyPrint: false) {
-                CCLog.d("Sending Fragment " + String(index) + (lastFragment ? " <last>" : ""))
+//                CCLog.d("Sending Fragment " + String(index) + (lastFragment ? " <last>" : ""))
                 self.transport.sendMessage(remoteMsg)
             } else {
                 CCLog.w("Couldn't send message. Couldn't serialize")
@@ -1208,6 +1227,14 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         for listener in deviceObservers {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
                 listener.onResetDeviceResponse(response.result, reason: response.reason, state: response.state)
+            })
+        }
+    }
+    
+    func notifyDisplayReceiptOptionsResponse(_ response: ShowReceiptOptionsResponseMessage) {
+        for listener in deviceObservers {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
+                listener.onDisplayReceiptOptionsResponse(response.status, reason: response.reason)
             })
         }
     }

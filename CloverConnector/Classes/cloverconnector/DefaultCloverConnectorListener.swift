@@ -166,4 +166,6 @@ open class DefaultCloverConnectorListener : NSObject, ICloverConnectorListener {
     open func onPrintJobStatusResponse(_ printJobStatusResponse:PrintJobStatusResponse) {}
 
     open func onRetrieveDeviceStatusResponse(_ response: RetrieveDeviceStatusResponse) {}
+    
+    open func onDisplayReceiptOptionsResponse(_ response: DisplayReceiptOptionsResponse) {}
 }

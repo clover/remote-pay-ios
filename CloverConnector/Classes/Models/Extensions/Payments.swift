@@ -423,6 +423,7 @@ extension CLVModels {
       public var avsResult: CLVModels.Payments.AVSResult? = nil
       public var cardholderName: String?
       public var token: String?
+      public var vaultedCard: VaultedCard?
       
       public func encode(with aCoder: NSCoder) {
         aCoder.encode(paymentRef, forKey: "paymentRef")
@@ -442,6 +443,7 @@ extension CLVModels {
         aCoder.encode(avsResult?.rawValue, forKey: "avsResult")
         aCoder.encode(cardholderName, forKey: "cardholderName")
         aCoder.encode(token, forKey: "token")
+        aCoder.encode(token, forKey: "vaultedCard")
       }
       
       required public init(coder aDecoder: NSCoder) {
@@ -472,6 +474,7 @@ extension CLVModels {
         }
         cardholderName = aDecoder.decodeObject(forKey: "cardholderName") as? String
         token = aDecoder.decodeObject(forKey: "token") as? String
+        vaultedCard = aDecoder.decodeObject(forKey: "vaultedCard") as? CLVModels.Payments.VaultedCard
       }
       
       override public init() {}
@@ -498,6 +501,7 @@ extension CLVModels {
         avsResult <- map["avsResult"]
         cardholderName <- map["cardholderName"]
         token <- map["token"]
+        vaultedCard <- map["vaultedCard"]
       }
     }
     
@@ -1399,6 +1403,8 @@ extension CLVModels {
         /// Additional charges associated with this transaction (Canada INTERAC)
         public var additionalCharges: CLVModels.Payments.AdditionalCharges?
         
+        public var transactionInfo: CLVModels.Payments.TransactionInfo?
+        
         public func encode(with aCoder: NSCoder) {
             aCoder.encode(id, forKey: "id")
             aCoder.encode(order, forKey: "order")
@@ -1428,6 +1434,7 @@ extension CLVModels {
             aCoder.encode(germanInfo, forKey: "germanInfo")
             aCoder.encode(appTracking, forKey: "appTracking")
             aCoder.encode(additionalCharges, forKey: "additionalCharges")
+            aCoder.encode(transactionInfo, forKey: "transactionInfo")
         }
         
         required public init(coder aDecoder: NSCoder) {
@@ -1463,6 +1470,7 @@ extension CLVModels {
             germanInfo = aDecoder.decodeObject(forKey: "germanInfo") as? CLVModels.Payments.GermanInfo
             appTracking = aDecoder.decodeObject(forKey: "appTracking") as? CLVModels.Apps.AppTracking
             additionalCharges = aDecoder.decodeObject(forKey: "additionalCharges") as? AdditionalCharges
+            transactionInfo = aDecoder.decodeObject(forKey: "transactionInfo") as? CLVModels.Payments.TransactionInfo
         }
         
         override public init() {}
@@ -1500,6 +1508,7 @@ extension CLVModels {
             germanInfo <- map["germanInfo"]
             appTracking <- map["appTracking"]
             additionalCharges <- map["additionalCharges"]
+            transactionInfo <- map["transactionInfo"]
         }
     }
     
@@ -1917,6 +1926,9 @@ extension CLVModels {
         
         public var forceOfflinePayment: Bool?
         
+        /// Any extra region specific data. Keys are referenced in RegionalExtras.swift
+        public var regionalExtras: [String: String]?
+        
         public func encode(with aCoder: NSCoder) {
             aCoder.encode(cardEntryMethods, forKey: "cardEntryMethods")
             aCoder.encode(disableCashBack, forKey: "disableCashBack")
@@ -1934,6 +1946,7 @@ extension CLVModels {
             aCoder.encode(autoAcceptPaymentConfirmations, forKey: "autoAcceptPaymentConfirmations")
             aCoder.encode(autoAcceptSignature, forKey: "autoAcceptSignature")
             aCoder.encode(forceOfflinePayment, forKey: "forceOfflinePayment")
+            aCoder.encode(regionalExtras, forKey: "regionalExtras")
         }
         
         required public init(coder aDecoder: NSCoder) {
@@ -1957,6 +1970,7 @@ extension CLVModels {
             autoAcceptPaymentConfirmations = aDecoder.decodeObject(forKey: "autoAcceptPaymentConfirmations") as? Bool
             autoAcceptSignature = aDecoder.decodeObject(forKey: "autoAcceptSignature") as? Bool
             forceOfflinePayment = aDecoder.decodeObject(forKey: "forceOfflinePayment") as? Bool
+            regionalExtras = aDecoder.decodeObject(forKey: "regionalExtras") as? [String: String]
         }
         
         override public init() {}
@@ -1981,6 +1995,7 @@ extension CLVModels {
             autoAcceptPaymentConfirmations <- map["autoAcceptPaymentConfirmations"]
             autoAcceptSignature <- map["autoAcceptSignature"]
             forceOfflinePayment <- map["forceOfflinePayment"]
+            regionalExtras <- map["regionalExtras"]
         }
     }
     
@@ -2125,6 +2140,160 @@ extension CLVModels {
         public func mapping(map:Map) {
             paymentId <- map["paymentId"]
             amount <- map["amount"]
+        }
+    }
+    
+    public class TransactionInfo: NSObject, Mappable {
+        /// Two character language used for the transaction.  Deprecated in factor of transactionLocale.
+        public var languageIndicator: String?
+        /// Locale for the transaction (e.g. en-CA)
+        public var transactionLocale: String?
+        public var accountSelection: AccountType?
+        /// Consists of 4 digits prefix + 8 digits
+        public var fiscalInvoiceNumber: String?
+        /// AR Installments: number of installments
+        public var installmentsQuantity: Int32?
+        /// AR Installments: plan alphanum code
+        public var installmentsPlanCode: String?
+        /// AR Installments: selected plan id
+        public var installmentsPlanId: String?
+        /// AR Installments: selected plan desc
+        public var installmentsPlanDesc: String?
+        /// Card type label
+        public var cardTypeLabel: String?
+        /// STAN(System Audit Trace Number)
+        public var stan: Int32?
+        /// Customers identification number and type
+        public var identityDocument: IdentityDocument?
+        /// Transaction Batch Number
+        public var batchNumber: String?
+        /// Transaction Receipt Number
+        public var receiptNumber: String?
+        /// STAN for reversal
+        public var reversalStan: Int32?
+        /// MAC for reversal
+        public var reversalMac: String?
+        /// MAC KSN for reversal
+        public var reversalMacKsn: String?
+        /// Designates the unique location of a terminal at a merchant
+        public var terminalIdentification: String?
+        /// When concatenated with the Acquirer Identifier, uniquely identifies a given merchant
+        public var merchantIdentifier: String?
+        /// Indicates the name and location of the merchant
+        public var merchantNameLocation: String?
+        /// Masked track2 data
+        public var maskedTrack2: String?
+        /// Extra data for receipt
+        public var receiptExtraData: String?
+        /// Defines the Financial Service selected for the transaction
+        public var selectedService: SelectedService?
+        /// Result of the transaction
+        public var transactionResult: TransactionResult?
+        /// Contains a hex string with needed TLV tags for certification
+        public var transactionTags: String?
+        /// Contains the information how the data inside transactionTags should be coded - initially we cause default and nexo as formats
+        public var txFormat: TxFormat?
+        /// Contains the reason why the transaction should be reversed in the host. It has to be mapped in server with the expected value by the corresponding gateway
+        public var reversalReason: ReversalReason?
+        /// Contains a hex string with the information how the PAN on cardholder receipts shall be masked
+        public var panMask: String?
+        /// Counter maintained by the terminal that is incremented for each transaction at the beginning of the Perform Service function
+        public var transactionSequenceCounter: String?
+        /// Identifies and differentiates cards with the same PAN
+        public var applicationPanSequenceNumber: String?
+        
+        public required init?(map: Map) { }
+        
+        public func mapping(map: Map) {
+            languageIndicator <- map["languageIndicator"]
+            transactionLocale <- map["transactionLocale"]
+            accountSelection <- map["accountSelection"]
+            fiscalInvoiceNumber <- map["fiscalInvoiceNumber"]
+            installmentsQuantity <- map["installmentsQuantity"]
+            installmentsPlanCode <- map["installmentsPlanCode"]
+            installmentsPlanId <- map["installmentsPlanId"]
+            installmentsPlanDesc <- map["installmentsPlanDesc"]
+            cardTypeLabel <- map["cardTypeLabel"]
+            stan <- map["stan"]
+            identityDocument <- map["identityDocument"]
+            batchNumber <- map["batchNumber"]
+            receiptNumber <- map["receiptNumber"]
+            reversalStan <- map["reversalStan"]
+            reversalMac <- map["reversalMac"]
+            reversalMacKsn <- map["reversalMacKsn"]
+            terminalIdentification <- map["terminalIdentification"]
+            merchantIdentifier <- map["merchantIdentifier"]
+            merchantNameLocation <- map["merchantNameLocation"]
+            maskedTrack2 <- map["maskedTrack2"]
+            receiptExtraData <- map["receiptExtraData"]
+            selectedService <- map["selectedService"]
+            transactionResult <- map["transactionResult"]
+            transactionTags <- map["transactionTags"]
+            txFormat <- map["txFormat"]
+            reversalReason <- map["reversalReason"]
+            panMask <- map["panMask"]
+            transactionSequenceCounter <- map["transactionSequenceCounter"]
+            applicationPanSequenceNumber <- map["applicationPanSequenceNumber"]
+        }
+    }
+    
+    public enum AccountType: String {
+        case CREDIT
+        case DEBIT
+        case CHECKING
+        case SAVINGS
+    }
+    
+    public enum SelectedService: UInt8 {
+        case none = 0x00
+        case payment = 0x01
+        case refund = 0x02
+        case cancellation = 0x03
+        case preAuth = 0x04
+        case updatePreAuth = 0x05
+        case paymentCompletion = 0x06
+        case cashAdvance = 0x07
+        case deferredPayment = 0x08
+        case deferredPaymentCompletion = 0x09
+        case voiceAuthorization = 0x10
+        case cardholderDetection = 0x11
+        
+        // No NEXO-Services (default mode)
+        case tokenRequest = 0x50
+        case verification = 0x51
+    }
+    
+    public enum TransactionResult: UInt8 {
+        case approved = 0x00
+        case declined = 0x01
+        case aborted = 0x02
+        case voiceAuthorization = 0x03
+        case paymentPartOnly = 0x04
+        case partiallyApproved = 0x05
+        case none = 0x99
+    }
+    
+    public enum TxFormat: String {
+        case DEFAULT
+        case NEXO
+    }
+    
+    public enum ReversalReason: String {
+        case CHIP_DECLINE
+        case CARDHOLDER_CANCELLATION
+        case COMMUNICATION_ERROR
+        case OTHER_REASON
+    }
+    
+    public class IdentityDocument: NSObject, Mappable {
+        var type: String?
+        var number: String?
+        
+        public required init?(map: Map) { }
+        
+        public func mapping(map: Map) {
+            type <- map["type"]
+            number <- map["number"]
         }
     }
   }

@@ -22,6 +22,9 @@ public class VoidPaymentRequest:NSObject, Mappable {
     public var disablePrinting: Bool = false
     public var disableReceiptSelection: Bool = false
     
+    /// Extra pass-through data used by external systems. Currently unused. Full support coming in a future release.
+//    public var extras: [String: String]?
+    
     public required init(orderId:String, paymentId:String, voidReason:VoidReason) {
         self.orderId = orderId
         self.paymentId = paymentId
@@ -42,7 +45,7 @@ public class VoidPaymentRequest:NSObject, Mappable {
         voidReason <- map["voidReason"]
         disablePrinting <- map["disablePrinting"]
         disableReceiptSelection <- map["disableReceiptSelection"]
+//        extras <- map["extras"]
     }
-    
 }
 

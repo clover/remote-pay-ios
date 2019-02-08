@@ -23,31 +23,34 @@ public class RefundPaymentRequest: NSObject, Mappable {
     public var paymentId:String
     public var disablePrinting: Bool = false
     public var disableReceiptSelection: Bool = false
+    
+    /// Extra pass-through data used by external systems. Currently unused. Full support coming in a future release.
+//    public var extras: [String: String]?
+    
     /**
      * if fullRefund is true, the amount will be ignored. If fullRefund is false,
      * the amount must be provided
      */
-    public var fullRefund:Bool = true
+    public var fullRefund:Bool?
     
     public init(orderId:String, paymentId:String, amount:Int?, fullRefund:Bool?) {
         self.orderId = orderId
         self.paymentId = paymentId
         self.amount = amount
-        self.fullRefund = fullRefund ?? false
+        self.fullRefund = fullRefund
     }
     
     public init(orderId:String, paymentId:String, amount:Int) {
         self.orderId = orderId
         self.paymentId = paymentId
         self.amount = amount
-        self.fullRefund = false
     }
     
     public init(orderId: String, paymentId:String, fullRefund:Bool) {
         self.orderId = orderId
         self.paymentId = paymentId
         self.amount = nil
-        self.fullRefund = true
+        self.fullRefund = fullRefund
     }
     
     /// :nodoc:
@@ -65,6 +68,7 @@ public class RefundPaymentRequest: NSObject, Mappable {
         fullRefund <- map["fullRefund"]
         disablePrinting <- map["disablePrinting"]
         disableReceiptSelection <- map["disableReceiptSelection"]
+//        extras <- map["extras"]
     }
 }
 
