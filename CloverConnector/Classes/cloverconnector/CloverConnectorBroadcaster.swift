@@ -368,4 +368,13 @@ public class CloverConnectorBroadcaster {
             }
         }
     }
+    
+    public func notifyOnDisplayReceiptOptionsResponse(_ response: DisplayReceiptOptionsResponse) {
+        dispatchQueue.async { [weak self] in
+            guard let self = self else { return }
+            for listener in self.listeners {
+                listener.onDisplayReceiptOptionsResponse(response)
+            }
+        }
+    }
 }

@@ -249,9 +249,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             if let cardNotPresent = request.cardNotPresent {
                 builder.isCardNotPresent = cardNotPresent
             }
-            if let disableRestartTransactionOnFail = request.disableRestartTransactionOnFail {
-                builder.disableRestartTransactionOnFail = disableRestartTransactionOnFail
-            }
+
             builder.vaultedCard = request.vaultedCard
             builder.requiresRemoteConfirmation = true
             
@@ -262,6 +260,12 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             tx.autoAcceptPaymentConfirmations = request.autoAcceptPaymentConfirmations
             tx.disableDuplicateCheck = request.disableDuplicateChecking
             tx.disableReceiptSelection = request.disableReceiptSelection
+            if let disableRestartTransactionOnFail = request.disableRestartTransactionOnFail {
+                tx.disableRestartTransactionOnFailure = disableRestartTransactionOnFail
+            }
+            
+            tx.regionalExtras = request.regionalExtras
+            builder.passThroughValues = request.extras
             
             if let transactionRequest = request as? TransactionRequest {
                 tx.autoAcceptSignature = transactionRequest.autoAcceptSignature
@@ -345,8 +349,8 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     
     public func refundPayment(_ refundPaymentRequest: RefundPaymentRequest) {
         if let device = checkDevice(from: #function) {
-            if !refundPaymentRequest.fullRefund && refundPaymentRequest.amount ?? 0 <= 0 {
-                let prr = RefundPaymentResponse(success:false, result:ResultCode.FAIL, reason: "Request Validation Error", message: "In RefundPayment : RefundPaymentRequest Amount must be greater than zero when FullRefund is set to false. ")
+            if refundPaymentRequest.fullRefund != true && (refundPaymentRequest.amount ?? 0) <= 0 {
+                let prr = RefundPaymentResponse(success:false, result:ResultCode.FAIL, reason: "Request Validation Error", message: "In RefundPayment : RefundPaymentRequest Amount must be greater than zero when FullRefund is not true. ")
                 deviceObserver?.lastPRR = prr
                 deviceObserver?.onFinishCancel(TxStartRequestMessage.REFUND_REQUEST)
                 return
@@ -455,8 +459,17 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
         checkDevice(from: #function)?.doCloseout(closeoutRequest.allowOpenTabs, batchId: closeoutRequest.batchId)
     }
     
+    @available(*, deprecated, message: "Use new 'displayReceiptOptions()` function instead")
     public func displayPaymentReceiptOptions(orderId:String, paymentId:String) {
         checkDevice(from: #function)?.doShowPaymentReceiptScreen(orderId, paymentId:paymentId)
+    }
+    
+    public func displayReceiptOptions(_ receiptOptionsRequest: DisplayReceiptOptionsRequest) -> Void {
+        checkDevice(from: #function)?.doShowReceiptScreen(orderId: receiptOptionsRequest.orderId,
+                                                          paymentId: receiptOptionsRequest.paymentId,
+                                                          refundId: receiptOptionsRequest.refundId,
+                                                          creditId: receiptOptionsRequest.creditId,
+                                                          disablePrinting: receiptOptionsRequest.disablePrinting)
     }
     
     public func showMessage(_ message: String) {
@@ -480,7 +493,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     }
     
     public func openCashDrawer(_ request: OpenCashDrawerRequest) {
-        checkDevice(from: #function)?.doOpenCashDrawer(request.reason, deviceId: nil)
+        checkDevice(from: #function)?.doOpenCashDrawer(request.reason, deviceId: request.deviceId)
     }
     
     public func resetDevice() {
@@ -1164,6 +1177,13 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
         func onRetrievePrintersResponse(_ printers:[CLVModels.Printer.Printer]?) {
             let response = RetrievePrintersResponse(printers)
             cloverConnector.broadcaster.notifyOnRetrievePrintersResponse(response)
+        }
+        
+        func onDisplayReceiptOptionsResponse(_ result: ResultStatus, reason: String?) {
+            let response = DisplayReceiptOptionsResponse(result, reason: reason)
+            response.result = (result == ResultStatus.SUCCESS ? ResultCode.SUCCESS : ResultCode.FAIL)
+            response.success = response.result == ResultCode.SUCCESS
+            cloverConnector.broadcaster.notifyOnDisplayReceiptOptionsResponse(response)
         }
         
         func onDeviceStatusResponse(_ result: ResultStatus, reason: String?, state: ExternalDeviceState, subState: ExternalDeviceSubState?, data: ExternalDeviceStateData?) {

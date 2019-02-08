@@ -89,6 +89,8 @@ protocol CloverDeviceObserver:AnyObject {
     func onResetDeviceResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState)
     
     func onCustomerProvidedDataMessage(_ result:ResultStatus, eventId:String?, config:CLVModels.Loyalty.LoyaltyDataConfig?, data:String?)
+    
+    func onDisplayReceiptOptionsResponse(_ result: ResultStatus, reason: String?)
 }
 
 public class DefaultCloverDeviceObserver : CloverDeviceObserver {
@@ -162,5 +164,6 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     func onResetDeviceResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState){}
     
     func onCustomerProvidedDataMessage(_ result:ResultStatus, eventId:String?, config:CLVModels.Loyalty.LoyaltyDataConfig?, data:String?) {}
-    
+ 
+    func onDisplayReceiptOptionsResponse(_ result: ResultStatus, reason: String?) {}
 }

@@ -16,6 +16,9 @@ public class VoidPaymentRefundRequest: NSObject, Mappable {
     var disablePrinting: Bool?
     var disableReceiptSelection: Bool?
     
+    /// Extra pass-through data used by external systems. Currently unused. Full support coming in a future release.
+//    public var extras: [String: String]?
+    
     public required init(refundId: String, employeeId: String?, orderId: String?, disablePrinting: Bool?, disableReceiptSelection: Bool?) {
         self.refundId = refundId
         self.employeeId = employeeId
@@ -31,6 +34,7 @@ public class VoidPaymentRefundRequest: NSObject, Mappable {
         employeeId <- map["employeeId"]
         disablePrinting <- map["disablePrinting"]
         disableReceiptSelection <- map["disableReceiptSelection"]
+//        extras <- map["extras"]
     }
     
     //The required initializer to conform to <Mappable>. Probably won't ever be used because we'll use one of the other two initialiers

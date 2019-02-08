@@ -33,7 +33,6 @@ public class PayIntent:Mappable {
     public fileprivate(set) var remotePrint:Bool?
     public fileprivate(set) var transactionNo:String?
     public fileprivate(set) var isForceSwipePinEntry:Bool?
-    public fileprivate(set) var disableRestartTransactionOnFail:Bool?
     public fileprivate(set) var externalPaymentId:String?
     public fileprivate(set) var vaultedCard:CLVModels.Payments.VaultedCard?
     public fileprivate(set) var allowOfflinePayment:Bool?
@@ -42,6 +41,9 @@ public class PayIntent:Mappable {
     public fileprivate(set) var applicationTracking:CLVModels.Apps.AppTracking?
     public fileprivate(set) var allowPartialAuth = true
     public fileprivate(set) var transactionSettings:CLVModels.Payments.TransactionSettings?
+    
+    /// Extra pass-through data used by external systems.
+    public fileprivate(set) var passThroughValues: [String: String]?
 
     public init(amount:Int, externalId:String) {
         self.amount = amount
@@ -76,7 +78,6 @@ public class PayIntent:Mappable {
         remotePrint <- map["remotePrint"]
         transactionNo <- map["transactionNo"]
         isForceSwipePinEntry <- map["isForceSwipePinEntry"]
-        disableRestartTransactionOnFail <- map["disableRestartTransactionOnFail"]
         externalPaymentId <- map["externalPaymentId"]
         vaultedCard <- map["vaultedCard"]
         allowOfflinePayment <- map["allowOfflinePayment"]
@@ -85,6 +86,7 @@ public class PayIntent:Mappable {
         applicationTracking <- map["applicationTracking"]
         allowPartialAuth <- map["allowPartialAuth"]
         transactionSettings <- map["transactionSettings"]
+        passThroughValues <- map["passThroughValues"]
     }
 
 
@@ -108,7 +110,6 @@ public class PayIntent:Mappable {
         public var remotePrint = false
         public var transactionNo:String?
         public var isForceSwipePinEntry:Bool = false
-        public var disableRestartTransactionOnFail = false
         public var externalPaymentId:String? = nil
         public var vaultedCard:CLVModels.Payments.VaultedCard?
         public var allowOfflinePayment:Bool?
@@ -117,6 +118,9 @@ public class PayIntent:Mappable {
         public var applicationTracking:CLVModels.Apps.AppTracking?
         public var allowPartialAuth = true
         public var transactionSettings:CLVModels.Payments.TransactionSettings?
+        
+        /// Extra pass-through data used by external systems.
+        public var passThroughValues: [String: String]?
 
         /// Use for requesting a new payment from the Clover Device
         public init(amount:Int, externalId:String) {
@@ -150,7 +154,6 @@ public class PayIntent:Mappable {
             payIntent.remotePrint = self.remotePrint
             payIntent.transactionNo = self.transactionNo
             payIntent.isForceSwipePinEntry = self.isForceSwipePinEntry
-            payIntent.disableRestartTransactionOnFail = self.disableRestartTransactionOnFail
             payIntent.externalPaymentId = self.externalPaymentId
             payIntent.vaultedCard = self.vaultedCard
             payIntent.allowOfflinePayment = self.allowOfflinePayment
@@ -159,6 +162,7 @@ public class PayIntent:Mappable {
             payIntent.applicationTracking = self.applicationTracking
             payIntent.allowPartialAuth = self.allowPartialAuth
             payIntent.transactionSettings = self.transactionSettings
+            payIntent.passThroughValues = self.passThroughValues
 
             return payIntent
         }

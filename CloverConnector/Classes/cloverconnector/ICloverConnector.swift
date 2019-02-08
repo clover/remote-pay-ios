@@ -96,7 +96,13 @@ public protocol ICloverConnector : AnyObject {
     /// the Clover device.
     /// - Parameter orderId: The ID of the Order associated with the receipt.
     /// - Parameter paymentId: The ID of the Payment associated with the receipt.
+    @available(*, deprecated, message: "Use the new 'displayReceiptOptions()' instead")
     func displayPaymentReceiptOptions(orderId:String, paymentId: String) -> Void
+    
+    /// Display receipt options for a Credit, Refund, or Payment
+    ///
+    /// - Parameter receiptOptionsRequest: The request details for the credit, refund, or payment
+    func displayReceiptOptions(_ receiptOptionsRequest:DisplayReceiptOptionsRequest) -> Void
     
     /// If a signature is captured during a transaction, this method accepts the signature
     /// as entered.

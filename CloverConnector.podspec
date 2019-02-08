@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CloverConnector'
-  s.version          = '3.0.0'
+  s.version          = '3.0.1'
   s.summary          = 'Provides an api for communicating with a Clover Mini as a customer facing payment device.'
 
   s.description      = <<-DESC
@@ -21,7 +21,8 @@ ICloverConnector
 - *voidPaymentRefund* - void a payment refund (Canada flows only)
 - *manualRefund* - provide a manual refund a.k.a. naked credit
 - *closeout* - posts a closeout request to the server to closeout open payments
-- *displayPaymentReceiptOptions* - display the receipt selection screen
+- *displayPaymentReceiptOptions* - (Deprecated) display the receipt selection screen
+- *displayReceiptOptions* - Display the receipt selection screen for a payment, credit, or refund
 - *acceptSignature* - method to accept a signature when the Clover device sends a `verifySignatureRequest`
 - *rejectSignature* - method to reject a signature when the Clover device sends a `verifySignatureRequest`
 - *vaultCard* - reads a card and retrieves a multi-pay token
@@ -75,6 +76,7 @@ ICloverConnectorListener
 - *onPrintPaymentDeclineReceipt* - called when a user requests a paper receipt for a declined Payment
 - *onPrintPaymentMerchantCopyReceipt* - called when a user requests a merchant copy of a Payment receipt
 - *onPrintRefundPaymentReceipt* - called when a user requests a paper receipt for a Payment Refund
+- *onDisplayReceiptOptionsResponse* - called in response to a DisplayReceiptOptions request
 - *onRetrievePrintersResponse* - called at the completion of a retrievePrinters request
 - *onPrintJobStatusResponse* - called at the completion of a retrievePrintJobStatus
 - *onRetrievePendingPaymentsResponse* - called in response to a retrieve pending payments request. Returns a list of payments not yet submitted to the server

@@ -79,7 +79,7 @@ class CloverDevice {
     
     func doSendDebugLog(_ message:String) {}
     
-    func doPaymentRefund(_ orderId:String, paymentId:String, amount:Int, fullRefund:Bool, disablePrinting:Bool?, disableReceiptSelection:Bool?) {} // manual refunds are handled via doTxStart
+    func doPaymentRefund(_ orderId:String, paymentId:String, amount:Int, fullRefund:Bool?, disablePrinting:Bool?, disableReceiptSelection:Bool?) {} // manual refunds are handled via doTxStart
     
     func doTipAdjustAuth(_ orderId:String, paymentId:String, amount:Int) {}
     
@@ -90,6 +90,8 @@ class CloverDevice {
     func doShowWelcomeScreen() {}
     
     func doShowPaymentReceiptScreen(_ orderId:String, paymentId:String) {}
+    
+    func doShowReceiptScreen(orderId: String?, paymentId: String?, refundId: String?, creditId: String?, disablePrinting: Bool?) {}
     
     func doShowThankYouScreen() {}
     

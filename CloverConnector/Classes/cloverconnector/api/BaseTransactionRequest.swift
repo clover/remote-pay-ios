@@ -38,6 +38,12 @@ public class BaseTransactionRequest : NSObject, Mappable {
 
     /// An id assigned by the POS that can be used to track a payment through the Clover system.
     public var externalId:String
+    
+    /// Extra pass-through data used by external systems.
+    public var extras: [String: String]?
+    
+    /// Any extra region specific data. Keys are referenced in RegionalExtras.swift
+    public var regionalExtras: [String: String]?
 
     /// A VaultedCard that has been acquired from a vaultCard call.
     public var vaultedCard:CLVModels.Payments.VaultedCard?
@@ -72,6 +78,8 @@ public class BaseTransactionRequest : NSObject, Mappable {
         externalId <- map["externalId"]
         type <- map["type"]
         vaultedCard <- map["vaultedCard"]
+        extras <- map["extras"]
+        regionalExtras <- map["regionalExtras"]
     }
     
     
