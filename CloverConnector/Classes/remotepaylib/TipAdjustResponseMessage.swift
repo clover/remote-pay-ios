@@ -15,6 +15,8 @@ public class TipAdjustResponseMessage : Message {
     public var paymentId:String?
     public var amount:Int?
     public var success:Bool?
+    public var reason:String?
+    public var message:String?
     
     public required init?(map:Map) {
         super.init(method: Method.TIP_ADJUST_RESPONSE)
@@ -26,5 +28,7 @@ public class TipAdjustResponseMessage : Message {
         orderId <- map["orderId"]
         amount <- map["amount"]
         success <- map["success"]
+        reason <- map["reason"]
+        message <- map["message"]
     }
 }

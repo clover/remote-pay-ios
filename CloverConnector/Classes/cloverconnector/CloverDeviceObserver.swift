@@ -18,7 +18,7 @@ protocol CloverDeviceObserver:AnyObject {
     
     func onTipAddedResponse(_ tipAmount:Int)
     
-    func onAuthTipAdjustedResponse(_ paymentId:String, amount:Int, success:Bool)
+    func onAuthTipAdjustedResponse(_ paymentId:String, amount:Int, success:Bool, message: String?, reason: String?)
     
     func onCashbackSelectedResponse(_ cashbackAmount:Int)
     
@@ -46,7 +46,7 @@ protocol CloverDeviceObserver:AnyObject {
     
     func onCapturePreAuthResponse( _ status:ResultStatus, reason:String?, paymentId:String?, amount:Int?, tipAmount:Int?)
     
-    func onCloseoutResponse( _ status:ResultStatus, reason:String, batch:CLVModels.Payments.Batch)
+    func onCloseoutResponse( _ status:ResultStatus, reason:String, batch:CLVModels.Payments.Batch?)
     
     //func onModifyOrder(AddDiscountAction addDiscountAction)
     //func onModifyOrder(RemoveDiscountAction removeDiscountAction)
@@ -60,7 +60,7 @@ protocol CloverDeviceObserver:AnyObject {
     func onPrintCredit(_ credit:CLVModels.Payments.Credit)
     func onPrintCreditDecline(_ reason:String, credit:CLVModels.Payments.Credit?)
     
-    func onTxStartResponse(_ result:TxStartResponseResult, externalId:String, requestInfo: String?)
+    func onTxStartResponse(_ result:TxStartResponseResult, externalId:String, requestInfo: String?, message: String?, reason: String?)
     
     func onDeviceDisconnected( _ device:CloverDevice)
     func onDeviceConnected(_ device:CloverDevice)
@@ -98,7 +98,7 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     
     func onTipAddedResponse(_ tipAmount:Int){}
     
-    func onAuthTipAdjustedResponse(_ paymentId:String, amount:Int, success:Bool){}
+    func onAuthTipAdjustedResponse(_ paymentId:String, amount:Int, success:Bool, message: String?, reason: String?){}
     
     func onCashbackSelectedResponse(_ cashbackAmount:Int){}
     
@@ -126,7 +126,7 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     
     func onCapturePreAuthResponse( _ status:ResultStatus, reason:String?, paymentId:String?, amount:Int?, tipAmount:Int?){}
     
-    func onCloseoutResponse( _ status:ResultStatus, reason:String, batch:CLVModels.Payments.Batch){}
+    func onCloseoutResponse( _ status:ResultStatus, reason:String, batch:CLVModels.Payments.Batch?){}
     
     //func onModifyOrder(AddDiscountAction addDiscountAction)
     //func onModifyOrder(RemoveDiscountAction removeDiscountAction)
@@ -140,7 +140,7 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     func onPrintCredit(_ credit:CLVModels.Payments.Credit){}
     func onPrintCreditDecline(_ reason:String, credit:CLVModels.Payments.Credit?){}
     
-    func onTxStartResponse(_ result:TxStartResponseResult, externalId:String, requestInfo: String?){}
+    func onTxStartResponse(_ result:TxStartResponseResult, externalId:String, requestInfo: String?, message: String?, reason: String?){}
     
     func onDeviceDisconnected( _ device:CloverDevice){}
     func onDeviceConnected(_ device:CloverDevice){}

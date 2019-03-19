@@ -24,6 +24,6 @@ public class CloseoutResponseMessage : Message {
         super.mapping(map: map)
         status <- map["status"]
         reason <- map["reason"]
-        batch <- map["batch"]
+        batch <- (map["batch"], Message.batchTransform)
     }
 }

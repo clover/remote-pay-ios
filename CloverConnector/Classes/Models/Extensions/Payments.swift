@@ -553,6 +553,7 @@ extension CLVModels {
       case UNKNOWN
       case GIFT_CARD
       case EBT
+      case INTERAC
     }
     
     
@@ -1916,6 +1917,8 @@ extension CLVModels {
         
         public var tippableAmount: Int?
         
+        public var tipSuggestions: [CLVModels.Merchant.TipSuggestion]?
+        
         public var disableReceiptSelection: Bool?
         
         public var disableDuplicateCheck: Bool?
@@ -1941,6 +1944,7 @@ extension CLVModels {
             aCoder.encode(signatureEntryLocation?.rawValue, forKey: "signatureEntryLocation")
             aCoder.encode(tipMode?.rawValue, forKey: "tipMode")
             aCoder.encode(tippableAmount, forKey: "tippableAmount")
+            aCoder.encode(tipSuggestions, forKey: "tipSuggestions")
             aCoder.encode(disableReceiptSelection, forKey: "disableReceiptSelection")
             aCoder.encode(disableDuplicateCheck, forKey: "disableDuplicateCheck")
             aCoder.encode(autoAcceptPaymentConfirmations, forKey: "autoAcceptPaymentConfirmations")
@@ -1963,6 +1967,9 @@ extension CLVModels {
             }
             if let tipModeString = aDecoder.decodeObject(forKey: "tipMode") as? String {
                 tipMode = CLVModels.Payments.TipMode(rawValue: tipModeString)
+            }
+            if let tipSuggestionArray = aDecoder.decodeObject(forKey: "tipSuggestions") as? [CLVModels.Merchant.TipSuggestion] {
+                tipSuggestions = tipSuggestionArray
             }
             tippableAmount = aDecoder.decodeObject(forKey: "tippableAmount") as? Int
             disableReceiptSelection = aDecoder.decodeObject(forKey: "disableReceiptSelection") as? Bool
@@ -1990,6 +1997,7 @@ extension CLVModels {
             signatureEntryLocation <- map["signatureEntryLocation"]
             tipMode <- map["tipMode"]
             tippableAmount <- map["tippableAmount"]
+            tipSuggestions <- map["tipSuggestions.elements"]
             disableReceiptSelection <- map["disableReceiptSelection"]
             disableDuplicateCheck <- map["disableDuplicateCheck"]
             autoAcceptPaymentConfirmations <- map["autoAcceptPaymentConfirmations"]

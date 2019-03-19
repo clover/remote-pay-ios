@@ -140,10 +140,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     
     public func tipAdjustAuth(_ tipAdjustAuthRequest: TipAdjustAuthRequest) {
         if let device = checkDevice(from: #function) {
-            if tipAdjustAuthRequest.tipAmount <= 0 {
-                deviceObserver?.onAuthTipAdjustedResponse(false, result: ResultCode.FAIL, reason: "Request validation error", message: "In PreAuth : PreAuthRequest - the request tipAmount cannot be zero. ")
-                return
-            } else if !merchantInfo.supportsTipAdjust {
+            if !merchantInfo.supportsTipAdjust {
                 deviceObserver?.onAuthTipAdjustedResponse(false, result: ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"PreAuth : PreAuthRequest - PreAuth support is not enabled for the payment gateway.")
                 return
             }
@@ -283,6 +280,10 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                 if let ta = sr.tippableAmount {
                     tx.tippableAmount = ta
                 }
+                if let tipSuggestions = sr.tipSuggestions {
+                    tx.tipSuggestions = tipSuggestions
+                }
+                
                 if let disableCashback = sr.disableCashback {
                     builder.isDisableCashBack = disableCashback
                 }
@@ -632,8 +633,8 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             self.cloverConnector = cloverConnector
         }
         
-        func onAuthTipAdjustedResponse(_ paymentId: String, amount: Int, success: Bool) {
-            onAuthTipAdjustedResponse(success, result: success ? ResultCode.SUCCESS : ResultCode.FAIL, reason: nil, message: nil, paymentId: paymentId, tipAmount: amount)
+        func onAuthTipAdjustedResponse(_ paymentId: String, amount: Int, success: Bool, message: String?, reason: String?) {
+            onAuthTipAdjustedResponse(success, result: success ? ResultCode.SUCCESS : ResultCode.FAIL, reason: reason, message: message, paymentId: paymentId, tipAmount: amount)
         }
         func onAuthTipAdjustedResponse(_ success: Bool, result: ResultCode, reason:String?, message:String?, paymentId: String?=nil, tipAmount: Int?=nil) {
             let taar = TipAdjustAuthResponse(success: success, result: result, paymentId: paymentId, tipAmount: tipAmount)
@@ -733,7 +734,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             onVaultCardResponse(code == .SUCCESS, result: code == .SUCCESS ? ResultCode.SUCCESS : ResultCode.FAIL, reason: reason, message: nil, vaultedCard: vaultedCard);
         }
         
-        func onCloseoutResponse(_ code: ResultStatus, reason: String, batch: CLVModels.Payments.Batch) {
+        func onCloseoutResponse(_ code: ResultStatus, reason: String, batch: CLVModels.Payments.Batch?) {
             let response = CloseoutResponse(batch: batch, success: code == .SUCCESS, result: code == .SUCCESS ? ResultCode.SUCCESS : ResultCode.FAIL)
             cloverConnector.broadcaster.notifyOnCloseoutResponse(response)
         }
@@ -953,7 +954,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
         }
         
         
-        func onTxStartResponse(_ result:TxStartResponseResult, externalId:String, requestInfo: String?) {
+        func onTxStartResponse(_ result:TxStartResponseResult, externalId:String, requestInfo: String?, message: String?, reason: String?) {
 //            if let result = result {
                 let success:Bool = result == TxStartResponseResult.SUCCESS ? true : false;
                 if success {
@@ -968,46 +969,46 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                     self.lastRequest = nil
                     if TxStartRequestMessage.SALE_REQUEST == requestInfo {
                         let response:SaleResponse = SaleResponse(success:false, result:ResultCode.FAIL);
+                        response.reason = reason
                         if duplicate {
                             response.result = .CANCEL
-                            response.reason = result.rawValue
                             response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                         } else {
                             response.result = .FAIL
-                            response.reason = result.rawValue
+                            response.message = message
                         }
                         cloverConnector.broadcaster.notifyOnSaleResponse(response);
                     } else if TxStartRequestMessage.AUTH_REQUEST == requestInfo {
                         let response:AuthResponse = AuthResponse(success:false, result:ResultCode.FAIL)
+                        response.reason = reason
                         if duplicate {
-                            response.result = ResultCode.CANCEL
-                            response.reason = result.rawValue
+                            response.result = .CANCEL
                             response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                         } else {
                             response.result = .FAIL
-                            response.reason = result.rawValue
+                            response.message = message
                         }
                         cloverConnector.broadcaster.notifyOnAuthResponse(response);
                     } else if TxStartRequestMessage.PREAUTH_REQUEST == requestInfo {
                         let response:PreAuthResponse = PreAuthResponse(success:false, result:ResultCode.FAIL)
+                        response.reason = reason
                         if duplicate {
                             response.result = .CANCEL
-                            response.reason = result.rawValue
                             response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                         } else {
                             response.result = .FAIL
-                            response.reason = result.rawValue
+                            response.message = message
                         }
                         cloverConnector.broadcaster.notifyOnPreAuthResponse(response);
                     } else if TxStartRequestMessage.CREDIT_REQUEST == requestInfo {
                         let response:ManualRefundResponse = ManualRefundResponse(success:false, result:ResultCode.FAIL)
+                        response.reason = reason
                         if duplicate {
                             response.result = .CANCEL
-                            response.reason = result.rawValue
                             response.message = "The provided transaction id of " + externalId + " has already been processed and cannot be resubmitted."
                         } else {
                             response.result = .FAIL
-                            response.reason = result.rawValue
+                            response.message = message
                         }
                         cloverConnector.broadcaster.notifyOnManualRefundResponse(response);
                     }
