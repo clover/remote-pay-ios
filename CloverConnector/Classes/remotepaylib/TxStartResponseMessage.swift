@@ -15,6 +15,8 @@ public class TxStartResponseMessage : Message {
     public var result:TxStartResponseResult?
     public var externalPaymentId:String?
     public var requestInfo:String?
+    public var reason:String?
+    public var message:String?
     
     public required init?(map:Map) {
         super.init(method: Method.TX_START_RESPONSE)
@@ -26,6 +28,8 @@ public class TxStartResponseMessage : Message {
         result <- map["result"]
         externalPaymentId <- map["externalPaymentId"]
         requestInfo <- map["requestInfo"]
+        reason <- map["reason"]
+        message <- map["message"]
     }
 }
 

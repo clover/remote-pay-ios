@@ -18,6 +18,7 @@ public class TransactionRequest : BaseTransactionRequest {
     /// :nodoc:
     public var signatureEntryLocation:CLVModels.Payments.DataEntryLocation?
     
+    public var tipSuggestions: [CLVModels.Merchant.TipSuggestion]?
     
     /// This function can be used to validate JSON prior to mapping. Return nil to cancel mapping at this point
     /// :nodoc:

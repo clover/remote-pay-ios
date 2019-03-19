@@ -895,11 +895,9 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
     
     func notifyListenerCloseoutResponse(_ response:CloseoutResponseMessage) {
         for listener in deviceObservers {
-            if let status = response.status,
-                let reason = response.reason,
-                let batch = response.batch {
+            if let status = response.status, let reason = response.reason {
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
-                    listener.onCloseoutResponse(status, reason: reason, batch: batch)
+                    listener.onCloseoutResponse(status, reason: reason, batch: response.batch)
                 })
             } else {
                 // send error back
@@ -943,7 +941,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             if let result = response.result,
                 let externalID = response.externalPaymentId {
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
-                    listener.onTxStartResponse(result, externalId: externalID, requestInfo: response.requestInfo)
+                    listener.onTxStartResponse(result, externalId: externalID, requestInfo: response.requestInfo, message: response.message, reason: response.reason)
                 })
             }
         }
@@ -983,7 +981,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                 let amount = response.amount,
                 let success = response.success {
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
-                    listener.onAuthTipAdjustedResponse(paymentId, amount: amount, success: success)
+                    listener.onAuthTipAdjustedResponse(paymentId, amount: amount, success: success, message: response.message, reason: response.reason)
                 })
             }
         }

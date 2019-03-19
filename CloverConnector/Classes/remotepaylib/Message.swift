@@ -138,6 +138,19 @@ public class Message : NSObject, Mappable {
             return nil
     })
     
+    static let batchTransform = TransformOf<CLVModels.Payments.Batch, String>(fromJSON: { (stringValue: String?) -> CLVModels.Payments.Batch? in
+        if let batchString = stringValue, let batch = Mapper<CLVModels.Payments.Batch>().map(JSONString: batchString) {
+            return batch
+        } else {
+            return nil
+        }
+    }, toJSON: { (batch: CLVModels.Payments.Batch?) -> String? in
+        if let batchObj = batch, let batchString = Mapper().toJSONString(batchObj, prettyPrint:false) {
+            return batchString
+        } else {
+            return nil
+        }
+    })
     
     static let vaultedCardTransform = TransformOf<CLVModels.Payments.VaultedCard, String>(fromJSON: { (value: String?) -> CLVModels.Payments.VaultedCard? in
         
