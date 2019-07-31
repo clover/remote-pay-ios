@@ -87,141 +87,104 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     
     //MARK: TransactionRequest
     public func sale(_ saleRequest: SaleRequest) {
-        if let _ = checkDevice(from: #function) {
-            if saleRequest.amount <= 0 {
-                deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In Sale : SaleRequest - the request amount cannot be zero. ", requestInfo: TxStartRequestMessage.SALE_REQUEST)
-                return
-            } else if saleRequest.externalId.count == 0 || saleRequest.externalId.count > 32 {
-                deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In Sale : SaleRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.SALE_REQUEST)
-                return
-            } else {
-                if let _ = saleRequest.vaultedCard {
-                    if !merchantInfo.supportsVaultCards {
-                        deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In Sale : SaleRequest - Vault Card support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.SALE_REQUEST)
-                        return
-                    }
-                }
-            }
-
-            saleRequest.tipAmount = saleRequest.tipAmount ?? 0 // force to zero if it isn't passed in
-            saleAuth(saleRequest, requestInfo: TxStartRequestMessage.SALE_REQUEST)
-        } else {
+        guard let _ = checkDevice(from: #function) else {
             deviceObserver?.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In sale : The device is not connected.", requestInfo: TxStartRequestMessage.SALE_REQUEST)
+            return
         }
+        
+        if let _ = saleRequest.vaultedCard, !merchantInfo.supportsVaultCards {
+            deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In Sale : SaleRequest - Vault Card support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.SALE_REQUEST)
+            return
+        }
+        
+        saleRequest.tipAmount = saleRequest.tipAmount ?? 0 // force to zero if it isn't passed in
+        saleAuth(saleRequest, requestInfo: TxStartRequestMessage.SALE_REQUEST)
     }
     
     public func auth(_ authRequest: AuthRequest) {
-        if let _ = checkDevice(from: #function) {
-            if authRequest.amount <= 0 {
-                deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In Auth : AuthRequest - the request amount cannot be zero. ", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
-                return
-            } else if authRequest.externalId.count == 0 || authRequest.externalId.count > 32 {
-                deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In Auth : AuthRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
-                return
-            } else {
-                if let _ = authRequest.vaultedCard {
-                    if !merchantInfo.supportsVaultCards {
-                        deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In Auth : AuthRequest - Vault Card support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
-                        return
-                    }
-                }
-                
-                if !merchantInfo.supportsAuths {
-                    deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"In Auth : AuthRequest - Auth support is not enabled for the payment gateway.", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
-                    return
-                }
-            }
-            
-            saleAuth(authRequest, requestInfo:TxStartRequestMessage.AUTH_REQUEST)
-        } else {
+        guard let _ = checkDevice(from: #function) else {
             deviceObserver?.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In auth : The device is not connected.", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
+            return
         }
+        
+        if !merchantInfo.supportsAuths {
+            deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"In Auth : AuthRequest - Auth support is not enabled for the payment gateway.", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
+            return
+        }
+        
+        if let _ = authRequest.vaultedCard, !merchantInfo.supportsVaultCards {
+            deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In Auth : AuthRequest - Vault Card support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.AUTH_REQUEST)
+            return
+        }
+        
+        saleAuth(authRequest, requestInfo:TxStartRequestMessage.AUTH_REQUEST)
     }
     
     public func tipAdjustAuth(_ tipAdjustAuthRequest: TipAdjustAuthRequest) {
-        if let device = checkDevice(from: #function) {
-            if !merchantInfo.supportsTipAdjust {
-                deviceObserver?.onAuthTipAdjustedResponse(false, result: ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"PreAuth : PreAuthRequest - PreAuth support is not enabled for the payment gateway.")
-                return
-            }
-            
-            device.doTipAdjustAuth(tipAdjustAuthRequest.orderId, paymentId: tipAdjustAuthRequest.paymentId, amount: tipAdjustAuthRequest.tipAmount)
-        } else {
+        guard let device = checkDevice(from: #function) else {
             deviceObserver?.onAuthTipAdjustedResponse(false, result: ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.")
+            return
         }
+        
+        if !merchantInfo.supportsTipAdjust {
+            deviceObserver?.onAuthTipAdjustedResponse(false, result: ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"PreAuth : PreAuthRequest - PreAuth support is not enabled for the payment gateway.")
+            return
+        }
+        
+        device.doTipAdjustAuth(tipAdjustAuthRequest.orderId, paymentId: tipAdjustAuthRequest.paymentId, amount: tipAdjustAuthRequest.tipAmount)
     }
     
     public func preAuth(_ preAuthRequest: PreAuthRequest) {
-        if let _ = checkDevice(from: #function) {
-            if preAuthRequest.amount <= 0 {
-                deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Request validation error", message: "In PreAuth : PreAuthRequest - the request amount cannot be zero. ", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
-                return
-            } else if preAuthRequest.externalId.count == 0 || preAuthRequest.externalId.count > 32 {
-                deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In PreAuth : PreAuthRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
-                return
-            } else {
-                if let _ = preAuthRequest.vaultedCard {
-                    if !merchantInfo.supportsVaultCards {
-                        deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In PreAuth : PreAuthRequest - Vault Card support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
-                        return
-                    }
-                }
-                
-                if !merchantInfo.supportsPreAuths {
-                    deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"PreAuth : PreAuthRequest - PreAuth support is not enabled for the payment gateway.", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
-                    return
-                }
-            }
-            
-            saleAuth(preAuthRequest, requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
-        } else {
-            deviceObserver?.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST);
+        guard let _ = checkDevice(from: #function) else {
+            deviceObserver?.onFinishCancel(false, result:ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
+            return
         }
+        
+        if !merchantInfo.supportsPreAuths {
+            deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"PreAuth : PreAuthRequest - PreAuth support is not enabled for the payment gateway.", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
+            return
+        }
+        
+        if let _ = preAuthRequest.vaultedCard, !merchantInfo.supportsVaultCards {
+            deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason:"Merchant Configuration Validation Error", message:"In PreAuth : PreAuthRequest - Vault Card support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
+            return
+        }
+
+        saleAuth(preAuthRequest, requestInfo: TxStartRequestMessage.PREAUTH_REQUEST)
     }
     
     public func capturePreAuth(_ request: CapturePreAuthRequest) {
-        if let device = checkDevice(from: #function) {
-            if request.amount <= 0 {
-                deviceObserver?.onCapturePreAuthResponse(false, result: .FAIL, reason: "Request validation error", message: "In PreAuth : CapturePreAuthRequest - the request amount cannot be zero.")
-                return
-            }
-            if let externalId = request.externalId {
-                if externalId.count == 0 || externalId.count > 32 {
-                    deviceObserver?.onCapturePreAuthResponse(false, result: .FAIL, reason: "Invalid argument.", message: "In PreAuth : CapturePreAuthRequest - The externalId is invalid. The min length is 1 and the max length is 32.")
-                    return
-                }
-            } else {
-                deviceObserver?.onCapturePreAuthResponse(false, result: .FAIL, reason: "Invalid argument", message: "In PreAuth: CapturePreAuthRequest - externalId is required to process a pre-auth")
-            }
-            if !merchantInfo.supportsPreAuths {
-                deviceObserver?.onCapturePreAuthResponse(false, result: .UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"In PreAuth : CapturePreAuthRequest - PreAuth support is not enabled for the payment gateway.")
-                return
-            }
-            
-            if request.version == 1 { // V1 message for backward compatibility testing
-                device.doCaptureAuth(request.paymentId, amount: request.amount, tipAmount: request.tipAmount ?? 0)
-            } else { // V2 message includes CVM support
-                let builder = PayIntent.Builder(amount: request.amount, paymentId: request.paymentId)
-                builder.transactionType = TransactionType.CAPTURE_PREAUTH
-                builder.tipAmount = request.tipAmount
-                builder.externalPaymentId = request.externalId
-                
-                let tx = CLVModels.Payments.TransactionSettings()
-                tx.tipMode = request.tipMode
-                tx.autoAcceptSignature = request.autoAcceptsSignature
-                if let disablePrinting = request.disablePrinting {
-                    tx.cloverShouldHandleReceipts = !disablePrinting
-                }
-                tx.signatureEntryLocation = request.signatureEntryLocation
-                tx.disableReceiptSelection = request.disableReceiptSelection
-                tx.signatureThreshold = request.signatureThreshold
-                tx.tippableAmount = request.tippableAmount
-                builder.transactionSettings = tx
-                
-                device.doCaptureAuth(payIntent: builder.build(), order: nil, requestInfo: nil)
-            }
-        } else {
+        guard let device = checkDevice(from: #function) else {
             deviceObserver?.onCapturePreAuthResponse(false, result: ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.")
+            return
+        }
+        
+        if !merchantInfo.supportsPreAuths {
+            deviceObserver?.onCapturePreAuthResponse(false, result: .UNSUPPORTED, reason: "Merchant Configuration Validation Error", message:"In PreAuth : CapturePreAuthRequest - PreAuth support is not enabled for the payment gateway.")
+            return
+        }
+        
+        if request.version == 1 { // V1 message for backward compatibility testing
+            device.doCaptureAuth(request.paymentId, amount: request.amount, tipAmount: request.tipAmount ?? 0)
+        } else { // V2 message includes CVM support
+            let builder = PayIntent.Builder(amount: request.amount, paymentId: request.paymentId)
+            builder.transactionType = TransactionType.CAPTURE_PREAUTH
+            builder.tipAmount = request.tipAmount
+            builder.externalPaymentId = request.externalId
+            
+            let tx = CLVModels.Payments.TransactionSettings()
+            tx.tipMode = request.tipMode
+            tx.autoAcceptSignature = request.autoAcceptsSignature
+            if let disablePrinting = request.disablePrinting {
+                tx.cloverShouldHandleReceipts = !disablePrinting
+            }
+            tx.signatureEntryLocation = request.signatureEntryLocation
+            tx.disableReceiptSelection = request.disableReceiptSelection
+            tx.signatureThreshold = request.signatureThreshold
+            tx.tippableAmount = request.tippableAmount
+            builder.transactionSettings = tx
+            
+            device.doCaptureAuth(payIntent: builder.build(), order: nil, requestInfo: nil)
         }
     }
     
@@ -349,27 +312,19 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     }
     
     public func refundPayment(_ refundPaymentRequest: RefundPaymentRequest) {
-        if let device = checkDevice(from: #function) {
-            if refundPaymentRequest.fullRefund != true && (refundPaymentRequest.amount ?? 0) <= 0 {
-                let prr = RefundPaymentResponse(success:false, result:ResultCode.FAIL, reason: "Request Validation Error", message: "In RefundPayment : RefundPaymentRequest Amount must be greater than zero when FullRefund is not true. ")
-                deviceObserver?.lastPRR = prr
-                deviceObserver?.onFinishCancel(TxStartRequestMessage.REFUND_REQUEST)
-                return
-            } else {
-                //TODO: check for null orderId, paymentId, (amount or fullRefund)
-                device.doPaymentRefund(refundPaymentRequest.orderId,
-                                       paymentId: refundPaymentRequest.paymentId,
-                                       amount: refundPaymentRequest.amount ?? 0,
-                                       fullRefund: refundPaymentRequest.fullRefund,
-                                       disablePrinting: refundPaymentRequest.disablePrinting,
-                                       disableReceiptSelection: refundPaymentRequest.disableReceiptSelection)
-            }
-        } else {
+        guard let device = checkDevice(from: #function) else {
             let prr = RefundPaymentResponse(success:false, result:ResultCode.FAIL, reason: "Device connection error", message: "In RefundPayment : RefundPaymentRequest device is not connected.")
             deviceObserver?.lastPRR = prr;
             deviceObserver?.onFinishCancel(TxStartRequestMessage.REFUND_REQUEST)
             return
         }
+        
+        device.doPaymentRefund(refundPaymentRequest.orderId,
+                               paymentId: refundPaymentRequest.paymentId,
+                               amount: refundPaymentRequest.amount,
+                               fullRefund: refundPaymentRequest.fullRefund,
+                               disablePrinting: refundPaymentRequest.disablePrinting,
+                               disableReceiptSelection: refundPaymentRequest.disableReceiptSelection)
     }
     
     public func voidPaymentRefund(_ request: VoidPaymentRefundRequest) {
@@ -384,48 +339,42 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
     public func manualRefund(_ manualRefundRequest: ManualRefundRequest) {
         deviceObserver?.lastRequest = manualRefundRequest
         
-        if let device = checkDevice(from: #function) {
-            if manualRefundRequest.amount <= 0 {
-                deviceObserver?.onFinishCancel(false, result: ResultCode.FAIL, reason: "Invalid argument", message: "The amount must be greater than 0", requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
-                return
-            } else if manualRefundRequest.externalId.count == 0 || manualRefundRequest.externalId.count > 32 {
-                deviceObserver?.onFinishCancel(false, result:ResultCode.FAIL, reason: "Invalid argument.", message: "In PreAuth : ManualRefundRequest - The externalId is invalid. The min length is 1 and the max length is 32. ", requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
-                return
-            }
-            if !merchantInfo.supportsManualRefunds {
-                deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Invalid argument.", message: "In ManualRefund : ManualRefundRequest - Manual Refunds support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
-            } else {
-                if manualRefundRequest.vaultedCard ?? nil != nil {
-                    if !merchantInfo.supportsVaultCards {
-                        deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Invalid argument.", message: "In ManualRefund : ManualRefundRequest - VaultedCard support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
-                    }
-                } else {
-                    let builder = PayIntent.Builder(amount:-1*Swift.abs(manualRefundRequest.amount), externalId: manualRefundRequest.externalId)
-                    builder.vaultedCard = manualRefundRequest.vaultedCard
-                    builder.cardEntryMethods = manualRefundRequest.cardEntryMethods
-                    builder.transactionType = TransactionType.CREDIT
-                    builder.requiresRemoteConfirmation = true
-                    let tx = CLVModels.Payments.TransactionSettings()
-                    builder.transactionSettings = tx
-                    
-                    tx.cardEntryMethods = CARD_ENTRY_METHOD_MAG_STRIPE | CARD_ENTRY_METHOD_ICC_CONTACT | CARD_ENTRY_METHOD_NFC_CONTACTLESS
-                    tx.autoAcceptPaymentConfirmations = manualRefundRequest.autoAcceptPaymentConfirmations
-                    tx.autoAcceptSignature = manualRefundRequest.autoAcceptSignature
-                    tx.disableDuplicateCheck = manualRefundRequest.disableDuplicateChecking
-                    tx.disableReceiptSelection = manualRefundRequest.disableReceiptSelection
-                    tx.signatureEntryLocation = manualRefundRequest.signatureEntryLocation
-                    tx.tipMode = .NO_TIP
-                    
-                    if let dp = manualRefundRequest.disablePrinting {
-                        tx.cloverShouldHandleReceipts = !dp
-                    }
-                    
-                    device.doTxStart(builder.build(), order: nil, requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
-                }
-            }
-        } else {
+        guard let device = checkDevice(from: #function) else {
             deviceObserver?.onFinishCancel(false, result: ResultCode.ERROR, reason: "Device Connection Error", message: "In preAuth : The device is not connected.", requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
+            return
         }
+        
+        if !merchantInfo.supportsManualRefunds {
+            deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Invalid argument.", message: "In ManualRefund : ManualRefundRequest - Manual Refunds support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
+            return
+        }
+        
+        if let _ = manualRefundRequest.vaultedCard, !merchantInfo.supportsVaultCards {
+            deviceObserver?.onFinishCancel(false, result:ResultCode.UNSUPPORTED, reason: "Invalid argument.", message: "In ManualRefund : ManualRefundRequest - VaultedCard support is not enabled for the payment gateway. ", requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
+            return
+        }
+        
+        let builder = PayIntent.Builder(amount:-1*Swift.abs(manualRefundRequest.amount), externalId: manualRefundRequest.externalId)
+        builder.vaultedCard = manualRefundRequest.vaultedCard
+        builder.cardEntryMethods = manualRefundRequest.cardEntryMethods
+        builder.transactionType = TransactionType.CREDIT
+        builder.requiresRemoteConfirmation = true
+        let tx = CLVModels.Payments.TransactionSettings()
+        builder.transactionSettings = tx
+        
+        tx.cardEntryMethods = CARD_ENTRY_METHOD_MAG_STRIPE | CARD_ENTRY_METHOD_ICC_CONTACT | CARD_ENTRY_METHOD_NFC_CONTACTLESS
+        tx.autoAcceptPaymentConfirmations = manualRefundRequest.autoAcceptPaymentConfirmations
+        tx.autoAcceptSignature = manualRefundRequest.autoAcceptSignature
+        tx.disableDuplicateCheck = manualRefundRequest.disableDuplicateChecking
+        tx.disableReceiptSelection = manualRefundRequest.disableReceiptSelection
+        tx.signatureEntryLocation = manualRefundRequest.signatureEntryLocation
+        tx.tipMode = .NO_TIP
+        
+        if let dp = manualRefundRequest.disablePrinting {
+            tx.cloverShouldHandleReceipts = !dp
+        }
+        
+        device.doTxStart(builder.build(), order: nil, requestInfo: TxStartRequestMessage.CREDIT_REQUEST)
     }
     
     public func voidPayment(_ request: VoidPaymentRequest) {
@@ -643,9 +592,9 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             cloverConnector.broadcaster.notifyOnTipAdjustAuthResponse(taar)
         }
         
-        func onCapturePreAuthResponse(_ status: ResultStatus, reason: String?, paymentId: String?, amount: Int?, tipAmount: Int?) {
+        func onCapturePreAuthResponse(_ status: ResultStatus, reason: String?, message: String?, paymentId: String?, amount: Int?, tipAmount: Int?) {
             let success = status == .SUCCESS
-            onCapturePreAuthResponse(success, result: success ? ResultCode.SUCCESS : ResultCode.FAIL, reason: reason, message: nil, paymentId: paymentId, amount: amount, tipAmount: tipAmount)
+            onCapturePreAuthResponse(success, result: success ? ResultCode.SUCCESS : ResultCode.FAIL, reason: reason, message: message, paymentId: paymentId, amount: amount, tipAmount: tipAmount)
         }
         func onCapturePreAuthResponse(_ success:Bool, result: ResultCode, reason: String?, message: String?, paymentId: String?=nil, amount: Int?=nil, tipAmount: Int?=nil) {
             let cpar = CapturePreAuthResponse(success: success, result: result, paymentId: paymentId, amount: amount, tipAmount: tipAmount)
@@ -1166,7 +1115,8 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
         
         func onRetrievePaymentResponse(_ result: ResultStatus, reason: String?, queryStatus qs: QueryStatus, payment: CLVModels.Payments.Payment?, externalPaymentId epi:String?) {
             let success = result == .SUCCESS
-            let retrievePaymentResponse = RetrievePaymentResponse(success: success, result: success ? ResultCode.SUCCESS : ResultCode.CANCEL, queryStatus: qs, payment: payment, externalPaymentId: epi)
+            let retrievePaymentResponse = RetrievePaymentResponse(success: success, result: success ? ResultCode.SUCCESS : ResultCode.FAIL, queryStatus: qs, payment: payment, externalPaymentId: epi)
+            retrievePaymentResponse.reason = reason
             cloverConnector.broadcaster.notifyOnRetrievePayment(retrievePaymentResponse)
         }
         

@@ -9,7 +9,7 @@ import ObjectMapper
 /**
  response to a void payment request
  */
-public class VoidPaymentResponse:BaseResponse {
+public class VoidPaymentResponse:PaymentResponse {
 
     /// the id of the voided payment
   public var paymentId:String?

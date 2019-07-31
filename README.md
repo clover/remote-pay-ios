@@ -6,9 +6,9 @@ A Swift implementation of the CloverConnector to enable iOS and MacOS to communi
 
 ## Version
 
-Current version: 3.0.2
+Current version: 3.0.3
 
-NOTE: Full support for version 3.0.2 of the SDK requires version 208 or higher of the Pay Display app.
+NOTE: Full support for version 3.0.3 of the SDK requires version 208 or higher of the Pay Display app.
 
 ### Dependencies
 - ObjectMapper - Provides JSON serialization and deserialization.
@@ -20,9 +20,9 @@ NOTE: Full support for version 3.0.2 of the SDK requires version 208 or higher o
 This SDK is provided with an example implementation available at [https://github.com/clover/remote-pay-ios-examples](https://github.com/clover/remote-pay-ios-examples)
 
 ## Using CloverConnector in your project
-* Update your Podspec to include the queuePriority branch of Starscream, 3.0.2 branch of CloverConnector, and the Swift 4.2 post_install script
+* Update your Podspec to include the queuePriority branch of Starscream, 3.0.3 branch of CloverConnector, and the Swift 4.2 post_install script
     * pod 'Starscream', :git => 'https://github.com/clover/Starscream.git', :branch => 'queuePriority-2.0.0'
-    * pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '3.0.2'
+    * pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '3.0.3'
 * Add the post_install script (see example) to set the Swift version of the pods to 4.2
     * Example cocoapod (http://cocoapods.org/) `Podfile` snippet
 ---
@@ -37,7 +37,7 @@ target 'RegisterApp' do
     # Defining it here in the PodFile overrides the podspec dependency, which isn't allowed to specify a specific location and branch
     pod 'Starscream', :git => 'https://github.com/clover/Starscream.git', :branch => 'queuePriority-2.0.0'
 
-    pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '3.0.2'
+    pod 'CloverConnector', :git => 'https://github.com/clover/remote-pay-ios.git', :tag => '3.0.3'
 
     post_install do |installer|
         ['CloverConnector'].each do |targetName|
@@ -149,11 +149,11 @@ class ConnectionManager : DefaultCloverConnectorListener, PairingDeviceConfigura
 ```
 
 ## Additional Resources
-
 * [Release Notes](https://github.com/clover/remote-pay-ios/releases)
+* [Secure Network Pay Display](https://docs.clover.com/clover-platform/docs/pay-display-apps)
 * [Example Implementation](https://github.com/clover/remote-pay-ios-examples)
-* [Tutorial for the iOS SDK](https://docs.clover.com/build/getting-started-with-clover-connector/?sdk=ios)
-* [API Documentation](https://clover.github.io/remote-pay-ios/3.0.2/docs/index.html)
+* [Tutorial for the iOS SDK](https://docs.clover.com/clover-platform/docs/ios)
+* [API Documentation](https://clover.github.io/remote-pay-ios/3.0.3/docs/index.html)
 * [Clover Developer Community](https://community.clover.com/index.html)
 
 ## License 

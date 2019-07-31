@@ -32,5 +32,6 @@ public class RetrievePaymentResponseMessage:Message {
         queryStatus <- map["queryStatus"]
         externalPaymentId <- map["externalPaymentId"]
         payment <- (map["payment"], Message.paymentTransform)
+        reason <- map["reason"]
     }
 }

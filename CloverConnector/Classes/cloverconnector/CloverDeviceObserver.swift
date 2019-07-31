@@ -44,7 +44,7 @@ protocol CloverDeviceObserver:AnyObject {
     
     func onVaultCardResponse( _ vaultedCard:CLVModels.Payments.VaultedCard?, code:ResultStatus?, reason:String?)
     
-    func onCapturePreAuthResponse( _ status:ResultStatus, reason:String?, paymentId:String?, amount:Int?, tipAmount:Int?)
+    func onCapturePreAuthResponse( _ status:ResultStatus, reason:String?, message:String?, paymentId:String?, amount:Int?, tipAmount:Int?)
     
     func onCloseoutResponse( _ status:ResultStatus, reason:String, batch:CLVModels.Payments.Batch?)
     
@@ -124,7 +124,7 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     
     func onVaultCardResponse( _ vaultedCard:CLVModels.Payments.VaultedCard?, code:ResultStatus?, reason:String?){}
     
-    func onCapturePreAuthResponse( _ status:ResultStatus, reason:String?, paymentId:String?, amount:Int?, tipAmount:Int?){}
+    func onCapturePreAuthResponse( _ status:ResultStatus, reason:String?, message:String?, paymentId:String?, amount:Int?, tipAmount:Int?){}
     
     func onCloseoutResponse( _ status:ResultStatus, reason:String, batch:CLVModels.Payments.Batch?){}
     
