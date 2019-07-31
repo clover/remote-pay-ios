@@ -15,7 +15,7 @@ public class PairingResponse : PairingRequest {
     public var millis:Int?
     
     public init(name:String, serialNumber:String, pairingState:String, applicationName:String, authenticationToken:String,  millis:Int) {
-        super.init(name: name, serialNumber: serialNumber, token: authenticationToken)
+        super.init(name: name, serialNumber: serialNumber, token: authenticationToken, remoteApplicationID: nil, remoteSourceSDK: nil)
         self.pairingState = pairingState;
         self.applicationName = applicationName;
         self.millis = millis;

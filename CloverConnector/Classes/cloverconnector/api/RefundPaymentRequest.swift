@@ -16,11 +16,11 @@ public class RefundPaymentRequest: NSObject, Mappable {
     /**
      * Unique order identifier
      */
-    public var orderId:String
+    public var orderId:String?
     /**
      * Unique payment identifier
      */
-    public var paymentId:String
+    public var paymentId:String?
     public var disablePrinting: Bool = false
     public var disableReceiptSelection: Bool = false
     
@@ -33,20 +33,20 @@ public class RefundPaymentRequest: NSObject, Mappable {
      */
     public var fullRefund:Bool?
     
-    public init(orderId:String, paymentId:String, amount:Int?, fullRefund:Bool?) {
+    public init(orderId:String?, paymentId:String?, amount:Int?, fullRefund:Bool?) {
         self.orderId = orderId
         self.paymentId = paymentId
         self.amount = amount
         self.fullRefund = fullRefund
     }
     
-    public init(orderId:String, paymentId:String, amount:Int) {
+    public init(orderId:String?, paymentId:String?, amount:Int) {
         self.orderId = orderId
         self.paymentId = paymentId
         self.amount = amount
     }
     
-    public init(orderId: String, paymentId:String, fullRefund:Bool) {
+    public init(orderId: String?, paymentId:String?, fullRefund:Bool) {
         self.orderId = orderId
         self.paymentId = paymentId
         self.amount = nil
@@ -55,8 +55,6 @@ public class RefundPaymentRequest: NSObject, Mappable {
     
     /// :nodoc:
     public required init?(map:Map) {
-        orderId = ""
-        paymentId = ""
         super.init()
     }
     

@@ -55,6 +55,10 @@ public class CloverDeviceEvent:NSObject, Mappable {
         case SIGNATURE_REJECT
         case ADD_SIGNATURE_CANCEL_CONFIRM
         
+        // Quick Pay
+        case CONFIRM_AMOUNT
+        case SENSORY_EXPERIENCE
+        
         // add tip flow
         case ADD_TIP
         

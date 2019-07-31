@@ -54,6 +54,10 @@ public enum UiState :String{
     case SIGNATURE_REJECT = "SIGNATURE_REJECT"
     case ADD_SIGNATURE_CANCEL_CONFIRM = "ADD_SIGNATURE_CANCEL_CONFIRM"
     
+    // Quick Pay
+    case CONFIRM_AMOUNT = "CONFIRM_AMOUNT"
+    case SENSORY_EXPERIENCE = "SENSORY_EXPERIENCE"
+    
     // add tip flow
     case ADD_TIP = "ADD_TIP"
     

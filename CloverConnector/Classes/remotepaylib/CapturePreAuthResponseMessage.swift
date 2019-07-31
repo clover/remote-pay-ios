@@ -15,6 +15,7 @@ public class CapturePreAuthResponseMessage : Message {
     public var paymentId:String?
     public var amount:Int?
     public var tipAmount:Int?
+    public var message:String?
     
     
     public required init?(map:Map) {
@@ -28,5 +29,6 @@ public class CapturePreAuthResponseMessage : Message {
         paymentId <- map["paymentId"]
         amount <- map["amount"]
         tipAmount <- map["tipAmount"]
+        message <- map["message"]
     }
 }

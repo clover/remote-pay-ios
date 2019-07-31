@@ -35,6 +35,8 @@ public class RetrievePaymentResponse:BaseResponse {
     public override func mapping(map:Map) {
         super.mapping(map: map)
         self.payment <- map["payment"]
+        self.queryStatus <- map["queryStatus"]
+        self.externalPaymentId <- map["externalPaymentId"]
     }
 }
 

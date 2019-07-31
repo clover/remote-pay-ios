@@ -17,7 +17,7 @@ public class RefundRequestMessage : Message {
     public var disableCloverPrinting: Bool = false
     public var disableReceiptSelection: Bool = false
     
-    public init(orderId:String, paymentId:String, amount:Int?, fullRefund:Bool?) {
+    public init(orderId:String?, paymentId:String?, amount:Int?, fullRefund:Bool?) {
         super.init(method: .REFUND_REQUEST)
         self.orderId = orderId
         self.paymentId = paymentId

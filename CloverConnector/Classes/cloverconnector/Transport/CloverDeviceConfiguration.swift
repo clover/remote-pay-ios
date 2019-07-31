@@ -3,7 +3,7 @@
 //  CloverConnector
 //
 //  
-//  Copyright © 2017 Clover Network, Inc. All rights reserved.
+//  Copyright © 2019 Clover Network, Inc. All rights reserved.
 //
 
 import Foundation

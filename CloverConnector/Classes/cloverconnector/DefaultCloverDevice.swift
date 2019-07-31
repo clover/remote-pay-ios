@@ -79,6 +79,8 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         
         let remoteMessage = RemoteMessage()
         remoteMessage.type = .PONG
+        remoteMessage.remoteSourceSDK = self.config.remoteSourceSDK
+        remoteMessage.remoteApplicationID = self.config.remoteApplicationID
         CCLog.d("Sending Pong")
         
         if let _ = Mapper().toJSONString(remoteMessage, prettyPrint: false) {
@@ -550,7 +552,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    override func doPaymentRefund(_ orderId: String, paymentId: String, amount: Int, fullRefund: Bool?, disablePrinting: Bool?, disableReceiptSelection: Bool?) {
+    override func doPaymentRefund(_ orderId: String?, paymentId: String?, amount: Int?, fullRefund: Bool?, disablePrinting: Bool?, disableReceiptSelection: Bool?) {
         let msg:RefundRequestMessage = RefundRequestMessage(orderId: orderId, paymentId:paymentId, amount:amount, fullRefund:fullRefund)
         msg.orderId = orderId
         msg.paymentId = paymentId
@@ -993,7 +995,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             let amount = preAuthMessage.amount else { return }
         for listener in deviceObservers {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
-                listener.onCapturePreAuthResponse(status, reason: preAuthMessage.reason, paymentId: paymentId, amount: amount, tipAmount: preAuthMessage.tipAmount ?? 0)
+                listener.onCapturePreAuthResponse(status, reason: preAuthMessage.reason, message: preAuthMessage.message, paymentId: paymentId, amount: amount, tipAmount: preAuthMessage.tipAmount ?? 0)
             })
         }
     }
@@ -1088,7 +1090,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             let tipAmount = response.tipAmount else { return }
         for listener in deviceObservers {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
-                listener.onCapturePreAuthResponse(status, reason: response.reason, paymentId: paymentId, amount: amount, tipAmount: tipAmount)
+                listener.onCapturePreAuthResponse(status, reason: response.reason, message: response.message, paymentId: paymentId, amount: amount, tipAmount: tipAmount)
             })
         }
     }

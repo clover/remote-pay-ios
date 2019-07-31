@@ -27,6 +27,7 @@ class WebSocketCloverTransport: CloverTransport {
     fileprivate var serialNumber = ""
     fileprivate var pairingAuthToken:String?
     fileprivate var pairingConfig:PairingDeviceConfiguration
+    fileprivate var cloverDeviceConfig: CloverDeviceConfiguration?
     
     private var disableSSLValidation:Bool = false
     
@@ -42,13 +43,14 @@ class WebSocketCloverTransport: CloverTransport {
     }
 
     
-    init?(endpointURL: String, posName:String, serialNumber:String, pairingAuthToken: String?, pairingDeviceConfiguration:PairingDeviceConfiguration, disableSSLCertificateValidation:Bool = false, pongTimeout pt:Int? = 15, pingFrequency pf:Int? = 3, reconnectDelay rd:Int? = 2, reportConnectionProblemAfter rt:Int? = 20) {
+    init?(endpointURL:String, posName:String, serialNumber:String, cloverDeviceConfig:CloverDeviceConfiguration?, pairingAuthToken:String?, pairingDeviceConfiguration:PairingDeviceConfiguration, disableSSLCertificateValidation:Bool = false, pongTimeout pt:Int? = 15, pingFrequency pf:Int? = 3, reconnectDelay rd:Int? = 2, reportConnectionProblemAfter rt:Int? = 20) {
 
         df.dateFormat = "y-MM-dd H:m:ss.SSSS"
         
         self.pairingAuthToken = pairingAuthToken
         self.name = posName
         self.serialNumber = serialNumber
+        self.cloverDeviceConfig = cloverDeviceConfig
         self.pairingConfig = pairingDeviceConfiguration
         self.disableSSLValidation = disableSSLCertificateValidation
         self.pingFrequency = pf ?? 5
@@ -220,7 +222,7 @@ class WebSocketCloverTransport: CloverTransport {
         processQueue.async(execute: { [weak self] in
             guard let self = self else { return }
 
-            let pairingRequest = PairingRequest(name: self.name, serialNumber: self.serialNumber, token: self.pairingAuthToken)
+            let pairingRequest = PairingRequest(name: self.name, serialNumber: self.serialNumber, token: self.pairingAuthToken, remoteApplicationID: self.cloverDeviceConfig?.remoteApplicationID, remoteSourceSDK: self.cloverDeviceConfig?.remoteSourceSDK)
             let pairingRequestMessage = PairingRequestMessage(request: pairingRequest)
             pairingRequestMessage.method = PairingCode.PAIRING_REQUEST
             if let pairingRequestString = Mapper().toJSONString(pairingRequestMessage)
