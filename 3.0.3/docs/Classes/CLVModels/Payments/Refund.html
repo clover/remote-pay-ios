@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Refund Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../../../js/jquery.min.js" defer></script>
+    <script src="../../../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/Refund" class="dashAnchor"></a>
+    <a title="Refund Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../../../index.html">CloverConnector Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../../../index.html">CloverConnector Reference</a>
+        <img id="carat" src="../../../img/carat.png" />
+        Refund Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../../../API.html">API</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../../Protocols/ICloverConnector.html">ICloverConnector</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Protocols/ICloverConnectorListener.html">ICloverConnectorListener</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CloverConnectorFactory.html">CloverConnectorFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/WebSocketDeviceConfiguration.html">WebSocketDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../../Payment.html">Payment</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../../Classes/SaleRequest.html">SaleRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/SaleRequest/TipMode.html">– TipMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/SaleResponse.html">SaleResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/AuthRequest.html">AuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/AuthResponse.html">AuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PreAuthRequest.html">PreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PreAuthResponse.html">PreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PrintPaymentReceiptMessage.html">PrintPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PrintPaymentDeclineReceiptMessage.html">PrintPaymentDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PrintPaymentMerchantCopyReceiptMessage.html">PrintPaymentMerchantCopyReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PrintRefundPaymentReceiptMessage.html">PrintRefundPaymentReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CapturePreAuthRequest.html">CapturePreAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CapturePreAuthResponse.html">CapturePreAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/TipAdjustAuthRequest.html">TipAdjustAuthRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/TipAdjustAuthResponse.html">TipAdjustAuthResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/VoidPaymentRequest.html">VoidPaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/VoidPaymentResponse.html">VoidPaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/RefundPaymentRequest.html">RefundPaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/RefundPaymentResponse.html">RefundPaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/VoidPaymentRefundRequest.html">VoidPaymentRefundRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/VoidPaymentRefundResponse.html">VoidPaymentRefundResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/ManualRefundRequest.html">ManualRefundRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/ManualRefundResponse.html">ManualRefundResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PrintManualRefundReceiptMessage.html">PrintManualRefundReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PrintManualRefundDeclineReceiptMessage.html">PrintManualRefundDeclineReceiptMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CloseoutRequest.html">CloseoutRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CloseoutResponse.html">CloseoutResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/RetrievePendingPaymentsResponse.html">RetrievePendingPaymentsResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/DisplayReceiptOptionsRequest.html">DisplayReceiptOptionsRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/DisplayReceiptOptionsResponse.html">DisplayReceiptOptionsResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/VerifySignatureRequest.html">VerifySignatureRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/VaultCardRequest.html">VaultCardRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/VaultCardResponse.html">VaultCardResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/ReadCardDataRequest.html">ReadCardDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/ReadCardDataResponse.html">ReadCardDataResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/RetrievePaymentRequest.html">RetrievePaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/RetrievePaymentResponse.html">RetrievePaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/Signature.html">Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/Signature/Stroke.html">– Stroke</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CLVModels.html">CLVModels</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CLVModels/Customers.html">– Customers</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CLVModels/Loyalty.html">– Loyalty</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CLVModels/Order.html">– Order</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CLVModels/Payments.html">– Payments</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../../Device.html">Device</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../../Classes/RetrieveDeviceStatusRequest.html">RetrieveDeviceStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/RetrieveDeviceStatusResponse.html">RetrieveDeviceStatusResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/DisplayOrder.html">DisplayOrder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/DisplayDiscount.html">DisplayDiscount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/DisplayLineItem.html">DisplayLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CloverDeviceErrorEvent.html">CloverDeviceErrorEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/MerchantInfo.html">MerchantInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PrintRequest.html">PrintRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PrintJobStatusRequest.html">PrintJobStatusRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PrintJobStatusResponse.html">PrintJobStatusResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/RetrievePrintersRequest.html">RetrievePrintersRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/RetrievePrintersResponse.html">RetrievePrintersResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/ResetDeviceResponse.html">ResetDeviceResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/OpenCashDrawerRequest.html">OpenCashDrawerRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../../Custom Activities.html">Custom Activities</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../../Classes/CustomActivityRequest.html">CustomActivityRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CustomActivityResponse.html">CustomActivityResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageToActivity">MessageToActivity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Custom Activities.html#/c:@M@CloverConnector@objc(cs)MessageFromActivity">MessageFromActivity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/BaseActivityMessage.html">BaseActivityMessage</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../../Pairing.html">Pairing</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../../Protocols/PairingDeviceConfiguration.html">PairingDeviceConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../../Loyalty.html">Loyalty</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../../Classes/RegisterForCustomerProvidedDataRequest.html">RegisterForCustomerProvidedDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CustomerProvidedDataEvent.html">CustomerProvidedDataEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/SetCustomerInfoRequest.html">SetCustomerInfoRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../../Enums/VoidReason.html">VoidReason</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../../Classes/BaseResponse.html">BaseResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/BaseTransactionRequest.html">BaseTransactionRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CCLog.html">CCLog</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/CloverDeviceLogMessage.html">CloverDeviceLogMessage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/DeviceInfo.html">DeviceInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/DisplayPayment.html">DisplayPayment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/PaymentResponse.html">PaymentResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/RegionalExtras.html">RegionalExtras</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/ResultStatusEnum.html">ResultStatusEnum</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/ShowPaymentReceiptOptionsRequest.html">ShowPaymentReceiptOptionsRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Classes/TransactionRequest.html">TransactionRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../../Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../../Enums/CloverDeviceErrorType.html">CloverDeviceErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Enums/ErrorCode.html">ErrorCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Enums/PrintCategory.html">PrintCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Enums/PrintJobStatus.html">PrintJobStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Enums/QueryStatus.html">QueryStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Enums/ResultCode.html">ResultCode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../../Other Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../../Other Typealiases.html#/ImageClass">ImageClass</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../../Other Typealiases.html#/s:15CloverConnector10ImageClassa">ImageClass</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Refund</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">@objc(_TtCCC15CloverConnector9CLVModels8Payments6Refund)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">Refund</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">NSCoding</span><span class="p">,</span> <span class="kt">Mappable</span></code></pre>
+
+                </div>
+              </div>
+            
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC2idSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/id" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC2idSSSgvp">id</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Unique identifier</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC8orderRefAC5OrderCAICSgvp"></a>
+                    <a name="//apple_ref/swift/Property/orderRef" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC8orderRefAC5OrderCAICSgvp">orderRef</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The order with which the refund is associated</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">orderRef</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Order.html">Order</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Order.html">Order</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC6deviceAC6DeviceCAICSgvp"></a>
+                    <a name="//apple_ref/swift/Property/device" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC6deviceAC6DeviceCAICSgvp">device</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Device which processed the transaction for this refund</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">device</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Device</span><span class="o">.</span><span class="kt">Device</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC6amountSiSgvp"></a>
+                    <a name="//apple_ref/swift/Property/amount" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC6amountSiSgvp">amount</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Total amount refunded, including tax</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">amount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC9taxAmountSiSgvp"></a>
+                    <a name="//apple_ref/swift/Property/taxAmount" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC9taxAmountSiSgvp">taxAmount</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Tax amount refunded</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">taxAmount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC9tipAmountSiSgvp"></a>
+                    <a name="//apple_ref/swift/Property/tipAmount" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC9tipAmountSiSgvp">tipAmount</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Tip amount refunded</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">tipAmount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC11createdTime10Foundation4DateVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/createdTime" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC11createdTime10Foundation4DateVSgvp">createdTime</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The time when the refund was recorded on the server</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">createdTime</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC17clientCreatedTime10Foundation4DateVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/clientCreatedTime" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC17clientCreatedTime10Foundation4DateVSgvp">clientCreatedTime</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The time when the refund was recorded on the client</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">clientCreatedTime</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC7paymentAE7PaymentCSgvp"></a>
+                    <a name="//apple_ref/swift/Property/payment" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC7paymentAE7PaymentCSgvp">payment</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The payment with which the refund is associated</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">payment</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments.html">Payments</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments/Payment.html">Payment</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC8employeeAC9EmployeesC8EmployeeCSgvp"></a>
+                    <a name="//apple_ref/swift/Property/employee" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC8employeeAC9EmployeesC8EmployeeCSgvp">employee</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">employee</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Employees</span><span class="o">.</span><span class="kt">Employee</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC9lineItemsSayAC5OrderC8LineItemCGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/lineItems" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC9lineItemsSayAC5OrderC8LineItemCGSgvp">lineItems</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItems</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Order.html">Order</a></span><span class="o">.</span><span class="kt">LineItem</span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC22overrideMerchantTenderAC4BaseC0H0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/overrideMerchantTender" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC22overrideMerchantTenderAC4BaseC0H0CSgvp">overrideMerchantTender</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The tender type associated with this payment, e.g. credit card, cash, etc.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">overrideMerchantTender</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Base</span><span class="o">.</span><span class="kt">Tender</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC18taxableAmountRatesSayAE07TaxableG4RateCGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/taxableAmountRates" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC18taxableAmountRatesSayAE07TaxableG4RateCGSgvp">taxableAmountRates</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">taxableAmountRates</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments.html">Payments</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments/TaxableAmountRate.html">TaxableAmountRate</a></span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC19serviceChargeAmountAE07ServicegH0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/serviceChargeAmount" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC19serviceChargeAmountAE07ServicegH0CSgvp">serviceChargeAmount</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">serviceChargeAmount</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments.html">Payments</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments/ServiceChargeAmount.html">ServiceChargeAmount</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC17additionalChargesSayAE16AdditionalChargeCGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/additionalCharges" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC17additionalChargesSayAE16AdditionalChargeCGSgvp">additionalCharges</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">additionalCharges</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments.html">Payments</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments/AdditionalCharge.html">AdditionalCharge</a></span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC10germanInfoAE06GermanG0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/germanInfo" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC10germanInfoAE06GermanG0CSgvp">germanInfo</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>German region-specific information</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">germanInfo</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments.html">Payments</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments/GermanInfo.html">GermanInfo</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC11appTrackingAC4AppsC03AppG0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/appTracking" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC11appTrackingAC4AppsC03AppG0CSgvp">appTracking</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Tracking information for the app that created this refund</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">appTracking</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Apps</span><span class="o">.</span><span class="kt">AppTracking</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC6voidedSbSgvp"></a>
+                    <a name="//apple_ref/swift/Property/voided" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC6voidedSbSgvp">voided</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">voided</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC10voidReasonSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/voidReason" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC10voidReasonSSSgvp">voidReason</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">voidReason</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC15cardTransactionAE04CardG0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/cardTransaction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC15cardTransactionAE04CardG0CSgvp">cardTransaction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Information about the card used for credit or debit card refunds</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">cardTransaction</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments.html">Payments</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments/CardTransaction.html">CardTransaction</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC15transactionInfoAE011TransactionG0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/transactionInfo" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC15transactionInfoAE011TransactionG0CSgvp">transactionInfo</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">transactionInfo</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments.html">Payments</a></span><span class="o">.</span><span class="kt"><a href="../../../Classes/CLVModels/Payments/TransactionInfo.html">TransactionInfo</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC8merchantAC4BaseC9ReferenceCSgvp"></a>
+                    <a name="//apple_ref/swift/Property/merchant" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC8merchantAC4BaseC9ReferenceCSgvp">merchant</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">merchant</span><span class="p">:</span> <span class="kt"><a href="../../../Classes/CLVModels.html">CLVModels</a></span><span class="o">.</span><span class="kt">Base</span><span class="o">.</span><span class="kt">Reference</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC19externalReferenceIdSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/externalReferenceId" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC19externalReferenceIdSSSgvp">externalReferenceId</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The external reference id if associated with the refund</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">externalReferenceId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC6encode4withySo7NSCoderC_tF"></a>
+                    <a name="//apple_ref/swift/Method/encode(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC6encode4withySo7NSCoderC_tF">encode(with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">encode</span><span class="p">(</span><span class="n">with</span> <span class="nv">aCoder</span><span class="p">:</span> <span class="kt">NSCoder</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC5coderAGSo7NSCoderC_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(coder:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundC5coderAGSo7NSCoderC_tcfc">init(coder:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">required</span> <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">coder</span> <span class="nv">aDecoder</span><span class="p">:</span> <span class="kt">NSCoder</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15CloverConnector9CLVModelsC8PaymentsC6RefundCAGycfc"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CloverConnector9CLVModelsC8PaymentsC6RefundCAGycfc">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12ObjectMapper8MappableP3mapxSgAA3MapC_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(map:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12ObjectMapper8MappableP3mapxSgAA3MapC_tcfc">init(map:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">required</span> <span class="kd">public</span> <span class="nf">init</span><span class="p">?(</span><span class="nv">map</span><span class="p">:</span> <span class="kt">Map</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12ObjectMapper12BaseMappableP7mapping3mapyAA3MapC_tF"></a>
+                    <a name="//apple_ref/swift/Method/mapping(map:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12ObjectMapper12BaseMappableP7mapping3mapyAA3MapC_tF">mapping(map:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">mapping</span><span class="p">(</span><span class="nv">map</span><span class="p">:</span> <span class="kt">Map</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2019 Clover Network, Inc. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
