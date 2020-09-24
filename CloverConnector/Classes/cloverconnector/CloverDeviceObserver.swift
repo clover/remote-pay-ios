@@ -46,6 +46,8 @@ protocol CloverDeviceObserver:AnyObject {
     
     func onCapturePreAuthResponse( _ status:ResultStatus, reason:String?, message:String?, paymentId:String?, amount:Int?, tipAmount:Int?)
     
+    func onIncrementPreAuthResponse(_ status: ResultStatus, reason: String?, message: String?, auth: CLVModels.Payments.Authorization?)
+    
     func onCloseoutResponse( _ status:ResultStatus, reason:String, batch:CLVModels.Payments.Batch?)
     
     //func onModifyOrder(AddDiscountAction addDiscountAction)
@@ -82,6 +84,7 @@ protocol CloverDeviceObserver:AnyObject {
     func onConfirmPayment(_ payment:CLVModels.Payments.Payment?, challenges: [Challenge]?)
     func onActivityResponse(_ status:ResultCode, action:String?, payload:String?, failReason: String?)
     func onDeviceStatusResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState, subState: ExternalDeviceSubState?, data: ExternalDeviceStateData?)
+    func onInvalidStateTransitionResponse(_ result: ResultStatus?, reason: String?, requestedTransition: String?, state: ExternalDeviceState?, data: ExternalDeviceStateData?)
     func onMessageFromActivity(_ action: String, payload: String?)
     func onRetrievePaymentResponse(_ result: ResultStatus, reason:String?, queryStatus: QueryStatus, payment:CLVModels.Payments.Payment?, externalPaymentId:String?)
     func onRetrievePrintersResponse(_ printers:[CLVModels.Printer.Printer]?)
@@ -126,6 +129,8 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     
     func onCapturePreAuthResponse( _ status:ResultStatus, reason:String?, message:String?, paymentId:String?, amount:Int?, tipAmount:Int?){}
     
+    func onIncrementPreAuthResponse(_ status: ResultStatus, reason: String?, message: String?, auth: CLVModels.Payments.Authorization?) {}
+    
     func onCloseoutResponse( _ status:ResultStatus, reason:String, batch:CLVModels.Payments.Batch?){}
     
     //func onModifyOrder(AddDiscountAction addDiscountAction)
@@ -157,6 +162,7 @@ public class DefaultCloverDeviceObserver : CloverDeviceObserver {
     func onActivityResponse(_ status:ResultCode, action:String?, payload:String?, failReason: String?) {}
     
     func onDeviceStatusResponse(_ result:ResultStatus, reason: String?, state: ExternalDeviceState, subState: ExternalDeviceSubState?, data: ExternalDeviceStateData?) {}
+    func onInvalidStateTransitionResponse(_ result: ResultStatus?, reason: String?, requestedTransition: String?, state: ExternalDeviceState?, data: ExternalDeviceStateData?) {}
     func onMessageFromActivity(_ action: String, payload: String?){}
     func onRetrievePaymentResponse(_ result: ResultStatus, reason:String?, queryStatus: QueryStatus, payment:CLVModels.Payments.Payment?, externalPaymentId:String?){}
     func onRetrievePrintersResponse(_ printers:[CLVModels.Printer.Printer]?) {}

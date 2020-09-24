@@ -171,6 +171,10 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                                 if let cpr = Mapper<CapturePreAuthResponseMessage>().map(JSONString: payload) {
                                     notifyListenersCapturePreAuthResponse(cpr)
                                 }
+                            case Method.INCREMENT_PREAUTH_RESPONSE:
+                                if let iarm = Mapper<IncrementPreauthResponseMessage>().map(JSONString: payload) {
+                                    notifyListenersIncrementPreAuthResponse(iarm)
+                                }
                             case Method.RETRIEVE_PENDING_PAYMENTS_RESPONSE:
                                 if let rpprm = Mapper<RetrievePendingPaymentsResponseMessage>().map(JSONString: payload) {
                                     notifyObserversPendingPaymentsResponse(rpprm);
@@ -187,6 +191,10 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                                 if let arm = Mapper<ActivityResponseMessage>().map(JSONString: payload) {
                                     notifyObserverActivityResponse(arm)
                                 }
+                        case Method.INVALID_STATE_TRANSITION :
+                            if let istrm = Mapper<InvalidStateTransitionResponseMessage>().map(JSONString: payload) {
+                                notifyObserverInvalidStateTransitionResponse(istrm)
+                            }
                             // requests
                             case Method.PRINT_TEXT: break;
                             case Method.PRINT_IMAGE: break;
@@ -279,6 +287,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
                                     notifyDisplayReceiptOptionsResponse(sprom)
                             }
                             case Method.CAPTURE_PREAUTH: break
+                            case Method.INCREMENT_PREAUTH_REQUEST: break
                             case Method.CLOVER_DEVICE_LOG_REQUEST: break
                             case Method.REGISTER_FOR_CUST_DATA: break
                             case Method.CUSTOMER_PROVIDED_DATA_MESSAGE:
@@ -331,7 +340,16 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
             sendCommandMessage(payload: msgJSON, method:msg.method)
         }
+    }
+    
+    override func doIncrementPreAuth(_ amount:Int, paymentId: String) {
+        let msg = IncrementPreauthMessage()
+        msg.amount = amount
+        msg.paymentId = paymentId
         
+        if let msgJSON = Mapper().toJSONString(msg, prettyPrint: false) {
+            sendCommandMessage(payload: msgJSON, method:msg.method)
+        }
     }
     
     override func doShowPaymentReceiptScreen(_ orderId: String, paymentId: String) {
@@ -409,7 +427,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             }
             override func onMessageAck(_ sourceMessageId: String) {
                 if(sourceMessageId == ackID) {
-                    if let index = observers.index(where: {$0 === self}) {
+                    if let index = observers.firstIndex(where: {$0 === self}) {
                         observers.remove(at: index)
                     }
                     for observer in observers {
@@ -521,7 +539,7 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
-    override func doOpenCashDrawer(_ reason: String, deviceId: String?) {
+    override func doOpenCashDrawer(_ reason: String?, deviceId: String?) {
         let msg = OpenCashDrawerMessage()
         msg.reason = reason
         
@@ -1095,6 +1113,14 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
         }
     }
     
+    func notifyListenersIncrementPreAuthResponse(_ response: IncrementPreauthResponseMessage) {
+        for listener in deviceObservers {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
+                listener.onIncrementPreAuthResponse(response.status, reason: response.reason, message: nil, auth: response.authorization)
+            })
+        }
+    }
+    
     func notifyObserversPendingPaymentsResponse(_ response:RetrievePendingPaymentsResponseMessage) {
         for listener in deviceObservers {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
@@ -1126,6 +1152,14 @@ class DefaultCloverDevice : CloverDevice, CloverTransportObserver {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
                 let status = request.resultCode == -1 ? ResultCode.SUCCESS : ResultCode.CANCEL
                 listener.onActivityResponse(status, action: request.action, payload:request.payload, failReason:  request.failReason)
+            })
+        }
+    }
+    
+    func notifyObserverInvalidStateTransitionResponse(_ response: InvalidStateTransitionResponseMessage) {
+        for listener in deviceObservers {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: {
+                listener.onInvalidStateTransitionResponse(response.result, reason: response.reason, requestedTransition: response.requestedTransition, state: response.state, data: response.data)
             })
         }
     }

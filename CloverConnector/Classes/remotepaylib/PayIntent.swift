@@ -41,6 +41,7 @@ public class PayIntent:Mappable {
     public fileprivate(set) var applicationTracking:CLVModels.Apps.AppTracking?
     public fileprivate(set) var allowPartialAuth = true
     public fileprivate(set) var transactionSettings:CLVModels.Payments.TransactionSettings?
+    public fileprivate(set) var disableCreditSurcharge = false
     
     /// Extra pass-through data used by external systems.
     public fileprivate(set) var passThroughValues: [String: String]?
@@ -87,6 +88,7 @@ public class PayIntent:Mappable {
         allowPartialAuth <- map["allowPartialAuth"]
         transactionSettings <- map["transactionSettings"]
         passThroughValues <- map["passThroughValues"]
+        disableCreditSurcharge <- map["isDisableCreditSurcharge"]
     }
 
 
@@ -118,6 +120,7 @@ public class PayIntent:Mappable {
         public var applicationTracking:CLVModels.Apps.AppTracking?
         public var allowPartialAuth = true
         public var transactionSettings:CLVModels.Payments.TransactionSettings?
+        public var disableCreditSurcharge = false
         
         /// Extra pass-through data used by external systems.
         public var passThroughValues: [String: String]?
@@ -163,6 +166,13 @@ public class PayIntent:Mappable {
             payIntent.allowPartialAuth = self.allowPartialAuth
             payIntent.transactionSettings = self.transactionSettings
             payIntent.passThroughValues = self.passThroughValues
+            
+            //Apply the transaction settings value, if applicable, before reverting to the builder's default value
+            if let disableCreditSurcharge = self.transactionSettings?.disableCreditSurcharge {
+                payIntent.disableCreditSurcharge = disableCreditSurcharge
+            } else {
+                payIntent.disableCreditSurcharge = self.disableCreditSurcharge
+            }
 
             return payIntent
         }

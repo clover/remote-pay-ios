@@ -66,7 +66,7 @@ public class CloverTransport : NSObject {
     }
     
     func unsubscribe(_ observer:CloverTransportObserver) {
-        guard let index = observers.index(where: {$0 === observer}) else { return }
+        guard let index = observers.firstIndex(where: {$0 === observer}) else { return }
         observers.remove(at: index)
     }
     
