@@ -90,6 +90,20 @@ public class Message : NSObject, Mappable {
             return nil
     })
     
+    static let authorizationTransform = TransformOf<CLVModels.Payments.Authorization, String>(fromJSON: { (value: String?) -> CLVModels.Payments.Authorization? in
+        if let val = value,
+            let auth = Mapper<CLVModels.Payments.Authorization>().map(JSONString: val) {
+            return auth
+        }
+        return nil
+        }, toJSON: { (auth: CLVModels.Payments.Authorization?) -> String? in
+            if let auth = auth, let stringAuth = Mapper().toJSONString(auth, prettyPrint:false) {
+                return stringAuth
+            }
+            
+            return nil
+    })
+    
     static let printerTransform = TransformOf<CLVModels.Printer.Printer, String>(fromJSON: { (value: String?) -> CLVModels.Printer.Printer? in
         if let printerString = value, let printer = Mapper<CLVModels.Printer.Printer>().map(JSONString: printerString) {
             return printer
@@ -111,14 +125,14 @@ public class Message : NSObject, Mappable {
             return pi
         }
         return nil
-        }, toJSON: { (obj: CLVModels.Payments.Credit?) -> String? in
-            if obj != nil {
-                if let val = obj,
-                    let value = Mapper().toJSONString(val, prettyPrint:false) {
-                    return String(value)
-                }
+    }, toJSON: { (obj: CLVModels.Payments.Credit?) -> String? in
+        if obj != nil {
+            if let val = obj,
+                let value = Mapper().toJSONString(val, prettyPrint:false) {
+                return String(value)
             }
-            return nil
+        }
+        return nil
     })
     
     static let refundTransform = TransformOf<CLVModels.Payments.Refund, String>(fromJSON: { (value: String?) -> CLVModels.Payments.Refund? in
@@ -235,4 +249,17 @@ public class Message : NSObject, Mappable {
         return nil
     })
     
+    static let additionalChargeTypeTransform = TransformOf<CLVModels.Payments.AdditionalCharge.AdditionalChargeType, String>(fromJSON: { (value: String?) -> CLVModels.Payments.AdditionalCharge.AdditionalChargeType? in
+        guard let chargeType = value else {
+            return nil
+        }
+        
+        return CLVModels.Payments.AdditionalCharge.AdditionalChargeType(rawValue: chargeType)
+    }, toJSON: { (chargeType: CLVModels.Payments.AdditionalCharge.AdditionalChargeType?) -> String? in
+        guard let validChargeType = chargeType else {
+            return nil
+        }
+        
+        return validChargeType.chargeTypeString
+    })
 }

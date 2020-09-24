@@ -20,7 +20,7 @@ public class CloverConnectorBroadcaster {
     // Adds a listener to be notified
     public func addObject(_ listener:ICloverConnectorListener) {
         dispatchQueue.async { [weak self] in
-            if self?.listeners.index(where: {$0 === listener}) == nil {
+            if self?.listeners.firstIndex(where: {$0 === listener}) == nil {
                 self?.listeners.append(listener)
             }
         }
@@ -36,7 +36,7 @@ public class CloverConnectorBroadcaster {
     // Removes a single listener
     public func removeObject(_ listener:ICloverConnectorListener) {
         dispatchQueue.async { [weak self] in
-            if let index = self?.listeners.index(where: {$0 === listener}) {
+            if let index = self?.listeners.firstIndex(where: {$0 === listener}) {
                 self?.listeners.remove(at: index)
             }
         }
@@ -224,6 +224,15 @@ public class CloverConnectorBroadcaster {
         }
     }
     
+    public func notifyOnIncrementPreAuth(_ response: IncrementPreauthResponse) {
+        dispatchQueue.async { [weak self] in
+            guard let self = self else { return }
+            for listener in self.listeners {
+                listener.onIncrementPreAuthResponse(response)
+            }
+        }
+    }
+    
     public func notifyOnPendingPaymentsResponse(_ response:RetrievePendingPaymentsResponse) {
         dispatchQueue.async { [weak self] in
             guard let self = self else { return }
@@ -365,6 +374,15 @@ public class CloverConnectorBroadcaster {
             guard let self = self else { return }
             for listener in self.listeners {
                 listener.onRetrieveDeviceStatusResponse(response)
+            }
+        }
+    }
+    
+    public func notifyOnInvalidStateTransitionResponse(_ response: InvalidStateTransitionResponse) {
+        dispatchQueue.async { [weak self] in
+            guard let self = self else { return }
+            for listener in self.listeners {
+                listener.onInvalidStateTransitionResponse(response)
             }
         }
     }

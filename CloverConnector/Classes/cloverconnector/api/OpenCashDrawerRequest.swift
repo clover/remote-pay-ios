@@ -7,7 +7,7 @@ import Foundation
 
 public class OpenCashDrawerRequest : NSObject {
     /// A description for why the drawer is being opened
-    let reason: String
+    let reason: String?
     
     /// The identifier of the cash drawer to be opened. If nil, will fall back to the default drawer.
     let deviceId: String?
@@ -17,7 +17,7 @@ public class OpenCashDrawerRequest : NSObject {
     /// - Parameters:
     ///   - reason: String describing the reason to open the drawer
     ///   - deviceId: Identifier of the drawer to be opened, or nil
-    public init(_ reason: String, deviceId: String?) {
+    public init(_ reason: String?, deviceId: String?) {
         self.reason = reason
         self.deviceId = deviceId
     }

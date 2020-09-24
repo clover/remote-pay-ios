@@ -673,12 +673,14 @@ extension CLVModels {
       public var name: String?
       /// Suggested tip percentage
       public var percentage: Int?
+      public var amount: Int?
       public var isEnabled: Bool?
       
       public func encode(with aCoder: NSCoder) {
         aCoder.encode(id, forKey: "id")
         aCoder.encode(name, forKey: "name")
         aCoder.encode(percentage, forKey: "percentage")
+        aCoder.encode(amount, forKey: "amount")
         aCoder.encode(isEnabled, forKey: "isEnabled")
       }
       
@@ -686,6 +688,7 @@ extension CLVModels {
         id = aDecoder.decodeObject(forKey: "id") as? String
         name = aDecoder.decodeObject(forKey: "name") as? String
         percentage = aDecoder.decodeObject(forKey: "percentage") as? Int
+        amount = aDecoder.decodeObject(forKey: "amount") as? Int
         isEnabled = aDecoder.decodeObject(forKey: "isEnabled") as? Bool
       }
       
@@ -698,10 +701,49 @@ extension CLVModels {
       public func mapping(map:Map) {
         id <- map["id"]
         name <- map["name"]
-        percentage <- map["percentage"]
-        isEnabled <- map["isEnabled"]
+        percentage <- (map["percentage"], fixJsonNumberTypeDisorder)
+        amount <- (map["amount"], fixJsonNumberTypeDisorder)
+        isEnabled <- (map["isEnabled"], fixJsonBoolTypeDisorder)
       }
+        
+        /// Take either a string or an Bool for booleans... because sometimes we have to deal with crappy JSON APIs that gives us a literal "true" as a boolean  🤦‍♂️
+        let fixJsonBoolTypeDisorder = TransformOf<Bool, Any>(fromJSON: { (value: Any?) -> Bool? in
+            if let stringValue = value as? String {
+                if stringValue == "true" {
+                    return true
+                } else if stringValue == "false" {
+                    return false
+                } else {
+                    return nil
+                }
+            }
+            
+            if let boolValue = value as? Bool {
+                return boolValue
+            }
+
+            //probably came in as either a string or a bool, so we won't bother fretting over any other type
+            return nil
+        }, toJSON: { (value: Bool?) -> Bool? in
+            return value
+        })
+        
+        
+        /// Take either a string or an Int for numbers... because sometimes we have to deal with crappy JSON APIs that gives us a literal "5" as a number  🤦‍♂️
+        let fixJsonNumberTypeDisorder = TransformOf<Int, Any>(fromJSON: { (value: Any?) -> Int? in
+            if let stringValue = value as? String {
+                return Int(stringValue)
+            }
+            
+            if let intValue = value as? Int {
+                return intValue
+            }
+
+            //probably came in as either a string or a number, so we won't bother fretting over any other type
+            return nil
+        }, toJSON: { (value: Int?) -> Int? in
+            return value
+        })
     }
-    
   }
 }

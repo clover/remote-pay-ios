@@ -199,7 +199,7 @@ public class CCLog {
     /// Pass in the index value you received when you called addLogHandler.
     public static func removeLogHandler(handlerIndex:Int) {
         CCLog.dispatchQueue.async {
-            guard let index = CCLog.logHandlers.index(where: {$0.handlerIndex == handlerIndex}) else { return }
+            guard let index = CCLog.logHandlers.firstIndex(where: {$0.handlerIndex == handlerIndex}) else { return }
             CCLog.logHandlers.remove(at: index)
         }
     }

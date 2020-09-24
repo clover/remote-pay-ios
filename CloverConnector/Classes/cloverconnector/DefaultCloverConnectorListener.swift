@@ -44,6 +44,10 @@ open class DefaultCloverConnectorListener : NSObject, ICloverConnectorListener {
      */
     open func  onCapturePreAuthResponse ( _ capturePreAuthResponse:CapturePreAuthResponse ) -> Void {}
     
+    /*
+     * Response to a request to increment a preauth
+     */
+    open func onIncrementPreAuthResponse(_ incrementPreAuthResponse: IncrementPreauthResponse) {}
     
     /*
      * Response to a tip adjustment for an auth.
@@ -166,6 +170,8 @@ open class DefaultCloverConnectorListener : NSObject, ICloverConnectorListener {
     open func onPrintJobStatusResponse(_ printJobStatusResponse:PrintJobStatusResponse) {}
 
     open func onRetrieveDeviceStatusResponse(_ response: RetrieveDeviceStatusResponse) {}
+    
+    open func onInvalidStateTransitionResponse(_ response: InvalidStateTransitionResponse) {}
     
     open func onDisplayReceiptOptionsResponse(_ response: DisplayReceiptOptionsResponse) {}
 }

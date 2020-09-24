@@ -188,6 +188,20 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
         }
     }
     
+    public func incrementPreAuth(_ incrementPreAuthRequest: IncrementPreauthRequest) {
+        guard let device = checkDevice(from: #function) else {
+            deviceObserver?.onIncrementPreAuthResponse(.FAIL, reason: "Device Connection Error", message: "In incrementPreAuth : The device is not connected.", auth: nil)
+            return
+        }
+        
+        guard merchantInfo.supportsPreAuths else {
+            deviceObserver?.onIncrementPreAuthResponse(.ERROR, reason: "Merchant Configuration Validation Error", message: "In IncrementPreAuth : PreAuth support is not enabled for the payment gateway.", auth: nil)
+            return
+        }
+                
+        device.doIncrementPreAuth(incrementPreAuthRequest.amount, paymentId: incrementPreAuthRequest.paymentId)
+    }
+    
     /**
      * A common PayIntent builder method for Sale and Auth
      *
@@ -603,6 +617,15 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             cloverConnector.broadcaster.notifyOnCapturePreAuth(cpar)
         }
         
+        func onIncrementPreAuthResponse(_ status: ResultStatus, reason: String?, message: String?, auth: CLVModels.Payments.Authorization?) {
+            let ipar = IncrementPreauthResponse(success: status == .SUCCESS,
+                                                result: (status == .SUCCESS ? ResultCode.SUCCESS : ResultCode.FAIL),
+                                                authorization: auth)
+            ipar.reason = reason
+            ipar.message = message
+            cloverConnector.broadcaster.notifyOnIncrementPreAuth(ipar)
+        }
+        
         func onCashbackSelectedResponse(_ cashbackAmount: Int) {
             // TODO:
         }
@@ -649,6 +672,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             response.reason = reason
             response.message = message
             response.voidReason = voidReason
+            response.payment = payment
             cloverConnector.broadcaster.notifyOnVoidPaymentResponse(response);
         }
         
@@ -713,7 +737,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                 case TxStartRequestMessage.AUTH_REQUEST:
                     lastRequest = nil
                     let authResponse = AuthResponse(success: success, result: result)
-                    authResponse.reason = "Request canceled"
+                    authResponse.reason = "Request Canceled"
                     authResponse.reason = reason ?? authResponse.reason
                     authResponse.message = "AuthRequest canceled by user"
                     authResponse.message = message ?? authResponse.message
@@ -733,7 +757,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                 case TxStartRequestMessage.CREDIT_REQUEST:
                     lastRequest = nil
                     let refundResponse = ManualRefundResponse(success: success, result: result)
-                    refundResponse.reason = "Request canceled"
+                    refundResponse.reason = "Request Canceled"
                     refundResponse.reason = reason ?? refundResponse.reason
                     refundResponse.message = "ManualRefundRequest canceled by user"
                     refundResponse.message = message ?? refundResponse.message
@@ -772,7 +796,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                     cloverConnector.broadcaster.notifyOnSaleResponse(saleResponse);
                 } else if lastReq is AuthRequest {
                     let authResponse = AuthResponse(success: success, result: result)
-                    authResponse.reason = "Request canceled"
+                    authResponse.reason = "Request Canceled"
                     authResponse.reason = reason ?? authResponse.reason
                     authResponse.message = "AuthRequest canceled by user"
                     authResponse.message = message ?? authResponse.message
@@ -780,7 +804,7 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
                     cloverConnector.broadcaster.notifyOnAuthResponse(authResponse);
                 } else if lastReq is ManualRefundRequest {
                     let refundResponse = ManualRefundResponse(success: success, result: result)
-                    refundResponse.reason = "Request canceled"
+                    refundResponse.reason = "Request Canceled"
                     refundResponse.reason = reason ?? refundResponse.reason
                     refundResponse.message = "ManualRefundRequest canceled by user"
                     refundResponse.message = message ?? refundResponse.message
@@ -1143,6 +1167,17 @@ class DefaultCloverConnectorV2 : NSObject, ICloverConnector {
             let response = RetrieveDeviceStatusResponse(success: success, result: result, state: state, data: data)
             //response.subState = subState // this is for internal use only right now, and not exposed in the api
             cloverConnector.broadcaster.notifyOnDeviceStatusResponse(response)
+        }
+        
+        func onInvalidStateTransitionResponse(_ result: ResultStatus?, reason: String?, requestedTransition: String?, state: ExternalDeviceState?, data: ExternalDeviceStateData?) {
+            let istr = InvalidStateTransitionResponse(success: result == .SUCCESS,
+                                                      result: (result == .SUCCESS ? ResultCode.SUCCESS : ResultCode.FAIL),
+                                                      reason: reason,
+                                                      requestedTransition: requestedTransition,
+                                                      state: state,
+                                                      data: data)
+            
+            cloverConnector.broadcaster.notifyOnInvalidStateTransitionResponse(istr)
         }
         
         func onResetDeviceResponse(_ result: ResultStatus, reason: String?, state: ExternalDeviceState) {

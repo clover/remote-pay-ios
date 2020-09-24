@@ -40,7 +40,7 @@ public class TipAdjustAuthRequest : NSObject, Mappable {
     public func mapping(map:Map) {
         tipAmount <- map["tipAmount"]
         orderId <- map["orderId"]
-        paymentId <- map["orderId"]
+        paymentId <- map["paymentId"]
     }
 
 }

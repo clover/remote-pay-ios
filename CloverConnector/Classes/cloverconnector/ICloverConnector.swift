@@ -60,6 +60,13 @@ public protocol ICloverConnector : AnyObject {
     /// - Parameter capturePreAuthRequest: The request details.
     func  capturePreAuth ( _ capturePreAuthRequest:CapturePreAuthRequest ) -> Void
     
+    /// Request to increase the amount of an existing pre-auth
+    ///
+    /// - Parameters:
+    ///   - amount: The amount by which to increment the pre-authorization
+    ///   - paymentId: The pre-authorization to be incremented
+    func incrementPreAuth(_ incrementPreAuthRequest: IncrementPreauthRequest) -> Void
+    
     /// Adjusts the tip for a previous Auth transaction. This call can be made until
     /// the Auth Payment has been finalized by a Closeout.
     /// **Note:** Should only be called if the request's PaymentID is from an 
@@ -71,7 +78,6 @@ public protocol ICloverConnector : AnyObject {
     /// - Parameter voidPaymentRequest: A VoidRequest object containing basic information needed to void the transaction.
     func  voidPayment ( _ voidPaymentRequest:VoidPaymentRequest ) -> Void
     
-    ///
     /// Refunds the full or partial amount of a Payment.
     /// - Parameter refundPaymentRequest: The request details.
     func  refundPayment ( _ refundPaymentRequest:RefundPaymentRequest ) -> Void

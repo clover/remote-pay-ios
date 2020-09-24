@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CloverConnector'
-  s.version          = '3.0.3'
+  s.version          = '4.0.0'
   s.summary          = 'Provides an api for communicating with a Clover Mini as a customer facing payment device.'
 
   s.description      = <<-DESC
@@ -15,6 +15,7 @@ ICloverConnector
 - *auth* - method to collect a payment that can be tip adjusted
 - *preAuth* - method to collect a payment that will not be eligible to be final until a capturePreAuth is processed on this payment
 - *capturePreAuth* - method to make a preAuth payment eligible to be tip adjusted or finalized
+- *incrementPreAuth* - method to increase the amount for which a preAuth is authorized
 - *tipAdjustAuth* - method to adjust the tip amount on a payment collected from an auth, or a payment that has been captured via capturePreAuth
 - *voidPayment* - queues a request to void a payment
 - *refundPayment* - refund a payment or partially refund a final payment
@@ -54,6 +55,7 @@ ICloverConnectorListener
 - *onSaleResponse* - called at the completion of a sale request with either a payment or a cancel state
 - *onAuthResponse* - called at the completion of an auth request with either a payment or a cancel state
 - *onPreAuthResponse* - called at the completion of a preAuth request with either a payment or a cancel state
+- *onIncrementPreAuthResponse* - called in response to an `incrementPreAuth()` call on the CloverConnector. Returns the incremented pre-auth, if successful
 - *onTipAdjustAuthResponse* - called at the completion ofo a tipAdjustAuth request
 - *onVoidPaymentResponse* - called at the completion of a void payment request
 - *onRefundPaymentResponse* - called at the completion of a refund payment request
@@ -87,6 +89,7 @@ ICloverConnectorListener
 - *onMessageFromActivity* - called if the custom activity wants to send a message back to the POS, prior to finishing
 - *onRetrievePaymentResponse* - called at the completion of a retrievePayment request
 - *onRetrieveDeviceStatusResponse* - called at the completion of a retrieveDeviceStatus request
+- *onInvalidStateTransitionResponse* - called in response to a request that results in an invalid payment flow transition
 
 
 DESC
@@ -96,7 +99,7 @@ DESC
   s.author           = { 'Clover' => 'semi-integrations@clover.com' }
   s.source           = { :git => 'https://github.com/clover/remote-pay-ios.git', :tag => s.version.to_s }
 
-  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.2' }
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '5.3' }
 
   s.ios.deployment_target = '9.0'
   s.osx.deployment_target = '10.10'
@@ -107,7 +110,7 @@ DESC
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'Foundation'
-  s.dependency 'ObjectMapper', '3.3.0'
-  s.dependency 'Starscream', '3.0.5'
-  s.dependency 'SwiftyJSON', '4.1.0'
+  s.dependency 'ObjectMapper', '3.5.1'
+  s.dependency 'Starscream', '3.1.0'
+  s.dependency 'SwiftyJSON', '5.0.0'
 end

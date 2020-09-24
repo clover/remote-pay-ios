@@ -35,6 +35,7 @@ public class TransactionRequest : BaseTransactionRequest {
         autoAcceptSignature <- map["autoAcceptSignature"]
         signatureThreshold <- map["signatureThreshold"]
         signatureEntryLocation <- map["signatureEntryLocation"]
+        tipSuggestions <- map["tipSuggestions"]
     }
     
     override public init(amount:Int, externalId:String) {

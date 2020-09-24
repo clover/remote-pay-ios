@@ -86,6 +86,50 @@ extension CLVModels {
       }
     }
     
+    @objc(_TtCCC15CloverConnector9CLVModels8Payments24IncrementalAuthorization)public class IncrementalAuthorization: NSObject, NSCoding, Mappable {
+        /// Unique identifier
+        public var id: String?
+        /// Amount of the incremental authorization
+        public var amount: Int?
+        public var cardTransaction: CLVModels.Payments.CardTransaction?
+        /// Result of the incremental auth
+        public var result: Result?
+        /// Created time on the server
+        public var createdTime: Date?
+        /// The employee who processed the incremental Auth
+        public var employee: CLVModels.Employees.Employee?
+        
+        //NSCoding
+        public func encode(with coder: NSCoder) {
+            coder.encode(id, forKey: "id")
+            coder.encode(amount, forKey: "amount")
+            coder.encode(cardTransaction, forKey: "cardTransaction")
+            coder.encode(result, forKey: "result")
+            coder.encode(createdTime, forKey: "createdTime")
+            coder.encode(employee, forKey: "employee")
+        }
+        
+        required public init(coder decoder: NSCoder) {
+            id = decoder.decodeObject(forKey: "id") as? String
+            amount = decoder.decodeObject(forKey: "amount") as? Int
+            cardTransaction = decoder.decodeObject(forKey: "cardTransaction") as? CLVModels.Payments.CardTransaction
+            result = decoder.decodeObject(forKey: "result") as? Result
+            createdTime = decoder.decodeObject(forKey: "createdTime") as? Date
+            employee = decoder.decodeObject(forKey: "employee") as? CLVModels.Employees.Employee
+        }
+        
+        //Mappable
+        public required init?(map: Map) { }
+        
+        public func mapping(map: Map) {
+            id <- map["id"]
+            amount <- map["amount"]
+            cardTransaction <- map["cardTransaction"]
+            result <- map["result"]
+            createdTime <- (map["createdTime"], CLVDateTransform())
+            employee <- map["employee"]
+        }
+    }
     
     
     public enum AVSResult: String {
@@ -1299,19 +1343,24 @@ extension CLVModels {
     
     @objc(CloverConnectorModelsExtensionsPaymentsAdditionalCharge) public class AdditionalCharge: NSObject, NSCoding, Mappable {
         public var amount:Int?
-        public var type:String?
+        public var type:AdditionalChargeType?
         public var id:String?
+        public var rate:Int64?
         
         public func encode(with aCoder: NSCoder) {
             aCoder.encode(amount, forKey: "amount")
-            aCoder.encode(type, forKey: "type")
+            aCoder.encode(type?.chargeTypeString, forKey: "type")
             aCoder.encode(id, forKey: "id")
+            aCoder.encode(rate, forKey: "rate")
         }
         
         public required init?(coder aDecoder: NSCoder) {
             amount = aDecoder.decodeObject(forKey: "amount") as? Int
-            type = aDecoder.decodeObject(forKey: "type") as? String
+            if let chargeType = aDecoder.decodeObject(forKey: "type") as? String {
+                type = AdditionalChargeType(rawValue: chargeType)
+            }
             id = aDecoder.decodeObject(forKey: "id") as? String
+            rate = aDecoder.decodeObject(forKey: "rate") as? Int64
         }
         
         public required init?(map: Map) {
@@ -1320,8 +1369,61 @@ extension CLVModels {
         
         public func mapping(map: Map) {
             amount <- map["amount"]
-            type <- map["type"]
+            type <- (map["type"], Message.additionalChargeTypeTransform)
             id <- map["id"]
+            rate <- map["rate"]
+        }
+        
+        /// Describes the type of additional charge
+        /// Note: `interac` is deprecated. Use `interacV2` instead.
+        public enum AdditionalChargeType {
+            /// Additional charge type for Interac cards. Deprecated, use `interacV2` instead
+            case interac
+            
+            /// Additional charge type for a credit surcharge
+            case creditSurcharge
+            
+            /// Additional charge type for a convenience fee
+            case convenienceFee
+            
+            /// Additional charge type for Interac cards.
+            case interacV2
+            
+            /// Additional charge type. Holder for future types that are as of yet undefined. Anything passed to the init not matching the other defined types will fall to this type, and will be returned by `chargeTypeString` in raw string form as it was provided.
+            case other(String)
+            
+            /// Helper to create an enum based on a provided string; primarily useful for parsing string-based messages. Anything not matching an explicit case will be stored as `.other(String)`.
+            /// - Parameter chargeType: String representation of the additional charge type
+            init(rawValue: String) {
+                switch rawValue {
+                case "INTERAC":
+                    self = .interac
+                case "CREDIT_SURCHARGE":
+                    self = .creditSurcharge
+                case "CONVENIENCE_FEE":
+                    self = .convenienceFee
+                case "INTERAC_V2":
+                    self = .interacV2
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            
+            /// Returns the string representation of the enum value
+            var chargeTypeString: String {
+                switch self {
+                case .interac:
+                    return "INTERAC"
+                case .creditSurcharge:
+                    return "CREDIT_SURCHARGE"
+                case .convenienceFee:
+                    return "CONVENIENCE_FEE"
+                case .interacV2:
+                    return "INTERAC_V2"
+                case .other(let rawValue):
+                    return rawValue
+                }
+            }
         }
     }
     
@@ -1406,6 +1508,8 @@ extension CLVModels {
         
         public var transactionInfo: CLVModels.Payments.TransactionInfo?
         
+        public var increments: [CLVModels.Payments.IncrementalAuthorization]?
+        
         public func encode(with aCoder: NSCoder) {
             aCoder.encode(id, forKey: "id")
             aCoder.encode(order, forKey: "order")
@@ -1436,6 +1540,7 @@ extension CLVModels {
             aCoder.encode(appTracking, forKey: "appTracking")
             aCoder.encode(additionalCharges, forKey: "additionalCharges")
             aCoder.encode(transactionInfo, forKey: "transactionInfo")
+            aCoder.encode(increments, forKey: "increments")
         }
         
         required public init(coder aDecoder: NSCoder) {
@@ -1472,6 +1577,7 @@ extension CLVModels {
             appTracking = aDecoder.decodeObject(forKey: "appTracking") as? CLVModels.Apps.AppTracking
             additionalCharges = aDecoder.decodeObject(forKey: "additionalCharges") as? AdditionalCharges
             transactionInfo = aDecoder.decodeObject(forKey: "transactionInfo") as? CLVModels.Payments.TransactionInfo
+            increments = aDecoder.decodeObject(forKey: "increments") as? [CLVModels.Payments.IncrementalAuthorization]
         }
         
         override public init() {}
@@ -1510,6 +1616,7 @@ extension CLVModels {
             appTracking <- map["appTracking"]
             additionalCharges <- map["additionalCharges"]
             transactionInfo <- map["transactionInfo"]
+            increments <- map["increments.elements"]
         }
     }
     
@@ -1979,6 +2086,8 @@ extension CLVModels {
         public var autoAcceptSignature: Bool?
         
         public var forceOfflinePayment: Bool?
+        
+        public var disableCreditSurcharge: Bool?
         
         /// Any extra region specific data. Keys are referenced in RegionalExtras.swift
         public var regionalExtras: [String: String]?

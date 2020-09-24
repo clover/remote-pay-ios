@@ -47,7 +47,7 @@ class CloverDevice {
     }
     
     func unsubscribe(_ observer:CloverDeviceObserver) {
-        guard let index = deviceObservers.index(where: {$0 === observer}) else { return }
+        guard let index = deviceObservers.firstIndex(where: {$0 === observer}) else { return }
         deviceObservers.remove(at: index)
     }
     
@@ -70,6 +70,8 @@ class CloverDevice {
     func doCaptureAuth(payIntent:PayIntent, order:CLVModels.Order.Order?, requestInfo ri:String?) {}
     
     func doCaptureAuth(_ paymentID:String, amount:Int, tipAmount:Int) {}
+    
+    func doIncrementPreAuth(_ amount:Int, paymentId: String) {}
     
     func doOrderUpdate(_ displayOrder:DisplayOrder, orderOperation operation:DisplayOrderModifiedOperation?) {}
     
@@ -95,7 +97,7 @@ class CloverDevice {
     
     func doShowThankYouScreen() {}
     
-    func doOpenCashDrawer(_ reason:String, deviceId: String?) {}
+    func doOpenCashDrawer(_ reason:String?, deviceId: String?) {}
     
     func doPrintImage(_ img:ImageClass, printRequestId: String?, printDeviceId: String?) {}
     
